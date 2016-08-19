@@ -55,7 +55,7 @@ public class MagneticPlacer : BaseClass {
                 mBall.thisRigidbody.AddForce(thisTransform.forward * 300, ForceMode.Impulse);
                 break;
             case MagneticBallState.HeadingToTarget:
-                mBall.SetState(MagneticBallState.ApplyingGravity);
+                mBall.SetState(MagneticBallState.HeadingHome);
                 break;
             case MagneticBallState.ApplyingGravity:
                 mBall.SetState(MagneticBallState.HeadingHome);
