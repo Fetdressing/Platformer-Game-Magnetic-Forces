@@ -65,11 +65,21 @@ public class MagneticForce : BaseClass
     // Update is called once per frame
     void FixedUpdate()
     {
+        FixedUpdateLoop();
+    }
+
+    public virtual void FixedUpdateLoop()
+    {
         ApplyForce();
     }
 
+    public virtual void UpdateLoop()
+    {
 
-    void ApplyForce()
+    }
+
+
+    public virtual void ApplyForce()
     {
         Collider[] colliders;
         colliders = Physics.OverlapSphere(thisTransform.position, range);

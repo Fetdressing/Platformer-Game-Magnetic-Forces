@@ -1560,6 +1560,8 @@ GameObject:
   - 96: {fileID: 1082885595}
   - 54: {fileID: 1082885596}
   - 135: {fileID: 1082885597}
+  - 23: {fileID: 1082885599}
+  - 33: {fileID: 1082885598}
   m_Layer: 0
   m_Name: MagneticBall
   m_TagString: Untagged
@@ -1589,7 +1591,7 @@ MonoBehaviour:
   ps: {fileID: 0}
   pLight: {fileID: 0}
   force: 200
-  range: 200
+  range: 400
   homeTransform: {fileID: 0}
   magneticBallState: 0
   thisRigidbody: {fileID: 0}
@@ -3253,6 +3255,39 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: -0.00000023841858}
+--- !u!33 &1082885598
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1082885589}
+  m_Mesh: {fileID: 4300002, guid: 103612e5e1ff43a4e896c567a2cb3ae1, type: 3}
+--- !u!23 &1082885599
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1082885589}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_Materials:
+  - {fileID: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
+  m_ProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
 --- !u!1 &1219274121
 GameObject:
   m_ObjectHideFlags: 0
@@ -3957,6 +3992,8 @@ GameObject:
   - 96: {fileID: 1618225978}
   - 54: {fileID: 1618225977}
   - 135: {fileID: 1618225983}
+  - 33: {fileID: 1618225985}
+  - 23: {fileID: 1618225984}
   m_Layer: 0
   m_Name: MagneticBall (1)
   m_TagString: Untagged
@@ -4061,7 +4098,7 @@ MonoBehaviour:
   ps: {fileID: 0}
   pLight: {fileID: 0}
   force: 200
-  range: 200
+  range: 400
   homeTransform: {fileID: 0}
   magneticBallState: 0
   thisRigidbody: {fileID: 0}
@@ -5650,6 +5687,39 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1618225984
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1618225975}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_Materials:
+  - {fileID: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
+  m_ProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &1618225985
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1618225975}
+  m_Mesh: {fileID: 4300002, guid: 103612e5e1ff43a4e896c567a2cb3ae1, type: 3}
 --- !u!1 &1885169170
 GameObject:
   m_ObjectHideFlags: 0
