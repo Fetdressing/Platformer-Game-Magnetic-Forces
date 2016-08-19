@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MagneticForce : BaseClass
 {
-    public enum ForceType {Push, Pull};
+    public enum ForceType { Push, Pull };
     public ForceType forceType;
 
     public Color pushColor;
@@ -11,19 +11,26 @@ public class MagneticForce : BaseClass
     public Material pushHoloMat;
     public Material pullHoloMat;
 
-    private static Color pushColorS;
-    private static Color pullColorS;
+    [HideInInspector]
+    public static Color pushColorS;
+    [HideInInspector]
+    public static Color pullColorS;
 
-    private Transform thisTransform;
-    private Transform holoRangeTransform;
-    private ParticleSystem ps;
-    private Light pLight;
+    [HideInInspector]
+    public Transform thisTransform;
+    [HideInInspector]
+    public Transform holoRangeTransform;
+    [HideInInspector]
+    public ParticleSystem ps;
+    [HideInInspector]
+    public Light pLight;
 
     public float force = 20;
     public float range = 40;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         Init();
     }
 
@@ -56,9 +63,10 @@ public class MagneticForce : BaseClass
     }
 
     // Update is called once per frame
-    void FixedUpdate () {
+    void FixedUpdate()
+    {
         ApplyForce();
-	}
+    }
 
 
     void ApplyForce()
@@ -69,7 +77,7 @@ public class MagneticForce : BaseClass
         {
             Transform tr = col.transform;
 
-            if(tr.GetComponent<Rigidbody>() != null)
+            if (tr.GetComponent<Rigidbody>() != null)
             {
                 Rigidbody rigidbodyTemp = tr.GetComponent<Rigidbody>();
                 Vector3 dir;
@@ -85,7 +93,7 @@ public class MagneticForce : BaseClass
                         rigidbodyTemp.AddForce(force * distanceMultiplier * dir * Time.deltaTime, ForceMode.Force);
                         break;
                 }
-            }            
+            }
         }
     }
 }

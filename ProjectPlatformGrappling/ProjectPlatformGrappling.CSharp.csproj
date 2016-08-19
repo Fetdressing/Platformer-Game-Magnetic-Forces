@@ -72,14 +72,14 @@
     <Compile Include="Assets\OurStuff\Scripts\BaseClass.cs" />
     <Compile Include="Assets\OurStuff\Scripts\FadingLight.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Health.cs" />
-    <Compile Include="Assets\OurStuff\Scripts\MagneticForce.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\MagneticForces\MagneticBall.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\MagneticForces\MagneticForce.cs" />
     <Compile Include="Assets\OurStuff\Scripts\MovingPlatform.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ParticleTimed.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\CameraController.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\MagneticHandler.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\MagneticPlacer.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\PlayerMovement.cs" />
-    <Compile Include="Assets\OurStuff\Scripts\ProjectileMagnetSpawner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\OurStuff\2D\Shaders\Hologram.shader" />
