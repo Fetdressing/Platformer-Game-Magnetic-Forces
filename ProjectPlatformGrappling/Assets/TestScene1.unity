@@ -253,7 +253,7 @@ Transform:
   m_Children:
   - {fileID: 235797900}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
 --- !u!114 &53879841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1496,8 +1496,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceType: 1
-  pushColor: {r: 1, g: 0, b: 0, a: 1}
-  pullColor: {r: 0.034482475, g: 0, b: 1, a: 1}
+  pushColor: {r: 0.034482475, g: 0, b: 1, a: 1}
+  pullColor: {r: 1, g: 0, b: 0, a: 1}
+  pushHoloMat: {fileID: 2100000, guid: cea78ed65caedc946b2a8fafd3d8bb69, type: 2}
+  pullHoloMat: {fileID: 2100000, guid: 4b51fd7501e0ffe489aa81e1e801ea26, type: 2}
   force: 200
   range: 200
 --- !u!108 &1082885591
@@ -3345,7 +3347,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1325407947}
-  m_LocalRotation: {x: 0.005440656, y: 0.21489899, z: 0.09022258, w: 0.9724447}
+  m_LocalRotation: {x: -0.08593308, y: 0.27200463, z: 0.08632065, w: 0.95455635}
   m_LocalPosition: {x: 2.5803385, y: 2.3437219, z: -5.990149}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -3750,7 +3752,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 3496132a03d74b84499f0522b6a3e7b5, type: 2}
+  - {fileID: 2100000, guid: 4b51fd7501e0ffe489aa81e1e801ea26, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1

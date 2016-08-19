@@ -69,6 +69,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\OurStuff\Scripts\BaseClass.cs" />
     <Compile Include="Assets\OurStuff\Scripts\FadingLight.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Health.cs" />
     <Compile Include="Assets\OurStuff\Scripts\MagneticForce.cs" />
@@ -78,8 +79,10 @@
     <Compile Include="Assets\OurStuff\Scripts\Player\MagneticHandler.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\MagneticPlacer.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\PlayerMovement.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\ProjectileMagnetSpawner.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\OurStuff\2D\Shaders\Hologram.shader" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlurEffectConeTaps.shader" />

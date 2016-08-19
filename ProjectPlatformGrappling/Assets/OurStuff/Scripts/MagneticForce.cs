@@ -1,17 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MagneticForce : MonoBehaviour {
+public class MagneticForce : BaseClass
+{
     public enum ForceType {Push, Pull};
     public ForceType forceType;
 
     public Color pushColor;
     public Color pullColor;
+    public Material pushHoloMat;
+    public Material pullHoloMat;
 
     private static Color pushColorS;
     private static Color pullColorS;
 
     private Transform thisTransform;
+    private Transform holoRangeTransform;
     private ParticleSystem ps;
     private Light pLight;
 
@@ -20,8 +24,16 @@ public class MagneticForce : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Init();
+    }
+
+    public override void Init()
+    {
+        base.Init();
         thisTransform = this.transform;
-        thisTransform.GetComponentsInChildren<Transform>()[1].localScale = new Vector3(range, range, range);
+        holoRangeTransform = thisTransform.GetComponentsInChildren<Transform>()[1];
+        holoRangeTransform.localScale = new Vector3(range, range, range);
+
         ps = thisTransform.GetComponent<ParticleSystem>();
         pLight = thisTransform.GetComponent<Light>();
 
@@ -33,16 +45,18 @@ public class MagneticForce : MonoBehaviour {
             case ForceType.Push:
                 ps.startColor = pushColorS;
                 pLight.color = pushColorS;
+                holoRangeTransform.GetComponent<Renderer>().material = pushHoloMat;
                 break;
             case ForceType.Pull:
                 ps.startColor = pullColorS;
                 pLight.color = pullColorS;
+                holoRangeTransform.GetComponent<Renderer>().material = pullHoloMat;
                 break;
         }
     }
-	
-	// Update is called once per frame
-	void FixedUpdate () {
+
+    // Update is called once per frame
+    void FixedUpdate () {
         ApplyForce();
 	}
 
