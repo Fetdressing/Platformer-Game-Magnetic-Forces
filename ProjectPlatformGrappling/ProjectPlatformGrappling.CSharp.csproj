@@ -79,6 +79,7 @@
     <Compile Include="Assets\OurStuff\Scripts\Player\CameraController.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\MagneticHandler.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\MagneticPlacer.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\Player\Movement.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\PlayerMovement.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -5112,6 +5112,7 @@ GameObject:
   - 135: {fileID: 1219274124}
   - 23: {fileID: 1219274123}
   - 54: {fileID: 1219274122}
+  - 114: {fileID: 1219274127}
   m_Layer: 8
   m_Name: PlayerTest
   m_TagString: Untagged
@@ -5196,6 +5197,18 @@ Transform:
   - {fileID: 307335727}
   m_Father: {fileID: 0}
   m_RootOrder: 22
+--- !u!114 &1219274127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1219274121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 569a50dbe356a42409a536f70d2a82fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraObj: {fileID: 53879840}
 --- !u!1 &1230494799
 GameObject:
   m_ObjectHideFlags: 0

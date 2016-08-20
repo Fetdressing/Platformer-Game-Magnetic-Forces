@@ -48,7 +48,7 @@ public class MagneticForce : BaseClass
         base.Init();
         thisTransform = this.transform;
         holoRangeTransform = thisTransform.GetComponentsInChildren<Transform>()[1];
-        holoRangeTransform.localScale = new Vector3(range * thisTransform.localScale.x, range * thisTransform.localScale.x, range * thisTransform.localScale.x);
+        holoRangeTransform.localScale = new Vector3(range * (1/thisTransform.localScale.x), range * (1/thisTransform.localScale.x), range * (1/thisTransform.localScale.x));
 
         pushHoloFMat = pushHoloMat;
         pullHoloFMat = pullHoloMat;

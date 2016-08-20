@@ -58,11 +58,12 @@ public class CameraController : MonoBehaviour {
         thisTransform.LookAt(target.position);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if(Input.GetKey(KeyCode.W))
         {
-            target.root.GetComponent<Rigidbody>().AddForce(10000 * Time.deltaTime * thisTransform.forward);
+            //target.root.GetComponent<Rigidbody>().AddForce(10000 * Time.deltaTime * thisTransform.forward);
+            //target.root.GetComponent<Rigidbody>().MovePosition(thisTransform.position + (-thisTransform.forward * Time.deltaTime * -0.003f));
         }
     }
 
