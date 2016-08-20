@@ -63,19 +63,19 @@ public class MagneticBall : MagneticForce
         {
             case MagneticBallState.HeadingHome:
                 holoRangeTransform.gameObject.SetActive(false);
-                ps.Stop();
+                ps.enableEmission = false;
                 pLight.enabled = false;
                 thisRigidbody.isKinematic = true;
                 break;
             case MagneticBallState.HeadingToTarget:
                 holoRangeTransform.gameObject.SetActive(false);
-                ps.Stop();
+                ps.enableEmission = false;
                 pLight.enabled = true;
                 thisRigidbody.isKinematic = false; //forces ska applyas
                 break;
             case MagneticBallState.ApplyingGravity:
                 holoRangeTransform.gameObject.SetActive(true);
-                ps.Play();
+                ps.enableEmission = true;
                 pLight.enabled = true;
                 thisRigidbody.isKinematic = true;
                 break;

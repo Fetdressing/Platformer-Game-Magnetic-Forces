@@ -17,6 +17,11 @@ public class MagneticForce : BaseClass
     public static Color pullColorS;
 
     [HideInInspector]
+    public static Material pushHoloFMat;
+    [HideInInspector]
+    public static Material pullHoloFMat;
+
+    [HideInInspector]
     public Transform thisTransform;
     [HideInInspector]
     public Transform holoRangeTransform;
@@ -24,6 +29,10 @@ public class MagneticForce : BaseClass
     public ParticleSystem ps;
     [HideInInspector]
     public Light pLight;
+    [HideInInspector]
+    public TrailRenderer tRenderer;
+    [HideInInspector]
+    public Renderer renderer;
 
     public float force = 20;
     public float range = 40;
@@ -39,10 +48,15 @@ public class MagneticForce : BaseClass
         base.Init();
         thisTransform = this.transform;
         holoRangeTransform = thisTransform.GetComponentsInChildren<Transform>()[1];
-        holoRangeTransform.localScale = new Vector3(range, range, range);
+        holoRangeTransform.localScale = new Vector3(range * thisTransform.localScale.x, range * thisTransform.localScale.x, range * thisTransform.localScale.x);
+
+        pushHoloFMat = pushHoloMat;
+        pullHoloFMat = pullHoloMat;
 
         ps = thisTransform.GetComponent<ParticleSystem>();
         pLight = thisTransform.GetComponent<Light>();
+        tRenderer = thisTransform.GetComponent<TrailRenderer>();
+        renderer = thisTransform.GetComponent<MeshRenderer>();
 
         pushColorS = pushColor;
         pullColorS = pullColor;
@@ -52,12 +66,16 @@ public class MagneticForce : BaseClass
             case ForceType.Push:
                 ps.startColor = pushColorS;
                 pLight.color = pushColorS;
-                holoRangeTransform.GetComponent<Renderer>().material = pushHoloMat;
+                holoRangeTransform.GetComponent<Renderer>().material = pushHoloFMat;
+                //renderer.material = pushHoloFMat; //vänta lite med dessa
+                tRenderer.material = pushHoloFMat;
                 break;
             case ForceType.Pull:
                 ps.startColor = pullColorS;
                 pLight.color = pullColorS;
-                holoRangeTransform.GetComponent<Renderer>().material = pullHoloMat;
+                holoRangeTransform.GetComponent<Renderer>().material = pullHoloFMat;
+                //renderer.material = pullHoloFMat;
+                tRenderer.material = pullHoloFMat;
                 break;
         }
     }
