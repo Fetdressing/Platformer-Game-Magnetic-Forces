@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraController : MonoBehaviour {
+public class CameraController : BaseClass {
     private Transform thisTransform;
     private Camera thisCamera;
     public Transform target;
@@ -24,15 +24,28 @@ public class CameraController : MonoBehaviour {
     private float yMaxHeight = 25;
     // Use this for initialization
     void Start () {
+        Init();
+    }
+
+    public override void Init()
+    {
+        base.Init();
         thisTransform = this.transform;
         thisTransform.position = target.position + -thisTransform.forward * 10;
         thisCamera = thisTransform.GetComponentsInChildren<Transform>()[1].GetComponent<Camera>();
 
         offsetX = new Vector3(0, height, distance);
+
+        ToggleCursorVisible();
     }
 
     void Update()
     {
+        if(Input.GetButtonDown("Cancel"))
+        {
+            ToggleCursorVisible();
+        }
+
         float xRot = Input.GetAxis("Mouse X") * XSensitivity;
         float yRot = Input.GetAxis("Mouse Y") * YSensitivity;
 
@@ -56,6 +69,11 @@ public class CameraController : MonoBehaviour {
         finalOffset = offsetX + new Vector3(0, offsetHY, 0) + thisTransform.forward * Mathf.Abs(offsetHY*0.5f) + -thisTransform.forward * distanceOffset;
         thisTransform.position = Vector3.Lerp(thisTransform.position, target.position + finalOffset, cameraFollowSpeed * Time.deltaTime);
         thisTransform.LookAt(target.position);
+    }
+
+    void ToggleCursorVisible()
+    {
+        Cursor.visible = !Cursor.visible;
     }
 
     //void FixedUpdate()
