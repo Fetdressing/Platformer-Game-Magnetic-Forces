@@ -45,12 +45,12 @@ public class CameraController : MonoBehaviour {
         if (d > 0f)
         {
             // scroll up
-            distanceOffset -= d* 200 * Time.deltaTime;
+            distanceOffset -= d * 800 * Time.deltaTime;
         }
         else if (d < 0f)
         {
             // scroll down
-            distanceOffset -= d*200 * Time.deltaTime;
+            distanceOffset -= d * 800 * Time.deltaTime;
         }
         distanceOffset = Mathf.Clamp(distanceOffset, 0, maxDistanceOffset);
         finalOffset = offsetX + new Vector3(0, offsetHY, 0) + thisTransform.forward * Mathf.Abs(offsetHY*0.5f) + -thisTransform.forward * distanceOffset;
