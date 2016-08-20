@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class MagneticPlacer : BaseClass {
     private Transform thisTransform;
+    private Camera thisCamera;
     public Transform playerTransform;
 
     public Transform[] projectilesPull;
@@ -16,6 +17,7 @@ public class MagneticPlacer : BaseClass {
 
     [HideInInspector]
     public float shootForce = 900;
+    public LayerMask targetLayerMask;
     // Use this for initialization
     void Start () {
         Init();
@@ -25,6 +27,7 @@ public class MagneticPlacer : BaseClass {
     {
         base.Init();
         thisTransform = this.transform;
+        thisCamera = thisTransform.GetComponentsInChildren<Transform>()[1].GetComponent<Camera>();
         for (int i = 0; i < projectilesPull.Length; i++)
         {
             Transform temp = new GameObject().transform;
@@ -55,7 +58,7 @@ public class MagneticPlacer : BaseClass {
         {
             case MagneticBallState.HeadingHome:
                 mBall.SetState(MagneticBallState.HeadingToTarget);
-                mBall.thisRigidbody.AddForce(thisTransform.forward * shootForce, ForceMode.Impulse);
+                FireRigidbody(mBall.thisRigidbody);
                 break;
             case MagneticBallState.HeadingToTarget:
                 mBall.SetState(MagneticBallState.HeadingHome);
@@ -80,7 +83,7 @@ public class MagneticPlacer : BaseClass {
         {
             case MagneticBallState.HeadingHome:
                 mBall.SetState(MagneticBallState.HeadingToTarget);
-                mBall.thisRigidbody.AddForce(thisTransform.forward * shootForce, ForceMode.Impulse);
+                FireRigidbody(mBall.thisRigidbody);
                 break;
             case MagneticBallState.HeadingToTarget:
                 mBall.SetState(MagneticBallState.HeadingHome);
@@ -93,6 +96,27 @@ public class MagneticPlacer : BaseClass {
         if (currPushIndex >= projectilesPush.Length)
         {
             currPushIndex = 0;
+        }
+    }
+
+    void FireRigidbody(Rigidbody rb)
+    {
+        RaycastHit raycastHit;
+        if (Physics.Raycast(thisCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.5f)), out raycastHit, targetLayerMask)) //kasta från mitten av skärmen!
+        {
+            if (Vector3.Dot(raycastHit.normal, thisCamera.transform.position - raycastHit.point) > 0) //normalen mot eller från sig?
+            {
+                rb.transform.LookAt(raycastHit.point);
+                rb.AddForce(rb.transform.forward * shootForce, ForceMode.Impulse);
+            }
+            else
+            {
+                rb.AddForce(thisTransform.forward * shootForce, ForceMode.Impulse);
+            }
+        }
+        else
+        {
+            rb.AddForce(thisTransform.forward * shootForce, ForceMode.Impulse);
         }
     }
 

@@ -288,6 +288,9 @@ MonoBehaviour:
   - {fileID: 1975845532}
   - {fileID: 307335727}
   shootForce: 120
+  targetLayerMask:
+    serializedVersion: 2
+    m_Bits: 768
 --- !u!1 &92194414
 GameObject:
   m_ObjectHideFlags: 0
@@ -764,7 +767,7 @@ MonoBehaviour:
   pLight: {fileID: 0}
   tRenderer: {fileID: 0}
   renderer: {fileID: 0}
-  force: 6500
+  force: 9000
   range: 100
   homeTransform: {fileID: 0}
   magneticBallState: 0
@@ -3402,7 +3405,7 @@ MonoBehaviour:
   pLight: {fileID: 0}
   tRenderer: {fileID: 0}
   renderer: {fileID: 0}
-  force: 6500
+  force: 9000
   range: 100
   homeTransform: {fileID: 0}
   magneticBallState: 0
@@ -5928,7 +5931,7 @@ MonoBehaviour:
   pLight: {fileID: 0}
   tRenderer: {fileID: 0}
   renderer: {fileID: 0}
-  force: 6500
+  force: 9000
   range: 100
   homeTransform: {fileID: 0}
   magneticBallState: 0
@@ -7898,7 +7901,7 @@ MonoBehaviour:
   pLight: {fileID: 0}
   tRenderer: {fileID: 0}
   renderer: {fileID: 0}
-  force: 6500
+  force: 9000
   range: 100
   homeTransform: {fileID: 0}
   magneticBallState: 0
