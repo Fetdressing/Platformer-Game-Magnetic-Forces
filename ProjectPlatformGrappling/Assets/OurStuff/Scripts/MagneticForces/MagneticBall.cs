@@ -84,7 +84,7 @@ public class MagneticBall : MagneticForce
 
     void HeadHome()
     {
-        thisTransform.position = Vector3.Slerp(thisTransform.position, homeTransform.position, Time.deltaTime * 10);
+        thisTransform.position = Vector3.Slerp(thisTransform.position, homeTransform.position, Time.deltaTime * 10f);
     }
 
     void OnTriggerEnter(Collider col)

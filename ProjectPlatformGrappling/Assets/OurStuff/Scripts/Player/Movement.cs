@@ -7,7 +7,7 @@ public class Movement : BaseClass {
     private Rigidbody thisRigidbody;
 
     [HideInInspector]
-    public float speed = 20;
+    public float speed = 30;
 	// Use this for initialization
 	void Start () {
         Init();

@@ -114,11 +114,11 @@ public class MagneticForce : BaseClass
                 {
                     case ForceType.Push:
                         dir = (tr.transform.position - thisTransform.position).normalized;
-                        rigidbodyTemp.AddForce(force * distanceMultiplier * dir * Time.deltaTime, ForceMode.Force);
+                        rigidbodyTemp.AddForce((force * dir * Time.deltaTime) * (1 - distanceMultiplier / range), ForceMode.Force);
                         break;
                     case ForceType.Pull:
                         dir = (thisTransform.position - tr.transform.position).normalized;
-                        rigidbodyTemp.AddForce(force * distanceMultiplier * dir * Time.deltaTime, ForceMode.Force);
+                        rigidbodyTemp.AddForce((force * dir * Time.deltaTime) * (1 - distanceMultiplier / range), ForceMode.Force);
                         break;
                 }
             }

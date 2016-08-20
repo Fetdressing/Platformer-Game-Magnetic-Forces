@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour {
     private float YSensitivity = 2;
 
     public float height = 1f;
-    private float distance = 12f;
+    private float distance = 20f;
     private float cameraFollowSpeed = 300;
 
     private Vector3 offsetX;
@@ -31,7 +31,7 @@ public class CameraController : MonoBehaviour {
         offsetX = new Vector3(0, height, distance);
     }
 
-    void LateUpdate()
+    void Update()
     {
         float xRot = Input.GetAxis("Mouse X") * XSensitivity;
         float yRot = Input.GetAxis("Mouse Y") * YSensitivity;
@@ -58,13 +58,13 @@ public class CameraController : MonoBehaviour {
         thisTransform.LookAt(target.position);
     }
 
-    void FixedUpdate()
-    {
-        if(Input.GetKey(KeyCode.W))
-        {
-            //target.root.GetComponent<Rigidbody>().AddForce(10000 * Time.deltaTime * thisTransform.forward);
-            //target.root.GetComponent<Rigidbody>().MovePosition(thisTransform.position + (-thisTransform.forward * Time.deltaTime * -0.003f));
-        }
-    }
+    //void FixedUpdate()
+    //{
+    //    if(Input.GetKey(KeyCode.W))
+    //    {
+    //        //target.root.GetComponent<Rigidbody>().AddForce(10000 * Time.deltaTime * thisTransform.forward);
+    //        //target.root.GetComponent<Rigidbody>().MovePosition(thisTransform.position + (-thisTransform.forward * Time.deltaTime * -0.003f));
+    //    }
+    //}
 
 }
