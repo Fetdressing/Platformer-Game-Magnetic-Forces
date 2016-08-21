@@ -36,17 +36,18 @@ public class MagneticPlacer : BaseClass {
             //projectilesStartPositionsPull.Add(temp);
             projectilesPull[i].SetParent(null);
             projectilesPull[i].GetComponent<MagneticBall>().SetStartTransform(temp);
+            projectilesPull[i].GetComponent<MagneticBall>().SetPlayer(playerTransform);
         }
 
-        for (int i = 0; i < projectilesPush.Length; i++)
-        {
-            Transform temp = new GameObject().transform;
-            temp.SetParent(playerTransform);
-            temp.position = projectilesPush[i].position;
-            //projectilesStartPositionsPush.Add(temp);
-            projectilesPush[i].SetParent(null);
-            projectilesPush[i].GetComponent<MagneticBall>().SetStartTransform(temp);
-        }
+        //for (int i = 0; i < projectilesPush.Length; i++)
+        //{
+        //    Transform temp = new GameObject().transform;
+        //    temp.SetParent(playerTransform);
+        //    temp.position = projectilesPush[i].position;
+        //    //projectilesStartPositionsPush.Add(temp);
+        //    projectilesPush[i].SetParent(null);
+        //    projectilesPush[i].GetComponent<MagneticBall>().SetStartTransform(temp);
+        //}
     }
 
     void HandleNextPullProjectile()
@@ -54,19 +55,8 @@ public class MagneticPlacer : BaseClass {
         MagneticBall mBall = projectilesPull[currPullIndex].GetComponent<MagneticBall>();
         MagneticBallState state = mBall.magneticBallState;
 
-        switch(state)
-        {
-            case MagneticBallState.HeadingHome:
-                mBall.SetState(MagneticBallState.HeadingToTarget);
-                FireRigidbody(mBall.thisRigidbody);
-                break;
-            case MagneticBallState.HeadingToTarget:
-                mBall.SetState(MagneticBallState.HeadingHome);
-                break;
-            case MagneticBallState.ApplyingGravity:
-                mBall.SetState(MagneticBallState.HeadingHome);
-                break;
-        }
+        MagneticBallGetNextState(mBall);
+
         currPullIndex++;
         if(currPullIndex >= projectilesPull.Length)
         {
@@ -74,24 +64,21 @@ public class MagneticPlacer : BaseClass {
         }
     }
 
+    void HandlePullProjectile(int index) //fast ett specifikt index istället
+    {
+        MagneticBall mBall = projectilesPull[index].GetComponent<MagneticBall>();
+        MagneticBallState state = mBall.magneticBallState;
+
+        MagneticBallGetNextState(mBall);
+
+    }
+
     void HandleNextPushProjectile()
     {
         MagneticBall mBall = projectilesPush[currPushIndex].GetComponent<MagneticBall>();
         MagneticBallState state = mBall.magneticBallState;
 
-        switch (state)
-        {
-            case MagneticBallState.HeadingHome:
-                mBall.SetState(MagneticBallState.HeadingToTarget);
-                FireRigidbody(mBall.thisRigidbody);
-                break;
-            case MagneticBallState.HeadingToTarget:
-                mBall.SetState(MagneticBallState.HeadingHome);
-                break;
-            case MagneticBallState.ApplyingGravity:
-                mBall.SetState(MagneticBallState.HeadingHome);
-                break;
-        }
+        MagneticBallGetNextState(mBall);
         currPushIndex++;
         if (currPushIndex >= projectilesPush.Length)
         {
@@ -99,24 +86,47 @@ public class MagneticPlacer : BaseClass {
         }
     }
 
-    void FireRigidbody(Rigidbody rb)
+
+    void MagneticBallGetNextState(MagneticBall mBall)
     {
+        MagneticBallState state = mBall.magneticBallState;
+
+        switch (state)
+        {
+            case MagneticBallState.HeadingHome:
+                FireMagneticBall(mBall.thisRigidbody);
+                break;
+            case MagneticBallState.HeadingToTarget:
+                mBall.OrderHeadHome();
+                break;
+            case MagneticBallState.ApplyingGravity:
+                mBall.OrderHeadHome();
+                break;
+        }
+    }
+
+    void FireMagneticBall(Rigidbody rb)
+    {
+        MagneticBall mBall = rb.transform.GetComponent<MagneticBall>();
+        mBall.SetState(MagneticBallState.HeadingToTarget);
         RaycastHit raycastHit;
         if (Physics.Raycast(thisCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.5f)), out raycastHit, targetLayerMask)) //kasta från mitten av skärmen!
         {
             if (Vector3.Dot(raycastHit.normal, thisCamera.transform.position - raycastHit.point) > 0) //normalen mot eller från sig?
             {
                 rb.transform.LookAt(raycastHit.point);
-                rb.AddForce(rb.transform.forward * shootForce, ForceMode.Impulse);
+                mBall.OrderFire(shootForce, 4);
             }
             else
             {
-                rb.AddForce(thisTransform.forward * shootForce, ForceMode.Impulse);
+                rb.transform.forward = thisTransform.forward;
+                mBall.OrderFire(shootForce, 4);
             }
         }
         else
         {
-            rb.AddForce(thisTransform.forward * shootForce, ForceMode.Impulse);
+            rb.transform.forward = thisTransform.forward;
+            mBall.OrderFire(shootForce, 4);
         }
     }
 
@@ -124,11 +134,11 @@ public class MagneticPlacer : BaseClass {
     void Update () {
 	    if(Input.GetButtonDown("Fire1"))
         {
-            HandleNextPullProjectile();
+            HandlePullProjectile(0);
         }
         else if (Input.GetButtonDown("Fire2"))
         {
-            HandleNextPushProjectile();
+            HandlePullProjectile(1);
         }
     }
 }

@@ -10,6 +10,8 @@ public class MagneticBall : MagneticForce
     public MagneticBallState magneticBallState = MagneticBallState.HeadingHome;
     [HideInInspector]
     public Rigidbody thisRigidbody;
+
+    private Transform player;
 	// Use this for initialization
 	void Start () {
         Init();
@@ -29,6 +31,11 @@ public class MagneticBall : MagneticForce
         initTimes++;
     }
 
+    public void SetPlayer(Transform p)
+    {
+        player = p;
+    }
+
     // Update is called once per frame
     void Update () {
         UpdateLoop();
@@ -44,6 +51,7 @@ public class MagneticBall : MagneticForce
                 HeadHome();
                 break;
             case MagneticBallState.HeadingToTarget:
+                ApplyForce();
                 break;
             case MagneticBallState.ApplyingGravity:
                 ApplyForce();
@@ -54,6 +62,11 @@ public class MagneticBall : MagneticForce
     public override void FixedUpdateLoop()
     {
         //ingenting, för tydligen körs Updates via arv
+        if(Input.GetKey(KeyCode.F))
+        {
+            if(magneticBallState != MagneticBallState.HeadingHome)
+                ApplyForceTarget(player);
+        }
     }
 
     public void SetState(MagneticBallState bS)
@@ -105,6 +118,16 @@ public class MagneticBall : MagneticForce
                 }
             }
         }
+    }
+
+    public void OrderHeadHome()
+    {
+        SetState(MagneticBallState.HeadingHome);
+    }
+    public void OrderFire(float force, float stayTime)
+    {
+        SetState(MagneticBallState.HeadingToTarget);
+        thisRigidbody.AddForce(thisRigidbody.transform.forward * force, ForceMode.Impulse);
     }
 
     

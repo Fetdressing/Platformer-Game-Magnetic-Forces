@@ -34,6 +34,9 @@ public class MagneticForce : BaseClass
     [HideInInspector]
     public Renderer renderer;
 
+    public LayerMask layerMaskNormal;
+    public LayerMask layerMaskSpecific; //används för endast spelaren o sånt förmodligen
+
     public float force = 20;
     public float range = 40;
 
@@ -100,10 +103,11 @@ public class MagneticForce : BaseClass
     public virtual void ApplyForce()
     {
         Collider[] colliders;
-        colliders = Physics.OverlapSphere(thisTransform.position, range);
+        colliders = Physics.OverlapSphere(thisTransform.position, range, layerMaskNormal);
         foreach (Collider col in colliders)
         {
             Transform tr = col.transform;
+            if (tr == thisTransform) continue;
 
             if (tr.GetComponent<Rigidbody>() != null)
             {
@@ -123,5 +127,27 @@ public class MagneticForce : BaseClass
                 }
             }
         }
+    }
+
+    public virtual void ApplyForceTarget(Transform tr)
+    {
+        if (tr.GetComponent<Rigidbody>() != null)
+        {
+            Rigidbody rigidbodyTemp = tr.GetComponent<Rigidbody>();
+            Vector3 dir;
+            float distanceMultiplier = Vector3.Distance(thisTransform.position, tr.position);
+            switch (forceType)
+            {
+                case ForceType.Push:
+                    dir = (tr.transform.position - thisTransform.position).normalized;
+                    rigidbodyTemp.AddForce((force * dir * Time.deltaTime) , ForceMode.Force);
+                    break;
+                case ForceType.Pull:
+                    dir = (thisTransform.position - tr.transform.position).normalized;
+                    rigidbodyTemp.AddForce((force * dir * Time.deltaTime) , ForceMode.Force);
+                    break;
+            }
+        }
+
     }
 }
