@@ -15,11 +15,15 @@ public class MagneticForce : BaseClass
     public static Color pushColorS;
     [HideInInspector]
     public static Color pullColorS;
+    [HideInInspector]
+    public Color normalColor;
 
     [HideInInspector]
     public static Material pushHoloFMat;
     [HideInInspector]
     public static Material pullHoloFMat;
+    [HideInInspector]
+    public Material normalMat; //det materialet som används
 
     [HideInInspector]
     public Transform thisTransform;
@@ -32,7 +36,7 @@ public class MagneticForce : BaseClass
     [HideInInspector]
     public TrailRenderer tRenderer;
     [HideInInspector]
-    public Renderer renderer;
+    public Renderer thisRenderer;
 
     public LayerMask layerMaskNormal;
     public LayerMask layerMaskSpecific; //används för endast spelaren o sånt förmodligen
@@ -59,7 +63,7 @@ public class MagneticForce : BaseClass
         ps = thisTransform.GetComponent<ParticleSystem>();
         pLight = thisTransform.GetComponent<Light>();
         tRenderer = thisTransform.GetComponent<TrailRenderer>();
-        renderer = thisTransform.GetComponent<MeshRenderer>();
+        thisRenderer = thisTransform.GetComponent<MeshRenderer>();
 
         pushColorS = pushColor;
         pullColorS = pullColor;
@@ -67,20 +71,16 @@ public class MagneticForce : BaseClass
         switch (forceType)
         {
             case ForceType.Push:
-                ps.startColor = pushColorS;
-                pLight.color = pushColorS;
-                holoRangeTransform.GetComponent<Renderer>().material = pushHoloFMat;
-                //renderer.material = pushHoloFMat; //vänta lite med dessa
-                tRenderer.material = pushHoloFMat;
+                SetCurrColor(pushColorS);
+                SetCurrMaterial(pushHoloFMat);
                 break;
             case ForceType.Pull:
-                ps.startColor = pullColorS;
-                pLight.color = pullColorS;
-                holoRangeTransform.GetComponent<Renderer>().material = pullHoloFMat;
-                //renderer.material = pullHoloFMat;
-                tRenderer.material = pullHoloFMat;
+                SetCurrColor(pullColorS);
+                SetCurrMaterial(pullHoloFMat);
                 break;
         }
+        normalMat = tRenderer.material;
+        normalColor = pLight.color;
     }
 
     // Update is called once per frame
@@ -149,5 +149,19 @@ public class MagneticForce : BaseClass
             }
         }
 
+    }
+
+    public void SetCurrMaterial(Material m)
+    {
+        holoRangeTransform.GetComponent<Renderer>().material = m;
+        //thisRenderer.material = m;
+        //renderer.material = pushHoloFMat; //vänta lite med dessa
+        tRenderer.material = m;
+    }
+
+    public void SetCurrColor(Color c)
+    {
+        ps.startColor = c;
+        pLight.color = c;
     }
 }

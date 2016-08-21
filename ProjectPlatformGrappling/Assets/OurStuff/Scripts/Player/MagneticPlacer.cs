@@ -35,7 +35,7 @@ public class MagneticPlacer : BaseClass {
             temp.position = projectilesPull[i].position;
             //projectilesStartPositionsPull.Add(temp);
             projectilesPull[i].SetParent(null);
-            projectilesPull[i].GetComponent<MagneticBall>().SetStartTransform(temp);
+            //projectilesPull[i].GetComponent<MagneticBall>().SetStartTransform(temp);
             projectilesPull[i].GetComponent<MagneticBall>().SetPlayer(playerTransform);
         }
 
@@ -108,7 +108,6 @@ public class MagneticPlacer : BaseClass {
     void FireMagneticBall(Rigidbody rb)
     {
         MagneticBall mBall = rb.transform.GetComponent<MagneticBall>();
-        mBall.SetState(MagneticBallState.HeadingToTarget);
         RaycastHit raycastHit;
         if (Physics.Raycast(thisCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.5f)), out raycastHit, targetLayerMask)) //kasta från mitten av skärmen!
         {
@@ -132,7 +131,10 @@ public class MagneticPlacer : BaseClass {
 
     // Update is called once per frame
     void Update () {
-	    if(Input.GetButtonDown("Fire1"))
+        projectilesPull[0].GetComponent<MagneticBall>().SetStartPosition(playerTransform.position + thisTransform.right * -4);
+        projectilesPull[1].GetComponent<MagneticBall>().SetStartPosition(playerTransform.position + thisTransform.right * 4);
+
+        if (Input.GetButtonDown("Fire1"))
         {
             HandlePullProjectile(0);
         }

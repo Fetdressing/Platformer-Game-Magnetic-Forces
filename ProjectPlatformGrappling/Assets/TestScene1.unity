@@ -1666,12 +1666,14 @@ MonoBehaviour:
   pullColor: {r: 1, g: 0, b: 0, a: 1}
   pushHoloMat: {fileID: 2100000, guid: cea78ed65caedc946b2a8fafd3d8bb69, type: 2}
   pullHoloMat: {fileID: 2100000, guid: 4b51fd7501e0ffe489aa81e1e801ea26, type: 2}
+  normalColor: {r: 0, g: 0, b: 0, a: 0}
+  normalMat: {fileID: 0}
   thisTransform: {fileID: 0}
   holoRangeTransform: {fileID: 0}
   ps: {fileID: 0}
   pLight: {fileID: 0}
   tRenderer: {fileID: 0}
-  renderer: {fileID: 0}
+  thisRenderer: {fileID: 0}
   layerMaskNormal:
     serializedVersion: 2
     m_Bits: 4294967039
@@ -1681,8 +1683,10 @@ MonoBehaviour:
   force: 15000
   range: 100
   homeTransform: {fileID: 0}
+  homePos: {x: 0, y: 0, z: 0}
   magneticBallState: 0
   thisRigidbody: {fileID: 0}
+  cooldownMat: {fileID: 2100000, guid: 8e3434ffd088f914ba189307792ff385, type: 2}
 --- !u!108 &1082885591
 Light:
   m_ObjectHideFlags: 0
@@ -4196,12 +4200,14 @@ MonoBehaviour:
   pullColor: {r: 1, g: 0, b: 0, a: 1}
   pushHoloMat: {fileID: 2100000, guid: cea78ed65caedc946b2a8fafd3d8bb69, type: 2}
   pullHoloMat: {fileID: 2100000, guid: 4b51fd7501e0ffe489aa81e1e801ea26, type: 2}
+  normalColor: {r: 0, g: 0, b: 0, a: 0}
+  normalMat: {fileID: 0}
   thisTransform: {fileID: 0}
   holoRangeTransform: {fileID: 0}
   ps: {fileID: 0}
   pLight: {fileID: 0}
   tRenderer: {fileID: 0}
-  renderer: {fileID: 0}
+  thisRenderer: {fileID: 0}
   layerMaskNormal:
     serializedVersion: 2
     m_Bits: 4294967039
@@ -4211,8 +4217,10 @@ MonoBehaviour:
   force: 15000
   range: 100
   homeTransform: {fileID: 0}
+  homePos: {x: 0, y: 0, z: 0}
   magneticBallState: 0
   thisRigidbody: {fileID: 0}
+  cooldownMat: {fileID: 2100000, guid: 8e3434ffd088f914ba189307792ff385, type: 2}
 --- !u!108 &1618225980
 Light:
   m_ObjectHideFlags: 0

@@ -5,6 +5,8 @@ public class MagneticBall : MagneticForce
 {
     [HideInInspector]
     public Transform homeTransform;
+    [HideInInspector]
+    public Vector3 homePos;
 
     [HideInInspector]
     public MagneticBallState magneticBallState = MagneticBallState.HeadingHome;
@@ -12,6 +14,10 @@ public class MagneticBall : MagneticForce
     public Rigidbody thisRigidbody;
 
     private Transform player;
+
+    private float cooldownTime = 3.0f;
+    private float cooldownTimer = 0.0f;
+    public Material cooldownMat;
 	// Use this for initialization
 	void Start () {
         Init();
@@ -23,11 +29,18 @@ public class MagneticBall : MagneticForce
         thisRigidbody = thisTransform.GetComponent<Rigidbody>();
         thisRigidbody.isKinematic = false;
         SetState(MagneticBallState.HeadingHome);
+        cooldownTimer = 0.0f;
     }
 
-    public void SetStartTransform(Transform t)
+    public void SetStartTransform(Transform t) //absolete
     {
         homeTransform = t;
+        initTimes++;
+    }
+
+    public void SetStartPosition(Vector3 pos)
+    {
+        homePos = pos;
         initTimes++;
     }
 
@@ -56,6 +69,17 @@ public class MagneticBall : MagneticForce
             case MagneticBallState.ApplyingGravity:
                 ApplyForce();
                 break;
+        }
+
+        if (cooldownTimer > Time.time && magneticBallState == MagneticBallState.HeadingHome) //cooldown, ska bara visas när bollen är hemma o idlar
+        {
+            SetCurrColor(Color.yellow);
+            SetCurrMaterial(cooldownMat);
+        }
+        else
+        {
+            SetCurrColor(normalColor);
+            SetCurrMaterial(normalMat);
         }
     }
 
@@ -97,7 +121,7 @@ public class MagneticBall : MagneticForce
 
     void HeadHome()
     {
-        thisTransform.position = Vector3.Slerp(thisTransform.position, homeTransform.position, Time.deltaTime * 10f);
+        thisTransform.position = Vector3.Slerp(thisTransform.position, homePos, Time.deltaTime * 10f);
     }
 
     void OnTriggerEnter(Collider col)
@@ -122,14 +146,27 @@ public class MagneticBall : MagneticForce
 
     public void OrderHeadHome()
     {
+        StopAllCoroutines();
+        cooldownTimer = cooldownTime + Time.time;
         SetState(MagneticBallState.HeadingHome);
     }
     public void OrderFire(float force, float stayTime)
     {
+        if (cooldownTimer > Time.time) return;
+        StopAllCoroutines();
         SetState(MagneticBallState.HeadingToTarget);
         thisRigidbody.AddForce(thisRigidbody.transform.forward * force, ForceMode.Impulse);
+        StartCoroutine(FlyTimeChecker(stayTime));
     }
 
+    IEnumerator FlyTimeChecker(float time)
+    {
+        yield return new WaitForSeconds(time);
+        if(magneticBallState == MagneticBallState.HeadingToTarget)
+        {
+            OrderHeadHome();
+        }
+    }
     
 }
 public enum MagneticBallState { HeadingHome, HeadingToTarget, ApplyingGravity };
