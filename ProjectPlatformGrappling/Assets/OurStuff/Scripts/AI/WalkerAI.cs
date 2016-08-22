@@ -20,10 +20,7 @@ public class WalkerAI : AIBase {
 
     void FixedUpdate()
     {
-        if(target != null)
-        {
-            MoveTowardsDestination(agentTransform.position, currMoveForce);
-        }
+        MoveTowardsDestination(agentTransform.position, currMoveForce);        
     }
 
     IEnumerator WalkRandom(float time)
