@@ -69,7 +69,7 @@ public class Health : BaseClass {
         }
 
         mainCamera = GameObject.FindGameObjectWithTag("Manager").GetComponent<CameraManager>().currCamera;
-
+        
         Reset();
         initTimes++;
     }
