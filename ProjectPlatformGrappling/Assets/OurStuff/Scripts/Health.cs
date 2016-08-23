@@ -3,17 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class Health : MonoBehaviour {
+public class Health : BaseClass {
     private Transform thisTransform;
     private Rigidbody thisRigidbody;
-    [HideInInspector]
-    public Renderer[] thisRenderer;
+    private AIBase aiBase;
+    public Renderer[] thisRenderer; //om den inte sätts så kör den på default stuff
     private List<Material> thisMaterial = new List<Material>();
     public Material damagedMaterial;
-    private int initializedTimes = 0;
 
     private Camera mainCamera;
-    public GameObject uiHealth;
+    public GameObject uiHealthBackground; //lämna tom ifall hp-baren alltid skall synas
     public Image healthBar;
 
     public Transform uiCanvas;
@@ -48,9 +47,19 @@ public class Health : MonoBehaviour {
 
     void Start()
     {
+        Init();
+    }
+
+    public override void Init()
+    {
+        base.Init();
         thisTransform = this.transform;
         thisRigidbody = thisTransform.GetComponent<Rigidbody>();
-        thisRenderer = GetComponentsInChildren<Renderer>();
+        if (thisRenderer == null)
+        {
+            thisRenderer = GetComponentsInChildren<Renderer>();
+        }
+        aiBase = thisTransform.GetComponent<AIBase>();
         int i = 0;
         foreach (Renderer re in thisRenderer)
         {
@@ -59,12 +68,20 @@ public class Health : MonoBehaviour {
             i++;
         }
 
-        mainCamera = Camera.main;
+        mainCamera = GameObject.FindGameObjectWithTag("Manager").GetComponent<CameraManager>().currCamera;
 
+        Reset();
+        initTimes++;
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
         maxHealth = startHealth; //maxHealth kan påverkas av andra faktorer also
         AddHealth(maxHealth);
 
         healthRegAmount = startHealthRegAmount;
+
     }
 
     // Update is called once per frame
@@ -79,7 +96,7 @@ public class Health : MonoBehaviour {
             return;
         }
 
-        if (initializedTimes == 0)
+        if (initTimes == 0)
         {
             return;
         }
@@ -92,15 +109,15 @@ public class Health : MonoBehaviour {
     mainCamera.transform.rotation * Vector3.up); //vad gör jag med saker som bara har health då?
         }
 
-        if (uiHealth != null)
+        if (uiHealthBackground != null)
         {
             if (currHealth >= maxHealth)
             {
-                uiHealth.SetActive(false);
+                uiHealthBackground.SetActive(false);
             }
             else
             {
-                uiHealth.SetActive(true);
+                uiHealthBackground.SetActive(true);
             }
         }
 
@@ -117,7 +134,10 @@ public class Health : MonoBehaviour {
         if (isAlive == false) return false;
 
         currHealth += h;
-        ApplyMaterial(damagedMaterial, 0.5f);
+        if (currHealth < 0.0f)
+        {
+            ApplyMaterial(damagedMaterial, 0.5f);
+        }
 
         if (currHealth > maxHealth)
         {
@@ -137,7 +157,6 @@ public class Health : MonoBehaviour {
     public void Die()
     {
         Debug.Log("död");
-        return;
         isAlive = false;
 
         //if (aiBase.GetComponent<AgentBase>() != null)
@@ -217,6 +236,11 @@ public class Health : MonoBehaviour {
         if (speed > speedDamageThreshhold)
         {
             AddHealth(Mathf.Min(0, -(int)(speed - speedDamageThreshhold)));
+
+            if(aiBase != null)
+            {
+                aiBase.ReportAttacked(collision.transform);
+            }
         }
     }
 

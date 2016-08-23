@@ -15,6 +15,8 @@ public class MagneticBall : MagneticForce
 
     private Transform player;
 
+    public float playerForce = 15000;
+
     private float cooldownTime = 3.0f;
     private float cooldownTimer = 0.0f;
     public Material cooldownMat;
@@ -89,7 +91,7 @@ public class MagneticBall : MagneticForce
         if(Input.GetKey(KeyCode.F))
         {
             if(magneticBallState != MagneticBallState.HeadingHome)
-                ApplyForceTarget(player);
+                ApplyForceTarget(player, playerForce);
         }
     }
 

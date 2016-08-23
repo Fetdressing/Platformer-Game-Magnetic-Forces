@@ -113,7 +113,7 @@ public class MagneticForce : BaseClass
             {
                 Rigidbody rigidbodyTemp = tr.GetComponent<Rigidbody>();
                 Vector3 dir;
-                float distanceMultiplier = Vector3.Distance(thisTransform.position, tr.position);
+                float distanceMultiplier = Mathf.Max(Vector3.Distance(thisTransform.position, tr.position), 0.4f);
                 switch (forceType)
                 {
                     case ForceType.Push:
@@ -129,7 +129,7 @@ public class MagneticForce : BaseClass
         }
     }
 
-    public virtual void ApplyForceTarget(Transform tr)
+    public virtual void ApplyForceTarget(Transform tr, float forceT)
     {
         if (tr.GetComponent<Rigidbody>() != null)
         {
@@ -140,15 +140,14 @@ public class MagneticForce : BaseClass
             {
                 case ForceType.Push:
                     dir = (tr.transform.position - thisTransform.position).normalized;
-                    rigidbodyTemp.AddForce((force * dir * Time.deltaTime) , ForceMode.Force);
+                    rigidbodyTemp.AddForce((forceT * dir * Time.deltaTime) , ForceMode.Force);
                     break;
                 case ForceType.Pull:
                     dir = (thisTransform.position - tr.transform.position).normalized;
-                    rigidbodyTemp.AddForce((force * dir * Time.deltaTime) , ForceMode.Force);
+                    rigidbodyTemp.AddForce((forceT * dir * Time.deltaTime) , ForceMode.Force);
                     break;
             }
         }
-
     }
 
     public void SetCurrMaterial(Material m)
