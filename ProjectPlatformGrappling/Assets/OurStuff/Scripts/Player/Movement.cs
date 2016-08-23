@@ -15,6 +15,8 @@ public class Movement : BaseClass {
     private float speed = 8000;
     [HideInInspector]
     private float jumpForce = 30;
+
+    public ParticleSystem slideGroundParticleSystem;
 	// Use this for initialization
 	void Start () {
         Init();
@@ -83,6 +85,34 @@ public class Movement : BaseClass {
         else
         {
             return 10000000;
+        }
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        if (GetGrounded())
+        {
+            float speedHit = col.relativeVelocity.magnitude;
+
+            if (speedHit > 20)
+            {
+                if(slideGroundParticleSystem != null)
+                {
+                    //Vector3 vecDir = (thisTransform.position- col.contacts[0].point).normalized;
+                    //Vector3 dir = Vector3.RotateTowards(thisTransform.position, col.contacts[0].point,1,1);
+                    Vector3 vecDir = thisRigidbody.velocity.normalized + col.contacts[0].normal * 0.1f;
+                    Quaternion rotation = Quaternion.LookRotation(vecDir);
+                    slideGroundParticleSystem.transform.rotation = rotation;
+                    float baseParSpeed = 1;
+                    slideGroundParticleSystem.startSpeed = baseParSpeed * speedHit;
+                    //slideGroundParticleSystem.transform.LookAt(col.contacts[0].point + new Vector3(0,1,0));
+                    //slideGroundParticleSystem.transform.Rotate(dir);
+                    if (slideGroundParticleSystem.GetComponent<ParticleTimed>().isReady)
+                    {
+                        slideGroundParticleSystem.GetComponent<ParticleTimed>().StartParticleSystem();
+                    }
+                }
+            }
         }
     }
 }
