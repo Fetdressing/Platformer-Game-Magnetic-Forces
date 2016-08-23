@@ -23,7 +23,7 @@ public class AIBase : BaseClass {
     public float lookAngleThreshhold = 15;
     public float turnRatio = 2;
 
-    public float agentTransformMaxDistance = 2;
+    public float[] agentTransformDistanceThreshhold = { 2,7}; //threshhold på hur nära och hur långt ifrån agenten ska befinna sig, min värdet används mest för att kolla ifall transformen behöver röra på sig
     public float agentAllowedTimeFromTransform = 5; //hur länge agenten får vara ifrån spelaren, så att den inte ska fastna
     [HideInInspector]
     public float timePointAgentToFar = 0.0f; //när agenten kom för långt ifrån, tidpunkten då det hände, används för o kolla ifall agenten behöver åka tillbaks till transformen
@@ -34,6 +34,7 @@ public class AIBase : BaseClass {
         base.Init();
         thisTransform = this.transform;
         agent = agentTransform.GetComponent<NavMeshAgent>();
+        thisRigidbody = thisTransform.GetComponent<Rigidbody>();
         animationH = thisTransform.GetComponent<Animation>();
     }
 
@@ -50,13 +51,12 @@ public class AIBase : BaseClass {
 
         agent.SetDestination(pos);
 
-        if (agentTransformMaxDistance < Vector3.Distance(thisTransform.position, agentTransform.position))
+        if (agentTransformDistanceThreshhold[1] < Vector3.Distance(thisTransform.position, agentTransform.position))
         {
-            if (timePointAgentToFar < agentAllowedTimeFromTransform)
+            if (timePointAgentToFar < agentAllowedTimeFromTransform) //ifall den stått still förlänge, returnera den då
             {
                 timePointAgentToFar = Time.time;
                 ReturnAgent();
-                return;
             }
             agent.Stop();
         }
@@ -72,15 +72,18 @@ public class AIBase : BaseClass {
         if (IsReadyToMove())
         {
             agent.ResetPath();
+            agent.Resume();
             ReturnAgent();
         }
     }
 
     public void ReturnAgent() //förflyttar den till sin startposition
     {
+        Debug.Log("men va");
         NavMeshHit nhit;
-        if (NavMesh.SamplePosition(thisTransform.position, out nhit, 1.0f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(thisTransform.position, out nhit, 3.0f, NavMesh.AllAreas))
         {
+            Debug.Log(nhit.position.ToString() + " " + thisTransform.position.ToString());
             agentTransform.position = nhit.position;
         }
     }
@@ -107,6 +110,12 @@ public class AIBase : BaseClass {
     {
         if (!IsReadyToMove()) return;
         RotateTowards(pos);
+        //if (IsTransformCloseEnoughToAgent())
+        //{
+        //    thisRigidbody.velocity = thisRigidbody.velocity * 0.9f; //break
+        //    return;
+        //}
+        //thisRigidbody.velocity = thisRigidbody.velocity + thisTransform.forward * moveForce * Time.deltaTime;
         thisRigidbody.AddForce(thisTransform.forward * moveForce * Time.deltaTime);
     }
 
@@ -118,6 +127,16 @@ public class AIBase : BaseClass {
         thisTransform.rotation = Quaternion.Slerp(thisTransform.rotation, lookRotation, Time.deltaTime * turnRatio);
     }
     //***thistransform förflyttning***
+
+    public virtual bool IsTransformCloseEnoughToAgent()
+    {
+        if(Vector3.Distance(thisTransform.position, agentTransform.position) < agentTransformDistanceThreshhold[0])
+        {
+            return true;
+        }
+        return false;
+    }
+
     public virtual bool IsIdle()
     {
         if(agent.hasPath == false || agent.isPathStale == true || Vector3.Distance(agent.pathEndPosition, thisTransform.position) < 1.5f || agent.remainingDistance < 2.0f)

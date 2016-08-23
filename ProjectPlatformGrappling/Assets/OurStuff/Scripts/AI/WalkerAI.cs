@@ -6,6 +6,11 @@ public class WalkerAI : AIBase {
     public float walkSpeedForce = 1000;
     public float runSpeedForce = 2000;
 
+    void Start()
+    {
+        Init();
+    }
+
     public override void Init()
     {
         base.Init();
@@ -35,7 +40,7 @@ public class WalkerAI : AIBase {
             {
                 changeDirTimeInterval = Time.time + 5;
                 Vector3 fleePos;
-                GetRandomNavmeshDestination(thisTransform.position, 15, out fleePos);
+                GetRandomNavmeshDestination(thisTransform.position, 35, out fleePos);
                 SetDestination(fleePos);
             }
             yield return new WaitForSeconds(0.5f);

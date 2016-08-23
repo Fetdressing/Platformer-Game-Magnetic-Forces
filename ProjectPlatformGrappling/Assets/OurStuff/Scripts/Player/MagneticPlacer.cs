@@ -113,8 +113,16 @@ public class MagneticPlacer : BaseClass {
         {
             if (Vector3.Dot(raycastHit.normal, thisCamera.transform.position - raycastHit.point) > 0) //normalen mot eller från sig?
             {
-                rb.transform.LookAt(raycastHit.point);
-                mBall.OrderFire(shootForce, 4);
+                if (Vector3.Distance(raycastHit.point, thisCamera.transform.position) < Vector3.Distance(thisTransform.position, thisCamera.transform.position)) //ligger raycasthit framför spelaren? man vill ju ej skjuta bakåt
+                {
+                    rb.transform.forward = thisTransform.forward;
+                    mBall.OrderFire(shootForce, 4);
+                }
+                else
+                {
+                    rb.transform.LookAt(raycastHit.point);
+                    mBall.OrderFire(shootForce, 4);
+                }
             }
             else
             {
