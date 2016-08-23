@@ -3865,6 +3865,12 @@ MonoBehaviour:
   - 25
   agentAllowedTimeFromTransform: 5
   timePointAgentToFar: 0
+  groundedCheckOffsetY: 1
+  groundedCheckDistance: 15
+  isGrounded: 0
+  groundCheckLM:
+    serializedVersion: 2
+    m_Bits: 4294967295
   walkSpeedForce: 10000
   runSpeedForce: 2000
 --- !u!23 &1385031522

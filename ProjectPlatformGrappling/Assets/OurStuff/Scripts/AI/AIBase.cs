@@ -23,11 +23,20 @@ public class AIBase : BaseClass {
     public float lookAngleThreshhold = 15;
     public float turnRatio = 2;
 
-    public float[] agentTransformDistanceThreshhold = { 2,7}; //threshhold på hur nära och hur långt ifrån agenten ska befinna sig, min värdet används mest för att kolla ifall transformen behöver röra på sig
+    public float[] agentTransformDistanceThreshhold = { 2, 7 }; //threshhold på hur nära och hur långt ifrån agenten ska befinna sig, min värdet används mest för att kolla ifall transformen behöver röra på sig
     public float agentAllowedTimeFromTransform = 5; //hur länge agenten får vara ifrån spelaren, så att den inte ska fastna
     [HideInInspector]
     public float timePointAgentToFar = 0.0f; //när agenten kom för långt ifrån, tidpunkten då det hände, används för o kolla ifall agenten behöver åka tillbaks till transformen
-    // Use this for initialization
+
+    [Header("Ground Check")]
+    public float groundedCheckOffsetY = 0.5f;
+    public float groundedCheckDistance = 1.9f;
+    [HideInInspector]
+    public bool isGrounded;
+    public LayerMask groundCheckLM;
+
+    [HideInInspector]
+    public int currSetDestinationID = 0;
 
     public override void Init()
     {
@@ -36,11 +45,13 @@ public class AIBase : BaseClass {
         agent = agentTransform.GetComponent<NavMeshAgent>();
         thisRigidbody = thisTransform.GetComponent<Rigidbody>();
         animationH = thisTransform.GetComponent<Animation>();
+
     }
 
     public override void Reset()
     {
         base.Reset();
+        isGrounded = false;
         ReturnAgent();
     }
 
@@ -48,12 +59,16 @@ public class AIBase : BaseClass {
     public virtual void SetDestination(Vector3 pos)
     {
         if (!IsReadyToMove()) return;
-
         agent.SetDestination(pos);
+    }
+
+    public virtual void UpdateAgentStatus()
+    {
+        if (!IsReadyToMove()) return;
 
         if (agentTransformDistanceThreshhold[1] < Vector3.Distance(thisTransform.position, agentTransform.position))
         {
-            if (timePointAgentToFar < agentAllowedTimeFromTransform) //ifall den stått still förlänge, returnera den då
+            if (Time.time - timePointAgentToFar > agentAllowedTimeFromTransform) //ifall den stått still förlänge, returnera den då
             {
                 timePointAgentToFar = Time.time;
                 ReturnAgent();
@@ -79,9 +94,9 @@ public class AIBase : BaseClass {
 
     public void ReturnAgent() //förflyttar den till sin startposition
     {
-        Debug.Log("men va");
+        agentTransform.position = thisTransform.position;
         NavMeshHit nhit;
-        if (NavMesh.SamplePosition(thisTransform.position, out nhit, 3.0f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(thisTransform.position, out nhit, 10.0f, NavMesh.AllAreas))
         {
             Debug.Log(nhit.position.ToString() + " " + thisTransform.position.ToString());
             agentTransform.position = nhit.position;
@@ -108,6 +123,7 @@ public class AIBase : BaseClass {
     //***thistransform förflyttning***
     public virtual void MoveTowardsDestination(Vector3 pos, float moveForce)
     {
+        UpdateAgentStatus();
         if (!IsReadyToMove()) return;
         RotateTowards(pos);
         //if (IsTransformCloseEnoughToAgent())
@@ -170,6 +186,20 @@ public class AIBase : BaseClass {
         return true;
     }
 
+
+    public bool GetGrounded()
+    {
+        RaycastHit rHit;
+        if (Physics.Raycast(thisTransform.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, groundedCheckDistance, groundCheckLM))
+        {
+            return true;
+        }
+        else
+        {
+
+            return false;
+        }
+    }
 
     public virtual void ToggleRagdoll(bool b)
     {

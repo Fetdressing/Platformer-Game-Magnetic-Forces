@@ -3,6 +3,7 @@ using System.Collections;
 
 public class WalkerAI : AIBase {
 
+    [Header("Walker Stats")]
     public float walkSpeedForce = 1000;
     public float runSpeedForce = 2000;
 
@@ -25,7 +26,11 @@ public class WalkerAI : AIBase {
 
     void FixedUpdate()
     {
-        MoveTowardsDestination(agentTransform.position, currMoveForce);        
+        isGrounded = GetGrounded();
+        if (!IsTransformCloseEnoughToAgent() && isGrounded)
+        {
+            MoveTowardsDestination(agentTransform.position, currMoveForce);
+        }
     }
 
     IEnumerator WalkRandom(float time)
