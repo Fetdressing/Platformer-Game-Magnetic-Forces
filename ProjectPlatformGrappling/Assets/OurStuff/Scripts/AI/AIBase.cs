@@ -94,13 +94,15 @@ public class AIBase : BaseClass {
 
     public void ReturnAgent() //förflyttar den till sin startposition
     {
-        agentTransform.position = thisTransform.position;
-        NavMeshHit nhit;
-        if (NavMesh.SamplePosition(thisTransform.position, out nhit, 10.0f, NavMesh.AllAreas))
-        {
-            Debug.Log(nhit.position.ToString() + " " + thisTransform.position.ToString());
-            agentTransform.position = nhit.position;
-        }
+        agent.Warp(thisTransform.position);
+
+        //agentTransform.position = thisTransform.position;
+        //NavMeshHit nhit;
+        //if (NavMesh.SamplePosition(thisTransform.position, out nhit, 10.0f, NavMesh.AllAreas))
+        //{
+        //    Debug.Log(nhit.position.ToString() + " " + thisTransform.position.ToString());
+        //    agentTransform.position = nhit.position;
+        //}
     }
 
     public bool GetRandomNavmeshDestination(Vector3 center, float range, out Vector3 result)
