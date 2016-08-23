@@ -17,6 +17,8 @@ public class MagneticPlacer : BaseClass {
 
     [HideInInspector]
     public float shootForce = 900;
+    [HideInInspector]
+    public float ballOutTime = 2.5f;
     public LayerMask targetLayerMask;
     // Use this for initialization
     void Start () {
@@ -116,24 +118,24 @@ public class MagneticPlacer : BaseClass {
                 if (Vector3.Distance(raycastHit.point, thisCamera.transform.position) <= (Vector3.Distance(playerTransform.position, thisCamera.transform.position))) //ligger raycasthit framför spelaren? man vill ju ej skjuta bakåt
                 {
                     rb.transform.forward = thisTransform.forward;
-                    mBall.OrderFire(shootForce, 4);
+                    mBall.OrderFire(shootForce, ballOutTime);
                 }
                 else
                 {
                     rb.transform.LookAt(raycastHit.point);
-                    mBall.OrderFire(shootForce, 4);
+                    mBall.OrderFire(shootForce, ballOutTime);
                 }
             }
             else
             {
                 rb.transform.forward = thisTransform.forward;
-                mBall.OrderFire(shootForce, 4);
+                mBall.OrderFire(shootForce, ballOutTime);
             }
         }
         else
         {
             rb.transform.forward = thisTransform.forward;
-            mBall.OrderFire(shootForce, 4);
+            mBall.OrderFire(shootForce, ballOutTime);
         }
     }
 

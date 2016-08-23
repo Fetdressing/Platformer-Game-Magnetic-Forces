@@ -107,7 +107,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 3498911}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.39, z: 5.67}
+  m_LocalPosition: {x: 0, y: 22.4, z: 26.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 293462299}
@@ -287,6 +287,7 @@ MonoBehaviour:
   - {fileID: 1618225976}
   projectilesPush: []
   shootForce: 120
+  ballOutTime: 2.5
   targetLayerMask:
     serializedVersion: 2
     m_Bits: 768
@@ -481,7 +482,7 @@ Transform:
   m_GameObject: {fileID: 212933149}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.8316789, y: 3.83168, z: 3.83168}
+  m_LocalScale: {x: 22.201876, y: 1.1468742, z: 10.226927}
   m_Children: []
   m_Father: {fileID: 293462299}
   m_RootOrder: 0
@@ -492,13 +493,13 @@ Rigidbody:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 212933149}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 50
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
+  m_IsKinematic: 1
+  m_Interpolate: 1
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!23 &212933152
 MeshRenderer:
@@ -510,7 +511,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 1496cab700d54d54abf5e6b8e6bb0a80, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -556,12 +557,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 450e5931cfc294f42a96070441c2fb08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useForce: 0
   keyPoints:
   - {fileID: 2126395315}
   - {fileID: 3498912}
   - {fileID: 1063338851}
   - {fileID: 1975576488}
-  force: 60000
+  force: 15
 --- !u!1 &235797899
 GameObject:
   m_ObjectHideFlags: 0
@@ -2086,7 +2088,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1063338850}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.75, y: 5.39, z: 5.670001}
+  m_LocalPosition: {x: 5.75, y: 5.39, z: -19.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 293462299}
@@ -4246,12 +4248,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 450e5931cfc294f42a96070441c2fb08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useForce: 1
   keyPoints:
   - {fileID: 779634857}
   - {fileID: 673593859}
   - {fileID: 509331972}
   - {fileID: 789195258}
-  force: 60000
+  force: 20000
 --- !u!54 &1346632066
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4259,12 +4262,12 @@ Rigidbody:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1346632063}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 50
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!23 &1346632067
@@ -6796,7 +6799,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1975576487}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.29, y: -2.01, z: -5.81}
+  m_LocalPosition: {x: -20.56, y: -2.01, z: -5.81}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 293462299}
@@ -6949,6 +6952,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a178af597971e4c4d82ede980fd2acf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initTimes: 0
   cameraPlayerFollow: {fileID: 235797901}
   currCamera: {fileID: 0}
 --- !u!1 &2126395314
@@ -6973,7 +6977,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2126395314}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 47.2, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 293462299}
