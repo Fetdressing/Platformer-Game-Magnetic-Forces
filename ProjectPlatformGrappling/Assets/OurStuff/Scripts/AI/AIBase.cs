@@ -94,6 +94,7 @@ public class AIBase : BaseClass {
 
     public void ReturnAgent() //förflyttar den till sin startposition
     {
+        if (!IsReadyToMove()) return;
         agent.Warp(thisTransform.position);
 
         //agentTransform.position = thisTransform.position;

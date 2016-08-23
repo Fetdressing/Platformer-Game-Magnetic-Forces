@@ -146,7 +146,7 @@ public class MagneticPlacer : BaseClass {
         {
             HandlePullProjectile(0);
         }
-        else if (Input.GetButtonDown("Fire2"))
+        if (Input.GetButtonDown("Fire2"))
         {
             HandlePullProjectile(1);
         }
