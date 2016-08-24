@@ -90,19 +90,19 @@ public class Movement : BaseClass {
 
     void OnCollisionEnter(Collision col)
     {
-        if (GetGrounded())
+        if (GetGrounded() && col.contacts[0].point.y < thisTransform.position.y)
         {
             float speedHit = col.relativeVelocity.magnitude;
 
-            if (speedHit > 20)
+            if (speedHit > 70)
             {
                 if(slideGroundParticleSystem != null)
                 {
                     //Vector3 vecDir = (thisTransform.position- col.contacts[0].point).normalized;
                     //Vector3 dir = Vector3.RotateTowards(thisTransform.position, col.contacts[0].point,1,1);
-                    Vector3 vecDir = thisRigidbody.velocity.normalized + col.contacts[0].normal * 0.1f;
-                    Quaternion rotation = Quaternion.LookRotation(vecDir);
-                    slideGroundParticleSystem.transform.rotation = rotation;
+                    //Vector3 vecDir = thisRigidbody.velocity.normalized + col.contacts[0].normal * 0.1f;
+                    //Quaternion rotation = Quaternion.LookRotation(vecDir);
+                    //slideGroundParticleSystem.transform.rotation = rotation;
                     float baseParSpeed = 1;
                     slideGroundParticleSystem.startSpeed = baseParSpeed * speedHit;
                     //slideGroundParticleSystem.transform.LookAt(col.contacts[0].point + new Vector3(0,1,0));
