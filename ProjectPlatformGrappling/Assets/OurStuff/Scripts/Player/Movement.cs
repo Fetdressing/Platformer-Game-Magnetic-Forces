@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Movement : BaseClass {
+public class Movement : BaseRigidbody {
     public Transform cameraObj;
     private Transform thisTransform;
     private Rigidbody thisRigidbody;
@@ -42,7 +42,11 @@ public class Movement : BaseClass {
 
         finalSpeed = speed * Mathf.Clamp(1 - (distanceToGround/100), 0.01f, 1.0f);
 
-        thisRigidbody.AddForce(((hor + ver) * Time.deltaTime * finalSpeed), ForceMode.Force);
+        //thisRigidbody.AddForce(((hor + ver) * Time.deltaTime * finalSpeed), ForceMode.Force);
+        if(isGrounded)
+            AddForceSlowDrag(((hor + ver) * Time.deltaTime * finalSpeed * 1.2f), ForceMode.Force, thisRigidbody);
+        else
+            AddForceFastDrag(((hor + ver) * Time.deltaTime * finalSpeed), ForceMode.Force, thisRigidbody);
         //thisRigidbody.MovePosition(thisTransform.position + (cameraObj.right * Time.deltaTime * speed * hor));
     }
 
@@ -55,7 +59,8 @@ public class Movement : BaseClass {
         {
             if (Input.GetButtonDown("Jump"))
             {
-                thisRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                //thisRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                AddForceFastDrag(Vector3.up * jumpForce, ForceMode.Impulse, thisRigidbody);
             }
         }
     }

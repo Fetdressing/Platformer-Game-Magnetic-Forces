@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AIBase : BaseClass {
+public class AIBase : BaseRigidbody {
     [HideInInspector]
     public Transform thisTransform;
     [HideInInspector]
@@ -133,7 +133,8 @@ public class AIBase : BaseClass {
         //    return;
         //}
         //thisRigidbody.velocity = thisRigidbody.velocity + thisTransform.forward * moveForce * Time.deltaTime;
-        thisRigidbody.AddForce(thisTransform.forward * moveForce * Time.deltaTime);
+        //thisRigidbody.AddForce(thisTransform.forward * moveForce * Time.deltaTime);
+        AddForceSlowDrag(thisTransform.forward * moveForce * Time.deltaTime, ForceMode.Force, thisRigidbody);
     }
 
     public virtual void RotateTowards(Vector3 t) //får overridas om för flygande units

@@ -43,7 +43,7 @@ public class Health : BaseClass {
     [HideInInspector]
     public bool isAlive = true;
 
-    private int speedDamageThreshhold = 80;
+    private int speedDamageThreshhold = 100;
 
     void Start()
     {
@@ -134,7 +134,7 @@ public class Health : BaseClass {
         if (isAlive == false) return false;
 
         currHealth += h;
-        if (currHealth < 0.0f)
+        if (h < 0.0f)
         {
             ApplyMaterial(damagedMaterial, 0.5f);
         }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MagneticForce : BaseClass
+public class MagneticForce : BaseRigidbody
 {
     public enum ForceType { Push, Pull };
     public ForceType forceType;
@@ -118,11 +118,13 @@ public class MagneticForce : BaseClass
                 {
                     case ForceType.Push:
                         dir = (tr.transform.position - thisTransform.position).normalized;
-                        rigidbodyTemp.AddForce((force * dir * Time.deltaTime) * (1 - distanceMultiplier / range), ForceMode.Force);
+                        //rigidbodyTemp.AddForce((force * dir * Time.deltaTime) * (1 - distanceMultiplier / range), ForceMode.Force);
+                        AddForceFastDrag((force * dir * Time.deltaTime) * (1 - distanceMultiplier / range), ForceMode.Force, rigidbodyTemp);
                         break;
                     case ForceType.Pull:
                         dir = (thisTransform.position - tr.transform.position).normalized;
-                        rigidbodyTemp.AddForce((force * dir * Time.deltaTime) * (1 - distanceMultiplier / range), ForceMode.Force);
+                        //rigidbodyTemp.AddForce((force * dir * Time.deltaTime) * (1 - distanceMultiplier / range), ForceMode.Force);
+                        AddForceFastDrag((force * dir * Time.deltaTime) * (1 - distanceMultiplier / range), ForceMode.Force, rigidbodyTemp);
                         break;
                 }
             }
@@ -140,11 +142,13 @@ public class MagneticForce : BaseClass
             {
                 case ForceType.Push:
                     dir = (tr.transform.position - thisTransform.position).normalized;
-                    rigidbodyTemp.AddForce((forceT * dir * Time.deltaTime) , ForceMode.Force);
+                    //rigidbodyTemp.AddForce((forceT * dir * Time.deltaTime) , ForceMode.Force);
+                    AddForceFastDrag((forceT * dir * Time.deltaTime), ForceMode.Force, rigidbodyTemp);
                     break;
                 case ForceType.Pull:
                     dir = (thisTransform.position - tr.transform.position).normalized;
-                    rigidbodyTemp.AddForce((forceT * dir * Time.deltaTime) , ForceMode.Force);
+                    //rigidbodyTemp.AddForce((forceT * dir * Time.deltaTime) , ForceMode.Force);
+                    AddForceFastDrag((forceT * dir * Time.deltaTime), ForceMode.Force, rigidbodyTemp);
                     break;
             }
         }
