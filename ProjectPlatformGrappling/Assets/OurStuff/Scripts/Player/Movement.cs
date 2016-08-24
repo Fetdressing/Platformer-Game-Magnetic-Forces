@@ -15,6 +15,7 @@ public class Movement : BaseRigidbody {
     private float speed = 8000;
     [HideInInspector]
     private float jumpForce = 30;
+    private float maxSpeed = 55;
 
     public ParticleSystem slideGroundParticleSystem;
 	// Use this for initialization
@@ -43,11 +44,24 @@ public class Movement : BaseRigidbody {
         finalSpeed = speed * Mathf.Clamp(1 - (distanceToGround/100), 0.01f, 1.0f);
 
         //thisRigidbody.AddForce(((hor + ver) * Time.deltaTime * finalSpeed), ForceMode.Force);
-        if(isGrounded)
-            AddForceSlowDrag(((hor + ver) * Time.deltaTime * finalSpeed * 1.2f), ForceMode.Force, thisRigidbody);
+        if (isGrounded)
+        {
+            bool slowDragApplied = AddForceSlowDrag(((hor + ver) * Time.deltaTime * finalSpeed * 1.9f), ForceMode.Force, thisRigidbody);
+            if(slowDragApplied && thisRigidbody.velocity.magnitude > maxSpeed)
+            {
+                Break();
+            }
+        }
         else
+        {
             AddForceFastDrag(((hor + ver) * Time.deltaTime * finalSpeed), ForceMode.Force, thisRigidbody);
+        }
         //thisRigidbody.MovePosition(thisTransform.position + (cameraObj.right * Time.deltaTime * speed * hor));
+    }
+
+    void Break()
+    {
+        thisRigidbody.velocity *= 0.96f;
     }
 
     void Update()

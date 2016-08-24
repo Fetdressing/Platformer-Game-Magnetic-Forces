@@ -8,13 +8,16 @@ public class BaseRigidbody : BaseClass {
     private float minTimer_ApplySlowDrag = 0.0f;
     public float minTime_ApplySlowDrag = 0.5f; //så att den inte bara kan slänga på slowdrag medans fastdrag force applyas
 
-    public void AddForceSlowDrag(Vector3 dirForce, ForceMode forceMode, Rigidbody rigidbody)
+    public bool AddForceSlowDrag(Vector3 dirForce, ForceMode forceMode, Rigidbody rigidbody)
     {
+        bool slowDragApplied = false;
         if (minTimer_ApplySlowDrag < Time.time)
         {
             rigidbody.drag = SlowDrag;
+            slowDragApplied = true;
         }
         rigidbody.AddForce(dirForce, forceMode);
+        return slowDragApplied;
     }
 
     public void AddForceFastDrag(Vector3 dirForce, ForceMode forceMode, Rigidbody rigidbody)
