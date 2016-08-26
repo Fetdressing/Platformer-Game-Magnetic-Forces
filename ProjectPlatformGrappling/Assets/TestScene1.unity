@@ -4135,6 +4135,7 @@ GameObject:
   - 135: {fileID: 1082885597}
   - 23: {fileID: 1082885599}
   - 33: {fileID: 1082885598}
+  - 120: {fileID: 1082885600}
   m_Layer: 9
   m_Name: MagneticBallPull
   m_TagString: Untagged
@@ -4184,6 +4185,7 @@ MonoBehaviour:
   thisRigidbody: {fileID: 0}
   playerForce: 15000
   cooldownMat: {fileID: 2100000, guid: 8e3434ffd088f914ba189307792ff385, type: 2}
+  lineRendererBindPlayer: {fileID: 0}
 --- !u!108 &1082885591
 Light:
   m_ObjectHideFlags: 0
@@ -5877,6 +5879,45 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
+--- !u!120 &1082885600
+LineRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1082885589}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_Materials:
+  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
+  m_ProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_Positions:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 1}
+  m_Parameters:
+    startWidth: 1
+    endWidth: 1
+    m_StartColor:
+      serializedVersion: 2
+      rgba: 4294967295
+    m_EndColor:
+      serializedVersion: 2
+      rgba: 4294967295
+  m_UseWorldSpace: 1
 --- !u!1 &1084436336 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100004, guid: 3cba8249df1ed7d41815f48405f3a6af, type: 3}
@@ -7087,6 +7128,7 @@ GameObject:
   - 135: {fileID: 1618225983}
   - 33: {fileID: 1618225985}
   - 23: {fileID: 1618225984}
+  - 120: {fileID: 1618225986}
   m_Layer: 9
   m_Name: MagneticBallPull (1)
   m_TagString: Untagged
@@ -7211,6 +7253,7 @@ MonoBehaviour:
   thisRigidbody: {fileID: 0}
   playerForce: 15000
   cooldownMat: {fileID: 2100000, guid: 8e3434ffd088f914ba189307792ff385, type: 2}
+  lineRendererBindPlayer: {fileID: 0}
 --- !u!108 &1618225980
 Light:
   m_ObjectHideFlags: 0
@@ -8829,6 +8872,45 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1618225975}
   m_Mesh: {fileID: 4300002, guid: 103612e5e1ff43a4e896c567a2cb3ae1, type: 3}
+--- !u!120 &1618225986
+LineRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1618225975}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_Materials:
+  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
+  m_ProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_Positions:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 1}
+  m_Parameters:
+    startWidth: 1
+    endWidth: 1
+    m_StartColor:
+      serializedVersion: 2
+      rgba: 4294967295
+    m_EndColor:
+      serializedVersion: 2
+      rgba: 4294967295
+  m_UseWorldSpace: 1
 --- !u!1 &1728168087
 GameObject:
   m_ObjectHideFlags: 0

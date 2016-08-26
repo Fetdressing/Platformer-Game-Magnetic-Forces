@@ -20,6 +20,8 @@ public class MagneticBall : MagneticForce
     private float cooldownTime = 3.0f;
     private float cooldownTimer = 0.0f;
     public Material cooldownMat;
+
+    public LineRenderer lineRendererBindPlayer;
 	// Use this for initialization
 	void Start () {
         Init();
@@ -30,6 +32,7 @@ public class MagneticBall : MagneticForce
         base.Init();
         thisRigidbody = thisTransform.GetComponent<Rigidbody>();
         thisRigidbody.isKinematic = false;
+        lineRendererBindPlayer = thisTransform.GetComponent<LineRenderer>();
         SetState(MagneticBallState.HeadingHome);
         cooldownTimer = 0.0f;
     }
@@ -83,15 +86,22 @@ public class MagneticBall : MagneticForce
             SetCurrColor(normalColor);
             SetCurrMaterial(normalMat);
         }
+
+        Vector3[] positionArray = new[] { thisTransform.position, player.position };
+        lineRendererBindPlayer.SetPositions(positionArray);
     }
 
     public override void FixedUpdateLoop()
     {
         //ingenting, för tydligen körs Updates via arv
+        lineRendererBindPlayer.enabled = false;
         if(Input.GetKey(KeyCode.F))
         {
-            if(magneticBallState != MagneticBallState.HeadingHome)
+            if (magneticBallState != MagneticBallState.HeadingHome)
+            {
+                lineRendererBindPlayer.enabled = true;
                 ApplyForceTarget(player, playerForce);
+            }
         }
     }
 
