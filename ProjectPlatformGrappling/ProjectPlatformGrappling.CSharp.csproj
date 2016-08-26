@@ -72,6 +72,7 @@
     <Compile Include="Assets\OurStuff\Scripts\AI\AIBase.cs" />
     <Compile Include="Assets\OurStuff\Scripts\AI\WalkerAI.cs" />
     <Compile Include="Assets\OurStuff\Scripts\BaseClass.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\BaseRagdoll.cs" />
     <Compile Include="Assets\OurStuff\Scripts\BaseRigidbody.cs" />
     <Compile Include="Assets\OurStuff\Scripts\CameraManager.cs" />
     <Compile Include="Assets\OurStuff\Scripts\FadingLight.cs" />
@@ -81,10 +82,10 @@
     <Compile Include="Assets\OurStuff\Scripts\MovingPlatform.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ParticleTimed.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\CameraController.cs" />
-    <Compile Include="Assets\OurStuff\Scripts\Player\MagneticHandler.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\MagneticPlacer.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Movement.cs" />
-    <Compile Include="Assets\OurStuff\Scripts\Player\PlayerMovement.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\Player\Old\MagneticHandler.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\Player\Old\PlayerMovement.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\OurStuff\2D\Shaders\Hologram.shader" />

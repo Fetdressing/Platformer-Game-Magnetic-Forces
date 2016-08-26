@@ -10,8 +10,6 @@ public class MagneticBall : MagneticForce
 
     [HideInInspector]
     public MagneticBallState magneticBallState = MagneticBallState.HeadingHome;
-    [HideInInspector]
-    public Rigidbody thisRigidbody;
 
     private Transform player;
 
@@ -20,6 +18,9 @@ public class MagneticBall : MagneticForce
     private float cooldownTime = 3.0f;
     private float cooldownTimer = 0.0f;
     public Material cooldownMat;
+
+    private float cooldownTimeCallback = 0.4f;
+    private float cooldownTimerCallback = 0.0f;
 
     public LineRenderer lineRendererBindPlayer;
 	// Use this for initialization
@@ -158,6 +159,7 @@ public class MagneticBall : MagneticForce
 
     public void OrderHeadHome()
     {
+        if (cooldownTimerCallback > Time.time) return;
         StopAllCoroutines();
         cooldownTimer = cooldownTime + Time.time;
         SetState(MagneticBallState.HeadingHome);
@@ -165,6 +167,7 @@ public class MagneticBall : MagneticForce
     public void OrderFire(float force, float stayTime)
     {
         if (cooldownTimer > Time.time) return;
+        cooldownTimerCallback = cooldownTimeCallback + Time.time;
         StopAllCoroutines();
         SetState(MagneticBallState.HeadingToTarget);
         thisRigidbody.AddForce(thisRigidbody.transform.forward * force, ForceMode.Impulse);

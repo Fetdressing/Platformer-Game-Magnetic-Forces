@@ -4,11 +4,6 @@ using System.Collections;
 public class Movement : BaseRigidbody {
     public Transform cameraObj;
     private Transform thisTransform;
-    private Rigidbody thisRigidbody;
-    [HideInInspector]
-    public bool isGrounded;
-    private float groundedCheckOffsetY = 0.5f;
-    private LayerMask groundCheckLM;
 
     private float distanceToGround = 100000000;
 
@@ -76,34 +71,6 @@ public class Movement : BaseRigidbody {
                 //thisRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                 AddForceFastDrag(Vector3.up * jumpForce, ForceMode.Impulse, thisRigidbody);
             }
-        }
-    }
-
-    public bool GetGrounded()
-    {
-        RaycastHit rHit;
-        float groundedCheckDistance = 1.9f;
-        if (Physics.Raycast(thisTransform.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, groundedCheckDistance, groundCheckLM))
-        {
-            return true;
-        }
-        else
-        {
-
-            return false;
-        }
-    }
-
-    public float GetDistanceToGround()
-    {
-        RaycastHit rHit;
-        if (Physics.Raycast(thisTransform.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, Mathf.Infinity, groundCheckLM))
-        {
-            return Vector3.Distance(thisTransform.position + new Vector3(0, groundedCheckOffsetY, 0), rHit.point);
-        }
-        else
-        {
-            return 10000000;
         }
     }
 

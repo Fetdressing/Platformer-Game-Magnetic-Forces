@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AIBase : BaseRigidbody {
+public class AIBase : BaseRagdoll {
     [HideInInspector]
     public Transform thisTransform;
-    [HideInInspector]
-    public Rigidbody thisRigidbody;
+
     [HideInInspector]
     public Animation animationH;
 
@@ -28,13 +27,6 @@ public class AIBase : BaseRigidbody {
     [HideInInspector]
     public float timePointAgentToFar = 0.0f; //när agenten kom för långt ifrån, tidpunkten då det hände, används för o kolla ifall agenten behöver åka tillbaks till transformen
 
-    [Header("Ground Check")]
-    public float groundedCheckOffsetY = 0.5f;
-    public float groundedCheckDistance = 1.9f;
-    [HideInInspector]
-    public bool isGrounded;
-    public LayerMask groundCheckLM;
-
     [HideInInspector]
     public int currSetDestinationID = 0;
 
@@ -43,14 +35,15 @@ public class AIBase : BaseRigidbody {
         base.Init();
         thisTransform = this.transform;
         agent = agentTransform.GetComponent<NavMeshAgent>();
-        thisRigidbody = thisTransform.GetComponent<Rigidbody>();
         animationH = thisTransform.GetComponent<Animation>();
+        initTimes++;
 
     }
 
     public override void Reset()
     {
         base.Reset();
+        ToggleRagdoll(false);
         isGrounded = false;
         ReturnAgent();
     }
@@ -124,6 +117,7 @@ public class AIBase : BaseRigidbody {
     //***thistransform förflyttning***
     public virtual void MoveTowardsDestination(Vector3 pos, float moveForce)
     {
+        if (currRigidbody == baseJointRigidbody) return;
         UpdateAgentStatus();
         if (!IsReadyToMove()) return;
         RotateTowards(pos);
@@ -139,6 +133,7 @@ public class AIBase : BaseRigidbody {
 
     public virtual void RotateTowards(Vector3 t) //får overridas om för flygande units
     {
+        if (currRigidbody == baseJointRigidbody) return;
         Vector3 tPosWithoutY = new Vector3(t.x, thisTransform.position.y, t.z); //så den bara kollar på x o z leden
         Vector3 direction = (tPosWithoutY - thisTransform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
@@ -170,6 +165,7 @@ public class AIBase : BaseRigidbody {
         if (thisTransform.gameObject.activeSelf == false) return false;
         if (agent.isOnNavMesh == false) return false;
         if (agent.enabled == false) return false;
+        if (currRigidbody == baseJointRigidbody) return false;
 
         return true;
     }
@@ -188,34 +184,17 @@ public class AIBase : BaseRigidbody {
         return true;
     }
 
-
-    public bool GetGrounded()
+    public override bool ToggleRagdoll(bool b)
     {
-        RaycastHit rHit;
-        if (Physics.Raycast(thisTransform.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, groundedCheckDistance, groundCheckLM))
+        if (base.ToggleRagdoll(b)) //om den är på cd så vill man inte göra nått med animations mojset
         {
+            if (animationH != null)
+            {
+                animationH.enabled = !b;
+            }
             return true;
         }
-        else
-        {
-
-            return false;
-        }
-    }
-
-    public virtual void ToggleRagdoll(bool b)
-    {
-        if (animationH != null)
-        {
-            animationH.enabled = !b;
-        }
-        foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>())
-        {            
-            if (rb != thisRigidbody)
-            {
-                rb.isKinematic = b;
-            }
-        }
+        return false;
     }
 
     //***Alerts***

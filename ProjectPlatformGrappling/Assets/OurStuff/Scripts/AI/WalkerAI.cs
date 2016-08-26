@@ -26,10 +26,21 @@ public class WalkerAI : AIBase {
 
     void FixedUpdate()
     {
-        isGrounded = GetGrounded();
+        if (initTimes == 0) return;
+        isGrounded = GetGrounded(currRigidbody.transform);
+
         if (!IsTransformCloseEnoughToAgent() && isGrounded)
         {
             MoveTowardsDestination(agentTransform.position, currMoveForce);
+        }
+
+        if(currRigidbody.velocity.magnitude > 55)
+        {
+            ToggleRagdoll(true);
+        }
+        else if(isGrounded && GetGroundedDuration() > 2.0f)
+        {
+            ToggleRagdoll(false);
         }
     }
 
