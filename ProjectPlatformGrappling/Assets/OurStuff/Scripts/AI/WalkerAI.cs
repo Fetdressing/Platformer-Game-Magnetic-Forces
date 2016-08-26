@@ -34,7 +34,8 @@ public class WalkerAI : AIBase {
             MoveTowardsDestination(agentTransform.position, currMoveForce);
         }
 
-        if(currRigidbody.velocity.magnitude > 55)
+        Debug.Log("men va" + GetGroundedDuration().ToString());
+        if (currRigidbody.velocity.magnitude > 55)
         {
             ToggleRagdoll(true);
         }
