@@ -73,7 +73,17 @@ public class CameraController : BaseClass {
 
     void ToggleCursorVisible()
     {
-        Cursor.visible = !Cursor.visible;
+        bool visible = !Cursor.visible;
+        Cursor.visible = visible;
+
+        if (visible)
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
     //void FixedUpdate()

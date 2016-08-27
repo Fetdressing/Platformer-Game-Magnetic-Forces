@@ -43,7 +43,7 @@ public class Health : BaseClass {
     [HideInInspector]
     public bool isAlive = true;
 
-    private int speedDamageThreshhold = 100;
+    public int speedDamageThreshhold = 30;
 
     void Start()
     {
@@ -231,6 +231,8 @@ public class Health : BaseClass {
 
     void OnCollisionEnter(Collision collision)
     {
+        //kolla så att man inte collidar med sig själv
+        //if(collision.)
         float speed = collision.relativeVelocity.magnitude;
 
         if (speed > speedDamageThreshhold)
@@ -240,6 +242,22 @@ public class Health : BaseClass {
             if(aiBase != null)
             {
                 aiBase.ReportAttacked(collision.transform);
+            }
+        }
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        return;
+        float speed = Vector3.Magnitude(col.transform.GetComponent<Rigidbody>().velocity - thisRigidbody.velocity);
+
+        if (speed > speedDamageThreshhold)
+        {
+            AddHealth(Mathf.Min(0, -(int)(speed - speedDamageThreshhold)));
+
+            if (aiBase != null)
+            {
+                aiBase.ReportAttacked(col.transform);
             }
         }
     }

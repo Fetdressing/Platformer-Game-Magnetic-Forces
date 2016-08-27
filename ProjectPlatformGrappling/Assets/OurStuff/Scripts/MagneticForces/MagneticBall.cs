@@ -19,7 +19,7 @@ public class MagneticBall : MagneticForce
     private float cooldownTimer = 0.0f;
     public Material cooldownMat;
 
-    private float cooldownTimeCallback = 0.4f;
+    private float cooldownTimeCallback = 0.2f;
     private float cooldownTimerCallback = 0.0f;
 
     public LineRenderer lineRendererBindPlayer;

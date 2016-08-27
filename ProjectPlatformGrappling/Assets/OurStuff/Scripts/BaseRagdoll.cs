@@ -18,12 +18,24 @@ public class BaseRagdoll : BaseRigidbody {
 
         lastState = true; //viktigt
         ToggleRagdoll(false);
+        baseJointRigidbody.constraints = RigidbodyConstraints.FreezePosition;
     }
 
     public override void Reset()
     {
         base.Reset();
         toggleCooldownTimer = 0.0f;
+    }
+
+    public override void UpdateLoop()
+    {
+        if (initTimes == 0) return;
+        base.UpdateLoop();
+        if (currRigidbody == baseJointRigidbody)
+        {
+            //Debug.Log("Den flyttar ju baseJointRigidbodyn oxå");
+            //thisRigidbody.transform.position = baseJointRigidbody.transform.position + new Vector3(0, 3, 0);
+        }
     }
 
     public virtual bool ToggleRagdoll(bool b) //returnerar ifall den kunde gör detta nu
@@ -44,29 +56,27 @@ public class BaseRagdoll : BaseRigidbody {
             if (rb != thisRigidbody)
             {
                 rb.isKinematic = !b;
-                rb.transform.GetComponent<Collider>().isTrigger = !b;
+                rb.transform.GetComponent<Collider>().enabled = b;
                 rb.useGravity = b;
             }
         }
 
         if (b == true) //sätt igång ragdoll!
         {
-            currRigidbody = baseJointRigidbody;
-            thisCollider.isTrigger = true;
-            baseJointRigidbody.isKinematic = false;
-            thisRigidbody.isKinematic = true;
-            thisRigidbody.useGravity = false;
+            currRigidbody = thisRigidbody;
+            thisCollider.isTrigger = false; //så testar vi skada mot ontriggerenter istället
+            //thisRigidbody.isKinematic = true;
+            //thisRigidbody.useGravity = false;
         }
         else //stäng av ragdoll, flytta tillbaks childet
         {
             currRigidbody = thisRigidbody; //kan behöva flytta upp transformen så den inte buggar genom marken
             thisCollider.isTrigger = false;
-            baseJointRigidbody.isKinematic = true;
-            thisRigidbody.isKinematic = false;
+            
+            //thisRigidbody.isKinematic = false;
 
-            thisRigidbody.transform.position = baseJointRigidbody.transform.position + new Vector3(0, 3, 0);
             baseJointRigidbody.transform.localPosition = baseJointStartPos;
-            thisRigidbody.useGravity = true;
+            //thisRigidbody.useGravity = true;
         }
 
         return true;

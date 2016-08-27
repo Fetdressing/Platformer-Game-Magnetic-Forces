@@ -32,6 +32,12 @@ public class BaseRigidbody : BaseClass {
         thisCollider = this.transform.GetComponent<Collider>();
     }
 
+    public override void Reset()
+    {
+        base.Reset();
+        isGrounded = false;
+    }
+
     public bool AddForceSlowDrag(Vector3 dirForce, ForceMode forceMode, Rigidbody rigidbody)
     {
         bool slowDragApplied = false;
@@ -56,13 +62,18 @@ public class BaseRigidbody : BaseClass {
         RaycastHit rHit;
         if (Physics.Raycast(this.transform.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, groundedCheckDistance, groundCheckLM))
         {
-            groundedTimePoint = Time.time;
-            return true;
+            if (isGrounded == false) //om man inte var grounded innan
+            {
+                groundedTimePoint = Time.time;
+            }
+            isGrounded = true;
+            return isGrounded;
         }
         else
         {
             groundedTimePoint = Time.time + 1000;
-            return false;
+            isGrounded = false;
+            return isGrounded;
         }
     }
 
@@ -71,18 +82,25 @@ public class BaseRigidbody : BaseClass {
         RaycastHit rHit;
         if (Physics.Raycast(tChecker.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, groundedCheckDistance, groundCheckLM))
         {
-            groundedTimePoint = Time.time;
-            return true;
+            if (isGrounded == false) //om man inte var grounded innan
+            {
+                groundedTimePoint = Time.time;
+            }
+            isGrounded = true;
+            return isGrounded;
         }
         else
         {
             groundedTimePoint = Time.time + 1000;
-            return false;
+            isGrounded = false;
+            return isGrounded;
         }
     }
 
     public float GetGroundedDuration()
     {
+        if (Time.time - groundedTimePoint > 2)
+            Debug.Log((Time.time - groundedTimePoint).ToString());
         return Time.time - groundedTimePoint;
     }
 

@@ -27,14 +27,14 @@ public class WalkerAI : AIBase {
     void FixedUpdate()
     {
         if (initTimes == 0) return;
-        isGrounded = GetGrounded(currRigidbody.transform);
+        isGrounded = GetGrounded(thisTransform);
 
         if (!IsTransformCloseEnoughToAgent() && isGrounded)
         {
             MoveTowardsDestination(agentTransform.position, currMoveForce);
         }
 
-        Debug.Log("men va" + GetGroundedDuration().ToString());
+        //Debug.Log("men va" + GetGroundedDuration().ToString());
         if (currRigidbody.velocity.magnitude > 55)
         {
             ToggleRagdoll(true);
@@ -43,6 +43,11 @@ public class WalkerAI : AIBase {
         {
             ToggleRagdoll(false);
         }
+    }
+
+    void Update()
+    {
+        UpdateLoop();
     }
 
     IEnumerator WalkRandom(float time)

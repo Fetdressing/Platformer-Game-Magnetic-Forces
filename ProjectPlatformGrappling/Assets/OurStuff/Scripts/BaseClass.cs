@@ -10,4 +10,5 @@ public class BaseClass : MonoBehaviour {
     }
     public virtual void Dealloc() { }
     public virtual void Reset() { }
+    public virtual void UpdateLoop() { }
 }
