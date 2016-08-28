@@ -23,7 +23,7 @@ public class AIBase : BaseRagdoll {
     public float turnRatio = 2;
 
     public float[] agentTransformDistanceThreshhold = { 2, 7 }; //threshhold på hur nära och hur långt ifrån agenten ska befinna sig, min värdet används mest för att kolla ifall transformen behöver röra på sig
-    public float agentAllowedTimeFromTransform = 5; //hur länge agenten får vara ifrån spelaren, så att den inte ska fastna
+    public float agentAllowedTimeFromTransform = 5; //hur länge agenten får vara ifrån transformen, så att den inte ska fastna
     [HideInInspector]
     public float timePointAgentToFar = 0.0f; //när agenten kom för långt ifrån, tidpunkten då det hände, används för o kolla ifall agenten behöver åka tillbaks till transformen
 
@@ -61,7 +61,7 @@ public class AIBase : BaseRagdoll {
 
         if (agentTransformDistanceThreshhold[1] < Vector3.Distance(thisTransform.position, agentTransform.position))
         {
-            if (Time.time - timePointAgentToFar > agentAllowedTimeFromTransform) //ifall den stått still förlänge, returnera den då
+            if ((Time.time - timePointAgentToFar) > agentAllowedTimeFromTransform) //ifall den stått still förlänge, returnera den då
             {
                 timePointAgentToFar = Time.time;
                 ReturnAgent();

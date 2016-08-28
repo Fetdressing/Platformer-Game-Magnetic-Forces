@@ -99,8 +99,8 @@ public class BaseRigidbody : BaseClass {
 
     public float GetGroundedDuration()
     {
-        if (Time.time - groundedTimePoint > 2)
-            Debug.Log((Time.time - groundedTimePoint).ToString());
+        //if (Time.time - groundedTimePoint > 2)
+        //    Debug.Log((Time.time - groundedTimePoint).ToString());
         return Time.time - groundedTimePoint;
     }
 
@@ -110,6 +110,19 @@ public class BaseRigidbody : BaseClass {
         if (Physics.Raycast(this.transform.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, Mathf.Infinity, groundCheckLM))
         {
             return Vector3.Distance(this.transform.position + new Vector3(0, groundedCheckOffsetY, 0), rHit.point);
+        }
+        else
+        {
+            return 10000000;
+        }
+    }
+
+    public float GetDistanceToGround(Transform tChecker)
+    {
+        RaycastHit rHit;
+        if (Physics.Raycast(tChecker.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, Mathf.Infinity, groundCheckLM))
+        {
+            return Vector3.Distance(tChecker.position + new Vector3(0, groundedCheckOffsetY, 0), rHit.point);
         }
         else
         {

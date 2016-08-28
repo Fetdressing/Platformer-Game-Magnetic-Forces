@@ -6407,6 +6407,7 @@ MonoBehaviour:
   currSetDestinationID: 0
   walkSpeedForce: 10000
   runSpeedForce: 2000
+  walkArea: 100
 --- !u!23 &1385031522
 MeshRenderer:
   m_ObjectHideFlags: 0

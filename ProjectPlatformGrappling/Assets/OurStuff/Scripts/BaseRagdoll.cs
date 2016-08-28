@@ -40,7 +40,7 @@ public class BaseRagdoll : BaseRigidbody {
 
     public virtual bool ToggleRagdoll(bool b) //returnerar ifall den kunde gör detta nu
     {
-        if (lastState == b) return false;
+        if (lastState == b) return false; //ska inte kunna toggla till samma state igen
 
         lastState = b;
 
@@ -49,7 +49,6 @@ public class BaseRagdoll : BaseRigidbody {
         {
             toggleCooldownTimer = Time.time + toggleCooldown;
         }
-       
 
         foreach (Rigidbody rb in this.transform.GetComponentsInChildren<Rigidbody>())
         {
