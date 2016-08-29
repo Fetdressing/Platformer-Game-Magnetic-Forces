@@ -75,17 +75,18 @@
     <Compile Include="Assets\OurStuff\Scripts\BaseRagdoll.cs" />
     <Compile Include="Assets\OurStuff\Scripts\BaseRigidbody.cs" />
     <Compile Include="Assets\OurStuff\Scripts\CameraManager.cs" />
-    <Compile Include="Assets\OurStuff\Scripts\FadingLight.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Health.cs" />
     <Compile Include="Assets\OurStuff\Scripts\MagneticForces\MagneticBall.cs" />
     <Compile Include="Assets\OurStuff\Scripts\MagneticForces\MagneticForce.cs" />
-    <Compile Include="Assets\OurStuff\Scripts\MovingPlatform.cs" />
-    <Compile Include="Assets\OurStuff\Scripts\ParticleTimed.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\HealthPickup.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\MovingPlatform.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\ParticleTimed.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\CameraController.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\MagneticPlacer.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Movement.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Old\MagneticHandler.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Old\PlayerMovement.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\VisualEffects\FadingLight.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\OurStuff\2D\Shaders\Hologram.shader" />
