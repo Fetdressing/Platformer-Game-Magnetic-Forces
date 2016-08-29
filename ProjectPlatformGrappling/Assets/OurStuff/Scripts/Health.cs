@@ -145,12 +145,15 @@ public class Health : BaseClass {
         }
         else if (currHealth <= 0)
         {
-            healthBar.fillAmount = (float)currHealth / (float)maxHealth;
+            if(healthBar != null)
+                healthBar.fillAmount = (float)currHealth / (float)maxHealth;
             Die();
             return false; //target dog
             //die
         }
-        healthBar.fillAmount = (float)currHealth / (float)maxHealth;
+
+        if (healthBar != null)
+            healthBar.fillAmount = (float)currHealth / (float)maxHealth;
         return true; //target vid liv
     }
 

@@ -13,6 +13,7 @@ public class Movement : BaseRigidbody {
     private float jumpForce = 30;
     private float maxSpeed = 55;
 
+    private LayerMask layermaskForces;
     public ParticleSystem slideGroundParticleSystem;
 	// Use this for initialization
 	void Start () {
@@ -26,7 +27,8 @@ public class Movement : BaseRigidbody {
         thisHealth = thisTransform.GetComponent<Health>();
         thisRigidbody = thisTransform.GetComponent<Rigidbody>();
         isGrounded = false;
-        groundCheckLM = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("MagneticBall"));
+        groundCheckLM = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("MagneticBall") | 1 << LayerMask.NameToLayer("Ragdoll"));
+        layermaskForces = groundCheckLM;
     }
 
     // Update is called once per frame
@@ -109,7 +111,7 @@ public class Movement : BaseRigidbody {
 
             //knocka iväg lite stuff
             Collider[] colliders;
-            colliders = Physics.OverlapSphere(thisTransform.position, 0.8f * speedF);
+            colliders = Physics.OverlapSphere(thisTransform.position, 0.8f * speedF, layermaskForces);
             foreach (Collider col in colliders)
             {
                 Transform tr = col.transform;
@@ -125,6 +127,18 @@ public class Movement : BaseRigidbody {
                     AddForceFastDrag((speedF * dir), ForceMode.Impulse, rigidbodyTemp);
                 }
             }
+        }
+    }
+
+    void ToggleInfiniteGravity(bool b)
+    {
+        if(b)
+        {
+
+        }
+        else
+        {
+
         }
     }
 }
