@@ -4,6 +4,8 @@ using System.Collections;
 public class AIBase : BaseRagdoll {
     [HideInInspector]
     public Transform thisTransform;
+    [HideInInspector]
+    public Health thisHealth;
 
     [HideInInspector]
     public Animation animationH;
@@ -22,7 +24,7 @@ public class AIBase : BaseRagdoll {
     public float lookAngleThreshhold = 15;
     public float turnRatio = 2;
 
-    public float[] agentTransformDistanceThreshhold = { 2, 7 }; //threshhold på hur nära och hur långt ifrån agenten ska befinna sig, min värdet används mest för att kolla ifall transformen behöver röra på sig
+    public float[] agentTransformDistanceThreshhold = { 12, 20 }; //threshhold på hur nära och hur långt ifrån agenten ska befinna sig, min värdet används mest för att kolla ifall transformen behöver röra på sig
     public float agentAllowedTimeFromTransform = 5; //hur länge agenten får vara ifrån transformen, så att den inte ska fastna
     [HideInInspector]
     public float timePointAgentToFar = 0.0f; //när agenten kom för långt ifrån, tidpunkten då det hände, används för o kolla ifall agenten behöver åka tillbaks till transformen
@@ -34,6 +36,7 @@ public class AIBase : BaseRagdoll {
     {
         base.Init();
         thisTransform = this.transform;
+        thisHealth = thisTransform.GetComponent<Health>();
         agent = agentTransform.GetComponent<NavMeshAgent>();
         animationH = thisTransform.GetComponent<Animation>();
         initTimes++;
@@ -117,7 +120,6 @@ public class AIBase : BaseRagdoll {
     //***thistransform förflyttning***
     public virtual void MoveTowardsDestination(Vector3 pos, float moveForce)
     {
-        if (currRigidbody == baseJointRigidbody) return;
         UpdateAgentStatus();
         if (!IsReadyToMove()) return;
         RotateTowards(pos);
@@ -133,7 +135,6 @@ public class AIBase : BaseRagdoll {
 
     public virtual void RotateTowards(Vector3 t) //får overridas om för flygande units
     {
-        if (currRigidbody == baseJointRigidbody) return;
         Vector3 tPosWithoutY = new Vector3(t.x, thisTransform.position.y, t.z); //så den bara kollar på x o z leden
         Vector3 direction = (tPosWithoutY - thisTransform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
@@ -165,7 +166,7 @@ public class AIBase : BaseRagdoll {
         if (thisTransform.gameObject.activeSelf == false) return false;
         if (agent.isOnNavMesh == false) return false;
         if (agent.enabled == false) return false;
-        if (currRigidbody == baseJointRigidbody) return false;
+        if (isGrounded == false) return false;
 
         return true;
     }

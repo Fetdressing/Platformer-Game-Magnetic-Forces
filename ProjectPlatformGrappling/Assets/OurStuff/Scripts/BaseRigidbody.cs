@@ -22,7 +22,7 @@ public class BaseRigidbody : BaseClass {
     public bool isGrounded;
     public LayerMask groundCheckLM;
     private float groundedTimePoint = 0; //när man blev grounded
-
+    private float ariseTime = 1.5f; //hur långt tid det tar för unitet att resa sig, dvs till groundedtime
 
     public override void Init()
     {
@@ -102,6 +102,16 @@ public class BaseRigidbody : BaseClass {
         //if (Time.time - groundedTimePoint > 2)
         //    Debug.Log((Time.time - groundedTimePoint).ToString());
         return Time.time - groundedTimePoint;
+    }
+
+    public bool IsStanding() //kolla ifall agenten har varit grounded tillräkligt länge
+    {
+        float groundedTime = GetGroundedDuration();
+        if(groundedTime > ariseTime)
+        {
+            return true;
+        }
+        return false;
     }
 
     public float GetDistanceToGround()

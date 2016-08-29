@@ -234,10 +234,11 @@ public class Health : BaseClass {
         //kolla så att man inte collidar med sig själv
         //if(collision.)
         float speed = collision.relativeVelocity.magnitude;
+        float ySpeed = Mathf.Abs(collision.relativeVelocity.y);
 
         if (speed > speedDamageThreshhold)
         {
-            AddHealth(Mathf.Min(0, -(int)(speed - speedDamageThreshhold)));
+            AddHealth(Mathf.Min(0, -(int)(speed - speedDamageThreshhold) + -(int) (ySpeed * 0.8f) ));
 
             if(aiBase != null)
             {

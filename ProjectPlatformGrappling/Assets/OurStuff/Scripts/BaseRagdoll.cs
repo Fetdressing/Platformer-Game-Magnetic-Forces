@@ -55,7 +55,7 @@ public class BaseRagdoll : BaseRigidbody {
             if (rb != thisRigidbody)
             {
                 rb.isKinematic = !b;
-                rb.transform.GetComponent<Collider>().enabled = b;
+                rb.transform.GetComponent<Collider>().enabled = false; //kanske jag vill ha igång dem
                 rb.useGravity = b;
             }
         }
@@ -74,7 +74,7 @@ public class BaseRagdoll : BaseRigidbody {
             
             //thisRigidbody.isKinematic = false;
 
-            baseJointRigidbody.transform.localPosition = baseJointStartPos;
+            //baseJointRigidbody.transform.localPosition = baseJointStartPos;
             //thisRigidbody.useGravity = true;
         }
 

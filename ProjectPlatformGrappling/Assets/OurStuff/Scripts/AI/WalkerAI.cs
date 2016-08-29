@@ -36,19 +36,14 @@ public class WalkerAI : AIBase {
         }
 
         //Debug.Log("men va" + GetGroundedDuration().ToString());
-        if (currRigidbody.velocity.magnitude > 55)
+        if (currRigidbody.velocity.magnitude > thisHealth.speedDamageThreshhold || !isGrounded)
         {
             ToggleRagdoll(true);
         }
-        else if(isGrounded && GetGroundedDuration() > 2.0f)
+        else if(IsStanding())
         {
             ToggleRagdoll(false);
         }
-    }
-
-    void Update()
-    {
-        UpdateLoop();
     }
 
     IEnumerator WalkRandom(float time)
@@ -93,7 +88,7 @@ public class WalkerAI : AIBase {
         {
             if (changeDirTimeInterval < Time.time)
             {
-                changeDirTimeInterval = Time.time + 3;
+                changeDirTimeInterval = Time.time + 1.5f;
                 Vector3 fleePos;
                 GetRandomNavmeshDestination(thisTransform.position, walkArea * 0.3f, out fleePos);
                 SetDestination(fleePos);

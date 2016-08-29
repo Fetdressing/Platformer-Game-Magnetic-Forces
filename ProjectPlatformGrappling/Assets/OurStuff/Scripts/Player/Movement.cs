@@ -4,6 +4,7 @@ using System.Collections;
 public class Movement : BaseRigidbody {
     public Transform cameraObj;
     private Transform thisTransform;
+    private Health thisHealth;
 
     private float distanceToGround = 100000000;
 
@@ -22,6 +23,7 @@ public class Movement : BaseRigidbody {
     {
         base.Init();
         thisTransform = this.transform;
+        thisHealth = thisTransform.GetComponent<Health>();
         thisRigidbody = thisTransform.GetComponent<Rigidbody>();
         isGrounded = false;
         groundCheckLM = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("MagneticBall"));
@@ -80,23 +82,47 @@ public class Movement : BaseRigidbody {
         {
             float speedHit = col.relativeVelocity.magnitude;
 
-            if (speedHit > 70)
+            if (speedHit > thisHealth.speedDamageThreshhold * 0.7f)
             {
-                if(slideGroundParticleSystem != null)
+                ForcePush(speedHit);
+            }
+        }
+    }
+
+    void ForcePush(float speedF)
+    {
+        if (slideGroundParticleSystem != null)
+        {
+            //Vector3 vecDir = (thisTransform.position- col.contacts[0].point).normalized;
+            //Vector3 dir = Vector3.RotateTowards(thisTransform.position, col.contacts[0].point,1,1);
+            //Vector3 vecDir = thisRigidbody.velocity.normalized + col.contacts[0].normal * 0.1f;
+            //Quaternion rotation = Quaternion.LookRotation(vecDir);
+            //slideGroundParticleSystem.transform.rotation = rotation;
+            float baseParSpeed = 1;
+            slideGroundParticleSystem.startSpeed = baseParSpeed * speedF;
+            //slideGroundParticleSystem.transform.LookAt(col.contacts[0].point + new Vector3(0,1,0));
+            //slideGroundParticleSystem.transform.Rotate(dir);
+            if (slideGroundParticleSystem.GetComponent<ParticleTimed>().isReady)
+            {
+                slideGroundParticleSystem.GetComponent<ParticleTimed>().StartParticleSystem();
+            }
+
+            //knocka iväg lite stuff
+            Collider[] colliders;
+            colliders = Physics.OverlapSphere(thisTransform.position, 0.8f * speedF);
+            foreach (Collider col in colliders)
+            {
+                Transform tr = col.transform;
+                if (tr == thisTransform) continue;
+
+                if (tr.GetComponent<Rigidbody>() != null)
                 {
-                    //Vector3 vecDir = (thisTransform.position- col.contacts[0].point).normalized;
-                    //Vector3 dir = Vector3.RotateTowards(thisTransform.position, col.contacts[0].point,1,1);
-                    //Vector3 vecDir = thisRigidbody.velocity.normalized + col.contacts[0].normal * 0.1f;
-                    //Quaternion rotation = Quaternion.LookRotation(vecDir);
-                    //slideGroundParticleSystem.transform.rotation = rotation;
-                    float baseParSpeed = 1;
-                    slideGroundParticleSystem.startSpeed = baseParSpeed * speedHit;
-                    //slideGroundParticleSystem.transform.LookAt(col.contacts[0].point + new Vector3(0,1,0));
-                    //slideGroundParticleSystem.transform.Rotate(dir);
-                    if (slideGroundParticleSystem.GetComponent<ParticleTimed>().isReady)
-                    {
-                        slideGroundParticleSystem.GetComponent<ParticleTimed>().StartParticleSystem();
-                    }
+                    Rigidbody rigidbodyTemp = tr.GetComponent<Rigidbody>();
+                    Vector3 dir;
+
+                    dir = (tr.transform.position - thisTransform.position).normalized;
+                    //rigidbodyTemp.AddForce((force * dir * Time.deltaTime) * (1 - distanceMultiplier / range), ForceMode.Force);
+                    AddForceFastDrag((speedF * dir), ForceMode.Impulse, rigidbodyTemp);
                 }
             }
         }
