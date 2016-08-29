@@ -225,6 +225,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b0d966d1d5a6cd94584b840a72c88cfc, type: 2}
   m_IsPrefabParent: 0
+--- !u!111 &52273359 stripped
+Animation:
+  m_PrefabParentObject: {fileID: 11100000, guid: 8722cad749114f047aca3bf510686be6,
+    type: 3}
+  m_PrefabInternal: {fileID: 1825733215}
 --- !u!1 &53879839
 GameObject:
   m_ObjectHideFlags: 0
@@ -6422,7 +6427,7 @@ MonoBehaviour:
   toggleCooldown: 1
   thisTransform: {fileID: 0}
   thisHealth: {fileID: 0}
-  animationH: {fileID: 0}
+  animationH: {fileID: 52273359}
   agentTransform: {fileID: 842381442}
   agent: {fileID: 0}
   target: {fileID: 0}
@@ -6438,6 +6443,10 @@ MonoBehaviour:
   walkSpeedForce: 10000
   runSpeedForce: 20000
   walkArea: 100
+  idle: {fileID: 7400002, guid: 8722cad749114f047aca3bf510686be6, type: 3}
+  run: {fileID: 7400000, guid: 8722cad749114f047aca3bf510686be6, type: 3}
+  loopRunAnimSpeed: 1.2
+  loopIdleAnimSpeed: 0.8
 --- !u!23 &1385031522
 MeshRenderer:
   m_ObjectHideFlags: 0
