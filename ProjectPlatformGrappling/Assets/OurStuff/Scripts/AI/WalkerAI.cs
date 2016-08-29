@@ -122,7 +122,7 @@ public class WalkerAI : AIBase {
 
     public override void PlayStateAnimations()
     {
-        if (agent.hasPath == true && isGrounded)
+        if (thisRigidbody.velocity.magnitude > 0.0f && isGrounded)
         {
             animationH[run.name].weight = 0.2f;
             animationH[run.name].layer = 10;

@@ -111,7 +111,7 @@ public class Movement : BaseRigidbody {
 
             //knocka iväg lite stuff
             Collider[] colliders;
-            colliders = Physics.OverlapSphere(thisTransform.position, 0.8f * speedF, layermaskForces);
+            colliders = Physics.OverlapSphere(thisTransform.position, 0.5f * speedF, layermaskForces);
             foreach (Collider col in colliders)
             {
                 Transform tr = col.transform;
@@ -124,7 +124,7 @@ public class Movement : BaseRigidbody {
 
                     dir = (tr.transform.position - thisTransform.position).normalized;
                     //rigidbodyTemp.AddForce((force * dir * Time.deltaTime) * (1 - distanceMultiplier / range), ForceMode.Force);
-                    AddForceFastDrag((speedF * dir), ForceMode.Impulse, rigidbodyTemp);
+                    AddForceFastDrag((0.6f * speedF * dir), ForceMode.Impulse, rigidbodyTemp);
                 }
             }
         }

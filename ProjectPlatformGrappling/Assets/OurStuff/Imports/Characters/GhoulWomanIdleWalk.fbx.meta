@@ -261,7 +261,7 @@ ModelImporter:
     - serializedVersion: 16
       name: GhoulWoman_Idle
       takeName: Take 001
-      firstFrame: 31
+      firstFrame: 32
       lastFrame: 61
       wrapMode: 2
       orientationOffsetY: 0
