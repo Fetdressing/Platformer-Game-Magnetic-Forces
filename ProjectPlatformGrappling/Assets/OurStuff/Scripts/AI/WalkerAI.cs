@@ -8,6 +8,12 @@ public class WalkerAI : AIBase {
     public float runSpeedForce = 2000;
     public float walkArea = 100;
 
+    [Header("Animation")]
+    public AnimationClip idle;
+    public AnimationClip run;
+    public float loopRunAnimSpeed = 1.4f;
+    public float loopIdleAnimSpeed = 0.8f;
+
     void Start()
     {
         Init();
@@ -16,6 +22,10 @@ public class WalkerAI : AIBase {
     public override void Init()
     {
         base.Init();
+
+        animationH[run.name].speed = loopRunAnimSpeed;
+        animationH[idle.name].speed = loopIdleAnimSpeed;
+
         Reset();
     }
 
@@ -44,6 +54,8 @@ public class WalkerAI : AIBase {
         {
             ToggleRagdoll(false);
         }
+
+        PlayStateAnimations();
     }
 
     IEnumerator WalkRandom(float time)
@@ -106,5 +118,22 @@ public class WalkerAI : AIBase {
         //base.ReportAttacked(t);
         StopAllCoroutines();
         StartCoroutine(Flee(10));
+    }
+
+    public override void PlayStateAnimations()
+    {
+        if (agent.hasPath == true && isGrounded)
+        {
+            animationH[run.name].weight = 0.2f;
+            animationH[run.name].layer = 10;
+            animationH[run.name].speed = loopRunAnimSpeed;// * ((float)movementSpeed / (float)startMovementSpeed);
+            animationH.CrossFade(run.name);
+        }
+        else
+        {
+            animationH[idle.name].weight = 0.2f;
+            animationH[idle.name].layer = 10;
+            animationH.CrossFade(idle.name);
+        }
     }
 }

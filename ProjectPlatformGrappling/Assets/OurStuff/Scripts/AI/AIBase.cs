@@ -7,7 +7,6 @@ public class AIBase : BaseRagdoll {
     [HideInInspector]
     public Health thisHealth;
 
-    [HideInInspector]
     public Animation animationH;
 
     public Transform agentTransform;
@@ -38,7 +37,7 @@ public class AIBase : BaseRagdoll {
         thisTransform = this.transform;
         thisHealth = thisTransform.GetComponent<Health>();
         agent = agentTransform.GetComponent<NavMeshAgent>();
-        animationH = thisTransform.GetComponent<Animation>();
+        //animationH = thisTransform.GetComponent<Animation>();
         initTimes++;
 
     }
@@ -204,6 +203,11 @@ public class AIBase : BaseRagdoll {
 
     }
     //***Alerts***
+
+    public virtual void PlayStateAnimations()
+    {
+
+    }
 
     //public bool HasReachedPosition(Vector3 pos) //krävs att man har en path
     //{
