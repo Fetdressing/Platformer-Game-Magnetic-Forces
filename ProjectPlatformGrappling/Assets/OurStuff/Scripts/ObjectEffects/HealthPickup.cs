@@ -29,24 +29,39 @@ public class HealthPickup : BaseClass {
         startPos = this.transform.position;
     }
 
-    void FixedUpdate()
-    {
-        if (playerChaseSpeed < 0.1f || thisRigidbody.isKinematic) return;
+    //void FixedUpdate()
+    //{
+    //    if (playerChaseSpeed < 0.1f || thisRigidbody.isKinematic) return;
 
-        if (Vector3.Distance(player.position, this.transform.position) < playerChaseDistance)
+    //    if (Vector3.Distance(player.position, this.transform.position) < playerChaseDistance)
+    //    {
+    //        Vector3 dir = (player.position - this.transform.position).normalized;
+    //        thisRigidbody.AddForce(dir * playerChaseSpeed * Time.deltaTime, ForceMode.Force);
+    //        //pickUpObj.transform.position = Vector3.Slerp(pickUpObj.transform.position, player.position, Time.deltaTime * playerChaseSpeed);
+    //    }
+    //    else if (Vector3.Distance(startPos, this.transform.position) > (playerChaseDistance))
+    //    {
+    //        Vector3 dir = (startPos - this.transform.position).normalized;
+    //        thisRigidbody.AddForce(dir * playerChaseSpeed * Time.deltaTime, ForceMode.Force);
+    //    }
+    //    else
+    //    {
+    //        thisRigidbody.velocity = thisRigidbody.velocity * 0.99f;
+    //    }
+    //}
+
+    void Update()
+    {
+        if (playerChaseSpeed < 0.1f) return;
+
+        float distanceToPlayer = Vector3.Distance(player.position, this.transform.position);
+        if (distanceToPlayer < playerChaseDistance)
         {
-            Vector3 dir = (player.position - this.transform.position).normalized;
-            thisRigidbody.AddForce(dir * playerChaseSpeed * Time.deltaTime, ForceMode.Force);
-            //pickUpObj.transform.position = Vector3.Slerp(pickUpObj.transform.position, player.position, Time.deltaTime * playerChaseSpeed);
+            this.transform.position = Vector3.Slerp(this.transform.position, player.position, Time.deltaTime * playerChaseSpeed / distanceToPlayer);
         }
         else if (Vector3.Distance(startPos, this.transform.position) > (playerChaseDistance))
         {
-            Vector3 dir = (startPos - this.transform.position).normalized;
-            thisRigidbody.AddForce(dir * playerChaseSpeed * Time.deltaTime, ForceMode.Force);
-        }
-        else
-        {
-            thisRigidbody.velocity = thisRigidbody.velocity * 0.99f;
+            this.transform.position = Vector3.Slerp(this.transform.position, startPos, Time.deltaTime * playerChaseSpeed);
         }
     }
 
@@ -82,6 +97,7 @@ public class HealthPickup : BaseClass {
     void Spawn()
     {
         this.transform.position = startPos;
+        thisRigidbody.velocity = new Vector3(0, 0, 0);
         pickUpObj.gameObject.SetActive(true);
     }
 

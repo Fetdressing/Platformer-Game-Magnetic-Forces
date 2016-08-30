@@ -58,12 +58,6 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
@@ -87,6 +81,7 @@
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\HealthPickup.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\MovingPlatform.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\ParticleTimed.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PhaseOutObject.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\CameraController.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\MagneticPlacer.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Movement.cs" />

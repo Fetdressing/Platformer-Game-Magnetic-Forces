@@ -11,6 +11,8 @@ public class BaseRigidbody : BaseClass {
 
     public float SlowDrag = 0.8f;
     public float fastDrag = 0.04f;
+    public float slowMaxSpeed = 0;
+    public float maxSpeedAccelerationMult = 4; //kommer öka accelerationen om man har maxspeed
 
     private float minTimer_ApplySlowDrag = 0.0f;
     public float minTime_ApplySlowDrag = 0.5f; //så att den inte bara kan slänga på slowdrag medans fastdrag force applyas
@@ -45,8 +47,24 @@ public class BaseRigidbody : BaseClass {
         {
             rigidbody.drag = SlowDrag;
             slowDragApplied = true;
+
+            if (slowMaxSpeed > 0.1f) //har maxspeed! sätt annars till 0
+            {
+                rigidbody.AddForce(dirForce * maxSpeedAccelerationMult, forceMode); //lägg på extra force när man har maxspeed
+                if (rigidbody.velocity.magnitude > slowMaxSpeed)
+                {
+                    rigidbody.velocity = rigidbody.velocity.normalized * slowMaxSpeed;
+                }
+            }
+            else
+            {
+                rigidbody.AddForce(dirForce, forceMode); //ingen max speed, då kan den applyas som vanligt
+            }
         }
-        rigidbody.AddForce(dirForce, forceMode);
+        else
+        {
+            rigidbody.AddForce(dirForce, forceMode);
+        }
         return slowDragApplied;
     }
 

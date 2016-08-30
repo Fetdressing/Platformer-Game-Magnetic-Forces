@@ -40,7 +40,16 @@ public class Movement : BaseRigidbody {
         //thisRigidbody.MovePosition(thisTransform.position + ((hor + ver) * Time.deltaTime * speed));
         float finalSpeed;
 
-        finalSpeed = speed * Mathf.Clamp(1 - (distanceToGround/100), 0.01f, 1.0f);
+        //finalSpeed = speed * Mathf.Clamp(1 - (distanceToGround/100), 0.01f, 1.0f);
+
+        if(isGrounded)
+        {
+            finalSpeed = speed;
+        }
+        else
+        {
+            finalSpeed = speed * 0.7f;
+        }
 
         //thisRigidbody.AddForce(((hor + ver) * Time.deltaTime * finalSpeed), ForceMode.Force);
         if (isGrounded)
