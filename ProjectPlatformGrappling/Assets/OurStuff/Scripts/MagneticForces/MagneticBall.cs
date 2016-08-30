@@ -7,6 +7,8 @@ public class MagneticBall : MagneticForce
     public Transform homeTransform;
     [HideInInspector]
     public Vector3 homePos;
+    [HideInInspector]
+    public Vector3 startScale;
 
     [HideInInspector]
     public MagneticBallState magneticBallState = MagneticBallState.HeadingHome;
@@ -36,6 +38,7 @@ public class MagneticBall : MagneticForce
         lineRendererBindPlayer = thisTransform.GetComponent<LineRenderer>();
         SetState(MagneticBallState.HeadingHome);
         cooldownTimer = 0.0f;
+        startScale = thisTransform.lossyScale;
     }
 
     public void SetStartTransform(Transform t) //absolete
@@ -141,6 +144,7 @@ public class MagneticBall : MagneticForce
     {
         if (magneticBallState == MagneticBallState.HeadingToTarget)
         {
+            thisTransform.SetParent(col.transform, true);
             SetState(MagneticBallState.ApplyingGravity);
         }
         return;
@@ -160,6 +164,9 @@ public class MagneticBall : MagneticForce
     public void OrderHeadHome()
     {
         if (cooldownTimerCallback > Time.time) return;
+        thisTransform.SetParent(null);
+        thisTransform.localScale = startScale;
+
         StopAllCoroutines();
         cooldownTimer = cooldownTime + Time.time;
         SetState(MagneticBallState.HeadingHome);
@@ -167,6 +174,9 @@ public class MagneticBall : MagneticForce
     public void OrderFire(float force, float stayTime)
     {
         if (cooldownTimer > Time.time) return;
+        thisTransform.SetParent(null);
+        thisTransform.localScale = startScale;
+
         cooldownTimerCallback = cooldownTimeCallback + Time.time;
         StopAllCoroutines();
         SetState(MagneticBallState.HeadingToTarget);

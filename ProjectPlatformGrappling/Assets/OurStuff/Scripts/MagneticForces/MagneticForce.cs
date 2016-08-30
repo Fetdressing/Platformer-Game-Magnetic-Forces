@@ -94,12 +94,6 @@ public class MagneticForce : BaseRigidbody
         ApplyForce();
     }
 
-    public virtual void UpdateLoop()
-    {
-
-    }
-
-
     public virtual void ApplyForce()
     {
         Collider[] colliders;

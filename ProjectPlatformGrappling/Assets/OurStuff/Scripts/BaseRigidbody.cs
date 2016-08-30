@@ -70,7 +70,7 @@ public class BaseRigidbody : BaseClass {
 
     public void AddForceFastDrag(Vector3 dirForce, ForceMode forceMode, Rigidbody rigidbody)
     {
-        minTimer_ApplySlowDrag = Time.time + minTime_ApplySlowDrag;
+        minTimer_ApplySlowDrag = Time.time + minTime_ApplySlowDrag; //den tillhör inte unitet som kastar den, det som är problemet
         rigidbody.drag = fastDrag;
         rigidbody.AddForce(dirForce, forceMode);
     }

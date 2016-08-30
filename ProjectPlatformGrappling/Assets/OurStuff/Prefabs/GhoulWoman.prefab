@@ -1842,6 +1842,8 @@ MonoBehaviour:
   thisCollider: {fileID: 0}
   SlowDrag: 3.5
   fastDrag: 0.04
+  slowMaxSpeed: 0
+  maxSpeedAccelerationMult: 4
   minTime_ApplySlowDrag: 0.5
   groundedCheckOffsetY: 3
   groundedCheckDistance: 17

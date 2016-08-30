@@ -5345,6 +5345,7 @@ MonoBehaviour:
   range: 140
   homeTransform: {fileID: 0}
   homePos: {x: 0, y: 0, z: 0}
+  startScale: {x: 0, y: 0, z: 0}
   magneticBallState: 0
   playerForce: 15000
   cooldownMat: {fileID: 2100000, guid: 8e3434ffd088f914ba189307792ff385, type: 2}
@@ -7194,10 +7195,10 @@ MonoBehaviour:
   currRigidbody: {fileID: 0}
   thisRigidbody: {fileID: 0}
   thisCollider: {fileID: 0}
-  SlowDrag: 0.7
+  SlowDrag: 4
   fastDrag: 0.08
   slowMaxSpeed: 30
-  maxSpeedAccelerationMult: 6
+  maxSpeedAccelerationMult: 8
   minTime_ApplySlowDrag: 0.3
   groundedCheckOffsetY: 0.5
   groundedCheckDistance: 2.3
@@ -7957,6 +7958,7 @@ MonoBehaviour:
   range: 140
   homeTransform: {fileID: 0}
   homePos: {x: 0, y: 0, z: 0}
+  startScale: {x: 0, y: 0, z: 0}
   magneticBallState: 0
   playerForce: 15000
   cooldownMat: {fileID: 2100000, guid: 8e3434ffd088f914ba189307792ff385, type: 2}
