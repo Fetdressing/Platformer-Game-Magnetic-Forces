@@ -70,6 +70,26 @@ public class KillZone : BaseClass {
         }
     }
 
+    public void ToggleKillZone(bool b)
+    {
+        if (b == false)
+        {
+            ps.Simulate(0.0f, true, true);
+            ParticleSystem.EmissionModule psemit = ps.emission;
+            psemit.enabled = true;
+            ps.Play();
+        }
+        else
+        {
+            ps.Stop();
+        }
+
+        for (int i = 0; i < thisColliders.Length; i++)
+        {
+            thisColliders[i].enabled = !b;
+        }
+    }
+
     void OnTriggerStay(Collider col)
     {
         Health h = col.GetComponent<Health>();

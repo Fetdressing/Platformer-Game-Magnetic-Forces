@@ -83,6 +83,8 @@
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\MovingPlatform.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\ParticleTimed.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PhaseOutObject.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Triggers\Trigger.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Triggers\TriggerDoor.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\CameraController.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\MagneticPlacer.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Movement.cs" />

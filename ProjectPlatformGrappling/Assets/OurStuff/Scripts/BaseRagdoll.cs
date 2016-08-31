@@ -40,16 +40,16 @@ public class BaseRagdoll : BaseRigidbody {
 
     public virtual bool ToggleRagdoll(bool b) //returnerar ifall den kunde gör detta nu
     {
-        //if (lastState == b) return false; //ska inte kunna toggla till samma state igen
+        if (lastState == b) return false; //ska inte kunna toggla till samma state igen
 
-        //lastState = b;
+        lastState = b;
 
-        //if (Time.time < toggleCooldownTimer) return false;
-        //else
-        //{
-        //    toggleCooldownTimer = Time.time + toggleCooldown;
-        //    Debug.Log(toggleCooldownTimer.ToString());
-        //}
+        if (Time.time < toggleCooldownTimer) return false;
+        else
+        {
+            toggleCooldownTimer = Time.time + toggleCooldown;
+            //Debug.Log(toggleCooldownTimer.ToString());
+        }
 
         foreach (Rigidbody rb in this.transform.GetComponentsInChildren<Rigidbody>())
         {

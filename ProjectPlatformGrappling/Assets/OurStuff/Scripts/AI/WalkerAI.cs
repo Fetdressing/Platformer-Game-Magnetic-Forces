@@ -52,7 +52,7 @@ public class WalkerAI : AIBase {
         }
         else if(IsStanding())
         {
-            Debug.Log("Stått tillräkligt länge" + Time.time.ToString());
+            //Debug.Log("Stått tillräkligt länge" + Time.time.ToString());
             ToggleRagdoll(false);
         }
 
