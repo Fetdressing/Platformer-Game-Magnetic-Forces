@@ -120,6 +120,7 @@ public class Movement : BaseRigidbody {
 
             //knocka iväg lite stuff
             Collider[] colliders;
+            float range = 0.05f * speedF + 10;
             colliders = Physics.OverlapSphere(thisTransform.position, 0.5f * speedF, layermaskForces);
             foreach (Collider col in colliders)
             {

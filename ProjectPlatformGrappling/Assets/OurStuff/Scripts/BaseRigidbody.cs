@@ -40,38 +40,68 @@ public class BaseRigidbody : BaseClass {
         isGrounded = false;
     }
 
+    public override void UpdateLoop()
+    {
+        base.UpdateLoop();
+
+        if(isGrounded == false)
+        {
+            thisRigidbody.drag = fastDrag;
+            minTimer_ApplySlowDrag = Time.time + minTime_ApplySlowDrag; //så den inte reser sig upp dir när den landar
+        }
+    }
+
     public bool AddForceSlowDrag(Vector3 dirForce, ForceMode forceMode, Rigidbody rigidbody)
     {
         bool slowDragApplied = false;
-        if (minTimer_ApplySlowDrag < Time.time)
-        {
-            rigidbody.drag = SlowDrag;
-            slowDragApplied = true;
 
-            if (slowMaxSpeed > 0.1f) //har maxspeed! sätt annars till 0
+        BaseRigidbody bRigidbody = rigidbody.transform.GetComponent<BaseRigidbody>();
+        if (bRigidbody != null)
+        {
+            if (bRigidbody.minTimer_ApplySlowDrag < Time.time)
             {
-                rigidbody.AddForce(dirForce * maxSpeedAccelerationMult, forceMode); //lägg på extra force när man har maxspeed
-                if (rigidbody.velocity.magnitude > slowMaxSpeed)
+                rigidbody.drag = bRigidbody.SlowDrag;
+                slowDragApplied = true;
+
+                if (slowMaxSpeed > 0.1f) //har maxspeed! sätt annars till 0
                 {
-                    rigidbody.velocity = rigidbody.velocity.normalized * slowMaxSpeed;
+                    rigidbody.AddForce(dirForce * maxSpeedAccelerationMult, forceMode); //lägg på extra force när man har maxspeed
+                    if (rigidbody.velocity.magnitude > slowMaxSpeed)
+                    {
+                        rigidbody.velocity = rigidbody.velocity.normalized * slowMaxSpeed;
+                    }
+                }
+                else
+                {
+                    rigidbody.AddForce(dirForce, forceMode); //ingen max speed, då kan den applyas som vanligt
                 }
             }
             else
             {
-                rigidbody.AddForce(dirForce, forceMode); //ingen max speed, då kan den applyas som vanligt
+                rigidbody.AddForce(dirForce, forceMode);
             }
         }
         else
         {
             rigidbody.AddForce(dirForce, forceMode);
         }
+       
         return slowDragApplied;
     }
 
     public void AddForceFastDrag(Vector3 dirForce, ForceMode forceMode, Rigidbody rigidbody)
     {
-        minTimer_ApplySlowDrag = Time.time + minTime_ApplySlowDrag; //den tillhör inte unitet som kastar den, det som är problemet
-        rigidbody.drag = fastDrag;
+        BaseRigidbody bRigidbody = rigidbody.transform.GetComponent<BaseRigidbody>();
+        if(bRigidbody != null)
+        {
+            bRigidbody.minTimer_ApplySlowDrag = Time.time + minTime_ApplySlowDrag; //den tillhör inte unitet som kastar den, det som är problemet
+            rigidbody.drag = bRigidbody.fastDrag;
+        }
+        else
+        {
+            rigidbody.drag = fastDrag;
+        }
+        
         rigidbody.AddForce(dirForce, forceMode);
     }
 
@@ -100,6 +130,8 @@ public class BaseRigidbody : BaseClass {
         RaycastHit rHit;
         if (Physics.Raycast(tChecker.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, groundedCheckDistance, groundCheckLM))
         {
+            if (rHit.transform == this.transform) { Debug.Log(this.transform.name); return false; } //MEH DEN SKA EJ COLLIDA MED SIG SJÄLV
+
             if (isGrounded == false) //om man inte var grounded innan
             {
                 groundedTimePoint = Time.time;

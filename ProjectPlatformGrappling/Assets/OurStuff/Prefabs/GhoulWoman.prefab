@@ -615,7 +615,7 @@ GameObject:
   - 114: {fileID: 11438796}
   - 54: {fileID: 5495708}
   - 114: {fileID: 11427026}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: AI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1844,7 +1844,7 @@ MonoBehaviour:
   fastDrag: 0.04
   slowMaxSpeed: 0
   maxSpeedAccelerationMult: 4
-  minTime_ApplySlowDrag: 0.5
+  minTime_ApplySlowDrag: 1.3
   groundedCheckOffsetY: 3
   groundedCheckDistance: 17
   isGrounded: 0

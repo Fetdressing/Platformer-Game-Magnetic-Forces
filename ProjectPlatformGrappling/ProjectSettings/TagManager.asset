@@ -28,6 +28,7 @@ TagManager:
   - 
   - 
   - 
+  - AINormal
   - 
   - 
   - 
@@ -35,8 +36,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - IgnoreEffects
   - Ragdoll
   m_SortingLayers:
   - name: Default

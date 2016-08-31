@@ -27,28 +27,29 @@ public class BaseRagdoll : BaseRigidbody {
         toggleCooldownTimer = 0.0f;
     }
 
-    public override void UpdateLoop()
-    {
-        if (initTimes == 0) return;
-        base.UpdateLoop();
-        if (currRigidbody == baseJointRigidbody)
-        {
-            //Debug.Log("Den flyttar ju baseJointRigidbodyn oxå");
-            //thisRigidbody.transform.position = baseJointRigidbody.transform.position + new Vector3(0, 3, 0);
-        }
-    }
+    //public override void UpdateLoop()
+    //{
+    //    if (initTimes == 0) return;
+    //    base.UpdateLoop();
+    //    if (currRigidbody == baseJointRigidbody)
+    //    {
+    //        //Debug.Log("Den flyttar ju baseJointRigidbodyn oxå");
+    //        //thisRigidbody.transform.position = baseJointRigidbody.transform.position + new Vector3(0, 3, 0);
+    //    }
+    //}
 
     public virtual bool ToggleRagdoll(bool b) //returnerar ifall den kunde gör detta nu
     {
-        if (lastState == b) return false; //ska inte kunna toggla till samma state igen
+        //if (lastState == b) return false; //ska inte kunna toggla till samma state igen
 
-        lastState = b;
+        //lastState = b;
 
-        if (Time.time < toggleCooldownTimer) return false;
-        else
-        {
-            toggleCooldownTimer = Time.time + toggleCooldown;
-        }
+        //if (Time.time < toggleCooldownTimer) return false;
+        //else
+        //{
+        //    toggleCooldownTimer = Time.time + toggleCooldown;
+        //    Debug.Log(toggleCooldownTimer.ToString());
+        //}
 
         foreach (Rigidbody rb in this.transform.GetComponentsInChildren<Rigidbody>())
         {
@@ -60,23 +61,23 @@ public class BaseRagdoll : BaseRigidbody {
             }
         }
 
-        if (b == true) //sätt igång ragdoll!
-        {
-            currRigidbody = thisRigidbody;
-            thisCollider.isTrigger = false; //så testar vi skada mot ontriggerenter istället
-            //thisRigidbody.isKinematic = true;
-            //thisRigidbody.useGravity = false;
-        }
-        else //stäng av ragdoll, flytta tillbaks childet
-        {
-            currRigidbody = thisRigidbody; //kan behöva flytta upp transformen så den inte buggar genom marken
-            thisCollider.isTrigger = false;
+        //if (b == true) //sätt igång ragdoll!
+        //{
+        //    currRigidbody = thisRigidbody;
+        //    thisCollider.isTrigger = false; //så testar vi skada mot ontriggerenter istället
+        //    //thisRigidbody.isKinematic = true;
+        //    //thisRigidbody.useGravity = false;
+        //}
+        //else //stäng av ragdoll, flytta tillbaks childet
+        //{
+        //    currRigidbody = thisRigidbody; //kan behöva flytta upp transformen så den inte buggar genom marken
+        //    thisCollider.isTrigger = false;
             
-            //thisRigidbody.isKinematic = false;
+        //    //thisRigidbody.isKinematic = false;
 
-            //baseJointRigidbody.transform.localPosition = baseJointStartPos;
-            //thisRigidbody.useGravity = true;
-        }
+        //    //baseJointRigidbody.transform.localPosition = baseJointStartPos;
+        //    //thisRigidbody.useGravity = true;
+        //}
 
         return true;
     }

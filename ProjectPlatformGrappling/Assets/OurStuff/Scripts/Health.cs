@@ -87,6 +87,13 @@ public class Health : BaseClass {
     // Update is called once per frame
     void Update()
     {
+        UpdateLoop();
+
+    }
+
+    public override void UpdateLoop()
+    {
+        base.UpdateLoop();
         if (isAlive == false)
         {
             if (uiCanvas != null)
@@ -126,10 +133,9 @@ public class Health : BaseClass {
             healthRegTimer = Time.time + healthRegIntervall;
             AddHealth(healthRegAmount);
         }
-
     }
 
-    public bool AddHealth(int h)
+    public virtual bool AddHealth(int h)
     {
         if (isAlive == false) return false;
 
@@ -190,7 +196,7 @@ public class Health : BaseClass {
         }
     }
 
-    IEnumerator DieDelayed()
+    public IEnumerator DieDelayed()
     {
         yield return new WaitForSeconds(delayedDeathTime);
         thisTransform.gameObject.SetActive(false);
@@ -218,7 +224,7 @@ public class Health : BaseClass {
         StartCoroutine(MarkMaterial(m, time));
     }
 
-    IEnumerator MarkMaterial(Material m, float time)
+    public IEnumerator MarkMaterial(Material m, float time)
     {
         //thisRenderer.material = m;
         for (int i = 0; i < thisRenderer.Length; i++)
