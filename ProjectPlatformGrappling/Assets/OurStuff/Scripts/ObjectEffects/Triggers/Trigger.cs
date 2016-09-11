@@ -4,6 +4,8 @@ using System.Collections;
 public class Trigger : BaseClass {
     [HideInInspector]
     public bool isTriggered = false;
+    public float collisionExtent = 5;
+    public LayerMask collisionMask;
 
     public ParticleSystem psActivated;
 	// Use this for initialization
@@ -18,24 +20,35 @@ public class Trigger : BaseClass {
         //psActivated = this.transform.GetComponent<ParticleSystem>();
     }
 
-    void OnTriggerEnter(Collider col)
-    {
-        ToggleTrigger(true);
-    }
+    //void OnTriggerEnter(Collider col)
+    //{
+    //    ToggleTrigger(true);
+    //}
 
-    void OnTriggerExit(Collider col)
-    {
-        ToggleTrigger(false);
-    }
+    //void OnTriggerExit(Collider col)
+    //{
+    //    //kolla ifall det står någon kvar
+    //    ToggleTrigger(false);
+    //}
 
-    void OnCollisionEnter(Collision col)
-    {
-        ToggleTrigger(true);
-    }
+    //void OnCollisionEnter(Collision col)
+    //{
+    //    ToggleTrigger(true);
+    //}
 
-    void OnCollisionExit(Collision col)
+    //void OnCollisionExit(Collision col)
+    //{
+    //    ToggleTrigger(false);
+    //}
+
+    public bool GetTriggered()
     {
-        ToggleTrigger(false);
+        Collider[] col = Physics.OverlapBox(transform.position, new Vector3(collisionExtent, collisionExtent, collisionExtent), Quaternion.identity, collisionMask);
+        if(col.Length > 0)
+        {
+            return true;
+        }
+        return false;
     }
 
     public void ToggleTrigger(bool b)
@@ -47,13 +60,31 @@ public class Trigger : BaseClass {
             psemit.enabled = true;
             psActivated.Play();
 
+            if(isTriggered != b)
+            {
+                StartTrigger();
+            }
             isTriggered = true;
         }
         else
         {
             psActivated.Stop();
 
+            if (isTriggered != b)
+            {
+                ExitTrigger();
+            }
             isTriggered = false;
         }
+    }
+
+    public virtual void StartTrigger()
+    {
+
+    }
+
+    public virtual void ExitTrigger()
+    {
+
     }
 }
