@@ -14,6 +14,7 @@ public class Trigger : BaseClass {
     public override void Init()
     {
         base.Init();
+        ToggleTrigger(false);
         //psActivated = this.transform.GetComponent<ParticleSystem>();
     }
 
