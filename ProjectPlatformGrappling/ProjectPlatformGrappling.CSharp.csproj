@@ -78,6 +78,7 @@
     <Compile Include="Assets\OurStuff\Scripts\Health.cs" />
     <Compile Include="Assets\OurStuff\Scripts\MagneticForces\MagneticBall.cs" />
     <Compile Include="Assets\OurStuff\Scripts\MagneticForces\MagneticForce.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\ForcePusher.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\HealthPickup.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\KillZone.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\MovingPlatform.cs" />

@@ -16,6 +16,7 @@ public class Trigger : BaseClass {
     public override void Init()
     {
         base.Init();
+        isTriggered = true; //är viktig så att ToggleTrigger inte fuckar med sina if-satser
         ToggleTrigger(false);
         //psActivated = this.transform.GetComponent<ParticleSystem>();
     }
@@ -55,13 +56,12 @@ public class Trigger : BaseClass {
     {
         if(b)
         {
-            psActivated.Simulate(0.0f, true, true);
-            ParticleSystem.EmissionModule psemit = psActivated.emission;
-            psemit.enabled = true;
-            psActivated.Play();
-
-            if(isTriggered != b)
+            if (isTriggered != b)
             {
+                psActivated.Simulate(0.0f, true, true);
+                ParticleSystem.EmissionModule psemit = psActivated.emission;
+                psemit.enabled = true;
+                psActivated.Play();
                 StartTrigger();
             }
             isTriggered = true;

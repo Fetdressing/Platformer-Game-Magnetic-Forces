@@ -8081,7 +8081,8 @@ MonoBehaviour:
     m_Bits: 256
   psActivated: {fileID: 1356244407}
   moveObject: {fileID: 2080151614}
-  moveSpeed: 10
+  moveSpeedHome: 25
+  moveSpeedTrigger: 70
   idlePosition: {fileID: 1663573900}
   triggerPosition: {fileID: 744812077}
 --- !u!23 &1403586855
