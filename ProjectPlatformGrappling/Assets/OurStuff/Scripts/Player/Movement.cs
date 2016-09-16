@@ -36,7 +36,7 @@ public class Movement : BaseRigidbody {
 
         Vector3 hor = Input.GetAxis("Horizontal") * cameraObj.right;
         Vector3 ver = Input.GetAxis("Vertical") * cameraObj.forward;
-
+        ver = new Vector3(ver.x, 0, ver.z);
         //thisRigidbody.MovePosition(thisTransform.position + ((hor + ver) * Time.deltaTime * speed));
         float finalSpeed;
 

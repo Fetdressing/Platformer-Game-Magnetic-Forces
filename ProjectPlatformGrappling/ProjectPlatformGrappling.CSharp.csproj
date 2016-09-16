@@ -86,6 +86,7 @@
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PhaseOutObject.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Triggers\MoveObjectTrigger.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Triggers\Trigger.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\WaterFloat.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\CameraController.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\MagneticPlacer.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Movement.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Assets\OurStuff\Scripts\Player\Old\PlayerMovement.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\PlayerHealth.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\FadingLight.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\VisualEffects\UVDisplacer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\OurStuff\2D\Shaders\Hologram.shader" />
