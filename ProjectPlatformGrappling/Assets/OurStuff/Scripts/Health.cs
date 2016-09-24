@@ -42,6 +42,7 @@ public class Health : BaseClass {
     public float delayedDeathTime = 0;
     [HideInInspector]
     public bool isAlive = true;
+    public bool isIndestructable = false;
 
     public int speedDamageThreshhold = 30;
 
@@ -138,6 +139,7 @@ public class Health : BaseClass {
     public virtual bool AddHealth(int h)
     {
         if (isAlive == false) return false;
+        if (isIndestructable == true) return false;
 
         currHealth += h;
         if (h < 0.0f)

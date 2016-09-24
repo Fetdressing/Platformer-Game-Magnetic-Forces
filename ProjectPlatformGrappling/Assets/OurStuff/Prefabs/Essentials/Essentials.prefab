@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011587756226}
   - 20: {fileID: 20000012395476500}
-  - 114: {fileID: 114000011472417958}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -401,7 +400,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000014057672548}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 103.25, y: 202.8, z: 213.2}
+  m_LocalPosition: {x: -350.62, y: -157, z: -479}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -455,7 +454,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 2000
+  far clip plane: 5000
   field of view: 70
   orthographic: 0
   orthographic size: 5
@@ -877,15 +876,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 4000013457113166}
-  targetHeight: 3
-  distance: 14
-  maxDistance: 25
+  targetHeight: 7
+  distance: 20
+  maxDistance: 40
   minDistance: 7
   xSpeed: 600
   ySpeed: 220
   yMinLimit: -80
   yMaxLimit: 90
-  zoomRate: 20
+  zoomRate: 30
   rotationDampening: 3
   theta2: 0.5
 --- !u!114 &114000010415997594
@@ -937,23 +936,6 @@ MonoBehaviour:
   targetLayerMask:
     serializedVersion: 2
     m_Bits: 768
---- !u!114 &114000011472417958
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010341602914}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4975a6e437fc3b149a8cd508ce5bdd69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  threshold: 0.25
-  intensity: 0.75
-  blurSize: 1
-  blurIterations: 1
-  blurType: 0
-  fastBloomShader: {fileID: 4800000, guid: 68a00c837b82e4c6d92e7da765dc5f1d, type: 3}
 --- !u!114 &114000011561673900
 MonoBehaviour:
   m_ObjectHideFlags: 1

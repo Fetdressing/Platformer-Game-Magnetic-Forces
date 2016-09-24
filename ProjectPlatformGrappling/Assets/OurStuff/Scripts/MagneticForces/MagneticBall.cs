@@ -73,10 +73,10 @@ public class MagneticBall : MagneticForce
                 HeadHome();
                 break;
             case MagneticBallState.HeadingToTarget:
-                ApplyForce();
+                //ApplyForce();
                 break;
             case MagneticBallState.ApplyingGravity:
-                ApplyForce();
+                //ApplyForce();
                 break;
         }
 
@@ -93,6 +93,11 @@ public class MagneticBall : MagneticForce
 
         Vector3[] positionArray = new[] { thisTransform.position, player.position };
         lineRendererBindPlayer.SetPositions(positionArray);
+    }
+
+    public override void FixedUpdate()
+    {
+        FixedUpdateLoop();
     }
 
     public override void FixedUpdateLoop()

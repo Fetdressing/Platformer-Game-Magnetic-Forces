@@ -84,7 +84,7 @@ public class MagneticForce : BaseRigidbody
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    public virtual void FixedUpdate()
     {
         FixedUpdateLoop();
     }
