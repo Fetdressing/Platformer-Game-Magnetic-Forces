@@ -88,6 +88,7 @@
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Triggers\MoveObjectTrigger.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Triggers\Trigger.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\WaterFloat.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Wisp.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\CameraController.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\MagneticPlacer.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Movement.cs" />

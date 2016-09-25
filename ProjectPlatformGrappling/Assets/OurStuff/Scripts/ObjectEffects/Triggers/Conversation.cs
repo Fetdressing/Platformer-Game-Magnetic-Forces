@@ -4,6 +4,8 @@ using System.Collections;
 
 public class Conversation : MonoBehaviour {
     public bool isRepetable = false;
+    public float repeatInterval = 20;
+    private float repeatIntervalTimer = 0.0f;
     private bool isPlaying = false;
     private int nrPlays = 0; //hur många gånger den spelats
 
@@ -13,7 +15,11 @@ public class Conversation : MonoBehaviour {
 
     public void BeginConversation()
     {
-        StartCoroutine(PlayConversation());
+        if (repeatIntervalTimer < Time.time)
+        {
+            repeatIntervalTimer = Time.time + repeatInterval;
+            StartCoroutine(PlayConversation());
+        }
     }
 
     IEnumerator PlayConversation()
