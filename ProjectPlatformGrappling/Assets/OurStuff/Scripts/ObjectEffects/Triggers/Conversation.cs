@@ -3,25 +3,12 @@ using UnityEngine.Events;
 using System.Collections;
 
 public class Conversation : MonoBehaviour {
-    [System.Serializable]
-    public class FunctionEvent : UnityEvent { }
+    public bool isRepetable = false;
+    private bool isPlaying = false;
+    private int nrPlays = 0; //hur många gånger den spelats
 
     public float startConversationDelay = 1.0f;
-
-    public class CharacterEvent : MonoBehaviour //denne visar ju inte sina medlemsvariabler!!
-    {
-        [SerializeField]
-        public float characterTime = 2.0f;
-        public AudioSource characterAudioSource;
-        public Animator characterAnimator;
-
-        public AudioClip characterAudioLine;
-        public Animation characterAnimation;
-
-        public float eventDelay = 2.0f;
-        public FunctionEvent OnEvent; //funktion som ska kallas
-    }
-
+    
     public CharacterEvent[] characterEvents;
 
     public void BeginConversation()
@@ -31,29 +18,34 @@ public class Conversation : MonoBehaviour {
 
     IEnumerator PlayConversation()
     {
-        
-        for(int i = 0; i < characterEvents.Length; i++)
+        if (isPlaying == true) yield break;
+
+        if (nrPlays > 0 && isRepetable == false) yield break;
+        nrPlays++;
+        isPlaying = true;
+        for (int i = 0; i < characterEvents.Length; i++)
         {
             CharacterEvent cEvent = characterEvents[i];
             StartCoroutine(EventDelay(cEvent));
 
-            if (cEvent.characterAudioLine != null)
+            if (cEvent.audioLine != null)
             {
-                cEvent.characterAudioSource.PlayOneShot(cEvent.characterAudioLine);
+                cEvent.audioSource.PlayOneShot(cEvent.audioLine);
             }
 
-            if(cEvent.characterAnimation != null)
+            if(cEvent.animation != null)
             {
-                cEvent.characterAnimator.CrossFade(cEvent.characterAnimation.ToString(), 0.5f);
+                cEvent.animator.CrossFade(cEvent.animation.ToString(), 0.5f);
             }
 
-            yield return new WaitForSeconds(characterEvents[i].characterTime);
+            yield return new WaitForSeconds(characterEvents[i].lineTime);
         }
+        isPlaying = false;
     }
 
     IEnumerator EventDelay(CharacterEvent cEvent)
     {
-        yield return new WaitForSeconds(cEvent.eventDelay);
+        yield return new WaitForSeconds(cEvent.eventDelayTime);
         cEvent.OnEvent.Invoke();
     }
 
@@ -64,4 +56,21 @@ public class Conversation : MonoBehaviour {
             BeginConversation();
         }
     }
+}
+
+[System.Serializable]
+public class FunctionEvent : UnityEvent { }
+
+[System.Serializable]
+public class CharacterEvent //denne visar ju inte sina medlemsvariabler!!
+{
+    public float lineTime = 2.0f;
+    public AudioSource audioSource;
+    public Animator animator;
+
+    public AudioClip audioLine;
+    public Animation animation;
+
+    public float eventDelayTime = 2.0f;
+    public FunctionEvent OnEvent; //funktion som ska kallas
 }
