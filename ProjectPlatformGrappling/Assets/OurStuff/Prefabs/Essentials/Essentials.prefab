@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011587756226}
   - 20: {fileID: 20000012395476500}
+  - 81: {fileID: 81000014101394902}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -266,6 +267,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1000014272994744
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000013751969980}
+  - 82: {fileID: 82000010638757112}
+  m_Layer: 8
+  m_Name: MovementAudioSource
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1000014290745280
 GameObject:
   m_ObjectHideFlags: 1
@@ -408,6 +425,7 @@ Transform:
   - {fileID: 4000014188956636}
   - {fileID: 4000011048038760}
   - {fileID: 4000013229770652}
+  - {fileID: 4000013751969980}
   m_Father: {fileID: 4000012220389674}
   m_RootOrder: 3
 --- !u!4 &4000013740493842
@@ -423,6 +441,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4000011048038760}
   m_RootOrder: 0
+--- !u!4 &4000013751969980
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014272994744}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 4000013457113166}
+  m_RootOrder: 4
 --- !u!4 &4000014188956636
 Transform:
   m_ObjectHideFlags: 1
@@ -696,6 +727,87 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!81 &81000014101394902
+AudioListener:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010341602914}
+  m_Enabled: 1
+--- !u!82 &82000010638757112
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014272994744}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  Priority: 128
+  DopplerLevel: 0
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!96 &96000011883200918
 TrailRenderer:
   m_ObjectHideFlags: 1
@@ -963,7 +1075,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   cameraObj: {fileID: 4000011156230930}
+  movementAudioSource: {fileID: 82000010638757112}
   slideGroundParticleSystem: {fileID: 198000013659903142}
+  slideGroundSound: {fileID: 8300000, guid: e9567ca3be2babd4d8f361805e5340d1, type: 3}
 --- !u!114 &114000011656466056
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1222,6 +1336,7 @@ MonoBehaviour:
   deathParticleSystemSpawned: {fileID: 0}
   delayedDeathTime: 0
   isAlive: 1
+  isIndestructable: 0
   speedDamageThreshhold: 90
 --- !u!120 &120000010159900428
 LineRenderer:

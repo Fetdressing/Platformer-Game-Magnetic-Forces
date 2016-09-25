@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Trigger : BaseClass {
     [HideInInspector]
-    public bool isTriggered = false;
+    public bool isTriggered;
     public float collisionExtent = 5;
     public LayerMask collisionMask;
 
@@ -68,13 +68,12 @@ public class Trigger : BaseClass {
         }
         else
         {
-            psActivated.Stop();
-
             if (isTriggered != b)
             {
+                psActivated.Stop();
                 ExitTrigger();
+                isTriggered = false;
             }
-            isTriggered = false;
         }
     }
 

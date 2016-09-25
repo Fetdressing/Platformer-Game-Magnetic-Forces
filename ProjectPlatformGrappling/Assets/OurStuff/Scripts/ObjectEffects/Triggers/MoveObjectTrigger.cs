@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class MoveObjectTrigger : Trigger {
+
     public Transform moveObject;
     private Rigidbody moveRigidbody;
     public float moveSpeedHome = 9.0f;
@@ -20,7 +21,9 @@ public class MoveObjectTrigger : Trigger {
 
     void FixedUpdate()
     {
-        ToggleTrigger(GetTriggered());
+        isTriggered = GetTriggered();
+
+        ToggleTrigger(isTriggered);
         if(Vector3.Distance(moveObject.position, currMoveposition) > 3.0f)
         {
             Vector3 toTarget = (currMoveposition - moveObject.position).normalized;

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Movement : BaseRigidbody {
     public Transform cameraObj;
+    public AudioSource movementAudioSource;
     private Transform thisTransform;
     private Health thisHealth;
 
@@ -15,6 +16,7 @@ public class Movement : BaseRigidbody {
 
     private LayerMask layermaskForces;
     public ParticleSystem slideGroundParticleSystem;
+    public AudioClip slideGroundSound;
 	// Use this for initialization
 	void Start () {
         Init();
@@ -104,6 +106,7 @@ public class Movement : BaseRigidbody {
     {
         if (slideGroundParticleSystem != null)
         {
+            movementAudioSource.PlayOneShot(slideGroundSound);
             //Vector3 vecDir = (thisTransform.position- col.contacts[0].point).normalized;
             //Vector3 dir = Vector3.RotateTowards(thisTransform.position, col.contacts[0].point,1,1);
             //Vector3 vecDir = thisRigidbody.velocity.normalized + col.contacts[0].normal * 0.1f;
