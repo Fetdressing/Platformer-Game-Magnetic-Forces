@@ -21,9 +21,9 @@ public class MoveObjectTrigger : Trigger {
 
     void FixedUpdate()
     {
-        isTriggered = GetTriggered();
+        if (initTimes == 0) return;
 
-        ToggleTrigger(isTriggered);
+        ToggleTrigger(GetTriggered());
         if(Vector3.Distance(moveObject.position, currMoveposition) > 3.0f)
         {
             Vector3 toTarget = (currMoveposition - moveObject.position).normalized;

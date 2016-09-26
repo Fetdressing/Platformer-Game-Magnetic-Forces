@@ -8,8 +8,11 @@ public class Trigger : BaseClass {
     public LayerMask collisionMask;
 
     public ParticleSystem psActivated;
-	// Use this for initialization
-	void Start () {
+
+    public FunctionEvent fEventStart;
+    public FunctionEvent fEventExit;
+    // Use this for initialization
+    void Start () {
         Init();
 	}
 
@@ -18,6 +21,7 @@ public class Trigger : BaseClass {
         base.Init();
         isTriggered = true; //är viktig så att ToggleTrigger inte fuckar med sina if-satser
         ToggleTrigger(false);
+        initTimes++;
         //psActivated = this.transform.GetComponent<ParticleSystem>();
     }
 
@@ -42,6 +46,13 @@ public class Trigger : BaseClass {
     //    ToggleTrigger(false);
     //}
 
+    void FixedUpdate()
+    {
+        if (initTimes == 0) return;
+
+        ToggleTrigger(GetTriggered());
+    }
+
     public bool GetTriggered()
     {
         Collider[] col = Physics.OverlapBox(transform.position, new Vector3(collisionExtent, collisionExtent, collisionExtent), Quaternion.identity, collisionMask);
@@ -54,7 +65,7 @@ public class Trigger : BaseClass {
 
     public void ToggleTrigger(bool b)
     {
-        if(b)
+        if (b)
         {
             if (isTriggered != b)
             {
@@ -63,6 +74,7 @@ public class Trigger : BaseClass {
                 psemit.enabled = true;
                 psActivated.Play();
                 StartTrigger();
+                
             }
             isTriggered = true;
         }
@@ -70,20 +82,21 @@ public class Trigger : BaseClass {
         {
             if (isTriggered != b)
             {
-                psActivated.Stop();
                 ExitTrigger();
-                isTriggered = false;
             }
+            psActivated.Stop();                
+            isTriggered = false;
+            
         }
     }
 
     public virtual void StartTrigger()
     {
-
+        fEventStart.Invoke();
     }
 
     public virtual void ExitTrigger()
     {
-
+        fEventExit.Invoke();
     }
 }

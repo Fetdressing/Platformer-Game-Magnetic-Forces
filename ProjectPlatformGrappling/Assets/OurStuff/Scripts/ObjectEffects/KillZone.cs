@@ -12,6 +12,7 @@ public class KillZone : BaseClass {
     public float damage = 1;
 
     private ParticleSystem ps;
+    private Light lightActive;
 
     void Start()
     {
@@ -25,15 +26,18 @@ public class KillZone : BaseClass {
 
         thisColliders = thisTransform.GetComponentsInChildren<Collider>();
         ps = thisTransform.GetComponent<ParticleSystem>();
+        lightActive = thisTransform.GetComponent<Light>();
 
         Reset();
+        initTimes++;
     }
 
     public override void Reset()
     {
         base.Reset();
         StopAllCoroutines();
-        StartCoroutine(KillZoneLifetime());
+        if(phaseTime != 0)
+            StartCoroutine(KillZoneLifetime());
     }
 
     IEnumerator KillZoneLifetime()
@@ -50,6 +54,7 @@ public class KillZone : BaseClass {
 
     public void ToggleKillZone()
     {
+        if (initTimes == 0) return;
         bool b = thisColliders[0].enabled;
 
         if (b == false)
@@ -58,10 +63,19 @@ public class KillZone : BaseClass {
             ParticleSystem.EmissionModule psemit = ps.emission;
             psemit.enabled = true;
             ps.Play();
+
+            if(lightActive != null)
+            {
+                lightActive.enabled = true;
+            }
         }
         else
         {
             ps.Stop();
+            if (lightActive != null)
+            {
+                lightActive.enabled = false;
+            }
         }
 
         for (int i = 0; i < thisColliders.Length; i++)
@@ -72,16 +86,25 @@ public class KillZone : BaseClass {
 
     public void ToggleKillZone(bool b)
     {
+        if (initTimes == 0) return;
         if (b == false)
         {
             ps.Simulate(0.0f, true, true);
             ParticleSystem.EmissionModule psemit = ps.emission;
             psemit.enabled = true;
             ps.Play();
+            if (lightActive != null)
+            {
+                lightActive.enabled = true;
+            }
         }
         else
         {
             ps.Stop();
+            if (lightActive != null)
+            {
+                lightActive.enabled = false;
+            }
         }
 
         for (int i = 0; i < thisColliders.Length; i++)
