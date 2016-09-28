@@ -82,6 +82,7 @@
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\HealthPickup.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\KillZone.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\MovingPlatform.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\ObjectSpawner.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\ParticleTimed.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PhaseOutObject.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Triggers\Conversation.cs" />
