@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="Assets\OurStuff\Scripts\AI\AIBase.cs" />
     <Compile Include="Assets\OurStuff\Scripts\AI\WalkerAI.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\AI\Wisp.cs" />
     <Compile Include="Assets\OurStuff\Scripts\BaseClass.cs" />
     <Compile Include="Assets\OurStuff\Scripts\BaseRagdoll.cs" />
     <Compile Include="Assets\OurStuff\Scripts\BaseRigidbody.cs" />
@@ -91,13 +92,13 @@
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Triggers\MoveObjectTrigger.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Triggers\Trigger.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\WaterFloat.cs" />
-    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Wisp.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\CameraController.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\MagneticPlacer.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Movement.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Old\MagneticHandler.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Old\PlayerMovement.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\PlayerHealth.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\VisualEffects\AnimationSpeedModifier.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\FadingLight.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\UVDisplacer.cs" />
   </ItemGroup>
