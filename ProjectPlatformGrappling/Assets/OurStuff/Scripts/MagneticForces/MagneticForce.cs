@@ -3,47 +3,18 @@ using System.Collections;
 
 public class MagneticForce : BaseRigidbody
 {
-    public enum ForceType { Push, Pull };
+    public enum ForceType { Push, Pull, Directional };
+    [Header("MagneticForce")]
     public ForceType forceType;
-
-    public Color pushColor;
-    public Color pullColor;
-    public Material pushHoloMat;
-    public Material pullHoloMat;
-
-    [HideInInspector]
-    public static Color pushColorS;
-    [HideInInspector]
-    public static Color pullColorS;
-    [HideInInspector]
-    public Color normalColor;
-
-    [HideInInspector]
-    public static Material pushHoloFMat;
-    [HideInInspector]
-    public static Material pullHoloFMat;
-    [HideInInspector]
-    public Material normalMat; //det materialet som används
-
-    [HideInInspector]
-    public Transform thisTransform;
-    [HideInInspector]
-    public Transform holoRangeTransform;
-    [HideInInspector]
-    public ParticleSystem ps;
-    [HideInInspector]
-    public Light pLight;
-    [HideInInspector]
-    public TrailRenderer tRenderer;
-    [HideInInspector]
-    public Renderer thisRenderer;
 
     public LayerMask layerMaskNormal;
     public LayerMask layerMaskSpecific; //används för endast spelaren o sånt förmodligen
 
+    public bool massIndependent = false;
     public float force = 20;
     public float range = 40;
 
+    public Vector3 directionVector = Vector3.up;
     // Use this for initialization
     void Start()
     {
@@ -53,34 +24,6 @@ public class MagneticForce : BaseRigidbody
     public override void Init()
     {
         base.Init();
-        thisTransform = this.transform;
-        holoRangeTransform = thisTransform.GetComponentsInChildren<Transform>()[1];
-        holoRangeTransform.localScale = new Vector3(range * (1/thisTransform.localScale.x), range * (1/thisTransform.localScale.x), range * (1/thisTransform.localScale.x));
-
-        pushHoloFMat = pushHoloMat;
-        pullHoloFMat = pullHoloMat;
-
-        ps = thisTransform.GetComponent<ParticleSystem>();
-        pLight = thisTransform.GetComponent<Light>();
-        tRenderer = thisTransform.GetComponent<TrailRenderer>();
-        thisRenderer = thisTransform.GetComponent<MeshRenderer>();
-
-        pushColorS = pushColor;
-        pullColorS = pullColor;
-
-        switch (forceType)
-        {
-            case ForceType.Push:
-                SetCurrColor(pushColorS);
-                SetCurrMaterial(pushHoloFMat);
-                break;
-            case ForceType.Pull:
-                SetCurrColor(pullColorS);
-                SetCurrMaterial(pullHoloFMat);
-                break;
-        }
-        normalMat = tRenderer.material;
-        normalColor = pLight.color;
     }
 
     // Update is called once per frame
@@ -97,28 +40,37 @@ public class MagneticForce : BaseRigidbody
     public virtual void ApplyForce()
     {
         Collider[] colliders;
-        colliders = Physics.OverlapSphere(thisTransform.position, range, layerMaskNormal);
+        colliders = Physics.OverlapSphere(transform.position, range, layerMaskNormal);
         foreach (Collider col in colliders)
         {
             Transform tr = col.transform;
-            if (tr == thisTransform) continue;
+            if (tr == transform) continue;
 
             if (tr.GetComponent<Rigidbody>() != null)
             {
                 Rigidbody rigidbodyTemp = tr.GetComponent<Rigidbody>();
                 Vector3 dir;
-                float distanceMultiplier = Mathf.Max(Vector3.Distance(thisTransform.position, tr.position), 0.4f);
+                float distanceMultiplier = Mathf.Max(Vector3.Distance(transform.position, tr.position), 0.4f);
+                float conditionMultiplier = 1.0f;
+                if(massIndependent)
+                {
+                    conditionMultiplier = rigidbodyTemp.mass;
+                }
                 switch (forceType)
                 {
                     case ForceType.Push:
-                        dir = (tr.transform.position - thisTransform.position).normalized;
+                        dir = (tr.transform.position - transform.position).normalized;
                         //rigidbodyTemp.AddForce((force * dir * Time.deltaTime) * (1 - distanceMultiplier / range), ForceMode.Force);
-                        AddForceFastDrag((force * dir * Time.deltaTime) * (1 - distanceMultiplier / range), ForceMode.Force, rigidbodyTemp);
+                        AddForceFastDrag((force * conditionMultiplier * dir * Time.deltaTime) * (1 - distanceMultiplier / range), ForceMode.Force, rigidbodyTemp);
                         break;
                     case ForceType.Pull:
-                        dir = (thisTransform.position - tr.transform.position).normalized;
+                        dir = (transform.position - tr.transform.position).normalized;
                         //rigidbodyTemp.AddForce((force * dir * Time.deltaTime) * (1 - distanceMultiplier / range), ForceMode.Force);
-                        AddForceFastDrag((force * dir * Time.deltaTime) * (1 - distanceMultiplier / range), ForceMode.Force, rigidbodyTemp);
+                        AddForceFastDrag((force * conditionMultiplier * dir * Time.deltaTime) * (1 - distanceMultiplier / range), ForceMode.Force, rigidbodyTemp);
+                        break;
+                    case ForceType.Directional:
+                        dir = directionVector;
+                        AddForceFastDrag((force * conditionMultiplier * dir * Time.deltaTime) * (1 - distanceMultiplier / range), ForceMode.Force, rigidbodyTemp);
                         break;
                 }
             }
@@ -131,16 +83,16 @@ public class MagneticForce : BaseRigidbody
         {
             Rigidbody rigidbodyTemp = tr.GetComponent<Rigidbody>();
             Vector3 dir;
-            float distanceMultiplier = Vector3.Distance(thisTransform.position, tr.position);
+            float distanceMultiplier = Vector3.Distance(transform.position, tr.position);
             switch (forceType)
             {
                 case ForceType.Push:
-                    dir = (tr.transform.position - thisTransform.position).normalized;
+                    dir = (tr.transform.position - transform.position).normalized;
                     //rigidbodyTemp.AddForce((forceT * dir * Time.deltaTime) , ForceMode.Force);
                     AddForceFastDrag((forceT * dir * Time.deltaTime), ForceMode.Force, rigidbodyTemp);
                     break;
                 case ForceType.Pull:
-                    dir = (thisTransform.position - tr.transform.position).normalized;
+                    dir = (transform.position - tr.transform.position).normalized;
                     //rigidbodyTemp.AddForce((forceT * dir * Time.deltaTime) , ForceMode.Force);
                     AddForceFastDrag((forceT * dir * Time.deltaTime), ForceMode.Force, rigidbodyTemp);
                     break;
@@ -148,17 +100,4 @@ public class MagneticForce : BaseRigidbody
         }
     }
 
-    public void SetCurrMaterial(Material m)
-    {
-        holoRangeTransform.GetComponent<Renderer>().material = m;
-        //thisRenderer.material = m;
-        //renderer.material = pushHoloFMat; //vänta lite med dessa
-        tRenderer.material = m;
-    }
-
-    public void SetCurrColor(Color c)
-    {
-        ps.startColor = c;
-        pLight.color = c;
-    }
 }

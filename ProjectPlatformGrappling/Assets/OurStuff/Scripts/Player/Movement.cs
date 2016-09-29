@@ -14,9 +14,14 @@ public class Movement : BaseRigidbody {
     private float jumpForce = 30;
     private float maxSpeed = 55;
 
+    private Vector3 hor = new Vector3(0,0,0); //har dem här så jag kan hämta värdena via update
+    private Vector3 ver = new Vector3(0, 0, 0);
+
     private LayerMask layermaskForces;
     public ParticleSystem slideGroundParticleSystem;
     public AudioClip slideGroundSound;
+
+    public PullField pullField; //som drar till sig grejer till spelaren, infinite gravity!
 	// Use this for initialization
 	void Start () {
         Init();
@@ -31,13 +36,18 @@ public class Movement : BaseRigidbody {
         isGrounded = false;
         groundCheckLM = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("MagneticBall") | 1 << LayerMask.NameToLayer("Ragdoll"));
         layermaskForces = groundCheckLM;
+        Reset();
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
+        ToggleInfiniteGravity(false);
     }
 
     // Update is called once per frame
     void FixedUpdate () {
-
-        Vector3 hor = Input.GetAxis("Horizontal") * cameraObj.right;
-        Vector3 ver = Input.GetAxis("Vertical") * cameraObj.forward;
+        
         ver = new Vector3(ver.x, 0, ver.z);
         //thisRigidbody.MovePosition(thisTransform.position + ((hor + ver) * Time.deltaTime * speed));
         float finalSpeed;
@@ -76,6 +86,14 @@ public class Movement : BaseRigidbody {
 
     void Update()
     {
+        hor = Input.GetAxis("Horizontal") * cameraObj.right;
+        ver = Input.GetAxis("Vertical") * cameraObj.forward;
+
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            ToggleInfiniteGravity(!pullField.gameObject.activeSelf);
+        }
+       
         isGrounded = GetGrounded();
         distanceToGround = GetDistanceToGround();
 
@@ -145,7 +163,8 @@ public class Movement : BaseRigidbody {
 
     void ToggleInfiniteGravity(bool b)
     {
-        if(b)
+        pullField.gameObject.SetActive(b);
+        if (b)
         {
 
         }

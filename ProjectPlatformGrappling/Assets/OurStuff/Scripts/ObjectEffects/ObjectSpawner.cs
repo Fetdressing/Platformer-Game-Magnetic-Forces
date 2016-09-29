@@ -7,7 +7,7 @@ public class ObjectSpawner : BaseClass {
 
     public GameObject particleEffect;
 
-    public float cooldownTime = 0.7f;
+    public float cooldownTime = 3.0f;
     private float cooldownTimer = 0.0f;
 
     private Quaternion startRotation;
@@ -50,6 +50,7 @@ public class ObjectSpawner : BaseClass {
             tempRig.velocity = new Vector3(0, 0, 0);
         }
         spawnObject.position = spawnPoint.position;
+        spawnObject.gameObject.SetActive(true);
 
         GameObject parTemp2 = GameObject.Instantiate(particleEffect.gameObject);
         parTemp.transform.position = spawnObject.position;

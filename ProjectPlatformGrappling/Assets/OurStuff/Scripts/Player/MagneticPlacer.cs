@@ -15,8 +15,7 @@ public class MagneticPlacer : BaseClass {
     //private List<Transform> projectilesStartPositionsPush = new List<Transform>();
     private int currPushIndex = 0;
 
-    [HideInInspector]
-    public float shootForce = 900;
+    public float shootForce = 1100;
     [HideInInspector]
     public float ballOutTime = 2.5f;
     public LayerMask targetLayerMask;

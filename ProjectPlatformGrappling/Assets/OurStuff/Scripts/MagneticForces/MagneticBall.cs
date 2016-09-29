@@ -15,15 +15,45 @@ public class MagneticBall : MagneticForce
 
     private Transform player;
 
-    public float playerForce = 15000;
+    public float playerForce = 24000;
 
-    private float cooldownTime = 3.0f;
+    private float cooldownTime = 2.0f;
     private float cooldownTimer = 0.0f;
     public Material cooldownMat;
 
     private float cooldownTimeCallback = 0.2f;
     private float cooldownTimerCallback = 0.0f;
 
+
+    //cosmetic
+    [HideInInspector]
+    public static Color pushColorS = Color.red;
+    [HideInInspector]
+    public static Color pullColorS = Color.blue;
+    [HideInInspector]
+    public Color normalColor;
+
+    public Material pushHoloMat;
+    public Material pullHoloMat;
+    [HideInInspector]
+    public static Material pushHoloFMat;
+    [HideInInspector]
+    public static Material pullHoloFMat;
+    [HideInInspector]
+    public Material normalMat; //det materialet som används
+
+    [HideInInspector]
+    public Transform holoRangeTransform;
+    [HideInInspector]
+    public ParticleSystem ps;
+    [HideInInspector]
+    public Light pLight;
+    [HideInInspector]
+    public TrailRenderer tRenderer;
+    [HideInInspector]
+    public Renderer thisRenderer;
+
+    [HideInInspector]
     public LineRenderer lineRendererBindPlayer;
 	// Use this for initialization
 	void Start () {
@@ -33,12 +63,38 @@ public class MagneticBall : MagneticForce
     public override void Init()
     {
         base.Init();
-        thisRigidbody = thisTransform.GetComponent<Rigidbody>();
+        holoRangeTransform = transform.GetComponentsInChildren<Transform>()[1];
+        holoRangeTransform.localScale = new Vector3(range * (1 / transform.localScale.x), range * (1 / transform.localScale.x), range * (1 / transform.localScale.x));
+
+        pushHoloFMat = pushHoloMat;
+        pullHoloFMat = pullHoloMat;
+
+        ps = transform.GetComponent<ParticleSystem>();
+        pLight = transform.GetComponent<Light>();
+        tRenderer = transform.GetComponent<TrailRenderer>();
+        thisRenderer = transform.GetComponent<MeshRenderer>();
+
+        switch (forceType)
+        {
+            case ForceType.Push:
+                SetCurrColor(pushColorS);
+                SetCurrMaterial(pushHoloFMat);
+                break;
+            case ForceType.Pull:
+                SetCurrColor(pullColorS);
+                SetCurrMaterial(pullHoloFMat);
+                break;
+        }
+        normalMat = tRenderer.material;
+        normalColor = pLight.color;
+
+
+        thisRigidbody = transform.GetComponent<Rigidbody>();
         thisRigidbody.isKinematic = false;
-        lineRendererBindPlayer = thisTransform.GetComponent<LineRenderer>();
+        lineRendererBindPlayer = transform.GetComponent<LineRenderer>();
         SetState(MagneticBallState.HeadingHome);
         cooldownTimer = 0.0f;
-        startScale = thisTransform.lossyScale;
+        startScale = transform.lossyScale;
     }
 
     public void SetStartTransform(Transform t) //absolete
@@ -91,7 +147,7 @@ public class MagneticBall : MagneticForce
             SetCurrMaterial(normalMat);
         }
 
-        Vector3[] positionArray = new[] { thisTransform.position, player.position };
+        Vector3[] positionArray = new[] { transform.position, player.position };
         lineRendererBindPlayer.SetPositions(positionArray);
     }
 
@@ -142,14 +198,14 @@ public class MagneticBall : MagneticForce
 
     void HeadHome()
     {
-        thisTransform.position = Vector3.Slerp(thisTransform.position, homePos, Time.deltaTime * 10f);
+        transform.position = Vector3.Slerp(transform.position, homePos, Time.deltaTime * 10f);
     }
 
     void OnTriggerEnter(Collider col)
     {
         if (magneticBallState == MagneticBallState.HeadingToTarget)
         {
-            thisTransform.SetParent(col.transform, true);
+            transform.SetParent(col.transform, true);
             SetState(MagneticBallState.ApplyingGravity);
         }
         return;
@@ -169,8 +225,8 @@ public class MagneticBall : MagneticForce
     public void OrderHeadHome()
     {
         if (cooldownTimerCallback > Time.time) return;
-        thisTransform.SetParent(null);
-        thisTransform.localScale = startScale;
+        transform.SetParent(null);
+        transform.localScale = startScale;
 
         StopAllCoroutines();
         cooldownTimer = cooldownTime + Time.time;
@@ -179,8 +235,8 @@ public class MagneticBall : MagneticForce
     public void OrderFire(float force, float stayTime)
     {
         if (cooldownTimer > Time.time) return;
-        thisTransform.SetParent(null);
-        thisTransform.localScale = startScale;
+        transform.SetParent(null);
+        transform.localScale = startScale;
 
         cooldownTimerCallback = cooldownTimeCallback + Time.time;
         StopAllCoroutines();
@@ -197,6 +253,22 @@ public class MagneticBall : MagneticForce
             OrderHeadHome();
         }
     }
-    
+
+
+
+    public void SetCurrMaterial(Material m)
+    {
+        holoRangeTransform.GetComponent<Renderer>().material = m;
+        //thisRenderer.material = m;
+        //renderer.material = pushHoloFMat; //vänta lite med dessa
+        tRenderer.material = m;
+    }
+
+    public void SetCurrColor(Color c)
+    {
+        ps.startColor = c;
+        pLight.color = c;
+    }
+
 }
 public enum MagneticBallState { HeadingHome, HeadingToTarget, ApplyingGravity };
