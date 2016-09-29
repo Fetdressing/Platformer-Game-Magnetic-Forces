@@ -17,7 +17,7 @@ public class PlayerHealth : Health {
         bool b = base.AddHealth(h);
         float damagedFactor = 1 - GetCurrHealth() / maxHealth;
 
-        if(damagedFactor < 0.3f)
+        if(damagedFactor < 0.3f) //bloodscreen eller nått annat?
         {
             
         }

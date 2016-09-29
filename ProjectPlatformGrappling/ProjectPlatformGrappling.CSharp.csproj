@@ -74,7 +74,8 @@
     <Compile Include="Assets\OurStuff\Scripts\BaseClass.cs" />
     <Compile Include="Assets\OurStuff\Scripts\BaseRagdoll.cs" />
     <Compile Include="Assets\OurStuff\Scripts\BaseRigidbody.cs" />
-    <Compile Include="Assets\OurStuff\Scripts\CameraManager.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\Game\CameraManager.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\Game\SpawnManager.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Health.cs" />
     <Compile Include="Assets\OurStuff\Scripts\MagneticForces\MagneticBall.cs" />
     <Compile Include="Assets\OurStuff\Scripts\MagneticForces\MagneticForce.cs" />

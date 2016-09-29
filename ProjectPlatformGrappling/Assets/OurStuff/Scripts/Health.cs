@@ -25,6 +25,7 @@ public class Health : BaseClass {
     [HideInInspector]
     public int maxHealth; //public för att den skall kunna moddas från tex AgentStats
     private int currHealth;
+    private Vector3 deathLocation; //spara ned vart denna dog, används för respawn
 
     public int startHealthRegAmount = 1;
     [HideInInspector]
@@ -79,10 +80,18 @@ public class Health : BaseClass {
     {
         base.Reset();
         maxHealth = startHealth; //maxHealth kan påverkas av andra faktorer also
-        AddHealth(maxHealth);
+        isAlive = true;
+        SetHealth(maxHealth);
 
         healthRegAmount = startHealthRegAmount;
+        isAlive = true;
+        thisTransform.gameObject.SetActive(true);
 
+        if (uiCanvas != null)
+        {
+            uiCanvas.gameObject.SetActive(true);
+        }
+        ApplyMaterial(damagedMaterial, 0.1f);
     }
 
     // Update is called once per frame
@@ -165,11 +174,31 @@ public class Health : BaseClass {
         return true; //target vid liv
     }
 
+    public void SetHealth(int h)
+    {
+        currHealth = h;
+        if (currHealth > maxHealth)
+        {
+            currHealth = maxHealth;
+        }
+
+        if (healthBar != null)
+            healthBar.fillAmount = (float)currHealth / (float)maxHealth;
+
+        if (currHealth <= 0)
+        {
+            if (healthBar != null)
+                healthBar.fillAmount = (float)currHealth / (float)maxHealth;
+            Die();
+        }
+    }
+
     public void Die()
     {
         Debug.Log("död");
         isAlive = false;
 
+        deathLocation = transform.position;
         //if (aiBase.GetComponent<AgentBase>() != null)
         //{
         //    aiBase.GetComponent<AgentBase>().agent.enabled = false;
@@ -202,6 +231,10 @@ public class Health : BaseClass {
     {
         yield return new WaitForSeconds(delayedDeathTime);
         thisTransform.gameObject.SetActive(false);
+        if (transform.tag == "Player")
+        {
+            GameObject.FindGameObjectWithTag("Manager").GetComponent<SpawnManager>().Respawn(deathLocation);
+        }
     }
 
     public bool IsAlive()
@@ -223,6 +256,7 @@ public class Health : BaseClass {
 
     public void ApplyMaterial(Material m, float time)
     {
+        if (thisTransform.gameObject.activeSelf == false) return;
         StartCoroutine(MarkMaterial(m, time));
     }
 

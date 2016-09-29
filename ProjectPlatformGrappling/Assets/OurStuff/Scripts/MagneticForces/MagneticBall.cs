@@ -97,6 +97,17 @@ public class MagneticBall : MagneticForce
         startScale = transform.lossyScale;
     }
 
+    public override void Reset()
+    {
+        base.Reset();
+        transform.SetParent(null);
+        transform.localScale = startScale;
+
+        StopAllCoroutines();
+        cooldownTimer = cooldownTime + Time.time;
+        SetState(MagneticBallState.HeadingHome);
+    }
+
     public void SetStartTransform(Transform t) //absolete
     {
         homeTransform = t;

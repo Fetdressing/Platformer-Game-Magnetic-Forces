@@ -51,6 +51,13 @@ public class MagneticPlacer : BaseClass {
         //}
     }
 
+    public override void Reset()
+    {
+        base.Reset();
+        projectilesPull[0].GetComponent<MagneticBall>().Reset();
+        projectilesPull[1].GetComponent<MagneticBall>().Reset();
+    }
+
     //void HandleNextPullProjectile()
     //{
     //    MagneticBall mBall = projectilesPull[currPullIndex].GetComponent<MagneticBall>();

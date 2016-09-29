@@ -91,7 +91,7 @@ public class Movement : BaseRigidbody {
 
         if(Input.GetKeyDown(KeyCode.C))
         {
-            ToggleInfiniteGravity(!pullField.gameObject.activeSelf);
+            ToggleInfiniteGravity(!pullField.enabled);
         }
        
         isGrounded = GetGrounded();
@@ -163,7 +163,21 @@ public class Movement : BaseRigidbody {
 
     void ToggleInfiniteGravity(bool b)
     {
-        pullField.gameObject.SetActive(b);
+        pullField.enabled = b;
+        ParticleSystem pullps = pullField.gameObject.GetComponent<ParticleSystem>();
+
+        //pullps.emission.enabled = b;
+
+        if (b)
+        {
+            pullps.Play();
+        }
+        else
+        {
+            pullps.Stop();
+        }
+
+
         if (b)
         {
 
