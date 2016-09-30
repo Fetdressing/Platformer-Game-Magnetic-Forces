@@ -209,7 +209,7 @@ public class MagneticBall : MagneticForce
 
     void HeadHome()
     {
-        transform.position = Vector3.Slerp(transform.position, homePos, Time.deltaTime * 10f);
+        transform.position = Vector3.Slerp(transform.position, homePos, Time.deltaTime * 20f);
     }
 
     void OnTriggerEnter(Collider col)

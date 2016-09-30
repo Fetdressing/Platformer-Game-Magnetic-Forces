@@ -14,6 +14,10 @@ public class KillZone : BaseClass {
     private ParticleSystem ps;
     private Light lightActive;
 
+    //ett particlesystem på den som de påverkar oxå, eller linerenderer
+    private bool beamIsOnPlayer = false;
+    private LineRenderer playerBeam;
+    private Transform player;
     void Start()
     {
         Init();
@@ -28,6 +32,9 @@ public class KillZone : BaseClass {
         ps = thisTransform.GetComponent<ParticleSystem>();
         lightActive = thisTransform.GetComponent<Light>();
 
+        player = GameObject.FindGameObjectWithTag("Player").gameObject.transform;
+        playerBeam = thisTransform.GetComponent<LineRenderer>();
+
         Reset();
         initTimes++;
     }
@@ -36,8 +43,30 @@ public class KillZone : BaseClass {
     {
         base.Reset();
         StopAllCoroutines();
-        if(phaseTime != 0)
+        if (phaseTime != 0)
+        {
             StartCoroutine(KillZoneLifetime());
+        }
+        else
+        {
+            ToggleKillZone(true);
+        }
+    }
+
+    void Update()
+    {
+
+        if (playerBeam == null) return;
+        if(beamIsOnPlayer)
+        {
+            playerBeam.enabled = true;
+            Vector3[] positions = { transform.position, player.position };
+            playerBeam.SetPositions(positions);
+        }
+        else
+        {
+            playerBeam.enabled = false;
+        }
     }
 
     IEnumerator KillZoneLifetime()
@@ -120,5 +149,22 @@ public class KillZone : BaseClass {
         {
             h.AddHealth((int)((float)-damage*Time.deltaTime));
         }
+
+        if (!beamIsOnPlayer)
+        {
+            if (playerBeam == null) return;
+
+            if (col.tag != "Player") return;
+            StopAllCoroutines();
+            StartCoroutine(PlacePlayerBeam());
+        }
+    }
+
+    IEnumerator PlacePlayerBeam()
+    {
+        beamIsOnPlayer = true;
+        yield return new WaitForSeconds(0.1f);
+        beamIsOnPlayer = false;
+
     }
 }
