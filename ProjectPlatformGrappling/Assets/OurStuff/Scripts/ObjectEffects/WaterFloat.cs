@@ -5,7 +5,7 @@ public class WaterFloat : BaseRigidbody {
     public Vector3 upFloatVector = Vector3.up;
     public Vector3 streamFloatVector = new Vector3(0,0,0);
 
-    public float streamForce = 1000;
+    public float streamForce = 1600;
 
     public GameObject splashParticle;
     // Use this for initialization
