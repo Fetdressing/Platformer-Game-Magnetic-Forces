@@ -43,6 +43,7 @@ public class Movement : BaseRigidbody {
     {
         base.Reset();
         ToggleInfiniteGravity(false);
+        slideGroundParticleSystem.GetComponent<ParticleTimed>().isReady = true;
     }
 
     // Update is called once per frame

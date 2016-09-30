@@ -1114,7 +1114,7 @@ MonoBehaviour:
   ballOutTime: 2.5
   targetLayerMask:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 3221222655
 --- !u!114 &114000011561673900
 MonoBehaviour:
   m_ObjectHideFlags: 1
