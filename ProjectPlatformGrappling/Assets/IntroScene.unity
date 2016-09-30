@@ -29331,8 +29331,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1027420291}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -13, y: 1779, z: 8.3}
-  m_LocalScale: {x: 0.13262457, y: 1.0812422, z: 0.15065452}
+  m_LocalPosition: {x: 18, y: 1779, z: 15}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 490412820}
@@ -50022,7 +50022,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1773422700}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 18.031525, y: 38.781097, z: 15.2}
+  m_LocalPosition: {x: 18, y: 38.781097, z: 15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -60977,6 +60977,7 @@ GameObject:
   - 23: {fileID: 2145349071}
   - 114: {fileID: 2145349070}
   - 54: {fileID: 2145349074}
+  - 114: {fileID: 2145349075}
   m_Layer: 30
   m_Name: Barrier
   m_TagString: Untagged
@@ -60992,7 +60993,7 @@ Transform:
   m_GameObject: {fileID: 2145349068}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1275, y: 172.34436, z: 731}
-  m_LocalScale: {x: 5000, y: 4999.9995, z: 110.3793}
+  m_LocalScale: {x: 6413.121, y: 4999.9995, z: 110.3793}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
@@ -61046,7 +61047,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2145349068}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -61073,3 +61074,19 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2145349075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2145349068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01ff407f431cfdf4b9b298c11fa6a471, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initTimes: 0
+  phaseTime: 0
+  phaseCooldown: 1.5
+  startTime: 0
+  damage: 1000000

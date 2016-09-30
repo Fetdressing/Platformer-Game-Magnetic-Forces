@@ -47,7 +47,7 @@ public class SpawnManager : BaseClass {
     {
         while(Vector3.Distance(player.position, pos) > 2.0f)
         {
-            player.position = Vector3.Lerp(player.position, pos, Time.deltaTime * 10);
+            player.position = Vector3.Lerp(player.position, pos, Time.deltaTime * 4);
             yield return new WaitForSeconds(0.01f);
         }
         player.GetComponent<Health>().Reset();

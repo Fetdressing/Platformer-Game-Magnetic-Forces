@@ -117,7 +117,7 @@ public class MagneticPlacer : BaseClass {
     {
         MagneticBall mBall = rb.transform.GetComponent<MagneticBall>();
         RaycastHit raycastHit;
-        if (Physics.Raycast(thisCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.5f)), out raycastHit, targetLayerMask)) //kasta från mitten av skärmen!
+        if (Physics.Raycast(thisCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f)), out raycastHit, Mathf.Infinity,targetLayerMask)) //kasta från mitten av skärmen!
         {
             if (Vector3.Dot(raycastHit.normal, thisCamera.transform.position - raycastHit.point) > 0) //normalen mot eller från sig?
             {
