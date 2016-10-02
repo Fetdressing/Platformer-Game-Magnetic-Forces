@@ -11,6 +11,11 @@ public class Trigger : BaseClass {
 
     public FunctionEvent fEventStart;
     public FunctionEvent fEventExit;
+
+    private float startVolume;
+    private AudioSource audioSource;
+    public AudioClip audioActive;
+    public AudioClip audioDeactive;
     // Use this for initialization
     void Start () {
         Init();
@@ -22,7 +27,16 @@ public class Trigger : BaseClass {
         isTriggered = true; //är viktig så att ToggleTrigger inte fuckar med sina if-satser
         ToggleTrigger(false);
         initTimes++;
+        audioSource = transform.GetComponent<AudioSource>();
+        startVolume = audioSource.volume;
+        Reset();
         //psActivated = this.transform.GetComponent<ParticleSystem>();
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
+        ExitTrigger();
     }
 
     //void OnTriggerEnter(Collider col)
@@ -92,11 +106,65 @@ public class Trigger : BaseClass {
 
     public virtual void StartTrigger()
     {
+        if(audioSource != null)
+        {
+            if(audioActive != null)
+            {
+                //audioSource.clip = audioActive;
+                //audioSource.Play();
+                StartCoroutine(FadeInClip(audioActive));
+            }
+        }
         fEventStart.Invoke();
     }
 
     public virtual void ExitTrigger()
     {
-        fEventExit.Invoke();
+        if (audioSource != null)
+        {
+            if (audioDeactive != null)
+            {
+                //audioSource.clip = audioDeactive;
+                //audioSource.Play();
+                StartCoroutine(FadeInClip(audioDeactive));
+            }
+        }
+            fEventExit.Invoke();
+    }
+
+    IEnumerator FadeInClip(AudioClip ac)
+    {
+        while (!AudioFadeOut())
+            yield return new WaitForSeconds(0.01f);
+        audioSource.clip = ac;
+        audioSource.Play();
+        while (!AudioFadeIn())
+            yield return new WaitForSeconds(0.01f);
+    }
+
+    bool AudioFadeIn()
+    {
+        if (audioSource.volume < startVolume)
+        {
+            audioSource.volume += 0.4f * Time.deltaTime;
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    bool AudioFadeOut()
+    {
+        if (audioSource.volume > 0.002)
+        {
+            audioSource.volume -= 0.4f * Time.deltaTime;
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }
