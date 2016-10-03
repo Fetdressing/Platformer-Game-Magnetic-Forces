@@ -112,6 +112,7 @@ public class Trigger : BaseClass {
             {
                 //audioSource.clip = audioActive;
                 //audioSource.Play();
+                StopAllCoroutines();
                 StartCoroutine(FadeInClip(audioActive));
             }
         }
@@ -126,6 +127,7 @@ public class Trigger : BaseClass {
             {
                 //audioSource.clip = audioDeactive;
                 //audioSource.Play();
+                StopAllCoroutines();
                 StartCoroutine(FadeInClip(audioDeactive));
             }
         }

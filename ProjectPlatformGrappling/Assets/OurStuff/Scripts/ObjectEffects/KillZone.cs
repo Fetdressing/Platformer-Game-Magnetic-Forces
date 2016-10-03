@@ -32,7 +32,14 @@ public class KillZone : BaseClass {
         ps = thisTransform.GetComponent<ParticleSystem>();
         lightActive = thisTransform.GetComponent<Light>();
 
-        player = GameObject.FindGameObjectWithTag("Player").gameObject.transform;
+        try
+        {
+            player = GameObject.FindGameObjectWithTag("Player").gameObject.transform;
+        }
+        catch
+        {
+            Debug.Log("No player-Object");
+        }
         playerBeam = thisTransform.GetComponent<LineRenderer>();
 
         Reset();
