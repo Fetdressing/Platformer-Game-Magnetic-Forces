@@ -51,8 +51,16 @@ public class SpawnManager : BaseClass {
             yield return new WaitForSeconds(0.01f);
         }
         player.GetComponent<Health>().Reset();
-        player.GetComponent<Movement>().Reset();
+        player.GetComponent<StagMovement>().Reset();
         player.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<MagneticPlacer>().Reset();
+
+        try
+        {
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<MagneticPlacer>().Reset();
+        }
+        catch
+        {
+            Debug.Log("Ingen magneticplacer");
+        }
     }
 }

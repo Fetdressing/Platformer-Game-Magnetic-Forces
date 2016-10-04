@@ -100,6 +100,7 @@
     <Compile Include="Assets\OurStuff\Scripts\Player\Old\MagneticHandler.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Old\PlayerMovement.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\PlayerHealth.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\Player\StagMovement.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\AnimationSpeedModifier.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\FadingLight.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\UVDisplacer.cs" />
