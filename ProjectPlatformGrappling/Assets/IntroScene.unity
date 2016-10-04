@@ -3927,7 +3927,7 @@ MonoBehaviour:
   slideGroundSound: {fileID: 8300000, guid: e9567ca3be2babd4d8f361805e5340d1, type: 3}
   pullField: {fileID: 2044831635}
   groundedCheckOffsetY: 1
-  groundedCheckDistance: 2
+  groundedCheckDistance: 14
   isGrounded: 0
   groundCheckLM:
     serializedVersion: 2

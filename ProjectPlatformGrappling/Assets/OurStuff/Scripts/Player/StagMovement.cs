@@ -15,12 +15,14 @@ public class StagMovement : BaseClass
 
     private float startSpeed = 100;
     private float jumpSpeed = 100;
-    private float gravity = 100;
+    private float gravity = 140;
 
     private float currSpeed; //movespeeden, kan påverkas av slows
     private float ySpeed; //aktiv variable för vad som händer med gravitation/jump
     private float jumpTimePoint; //när man hoppas så den inte ska resetta stuff dirr efter man hoppat
 
+    private float dashTimePoint;
+    private float dashCooldown = 0.8f;
     private float dashSpeed = 1600;
     private float currDashTime;
     private float maxDashTime = 0.03f;
@@ -67,6 +69,8 @@ public class StagMovement : BaseClass
         base.Reset();
         currSpeed = startSpeed;
         dashVel = new Vector3(0, 0, 0);
+        dashTimePoint = 0;
+        jumpTimePoint = 0;
         ToggleInfiniteGravity(false);
         slideGroundParticleSystem.GetComponent<ParticleTimed>().isReady = true;
     }
@@ -80,9 +84,9 @@ public class StagMovement : BaseClass
     {
         hor = Input.GetAxis("Horizontal") * cameraObj.right;
         ver = Input.GetAxis("Vertical") * cameraObj.forward;
-        ver = new Vector3(ver.x, 0, ver.z);
 
         isGrounded = characterController.isGrounded;
+
         distanceToGround = GetDistanceToGround();
 
         float stagSpeedMultiplier = 1.0f;
@@ -90,9 +94,6 @@ public class StagMovement : BaseClass
         {
             stagSpeedMultiplier = Mathf.Max(Mathf.Abs(stagRootJointStartY - stagRootJoint.localPosition.y), 0.85f);
         }
-
-        Vector3 finalMoveDir = (hor + ver).normalized * stagSpeedMultiplier * currSpeed;
-        //characterController.Move(finalMoveDir * speed * stagSpeedMultiplier * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -109,22 +110,30 @@ public class StagMovement : BaseClass
             }
         }
 
+        ver = new Vector3(ver.x, 0, ver.z); //denna behöver vara under dash så att man kan dasha upp/ned oxå
 
-        if (isGrounded || stagSpeedMultiplier > 1.2f)
+        Vector3 finalMoveDir = (hor + ver).normalized * stagSpeedMultiplier * currSpeed;
+        //characterController.Move(finalMoveDir * speed * stagSpeedMultiplier * Time.deltaTime);
+
+        if (isGrounded || GetGrounded()) //använd endast GetGrounded här, annars kommer man få samma problem när gravitationen slutar verka pga lång raycast
         {
-            if (jumpTimePoint < Time.time + 0.8f) //så den inte ska fucka och resetta dirr efter man hoppat
+            if (jumpTimePoint < Time.time - 0.8f) //så den inte ska fucka och resetta dirr efter man hoppat
             {
-                ySpeed = 0; // grounded character has vSpeed = 0...
-
                 if (Input.GetButtonDown("Jump"))
                 {
                     jumpTimePoint = Time.time;
                     ySpeed = jumpSpeed;
-                    
+
                 }
             }
         }
-
+        if (isGrounded) //dessa if-satser skall vara separata
+        {
+            if (jumpTimePoint < Time.time - 0.8f) //så den inte ska fucka och resetta dirr efter man hoppat
+            {
+                ySpeed = 0; // grounded character has vSpeed = 0...
+            }
+        }
 
         // apply gravity acceleration to vertical speed:
         ySpeed -= gravity * Time.deltaTime;
@@ -145,6 +154,9 @@ public class StagMovement : BaseClass
 
     IEnumerator MoveDash(Vector3 dir)
     {
+        if (dashTimePoint + dashCooldown > Time.time) yield break;
+
+        dashTimePoint = Time.time;
         currDashTime = 0.0f;
         float startDashTime = Time.time;
         while(currDashTime < maxDashTime)
@@ -209,14 +221,12 @@ public class StagMovement : BaseClass
             {
                 groundedTimePoint = Time.time;
             }
-            isGrounded = true;
-            return isGrounded;
+            return true;
         }
         else
         {
             groundedTimePoint = Time.time + 1000;
-            isGrounded = false;
-            return isGrounded;
+            return false;
         }
     }
 
@@ -231,14 +241,12 @@ public class StagMovement : BaseClass
             {
                 groundedTimePoint = Time.time;
             }
-            isGrounded = true;
-            return isGrounded;
+            return true;
         }
         else
         {
             groundedTimePoint = Time.time + 1000;
-            isGrounded = false;
-            return isGrounded;
+            return false;
         }
     }
 
