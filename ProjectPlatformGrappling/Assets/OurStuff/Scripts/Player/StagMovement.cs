@@ -12,10 +12,13 @@ public class StagMovement : BaseClass
     private float distanceToGround = 100000000;
     public Transform stagRootJoint; //den ska röra på sig i y-led
     private float stagRootJointStartY; //krävs att animationen börjar i bottnen isåfall
+    public Transform stagObject; //denna roteras så det står korrekt
 
     private float startSpeed = 100;
     private float jumpSpeed = 100;
     private float gravity = 140;
+    private float stagSpeedMultMax = 1.5f;
+    private float stagSpeedMultMin = 0.85f;
 
     private float currSpeed; //movespeeden, kan påverkas av slows
     private float ySpeed; //aktiv variable för vad som händer med gravitation/jump
@@ -27,8 +30,9 @@ public class StagMovement : BaseClass
     private float currDashTime;
     private float maxDashTime = 0.03f;
 
-    private Vector3 hor = new Vector3(0, 0, 0); //har dem här så jag kan hämta värdena via update
-    private Vector3 ver = new Vector3(0, 0, 0);
+    private Vector3 horVector = new Vector3(0, 0, 0); //har dem här så jag kan hämta värdena via update
+    private Vector3 verVector = new Vector3(0, 0, 0);
+    private float hor, ver;
     private Vector3 dashVel = new Vector3(0, 0, 0);
 
     private LayerMask layermaskForces;
@@ -77,13 +81,15 @@ public class StagMovement : BaseClass
 
     void LateUpdate()
     {
-        stagRootJoint.forward = cameraObj.forward;
+        stagObject.forward = new Vector3(cameraObj.forward.x ,0, cameraObj.forward.z);
     }
 
     void Update()
     {
-        hor = Input.GetAxis("Horizontal") * cameraObj.right;
-        ver = Input.GetAxis("Vertical") * cameraObj.forward;
+        hor = Input.GetAxis("Horizontal");
+        ver = Input.GetAxis("Vertical");
+        horVector = hor * cameraObj.right;
+        verVector = ver * cameraObj.forward;
 
         isGrounded = characterController.isGrounded;
 
@@ -92,16 +98,17 @@ public class StagMovement : BaseClass
         float stagSpeedMultiplier = 1.0f;
         if (isGrounded)
         {
-            stagSpeedMultiplier = Mathf.Max(Mathf.Abs(stagRootJointStartY - stagRootJoint.localPosition.y), 0.85f);
+            stagSpeedMultiplier = Mathf.Max(Mathf.Abs(stagRootJointStartY - stagRootJoint.localPosition.y), stagSpeedMultMin); //min värde
+            stagSpeedMultiplier = Mathf.Min(stagSpeedMultiplier, stagSpeedMultMax); //max värde
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             if (stagSpeedMultiplier > 0)
             {
-                if ((hor + ver).magnitude > 0.1f)
+                if ((horVector + verVector).magnitude > 0.1f)
                 {
-                    Dash((hor + ver).normalized);
+                    Dash((horVector + verVector).normalized);
                 }
                 else
                 {
@@ -110,9 +117,9 @@ public class StagMovement : BaseClass
             }
         }
 
-        ver = new Vector3(ver.x, 0, ver.z); //denna behöver vara under dash så att man kan dasha upp/ned oxå
+        verVector = new Vector3(verVector.x, 0, verVector.z); //denna behöver vara under dash så att man kan dasha upp/ned oxå
 
-        Vector3 finalMoveDir = (hor + ver).normalized * stagSpeedMultiplier * currSpeed;
+        Vector3 finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currSpeed;
         //characterController.Move(finalMoveDir * speed * stagSpeedMultiplier * Time.deltaTime);
 
         if (isGrounded || GetGrounded()) //använd endast GetGrounded här, annars kommer man få samma problem när gravitationen slutar verka pga lång raycast
@@ -145,6 +152,13 @@ public class StagMovement : BaseClass
         {
             ToggleInfiniteGravity(!pullField.enabled);
         }
+
+        PlayAnimationStates();
+    }
+
+    void PlayAnimationStates()
+    {
+
     }
 
     void Dash(Vector3 dir)

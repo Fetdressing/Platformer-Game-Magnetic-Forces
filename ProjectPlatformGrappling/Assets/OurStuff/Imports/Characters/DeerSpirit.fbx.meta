@@ -1,0 +1,234 @@
+fileFormatVersion: 2
+guid: 6ab3710adfab6b74b98b946fd818a6d2
+timeCreated: 1475783427
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: BackLeg_Leftjoint1
+    100002: BackLeg_Leftjoint2
+    100004: BackLeg_Leftjoint3
+    100006: BackLeg_Rightjoint4
+    100008: BackLeg_Rightjoint5
+    100010: BackLeg_Rightjoint6
+    100012: DeerHorn2
+    100014: //RootNode
+    100016: Earjoint1
+    100018: Earjoint2
+    100020: Earjoint3
+    100022: Earjoint4
+    100024: FrontLeg_Leftjoint7
+    100026: FrontLeg_Leftjoint8
+    100028: FrontLeg_Leftjoint9
+    100030: FrontLeg_Rightjoint10
+    100032: FrontLeg_Rightjoint11
+    100034: FrontLeg_Rightjoint12
+    100036: Spinejoint1
+    100038: Spinejoint10
+    100040: Spinejoint2
+    100042: Spinejoint3
+    100044: Spinejoint4
+    100046: Spinejoint5
+    100048: Spinejoint6
+    100050: Spinejoint7
+    100052: Spinejoint8
+    100054: Spinejoint9
+    100056: SpiritDeer1
+    100058: Tailjoint1
+    100060: Tailjoint2
+    100062: Tailjoint3
+    400000: BackLeg_Leftjoint1
+    400002: BackLeg_Leftjoint2
+    400004: BackLeg_Leftjoint3
+    400006: BackLeg_Rightjoint4
+    400008: BackLeg_Rightjoint5
+    400010: BackLeg_Rightjoint6
+    400012: DeerHorn2
+    400014: //RootNode
+    400016: Earjoint1
+    400018: Earjoint2
+    400020: Earjoint3
+    400022: Earjoint4
+    400024: FrontLeg_Leftjoint7
+    400026: FrontLeg_Leftjoint8
+    400028: FrontLeg_Leftjoint9
+    400030: FrontLeg_Rightjoint10
+    400032: FrontLeg_Rightjoint11
+    400034: FrontLeg_Rightjoint12
+    400036: Spinejoint1
+    400038: Spinejoint10
+    400040: Spinejoint2
+    400042: Spinejoint3
+    400044: Spinejoint4
+    400046: Spinejoint5
+    400048: Spinejoint6
+    400050: Spinejoint7
+    400052: Spinejoint8
+    400054: Spinejoint9
+    400056: SpiritDeer1
+    400058: Tailjoint1
+    400060: Tailjoint2
+    400062: Tailjoint3
+    4300000: SpiritDeer1
+    4300002: DeerHorn2
+    7400000: DeerSpirit_Run
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: DeerHorn2
+    13700002: SpiritDeer1
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 2
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: DeerSpirit_Run
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 61
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: DeerHorn2
+        weight: 1
+      - path: Spinejoint1
+        weight: 1
+      - path: Spinejoint1/BackLeg_Leftjoint1
+        weight: 1
+      - path: Spinejoint1/BackLeg_Leftjoint1/BackLeg_Leftjoint2
+        weight: 1
+      - path: Spinejoint1/BackLeg_Leftjoint1/BackLeg_Leftjoint2/BackLeg_Leftjoint3
+        weight: 1
+      - path: Spinejoint1/BackLeg_Rightjoint4
+        weight: 1
+      - path: Spinejoint1/BackLeg_Rightjoint4/BackLeg_Rightjoint5
+        weight: 1
+      - path: Spinejoint1/BackLeg_Rightjoint4/BackLeg_Rightjoint5/BackLeg_Rightjoint6
+        weight: 1
+      - path: Spinejoint1/Spinejoint2
+        weight: 1
+      - path: Spinejoint1/Spinejoint2/Spinejoint3
+        weight: 1
+      - path: Spinejoint1/Spinejoint2/Spinejoint3/Spinejoint4
+        weight: 1
+      - path: Spinejoint1/Spinejoint2/Spinejoint3/Spinejoint4/FrontLeg_Leftjoint7
+        weight: 1
+      - path: Spinejoint1/Spinejoint2/Spinejoint3/Spinejoint4/FrontLeg_Leftjoint7/FrontLeg_Leftjoint8
+        weight: 1
+      - path: Spinejoint1/Spinejoint2/Spinejoint3/Spinejoint4/FrontLeg_Leftjoint7/FrontLeg_Leftjoint8/FrontLeg_Leftjoint9
+        weight: 1
+      - path: Spinejoint1/Spinejoint2/Spinejoint3/Spinejoint4/FrontLeg_Rightjoint10
+        weight: 1
+      - path: Spinejoint1/Spinejoint2/Spinejoint3/Spinejoint4/FrontLeg_Rightjoint10/FrontLeg_Rightjoint11
+        weight: 1
+      - path: Spinejoint1/Spinejoint2/Spinejoint3/Spinejoint4/FrontLeg_Rightjoint10/FrontLeg_Rightjoint11/FrontLeg_Rightjoint12
+        weight: 1
+      - path: Spinejoint1/Spinejoint2/Spinejoint3/Spinejoint4/Spinejoint5
+        weight: 1
+      - path: Spinejoint1/Spinejoint2/Spinejoint3/Spinejoint4/Spinejoint5/Spinejoint6
+        weight: 1
+      - path: Spinejoint1/Spinejoint2/Spinejoint3/Spinejoint4/Spinejoint5/Spinejoint6/Spinejoint7
+        weight: 1
+      - path: Spinejoint1/Spinejoint2/Spinejoint3/Spinejoint4/Spinejoint5/Spinejoint6/Spinejoint7/Spinejoint8
+        weight: 1
+      - path: Spinejoint1/Spinejoint2/Spinejoint3/Spinejoint4/Spinejoint5/Spinejoint6/Spinejoint7/Spinejoint8/Spinejoint9
+        weight: 1
+      - path: Spinejoint1/Spinejoint2/Spinejoint3/Spinejoint4/Spinejoint5/Spinejoint6/Spinejoint7/Spinejoint8/Spinejoint9/Earjoint1
+        weight: 1
+      - path: Spinejoint1/Spinejoint2/Spinejoint3/Spinejoint4/Spinejoint5/Spinejoint6/Spinejoint7/Spinejoint8/Spinejoint9/Earjoint1/Earjoint2
+        weight: 1
+      - path: Spinejoint1/Spinejoint2/Spinejoint3/Spinejoint4/Spinejoint5/Spinejoint6/Spinejoint7/Spinejoint8/Spinejoint9/Earjoint3
+        weight: 1
+      - path: Spinejoint1/Spinejoint2/Spinejoint3/Spinejoint4/Spinejoint5/Spinejoint6/Spinejoint7/Spinejoint8/Spinejoint9/Earjoint3/Earjoint4
+        weight: 1
+      - path: Spinejoint1/Spinejoint2/Spinejoint3/Spinejoint4/Spinejoint5/Spinejoint6/Spinejoint7/Spinejoint8/Spinejoint9/Spinejoint10
+        weight: 1
+      - path: Spinejoint1/Tailjoint1
+        weight: 1
+      - path: Spinejoint1/Tailjoint1/Tailjoint2
+        weight: 1
+      - path: Spinejoint1/Tailjoint1/Tailjoint2/Tailjoint3
+        weight: 1
+      - path: SpiritDeer1
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 120
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
