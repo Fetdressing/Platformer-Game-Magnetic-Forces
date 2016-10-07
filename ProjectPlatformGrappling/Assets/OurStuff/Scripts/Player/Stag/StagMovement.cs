@@ -49,6 +49,15 @@ public class StagMovement : BaseClass
     public LayerMask groundCheckLM;
     private float groundedTimePoint = 0; //när man blev grounded
 
+    [Header("Animation")]
+    public Animation animationH;
+
+    public AnimationClip runForward;
+    public AnimationClip runForwardAngle;
+    public AnimationClip idle;
+    public AnimationClip idleAir;
+    public AnimationClip jump;
+
     void Start()
     {
         Init();
@@ -130,7 +139,8 @@ public class StagMovement : BaseClass
                 {
                     jumpTimePoint = Time.time;
                     ySpeed = jumpSpeed;
-
+                    //animationH.Play(jump.name);
+                    //animationH[jump.name].weight = 1.0f;
                 }
             }
         }
@@ -158,7 +168,42 @@ public class StagMovement : BaseClass
 
     void PlayAnimationStates()
     {
+        if (animationH == null) return;
 
+        if (isGrounded || GetGrounded())
+        {
+            if (ver > 0.1f || ver < -0.1f) //för sig frammåt/bakåt
+            {
+
+                if (hor > 0.1f || hor < -0.1f) //rär sig sidledes
+                {
+                    animationH.CrossFade(runForwardAngle.name);
+                }
+                else
+                {
+                    animationH.CrossFade(runForward.name);
+                }
+            }
+            else if (hor > 0.1f || hor < -0.1f) //bara rör sig sidledes
+            {
+                animationH.CrossFade(runForwardAngle.name);
+            }
+            else
+            {
+                animationH.CrossFade(idle.name);
+            }
+        }
+        else //air
+        {
+            if (ySpeed > 0.1f)
+            {
+                animationH.CrossFade(jump.name);
+            }
+            else
+            {
+                animationH.CrossFade(idleAir.name);
+            }
+        }
     }
 
     void Dash(Vector3 dir)
