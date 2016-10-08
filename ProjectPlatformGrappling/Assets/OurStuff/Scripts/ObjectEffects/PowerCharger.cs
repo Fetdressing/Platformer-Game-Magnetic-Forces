@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class KillZone : BaseClass {
+public class PowerCharger : BaseClass {
     private Transform thisTransform;
     private Collider[] thisColliders;
 
@@ -9,7 +9,7 @@ public class KillZone : BaseClass {
     public float phaseCooldown = 1.5f;
     public float startTime = 1.0f; //när hela börjar köras, kan behövas offset för att få dem ur fas
 
-    public float damage = 1;
+    public float chargePower = 0.1f;
 
     private ParticleSystem ps;
     private Light lightActive;
@@ -151,10 +151,11 @@ public class KillZone : BaseClass {
 
     void OnTriggerStay(Collider col)
     {
-        Health h = col.GetComponent<Health>();
-        if (h != null)
+        //Health h = col.GetComponent<Health>();
+        PowerManager pM = col.GetComponent<PowerManager>();
+        if (pM != null)
         {
-            h.AddHealth((int)((float)-damage*Time.deltaTime));
+            pM.AddPower((int)((float)chargePower*Time.deltaTime));
         }
 
         if (!beamIsOnPlayer)

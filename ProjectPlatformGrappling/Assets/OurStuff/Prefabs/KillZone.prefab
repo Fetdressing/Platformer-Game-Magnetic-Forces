@@ -26,6 +26,7 @@ GameObject:
   - 198: {fileID: 198000013466423002}
   - 199: {fileID: 199000012235194504}
   - 54: {fileID: 54000012231233228}
+  - 108: {fileID: 108000012510779454}
   m_Layer: 30
   m_Name: KillZone
   m_TagString: Untagged
@@ -39,10 +40,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013006443934}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 52.5, y: 198.7, z: 306.7}
+  m_LocalRotation: {x: -0, y: -0.20931743, z: -0, w: 0.97784775}
+  m_LocalPosition: {x: -1775.9, y: 129.2, z: -449.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -23.970001, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -107,8 +108,42 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 20, y: 20, z: 20}
+  m_Size: {x: 150, y: 150, z: 150}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!108 &108000012510779454
+Light:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013006443934}
+  m_Enabled: 1
+  serializedVersion: 7
+  m_Type: 2
+  m_Color: {r: 0.43200925, g: 0.012813592, b: 0.5808823, a: 1}
+  m_Intensity: 8
+  m_Range: 180
+  m_SpotAngle: 30
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 1
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 1
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_Lightmapping: 4
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
 --- !u!114 &114000013579461318
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -121,10 +156,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initTimes: 0
-  phaseTime: 1
+  phaseTime: 0
   phaseCooldown: 1.5
   startTime: 1
-  damage: 600
+  chargePower: -500
 --- !u!198 &198000013466423002
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -172,7 +207,7 @@ ParticleSystem:
   randomSeed: 0
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   moveWithTransform: 1
   scalingMode: 1
   InitialModule:
@@ -340,7 +375,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       minMaxState: 0
     startSize:
-      scalar: 5
+      scalar: 6
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -375,7 +410,7 @@ ParticleSystem:
         m_RotationOrder: 4
       minMaxState: 0
     startSizeY:
-      scalar: 1
+      scalar: 60
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -410,7 +445,7 @@ ParticleSystem:
         m_RotationOrder: 4
       minMaxState: 0
     startSizeZ:
-      scalar: 1
+      scalar: 60
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -550,9 +585,9 @@ ParticleSystem:
         m_RotationOrder: 4
       minMaxState: 0
     randomizeRotationDirection: 0
-    gravityModifier: 0.01
+    gravityModifier: 0.4
     maxNumParticles: 1000
-    size3D: 0
+    size3D: 1
     rotation3D: 0
   ShapeModule:
     serializedVersion: 2
@@ -561,9 +596,9 @@ ParticleSystem:
     radius: 1
     angle: 25
     length: 5
-    boxX: 20
-    boxY: 20
-    boxZ: 20
+    boxX: 150
+    boxY: 150
+    boxZ: 150
     arc: 360
     placementMode: 0
     m_Mesh: {fileID: 0}
@@ -579,7 +614,7 @@ ParticleSystem:
     serializedVersion: 2
     m_Type: 0
     rate:
-      scalar: 40
+      scalar: 160
       maxCurve:
         serializedVersion: 2
         m_Curve:

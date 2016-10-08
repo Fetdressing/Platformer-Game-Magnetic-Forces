@@ -50,7 +50,7 @@ public class SpawnManager : BaseClass {
             player.position = Vector3.Lerp(player.position, pos, Time.deltaTime * 4);
             yield return new WaitForSeconds(0.01f);
         }
-        player.GetComponent<Health>().Reset();
+        player.GetComponent<PowerManager>().Reset();
         player.GetComponent<StagMovement>().Reset();
         player.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
 

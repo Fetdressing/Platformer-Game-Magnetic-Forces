@@ -7,7 +7,7 @@ public class StagMovement : BaseClass
     public Transform cameraObj;
     public AudioSource movementAudioSource;
     private CharacterController characterController;
-    private Health thisHealth;
+    private PowerManager powerManager;
 
     private float distanceToGround = 100000000;
     public Transform stagRootJoint; //den ska röra på sig i y-led
@@ -26,9 +26,11 @@ public class StagMovement : BaseClass
 
     private float dashTimePoint;
     private float dashCooldown = 0.8f;
-    private float dashSpeed = 1600;
+    private float dashSpeed = 1200;
     private float currDashTime;
-    private float maxDashTime = 0.03f;
+    private float maxDashTime = 0.1f;
+    private float dashPowerCost = 0.03f; //hur mycket power det drar varje gång man dashar
+    public GameObject dashEffectObject;
 
     private Vector3 horVector = new Vector3(0, 0, 0); //har dem här så jag kan hämta värdena via update
     private Vector3 verVector = new Vector3(0, 0, 0);
@@ -67,7 +69,7 @@ public class StagMovement : BaseClass
     {
         base.Init();
         characterController = transform.GetComponent<CharacterController>();
-        thisHealth = transform.GetComponent<Health>();
+        powerManager = transform.GetComponent<PowerManager>();
         isGrounded = false;
         groundCheckLM = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("MagneticBall") | 1 << LayerMask.NameToLayer("Ragdoll"));
         layermaskForces = groundCheckLM;
@@ -80,6 +82,7 @@ public class StagMovement : BaseClass
     public override void Reset()
     {
         base.Reset();
+        ToggleDashEffect(false);
         currSpeed = startSpeed;
         dashVel = new Vector3(0, 0, 0);
         dashTimePoint = 0;
@@ -214,7 +217,8 @@ public class StagMovement : BaseClass
     IEnumerator MoveDash(Vector3 dir)
     {
         if (dashTimePoint + dashCooldown > Time.time) yield break;
-
+        ToggleDashEffect(true);
+        powerManager.AddPower(-dashPowerCost);
         dashTimePoint = Time.time;
         currDashTime = 0.0f;
         float startDashTime = Time.time;
@@ -224,22 +228,62 @@ public class StagMovement : BaseClass
             currDashTime = Time.time - startDashTime;
             yield return new WaitForSeconds(0.01f);
         }
-
+        ToggleDashEffect(false);
         dashVel = Vector3.zero;
 
     }
 
-    void OnCollisionEnter(Collision col)
+    void ToggleDashEffect(bool b)
     {
-        if (GetGrounded() && col.contacts[0].point.y < transform.position.y)
-        {
-            float speedHit = col.relativeVelocity.magnitude;
+        dashEffectObject.transform.rotation = cameraObj.rotation;
+        float trailOriginalTime = 2.0f;
+        TrailRenderer[] tR = dashEffectObject.GetComponentsInChildren<TrailRenderer>();
+        ParticleSystem[] pS = dashEffectObject.GetComponentsInChildren<ParticleSystem>();
 
-            if (speedHit > thisHealth.speedDamageThreshhold * 0.7f)
+        for(int i = 0; i < tR.Length; i++)
+        {
+            if(b)
             {
-                //ForcePush(speedHit);
+                tR[i].time = trailOriginalTime;
+            }
+            else
+            {
+                StartCoroutine(ShutDownTrail(tR[i]));
             }
         }
+
+        for(int i = 0; i < pS.Length; i++)
+        {
+            if (b)
+            {
+                pS[i].Play();
+            }
+            else
+            {
+                pS[i].Stop();
+            }
+        }
+    }
+    IEnumerator ShutDownTrail(TrailRenderer tR)
+    {
+        while(tR.time > 0.0f)
+        {
+            tR.time -= 4 * Time.deltaTime;
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        //if (GetGrounded() && col.contacts[0].point.y < transform.position.y)
+        //{
+        //    float speedHit = col.relativeVelocity.magnitude;
+
+        //    if (speedHit > thisHealth.speedDamageThreshhold * 0.7f)
+        //    {
+        //        //ForcePush(speedHit);
+        //    }
+        //}
     }
 
     void ToggleInfiniteGravity(bool b)
