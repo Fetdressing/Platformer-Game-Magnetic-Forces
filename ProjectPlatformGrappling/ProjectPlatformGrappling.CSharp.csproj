@@ -83,12 +83,12 @@
     <Compile Include="Assets\OurStuff\Scripts\MagneticForces\MagneticForce.cs" />
     <Compile Include="Assets\OurStuff\Scripts\MagneticForces\PullField.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\ForcePusher.cs" />
-    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\HealthPickup.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\MovingPlatform.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\ObjectSpawner.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\ParticleTimed.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PhaseOutObject.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PowerCharger.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PowerPickup.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Projectiles\ProjectileBase.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Teleport.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Triggers\Conversation.cs" />

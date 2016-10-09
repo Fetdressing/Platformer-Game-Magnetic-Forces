@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HealthPickup : BaseClass {
+public class PowerPickup : BaseClass {
     public GameObject pickUpObj;
 
     private Rigidbody thisRigidbody;
     private Transform player;
     private Vector3 startPos;
     public float playerChaseSpeed = 0;
-    public float playerChaseDistance = 10;
+    public float playerChaseDistance = 140;
 
-    public int healthWorth = 100;
+    public float powerWorth = 0.1f;
 
     public float respawnTime = 10;
 
@@ -80,9 +80,9 @@ public class HealthPickup : BaseClass {
 
         if (acceptedTag == false) return;
 
-        if(col.transform.GetComponent<Health>() != null)
+        if(col.transform.GetComponent<PowerManager>() != null)
         {
-            col.transform.GetComponent<Health>().AddHealth(healthWorth);
+            col.transform.GetComponent<PowerManager>().AddPower(powerWorth);
             particlePicked.StartParticleSystem();
             Die();
         }

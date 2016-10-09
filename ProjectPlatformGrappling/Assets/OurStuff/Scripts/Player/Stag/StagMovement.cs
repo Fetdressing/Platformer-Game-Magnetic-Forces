@@ -72,8 +72,7 @@ public class StagMovement : BaseClass
         characterController = transform.GetComponent<CharacterController>();
         powerManager = transform.GetComponent<PowerManager>();
         isGrounded = false;
-        groundCheckLM = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("MagneticBall") | 1 << LayerMask.NameToLayer("Ragdoll"));
-        layermaskForces = groundCheckLM;
+        layermaskForces = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("MagneticBall") | 1 << LayerMask.NameToLayer("Ragdoll"));
 
         stagRootJointStartY = stagRootJoint.localPosition.y;
 
@@ -199,7 +198,7 @@ public class StagMovement : BaseClass
         }
         else //air
         {
-            if (ySpeed > 0.1f)
+            if (ySpeed > 0.01f)
             {
                 animationH.CrossFade(jump.name);
             }
@@ -208,6 +207,11 @@ public class StagMovement : BaseClass
                 animationH.CrossFade(idleAir.name);
             }
         }
+    }
+
+    public void ApplyYForce(float velY) //till characterscontrollern, inte rigidbody
+    {
+        ySpeed += velY;
     }
 
     void Dash(Vector3 dir)
