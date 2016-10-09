@@ -44,8 +44,9 @@ public class StagMovement : BaseClass
     public PullField pullField; //som drar till sig grejer till spelaren, infinite gravity!
 
     [Header("Ground Check")]
+    public Transform groundCheckObject;
     public float groundedCheckOffsetY = 0.5f;
-    public float groundedCheckDistance = 1.9f;
+    public float groundedCheckDistance = 3.5f;
     [HideInInspector]
     public bool isGrounded;
     public LayerMask groundCheckLM;
@@ -105,7 +106,7 @@ public class StagMovement : BaseClass
 
         isGrounded = characterController.isGrounded;
 
-        distanceToGround = GetDistanceToGround();
+        distanceToGround = GetDistanceToGround(groundCheckObject);
 
         float stagSpeedMultiplier = 1.0f;
         if (isGrounded)
@@ -134,9 +135,9 @@ public class StagMovement : BaseClass
         Vector3 finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currSpeed;
         //characterController.Move(finalMoveDir * speed * stagSpeedMultiplier * Time.deltaTime);
 
-        if (isGrounded || GetGrounded()) //använd endast GetGrounded här, annars kommer man få samma problem när gravitationen slutar verka pga lång raycast
+        if (isGrounded || GetGrounded(groundCheckObject)) //använd endast GetGrounded här, annars kommer man få samma problem när gravitationen slutar verka pga lång raycast
         {
-            if (jumpTimePoint < Time.time - 0.8f) //så den inte ska fucka och resetta dirr efter man hoppat
+            if (jumpTimePoint < Time.time - 1.2f) //så den inte ska fucka och resetta dirr efter man hoppat
             {
                 if (Input.GetButtonDown("Jump"))
                 {
@@ -149,7 +150,7 @@ public class StagMovement : BaseClass
         }
         if (isGrounded) //dessa if-satser skall vara separata
         {
-            if (jumpTimePoint < Time.time - 0.8f) //så den inte ska fucka och resetta dirr efter man hoppat
+            if (jumpTimePoint < Time.time - 1.2f) //så den inte ska fucka och resetta dirr efter man hoppat
             {
                 ySpeed = 0; // grounded character has vSpeed = 0...
             }
@@ -173,7 +174,7 @@ public class StagMovement : BaseClass
     {
         if (animationH == null) return;
 
-        if (isGrounded || GetGrounded())
+        if (isGrounded || GetGrounded(groundCheckObject))
         {
             if (ver > 0.1f || ver < -0.1f) //för sig frammåt/bakåt
             {
@@ -211,6 +212,7 @@ public class StagMovement : BaseClass
 
     void Dash(Vector3 dir)
     {
+        if (!powerManager.SufficentPower(-dashPowerCost)) return;
         StartCoroutine(MoveDash(dir));
     }
 
@@ -237,6 +239,8 @@ public class StagMovement : BaseClass
     {
         dashEffectObject.transform.rotation = cameraObj.rotation;
         float trailOriginalTime = 2.0f;
+        float startWidth = 1;
+        float endWidth = 0.1f;
         TrailRenderer[] tR = dashEffectObject.GetComponentsInChildren<TrailRenderer>();
         ParticleSystem[] pS = dashEffectObject.GetComponentsInChildren<ParticleSystem>();
 
@@ -245,6 +249,8 @@ public class StagMovement : BaseClass
             if(b)
             {
                 tR[i].time = trailOriginalTime;
+                tR[i].startWidth = startWidth;
+                tR[i].endWidth = endWidth;
             }
             else
             {
@@ -268,7 +274,9 @@ public class StagMovement : BaseClass
     {
         while(tR.time > 0.0f)
         {
-            tR.time -= 4 * Time.deltaTime;
+            tR.time -= 3 * Time.deltaTime;
+            tR.startWidth -= Time.deltaTime;
+            tR.endWidth -= Time.deltaTime;
             yield return new WaitForSeconds(0.01f);
         }
     }

@@ -76,7 +76,7 @@
     <Compile Include="Assets\OurStuff\Scripts\BaseRagdoll.cs" />
     <Compile Include="Assets\OurStuff\Scripts\BaseRigidbody.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Game\CameraManager.cs" />
-    <Compile Include="Assets\OurStuff\Scripts\Game\SceneManager.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\Game\SceneHandler.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Game\SpawnManager.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Health.cs" />
     <Compile Include="Assets\OurStuff\Scripts\MagneticForces\MagneticBall.cs" />
@@ -89,6 +89,7 @@
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\ParticleTimed.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PhaseOutObject.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PowerCharger.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Projectiles\ProjectileBase.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Teleport.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Triggers\Conversation.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Triggers\MoveObjectTrigger.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Assets\OurStuff\Scripts\Player\PlayerHealth.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Stag\PowerManager.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Stag\StagMovement.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\Player\Stag\StagShooter.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\AnimationSpeedModifier.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\FadingLight.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\UVDisplacer.cs" />

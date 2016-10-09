@@ -8,9 +8,11 @@ public class PowerManager : BaseClass {
     public Light[] lifeLights; //fadear med powern
     public float lightsMaxIntensity = 2;
 
+    public Material emissiveStagMaterial; //det som fadeas ut när denne tappar powernn
+
     private float maxPower = 1;
     private float currPower;
-    private float powerDecay = -0.11f;
+    private float powerDecay = -0.02f;
 
     [HideInInspector]
     public bool isAlive;
@@ -59,13 +61,20 @@ public class PowerManager : BaseClass {
             Die();
         }
 
-        float offsetV = currPower / maxPower;
+        float offsetV = (currPower / maxPower);
 
         hornRenderer.material.SetTextureOffset("_MainTex", new Vector2(uvStartOffsetHorns[0], uvStartOffsetHorns[1] - offsetV));
-        for(int i = 0; i < lifeLights.Length; i++)
+        emissiveStagMaterial.SetColor("_EmissionColor", new Color(1,1,1) * offsetV);
+        for (int i = 0; i < lifeLights.Length; i++)
         {
-            lifeLights[i].intensity = lightsMaxIntensity * currPower;
+            lifeLights[i].intensity = (lightsMaxIntensity * currPower) - 0.3f;
         }
+    }
+
+    public bool SufficentPower(float p) //kolla ifall det finns tillräkligt med power för att dra
+    {
+        if ((currPower + p) <= 0) return false;
+        return true;
     }
 
     public void Die()
