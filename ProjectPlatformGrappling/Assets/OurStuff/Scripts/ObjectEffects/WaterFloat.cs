@@ -14,10 +14,20 @@ public class WaterFloat : BaseRigidbody {
     {
         Rigidbody colRig = col.GetComponent<Rigidbody>();
 
-        if (colRig == null) return;
+        if (colRig != null && colRig.isKinematic == false)
+        {
 
-        AddForceSlowDrag(streamFloatVector * streamForce, ForceMode.Force, colRig);
-        AddForceSlowDrag(upFloatVector * streamForce * 0.5f, ForceMode.Force, colRig);
+            AddForceSlowDrag(streamFloatVector * streamForce, ForceMode.Force, colRig);
+            AddForceSlowDrag(upFloatVector * streamForce * 0.5f, ForceMode.Force, colRig);
+        }
+        else
+        {
+            StagMovement stagM = col.GetComponent<StagMovement>();
+            if(stagM != null)
+            {
+                stagM.ApplyYForce(streamForce * 0.01f, streamForce * 0.1f);
+            }
+        }
     }
 
     void OnTriggerEnter(Collider col)

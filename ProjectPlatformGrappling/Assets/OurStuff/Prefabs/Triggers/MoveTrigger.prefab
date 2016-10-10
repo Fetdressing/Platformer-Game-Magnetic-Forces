@@ -198,6 +198,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   psActivated: {fileID: 198000011467992500}
+  fEventStart:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: FunctionEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  fEventExit:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: FunctionEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  audioActive: {fileID: 0}
+  audioDeactive: {fileID: 0}
   moveObject: {fileID: 0}
   moveSpeedHome: 25
   moveSpeedTrigger: 70

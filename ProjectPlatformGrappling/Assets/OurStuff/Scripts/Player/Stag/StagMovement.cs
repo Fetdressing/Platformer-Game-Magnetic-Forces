@@ -118,9 +118,14 @@ public class StagMovement : BaseClass
         {
             if (stagSpeedMultiplier > 0)
             {
-                if ((horVector + verVector).magnitude > 0.1f)
+                //if ((horVector + verVector).magnitude > 0.1f)
+                //{
+                //    //Dash((horVector + verVector).normalized);
+                //    Dash(cameraObj.forward);
+                //}
+                if(ver < 0.0f) //bakåt
                 {
-                    Dash((horVector + verVector).normalized);
+                    Dash(-cameraObj.forward);
                 }
                 else
                 {
@@ -211,6 +216,13 @@ public class StagMovement : BaseClass
 
     public void ApplyYForce(float velY) //till characterscontrollern, inte rigidbody
     {
+        jumpTimePoint = Time.time;
+        ySpeed += velY;
+    }
+    public void ApplyYForce(float velY, float maxVel) //till characterscontrollern, inte rigidbody, med ett max värde
+    {
+        if (ySpeed >= maxVel) return;
+        jumpTimePoint = Time.time;
         ySpeed += velY;
     }
 

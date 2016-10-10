@@ -1805,7 +1805,7 @@ MonoBehaviour:
   isGrounded: 0
   groundCheckLM:
     serializedVersion: 2
-    m_Bits: 4294967039
+    m_Bits: 1
   animationH: {fileID: 111000010918003770}
   runForward: {fileID: 7400000, guid: 36031e5db8a82bf4688c37661117d4e7, type: 3}
   runForwardAngle: {fileID: 7400008, guid: 36031e5db8a82bf4688c37661117d4e7, type: 3}
@@ -3957,7 +3957,7 @@ ParticleSystem:
   randomSeed: 1111302376
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   moveWithTransform: 0
   scalingMode: 1
   InitialModule:

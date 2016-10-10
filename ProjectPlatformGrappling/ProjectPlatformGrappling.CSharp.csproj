@@ -105,6 +105,7 @@
     <Compile Include="Assets\OurStuff\Scripts\Player\Stag\StagMovement.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Stag\StagShooter.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\AnimationSpeedModifier.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\VisualEffects\EnvironmentChanger.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\FadingLight.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\UVDisplacer.cs" />
   </ItemGroup>
