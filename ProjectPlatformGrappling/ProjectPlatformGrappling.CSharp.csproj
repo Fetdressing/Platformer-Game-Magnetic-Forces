@@ -85,11 +85,11 @@
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\ForcePusher.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\MovingPlatform.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\ObjectSpawner.cs" />
-    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\ParticleTimed.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PhaseOutObject.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PowerCharger.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PowerPickup.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Projectiles\ProjectileBase.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Projectiles\ReturnProjectile.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Teleport.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Triggers\Conversation.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Triggers\MoveObjectTrigger.cs" />
@@ -107,6 +107,7 @@
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\AnimationSpeedModifier.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\EnvironmentChanger.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\FadingLight.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\VisualEffects\ParticleTimed.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\UVDisplacer.cs" />
   </ItemGroup>
   <ItemGroup>

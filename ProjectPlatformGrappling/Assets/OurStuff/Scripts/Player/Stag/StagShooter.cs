@@ -6,11 +6,13 @@ public class StagShooter : BaseClass {
     private PowerManager powerManager;
     private Transform cameraObj;
     private Camera mainCamera;
+    public Transform shooterObj;
 
     public LayerMask targetLM;
     private float shootForce = 300;
     private float cooldown_Time = 0.2f;
     private float cooldonwTimer = 0.0f;
+    private float projectilePowerCost = 0.05f;
 
     public GameObject projectileType;
     private int poolSize = 100;
@@ -49,11 +51,12 @@ public class StagShooter : BaseClass {
             projectilePool[i].GetComponent<ProjectileBase>().Dealloc();
             Destroy(projectilePool[i]);
         }
+        projectilePool.Clear();
     }
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetKey(KeyCode.Mouse1))
+        if (Input.GetKey(KeyCode.Mouse0))
         {
             Fire();
         }
@@ -63,6 +66,9 @@ public class StagShooter : BaseClass {
     {
         if (cooldonwTimer > Time.time) return;
         cooldonwTimer = Time.time + cooldown_Time;
+
+        if (!powerManager.SufficentPower(projectilePowerCost)) return;
+        powerManager.AddPower(-projectilePowerCost);
 
         GameObject currProj = null;
         for(int i = 0; i < projectilePool.Count; i++)
@@ -75,7 +81,7 @@ public class StagShooter : BaseClass {
         }
         if (currProj == null) return;
         Rigidbody currRig = currProj.GetComponent<Rigidbody>();
-        ProjectileBase currProjectile = currProj.GetComponent<ProjectileBase>();
+        ReturnProjectile currProjectile = currProj.GetComponent<ReturnProjectile>();
 
 
         RaycastHit raycastHit;
@@ -85,12 +91,30 @@ public class StagShooter : BaseClass {
             {
                 if (Vector3.Distance(raycastHit.point, mainCamera.transform.position) > (Vector3.Distance(transform.position, mainCamera.transform.position))) //ligger raycasthit framför spelaren? man vill ju ej skjuta bakåt
                 {
-                    currProj.transform.position = raycastHit.point + new Vector3(0, 45, 0); //kommer från en random riktning kanske?
+                    currProj.transform.position = shooterObj.position; //kommer från en random riktning kanske?
                     currProj.transform.LookAt(raycastHit.point);
-                    currProjectile.Fire(3, currProjectile.transform.forward * shootForce);
+                    currProjectile.Fire(2, currProjectile.transform.forward * shootForce, projectilePowerCost, transform);
+                }
+                else
+                {
+                    currProj.transform.position = shooterObj.position; //kommer från en random riktning kanske?
+                    currProj.transform.forward = cameraObj.forward;
+                    currProjectile.Fire(2, currProjectile.transform.forward * shootForce, projectilePowerCost, transform);
                 }
 
             }
+            else
+            {
+                currProj.transform.position = shooterObj.position; //kommer från en random riktning kanske?
+                currProj.transform.forward = cameraObj.forward;
+                currProjectile.Fire(2, currProjectile.transform.forward * shootForce, projectilePowerCost, transform);
+            }
+        }
+        else
+        {
+            currProj.transform.position = shooterObj.position; //kommer från en random riktning kanske?
+            currProj.transform.forward = cameraObj.forward;
+            currProjectile.Fire(2, currProjectile.transform.forward * shootForce, projectilePowerCost, transform);
         }
 
     }

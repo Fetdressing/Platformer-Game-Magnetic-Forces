@@ -4,12 +4,14 @@ using System.Collections;
 public class PowerCharger : BaseClass {
     private Transform thisTransform;
     private Collider[] thisColliders;
+    PowerManager pM; //powermanager på playern, hämtas i ontrigger och manipuleras via update
 
     public float phaseTime = 1.0f;
     public float phaseCooldown = 1.5f;
     public float startTime = 1.0f; //när hela börjar köras, kan behövas offset för att få dem ur fas
 
-    public float chargePower = 0.1f;
+    public float decayPowerMultiplayer = 1.0f; //hur mycket power den ska ta/ge förhållande till decayraten på karaktären
+    public float maxPowerPercentage = 60;
 
     private ParticleSystem ps;
     private Light lightActive;
@@ -74,6 +76,12 @@ public class PowerCharger : BaseClass {
         {
             playerBeam.enabled = false;
         }
+
+        if (pM != null && beamIsOnPlayer)
+        {
+            pM.AddPower(-((float)pM.powerDecay * decayPowerMultiplayer * Time.deltaTime), maxPowerPercentage);
+        }
+
     }
 
     IEnumerator KillZoneLifetime()
@@ -152,11 +160,7 @@ public class PowerCharger : BaseClass {
     void OnTriggerStay(Collider col)
     {
         //Health h = col.GetComponent<Health>();
-        PowerManager pM = col.GetComponent<PowerManager>();
-        if (pM != null)
-        {
-            pM.AddPower((int)((float)chargePower*Time.deltaTime));
-        }
+        pM = col.GetComponent<PowerManager>();
 
         if (!beamIsOnPlayer)
         {

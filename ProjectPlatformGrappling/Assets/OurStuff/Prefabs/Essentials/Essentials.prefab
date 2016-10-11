@@ -11,6 +11,21 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1000012721125376}
   m_IsPrefabParent: 1
+--- !u!1 &1000010004750282
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000011839564482}
+  m_Layer: 8
+  m_Name: Shooter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1000010021008252
 GameObject:
   m_ObjectHideFlags: 1
@@ -652,6 +667,7 @@ GameObject:
   - 4: {fileID: 4000012381538392}
   - 114: {fileID: 114000012090536760}
   - 114: {fileID: 114000013941428046}
+  - 114: {fileID: 114000010171813366}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Manager
@@ -988,7 +1004,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011310479508}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 108.82, y: 1.3437219, z: 142}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1059,7 +1075,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011624216690}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -350.62, y: -157, z: -479}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1071,6 +1087,7 @@ Transform:
   - {fileID: 4000010100197376}
   - {fileID: 4000013998590914}
   - {fileID: 4000011840728454}
+  - {fileID: 4000011839564482}
   m_Father: {fileID: 4000012817769060}
   m_RootOrder: 1
 --- !u!4 &4000011481030572
@@ -1141,6 +1158,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4000014044940114}
   m_RootOrder: 2
+--- !u!4 &4000011839564482
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010004750282}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 6.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 4000011412557584}
+  m_RootOrder: 8
 --- !u!4 &4000011840728454
 Transform:
   m_ObjectHideFlags: 1
@@ -1243,7 +1273,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012721125376}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1311,10 +1341,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011122356326}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 260.1, y: 0, z: 808.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_Children:
   - {fileID: 4000010914960778}
   - {fileID: 4000011412557584}
@@ -1698,6 +1728,22 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 1
+--- !u!114 &114000010171813366
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013856882280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47ecf0ca39eff284fb3f1ac62d051d53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fogColors:
+  - {r: 0, g: 0.01987833, b: 0.41176468, a: 1}
+  - {r: 0.35532457, g: 0, b: 0.6691177, a: 1}
+  - {r: 0.43382353, g: 0, b: 0.13463484, a: 1}
+  fogColorChangingSpeed: 0.1
 --- !u!114 &114000010338782126
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1710,6 +1756,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initTimes: 0
+  shooterObj: {fileID: 4000011839564482}
   targetLM:
     serializedVersion: 2
     m_Bits: 1
@@ -1895,6 +1942,7 @@ MonoBehaviour:
   lightsMaxIntensity: 2
   emissiveStagMaterial: {fileID: 2100000, guid: fac517c5343b772468e55ca732238063,
     type: 2}
+  powerDecay: -0.02
   isAlive: 0
   deathLocation: {x: 0, y: 0, z: 0}
   deathParticleSystemObj: {fileID: 0}
@@ -1973,9 +2021,6 @@ MonoBehaviour:
   player: {fileID: 4000011412557584}
   spawnPoints:
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &114000013984679992
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2011,7 +2056,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   threshold: 0.25
-  intensity: 0.75
+  intensity: 1.5
   blurSize: 1
   blurIterations: 1
   blurType: 0

@@ -36,6 +36,7 @@ public class StagMovement : BaseClass
     private Vector3 verVector = new Vector3(0, 0, 0);
     private float hor, ver;
     private Vector3 dashVel = new Vector3(0, 0, 0);
+    private Vector3 finalMoveDir = new Vector3(0,0,0);
 
     private LayerMask layermaskForces;
     public ParticleSystem slideGroundParticleSystem;
@@ -107,36 +108,7 @@ public class StagMovement : BaseClass
 
         distanceToGround = GetDistanceToGround(groundCheckObject);
 
-        float stagSpeedMultiplier = 1.0f;
-        if (isGrounded)
-        {
-            stagSpeedMultiplier = Mathf.Max(Mathf.Abs(stagRootJointStartY - stagRootJoint.localPosition.y), stagSpeedMultMin); //min värde
-            stagSpeedMultiplier = Mathf.Min(stagSpeedMultiplier, stagSpeedMultMax); //max värde
-        }
-
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            if (stagSpeedMultiplier > 0)
-            {
-                //if ((horVector + verVector).magnitude > 0.1f)
-                //{
-                //    //Dash((horVector + verVector).normalized);
-                //    Dash(cameraObj.forward);
-                //}
-                if(ver < 0.0f) //bakåt
-                {
-                    Dash(-cameraObj.forward);
-                }
-                else
-                {
-                    Dash(cameraObj.forward);
-                }
-            }
-        }
-
-        verVector = new Vector3(verVector.x, 0, verVector.z); //denna behöver vara under dash så att man kan dasha upp/ned oxå
-
-        Vector3 finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currSpeed;
+        HandleMovement();
         //characterController.Move(finalMoveDir * speed * stagSpeedMultiplier * Time.deltaTime);
 
         if (isGrounded || GetGrounded(groundCheckObject)) //använd endast GetGrounded här, annars kommer man få samma problem när gravitationen slutar verka pga lång raycast
@@ -172,6 +144,74 @@ public class StagMovement : BaseClass
         }
 
         PlayAnimationStates();
+
+
+
+    }
+
+    void HandleMovement()
+    {
+        float stagSpeedMultiplier = 1.0f;
+        if (isGrounded)
+        {
+            stagSpeedMultiplier = Mathf.Max(Mathf.Abs(stagRootJointStartY - stagRootJoint.localPosition.y), stagSpeedMultMin); //min värde
+            stagSpeedMultiplier = Mathf.Min(stagSpeedMultiplier, stagSpeedMultMax); //max värde
+        }
+
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            if (stagSpeedMultiplier > 0)
+            {
+                //if ((horVector + verVector).magnitude > 0.1f)
+                //{
+                //    //Dash((horVector + verVector).normalized);
+                //    Dash(cameraObj.forward);
+                //}
+                if (ver < 0.0f) //bakåt
+                {
+                    Dash(-cameraObj.forward);
+                }
+                else
+                {
+                    Dash(cameraObj.forward);
+                }
+            }
+        }
+
+        verVector = new Vector3(verVector.x, 0, verVector.z); //denna behöver vara under dash så att man kan dasha upp/ned oxå
+
+        finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
+
+ //       if (activePlatform != null)
+ //       {
+ //           var newGlobalPlatformPoint = activePlatform.TransformPoint(activeLocalPlatformPoint);
+ //           var moveDistance = (newGlobalPlatformPoint - activeGlobalPlatformPoint);
+ //           if (moveDistance != Vector3.zero)
+ //               characterController.Move(moveDistance);
+ //           lastPlatformVelocity = (newGlobalPlatformPoint - activeGlobalPlatformPoint) / Time.deltaTime;
+ //           // If you want to support moving platform rotation as well:
+ //           var newGlobalPlatformRotation = activePlatform.rotation * activeLocalPlatformRotation;
+ //           var rotationDiff = newGlobalPlatformRotation * Quaternion.Inverse(activeGlobalPlatformRotation);
+ //           // Prevent rotation of the local up vector
+ //           rotationDiff = Quaternion.FromToRotation(rotationDiff * transform.up, transform.up) * rotationDiff;
+ //           transform.rotation = rotationDiff * transform.rotation;
+ //       }
+ //       else
+ //       {
+ //           lastPlatformVelocity = Vector3.zero;
+ //       }
+ //       activePlatform = null;
+ //// Actual movement logic here
+ //collisionFlags = myCharacterController.Move(calculatedMovement);
+ //// Moving platforms support
+ //if (activePlatform != null)
+ //       {
+ //           activeGlobalPlatformPoint = transform.position;
+ //           activeLocalPlatformPoint = activePlatform.InverseTransformPoint(transform.position);
+ //           // If you want to support moving platform rotation as well:
+ //           activeGlobalPlatformRotation = transform.rotation;
+ //           activeLocalPlatformRotation = Quaternion.Inverse(activePlatform.rotation) * transform.rotation;
+ //       }
     }
 
     void PlayAnimationStates()
@@ -253,6 +293,7 @@ public class StagMovement : BaseClass
 
     void ToggleDashEffect(bool b)
     {
+        if (gameObject.activeSelf == false) return;
         dashEffectObject.transform.rotation = cameraObj.rotation;
         float trailOriginalTime = 2.0f;
         float startWidth = 1;

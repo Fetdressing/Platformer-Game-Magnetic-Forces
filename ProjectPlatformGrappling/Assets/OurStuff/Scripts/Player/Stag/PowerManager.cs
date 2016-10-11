@@ -11,8 +11,9 @@ public class PowerManager : BaseClass {
     public Material emissiveStagMaterial; //det som fadeas ut när denne tappar powernn
 
     private float maxPower = 1;
-    private float currPower;
-    private float powerDecay = -0.02f;
+    [HideInInspector] public float currPower;
+    [HideInInspector]
+    public float powerDecay = -0.02f;
 
     [HideInInspector]
     public bool isAlive;
@@ -26,7 +27,7 @@ public class PowerManager : BaseClass {
     public AnimationClip deathAnimation;
     // Use this for initialization
     void Start () {
-	
+        Init();
 	}
 
     public override void Init()
@@ -34,6 +35,7 @@ public class PowerManager : BaseClass {
         base.Init();
         activeCamera = GameObject.FindGameObjectWithTag("Manager").GetComponent<CameraManager>().cameraPlayerFollow;
         Reset();
+        //GameObject.FindGameObjectWithTag("Manager").GetComponent<SpawnManager>().Respawn(transform.position); //viktigt denna inte ligger i reset, infinite loop annars
     }
 
     public override void Reset()
@@ -71,6 +73,31 @@ public class PowerManager : BaseClass {
         }
     }
 
+    public void AddPower(float p, float maxPercentage) //tex ger max upp till 80% av max powern
+    {
+        if (p > 0 && (currPower / maxPower) * 100 > maxPercentage) return; //kolla oxå så att värdet är positivt, dvs INTE gör skada
+
+        currPower += p;
+
+        if (currPower > maxPower)
+        {
+            currPower = maxPower;
+        }
+        else if (currPower <= 0)
+        {
+            Die();
+        }
+
+        float offsetV = (currPower / maxPower);
+
+        hornRenderer.material.SetTextureOffset("_MainTex", new Vector2(uvStartOffsetHorns[0], uvStartOffsetHorns[1] - offsetV));
+        emissiveStagMaterial.SetColor("_EmissionColor", new Color(1, 1, 1) * offsetV);
+        for (int i = 0; i < lifeLights.Length; i++)
+        {
+            lifeLights[i].intensity = (lightsMaxIntensity * currPower) - 0.3f;
+        }
+    }
+
     public bool SufficentPower(float p) //kolla ifall det finns tillräkligt med power för att dra
     {
         if ((currPower + p) <= 0) return false;
@@ -79,6 +106,7 @@ public class PowerManager : BaseClass {
 
     public void Die()
     {
+        if (isAlive == false) return; //så den inte spammar
         Debug.Log("död");
         isAlive = false;
 
