@@ -72,7 +72,7 @@ public class ReturnProjectile : ProjectileBase {
         {
             o_Rigidbody.AddForce(forceDir * 0.5f, ForceMode.Impulse);
         }
-        while(((startTime + lifeTime * 2) * returnHomingDrag) > Time.time)
+        while(((startTime + lifeTime * 2)) > Time.time)
         {
             if(returnTarget != null && returnHomingForce > 0.1f)
             {
@@ -81,7 +81,7 @@ public class ReturnProjectile : ProjectileBase {
                 yield return new WaitForSeconds(0.1f);
             }
         }
-        transform.gameObject.SetActive(false);
+        Die();
     }
 
     public override void Reset()

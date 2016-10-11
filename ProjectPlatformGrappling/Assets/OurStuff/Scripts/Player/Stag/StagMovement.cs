@@ -94,7 +94,8 @@ public class StagMovement : BaseClass
 
     void LateUpdate()
     {
-        stagObject.forward = new Vector3(cameraObj.forward.x ,0, cameraObj.forward.z);
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(cameraObj.forward.x, 0, cameraObj.forward.z));
+        stagObject.rotation = Quaternion.Slerp(stagObject.rotation, lookRotation, Time.deltaTime * 20);
     }
 
     void Update()
@@ -134,8 +135,9 @@ public class StagMovement : BaseClass
 
         // apply gravity acceleration to vertical speed:
         ySpeed -= gravity * Time.deltaTime;
-        finalMoveDir.y = ySpeed; // include vertical speed in vel
-        characterController.Move((finalMoveDir + dashVel) * Time.deltaTime);
+        Vector3 yVector = new Vector3(0, ySpeed, 0);
+
+        characterController.Move((finalMoveDir + dashVel + yVector) * Time.deltaTime);
 
 
         if (Input.GetKeyDown(KeyCode.C))
@@ -144,8 +146,6 @@ public class StagMovement : BaseClass
         }
 
         PlayAnimationStates();
-
-
 
     }
 
@@ -181,37 +181,6 @@ public class StagMovement : BaseClass
         verVector = new Vector3(verVector.x, 0, verVector.z); //denna behöver vara under dash så att man kan dasha upp/ned oxå
 
         finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
-
- //       if (activePlatform != null)
- //       {
- //           var newGlobalPlatformPoint = activePlatform.TransformPoint(activeLocalPlatformPoint);
- //           var moveDistance = (newGlobalPlatformPoint - activeGlobalPlatformPoint);
- //           if (moveDistance != Vector3.zero)
- //               characterController.Move(moveDistance);
- //           lastPlatformVelocity = (newGlobalPlatformPoint - activeGlobalPlatformPoint) / Time.deltaTime;
- //           // If you want to support moving platform rotation as well:
- //           var newGlobalPlatformRotation = activePlatform.rotation * activeLocalPlatformRotation;
- //           var rotationDiff = newGlobalPlatformRotation * Quaternion.Inverse(activeGlobalPlatformRotation);
- //           // Prevent rotation of the local up vector
- //           rotationDiff = Quaternion.FromToRotation(rotationDiff * transform.up, transform.up) * rotationDiff;
- //           transform.rotation = rotationDiff * transform.rotation;
- //       }
- //       else
- //       {
- //           lastPlatformVelocity = Vector3.zero;
- //       }
- //       activePlatform = null;
- //// Actual movement logic here
- //collisionFlags = myCharacterController.Move(calculatedMovement);
- //// Moving platforms support
- //if (activePlatform != null)
- //       {
- //           activeGlobalPlatformPoint = transform.position;
- //           activeLocalPlatformPoint = activePlatform.InverseTransformPoint(transform.position);
- //           // If you want to support moving platform rotation as well:
- //           activeGlobalPlatformRotation = transform.rotation;
- //           activeLocalPlatformRotation = Quaternion.Inverse(activePlatform.rotation) * transform.rotation;
- //       }
     }
 
     void PlayAnimationStates()
