@@ -4,7 +4,8 @@ using System.Collections;
 [RequireComponent(typeof(CharacterController))]
 public class StagMovement : BaseClass
 {
-    public Transform cameraObj;
+    public Transform cameraHolder; //den som förflyttas när man rör sig med musen
+    private Transform cameraObj; //kameran själv
     public AudioSource movementAudioSource;
     private CharacterController characterController;
     private PowerManager powerManager;
@@ -22,7 +23,7 @@ public class StagMovement : BaseClass
 
     private float currSpeed; //movespeeden, kan påverkas av slows
     private float ySpeed; //aktiv variable för vad som händer med gravitation/jump
-    private float jumpTimePoint; //när man hoppas så den inte ska resetta stuff dirr efter man hoppat
+    private float jumpTimePoint = -5; //när man hoppas så den inte ska resetta stuff dirr efter man hoppat
 
     private float dashTimePoint;
     private float dashCooldown = 0.8f;
@@ -74,6 +75,7 @@ public class StagMovement : BaseClass
         powerManager = transform.GetComponent<PowerManager>();
         isGrounded = false;
         layermaskForces = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("MagneticBall") | 1 << LayerMask.NameToLayer("Ragdoll"));
+        cameraObj = cameraHolder.GetComponentsInChildren<Transform>()[1].transform;
 
         stagRootJointStartY = stagRootJoint.localPosition.y;
 
@@ -87,14 +89,14 @@ public class StagMovement : BaseClass
         currSpeed = startSpeed;
         dashVel = new Vector3(0, 0, 0);
         dashTimePoint = 0;
-        jumpTimePoint = 0;
+        jumpTimePoint = -5; //behöver vara under 0 så att man kan hoppa dirr när spelet börjar
         ToggleInfiniteGravity(false);
         slideGroundParticleSystem.GetComponent<ParticleTimed>().isReady = true;
     }
 
     void LateUpdate()
     {
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(cameraObj.forward.x, 0, cameraObj.forward.z));
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(cameraHolder.forward.x, 0, cameraHolder.forward.z));
         stagObject.rotation = Quaternion.Slerp(stagObject.rotation, lookRotation, Time.deltaTime * 20);
     }
 
@@ -102,8 +104,8 @@ public class StagMovement : BaseClass
     {
         hor = Input.GetAxis("Horizontal");
         ver = Input.GetAxis("Vertical");
-        horVector = hor * cameraObj.right;
-        verVector = ver * cameraObj.forward;
+        horVector = hor * cameraHolder.right;
+        verVector = ver * cameraHolder.forward;
 
         isGrounded = characterController.isGrounded;
 
@@ -129,6 +131,7 @@ public class StagMovement : BaseClass
         {
             if (jumpTimePoint < Time.time - 1.2f) //så den inte ska fucka och resetta dirr efter man hoppat
             {
+                cameraObj.GetComponent<CameraShaker>().ShakeCamera(1.0f, 2.0f, true);
                 ySpeed = 0; // grounded character has vSpeed = 0...
             }
         }
@@ -165,15 +168,15 @@ public class StagMovement : BaseClass
                 //if ((horVector + verVector).magnitude > 0.1f)
                 //{
                 //    //Dash((horVector + verVector).normalized);
-                //    Dash(cameraObj.forward);
+                //    Dash(cameraHolder.forward);
                 //}
                 if (ver < 0.0f) //bakåt
                 {
-                    Dash(-cameraObj.forward);
+                    Dash(-cameraHolder.forward);
                 }
                 else
                 {
-                    Dash(cameraObj.forward);
+                    Dash(cameraHolder.forward);
                 }
             }
         }
@@ -263,7 +266,7 @@ public class StagMovement : BaseClass
     void ToggleDashEffect(bool b)
     {
         if (gameObject.activeSelf == false) return;
-        dashEffectObject.transform.rotation = cameraObj.rotation;
+        dashEffectObject.transform.rotation = cameraHolder.rotation;
         float trailOriginalTime = 2.0f;
         float startWidth = 1;
         float endWidth = 0.1f;

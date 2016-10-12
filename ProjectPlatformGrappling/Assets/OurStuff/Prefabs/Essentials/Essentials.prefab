@@ -37,6 +37,7 @@ GameObject:
   - 20: {fileID: 20000010582969338}
   - 81: {fileID: 81000012963460050}
   - 114: {fileID: 114000014270324376}
+  - 114: {fileID: 114000010506858466}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -1836,6 +1837,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114000010506858466
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010021008252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 782ecbeaa85fec24c9a0b04f57affc5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initTimes: 0
 --- !u!114 &114000010577849772
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1885,7 +1898,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initTimes: 0
-  cameraObj: {fileID: 4000010914960778}
+  cameraHolder: {fileID: 4000010914960778}
   movementAudioSource: {fileID: 82000013940334992}
   stagRootJoint: {fileID: 4000010511524650}
   stagObject: {fileID: 4000010338020148}
