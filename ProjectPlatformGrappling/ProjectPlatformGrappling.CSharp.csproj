@@ -101,6 +101,7 @@
     <Compile Include="Assets\OurStuff\Scripts\Player\Old\MagneticHandler.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Old\PlayerMovement.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\PlayerHealth.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\Player\Stag\GroundChecker.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Stag\PowerManager.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Stag\StagMovement.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Stag\StagShooter.cs" />

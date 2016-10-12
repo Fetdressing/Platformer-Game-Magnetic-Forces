@@ -20,6 +20,9 @@ public class PowerCharger : BaseClass {
     private bool beamIsOnPlayer = false;
     private LineRenderer playerBeam;
     private Transform player;
+
+    private float beamOnDurTime = 1.0f;
+    private float beamOnTimer = 0.0f;
     void Start()
     {
         Init();
@@ -52,6 +55,7 @@ public class PowerCharger : BaseClass {
     {
         base.Reset();
         StopAllCoroutines();
+        beamOnTimer = 0.0f;
         if (phaseTime != 0)
         {
             StartCoroutine(KillZoneLifetime());
@@ -64,6 +68,7 @@ public class PowerCharger : BaseClass {
 
     void Update()
     {
+        beamIsOnPlayer = GetBeamIsOnPlayer();
 
         if (playerBeam == null) return;
         if(beamIsOnPlayer)
@@ -79,7 +84,7 @@ public class PowerCharger : BaseClass {
 
         if (pM != null && beamIsOnPlayer)
         {
-            pM.AddPower(-((float)pM.powerDecay * decayPowerMultiplayer * Time.deltaTime), maxPowerPercentage);
+            pM.AddPower(-(pM.powerDecay * decayPowerMultiplayer * Time.deltaTime), maxPowerPercentage);
         }
 
     }
@@ -161,22 +166,23 @@ public class PowerCharger : BaseClass {
     {
         //Health h = col.GetComponent<Health>();
         pM = col.GetComponent<PowerManager>();
-
-        if (!beamIsOnPlayer)
+        if(pM == null)
         {
-            if (playerBeam == null) return;
-
-            if (col.tag != "Player") return;
-            StopAllCoroutines();
-            StartCoroutine(PlacePlayerBeam());
+            Debug.Log("Ett objekt har player-layer som ej ska ha?");
         }
+
+        if (playerBeam == null) return;
+
+        //if (col.tag != "Player") return;
+
+        beamOnTimer = beamOnDurTime + Time.time;
     }
 
-    IEnumerator PlacePlayerBeam()
+    public bool GetBeamIsOnPlayer()
     {
-        beamIsOnPlayer = true;
-        yield return new WaitForSeconds(0.1f);
-        beamIsOnPlayer = false;
+        if (beamOnTimer > Time.time) return true;
 
+        return false;
     }
+
 }
