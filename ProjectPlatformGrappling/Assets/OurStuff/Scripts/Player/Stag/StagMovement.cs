@@ -6,6 +6,7 @@ public class StagMovement : BaseClass
 {
     public Transform cameraHolder; //den som förflyttas när man rör sig med musen
     private Transform cameraObj; //kameran själv
+    private CameraShaker cameraShaker;
     public AudioSource movementAudioSource;
     private CharacterController characterController;
     private PowerManager powerManager;
@@ -76,6 +77,7 @@ public class StagMovement : BaseClass
         isGrounded = false;
         layermaskForces = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("MagneticBall") | 1 << LayerMask.NameToLayer("Ragdoll"));
         cameraObj = cameraHolder.GetComponentsInChildren<Transform>()[1].transform;
+        cameraShaker = cameraObj.GetComponent<CameraShaker>();
 
         stagRootJointStartY = stagRootJoint.localPosition.y;
 
@@ -311,6 +313,7 @@ public class StagMovement : BaseClass
 
     void OnCollisionEnter(Collision col)
     {
+
         //if (GetGrounded() && col.contacts[0].point.y < transform.position.y)
         //{
         //    float speedHit = col.relativeVelocity.magnitude;
@@ -320,6 +323,10 @@ public class StagMovement : BaseClass
         //        //ForcePush(speedHit);
         //    }
         //}
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
     }
 
     void ToggleInfiniteGravity(bool b)

@@ -4,6 +4,7 @@ using System.Collections;
 public class GroundChecker : BaseClass {
     public Transform stagObject;
     private CharacterController cController;
+    private CameraShaker cameraShaker;
 
     private Transform activePlatform;
 
@@ -21,6 +22,7 @@ public class GroundChecker : BaseClass {
     {
         base.Init();
         cController = stagObject.GetComponent<CharacterController>();
+        cameraShaker = GameObject.FindGameObjectWithTag("MainCamera").GetComponentsInChildren<Transform>()[1].transform.GetComponent<CameraShaker>();
     }
 
     void Update()
@@ -55,6 +57,14 @@ public class GroundChecker : BaseClass {
         {
             activePlatform = col.transform;
 
+        }
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (LayerMask.LayerToName(col.gameObject.layer) != "Player")
+        {
+            cameraShaker.ShakeCamera(0.1f, 0.5f, true);
         }
     }
 
