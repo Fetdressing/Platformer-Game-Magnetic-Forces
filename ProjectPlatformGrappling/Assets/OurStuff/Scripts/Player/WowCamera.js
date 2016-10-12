@@ -1,8 +1,12 @@
-﻿ 
+﻿
 var target : Transform;
+var currSpeed = 0.0f;
+private var currFrameTargetPos = new Vector3();
+private var lastFrameTargetPos = new Vector3();
  
 var targetHeight = 12.0;
 var distance = 5.0;
+var extraDistance = 0.0f;
  
 var maxDistance = 20;
 var minDistance = 2.5;
@@ -48,12 +52,24 @@ function Start () {
     // Make the rigid body not change rotation
     if (GetComponent.<Rigidbody>())
         GetComponent.<Rigidbody>().freezeRotation = true;
+
 }
  
 function LateUpdate () {
     if(!target)
         return;
-   
+
+    currFrameTargetPos = target.position;
+    if(lastFrameTargetPos != Vector3.zero)
+    {
+        var valueSpeed = Mathf.Abs(Mathf.Abs(lastFrameTargetPos.magnitude) - Mathf.Abs(currFrameTargetPos.magnitude));
+        extraDistance = Mathf.Lerp(extraDistance, valueSpeed, Time.deltaTime * 10f);;
+    }
+    else
+    {
+        extraDistance = Mathf.Lerp(extraDistance, 0, Time.deltaTime * 10f);
+    }
+
 
     x += Input.GetAxis("Mouse X") * xSpeed * 0.02;
     y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02;
@@ -65,7 +81,7 @@ function LateUpdate () {
     y = ClampAngle(y, yMinLimit, yMaxLimit);
    
     var rotation:Quaternion = Quaternion.Euler(y, x, 0);
-    var position = target.position - (rotation * Vector3.forward * distance + Vector3(0,-targetHeight,0));
+    var position = target.position - (rotation * Vector3.forward * (distance + extraDistance) + Vector3(0,-targetHeight,0));
    
     //// Check to see if we have a collision
     //collisionVector = AdjustLineOfSight(transform.position, position);
@@ -115,6 +131,8 @@ function LateUpdate () {
    
     transform.rotation = rotation;
     transform.position = position;
+
+    lastFrameTargetPos = target.position;
 }
  
 static function ClampAngle (angle : float, min : float, max : float) {

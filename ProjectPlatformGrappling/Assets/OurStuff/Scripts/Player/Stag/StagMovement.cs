@@ -21,7 +21,7 @@ public class StagMovement : BaseClass
     private float stagSpeedMultMax = 1.5f;
     private float stagSpeedMultMin = 0.85f;
 
-    private float currSpeed; //movespeeden, kan påverkas av slows
+    private float currMovementSpeed; //movespeeden, kan påverkas av slows
     private float ySpeed; //aktiv variable för vad som händer med gravitation/jump
     private float jumpTimePoint = -5; //när man hoppas så den inte ska resetta stuff dirr efter man hoppat
 
@@ -86,7 +86,7 @@ public class StagMovement : BaseClass
     {
         base.Reset();
         ToggleDashEffect(false);
-        currSpeed = startSpeed;
+        currMovementSpeed = startSpeed;
         dashVel = new Vector3(0, 0, 0);
         dashTimePoint = 0;
         jumpTimePoint = -5; //behöver vara under 0 så att man kan hoppa dirr när spelet börjar
@@ -131,7 +131,6 @@ public class StagMovement : BaseClass
         {
             if (jumpTimePoint < Time.time - 1.2f) //så den inte ska fucka och resetta dirr efter man hoppat
             {
-                cameraObj.GetComponent<CameraShaker>().ShakeCamera(1.0f, 2.0f, true);
                 ySpeed = 0; // grounded character has vSpeed = 0...
             }
         }
@@ -183,7 +182,7 @@ public class StagMovement : BaseClass
 
         verVector = new Vector3(verVector.x, 0, verVector.z); //denna behöver vara under dash så att man kan dasha upp/ned oxå
 
-        finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
+        finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currMovementSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
     }
 
     void PlayAnimationStates()
