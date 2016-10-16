@@ -4,8 +4,17 @@ using System.Collections;
 public class MovingPlatform : MonoBehaviour {
     private Rigidbody thisRigidbody;
     private Transform thisTransform;
+    public Transform rotateMesh;
+    public float multRot = -1; //vänder rotationen helt tex
 
     public bool useForce = true;
+
+    public enum MoveType
+    {
+        Force, MovePos, Translate
+    }
+
+    public MoveType moveType = 0;
 
     private Transform currTarget;
     private int currIndex = 0;
@@ -20,18 +29,33 @@ public class MovingPlatform : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	void Update () {
         CheckReached();
 
         Vector3 vecToTarget = (currTarget.position - thisTransform.position).normalized;
 
-        if (useForce == true)
+        if (rotateMesh != null)
+            rotateMesh.forward = vecToTarget * multRot;
+        //if (useForce == true)
+        //{
+        //    thisRigidbody.AddForce(vecToTarget * force * Time.deltaTime);
+        //}
+        //else
+        //{
+        //    thisRigidbody.MovePosition(thisTransform.position + vecToTarget * force * Time.deltaTime);
+        //}
+
+        switch(moveType)
         {
-            thisRigidbody.AddForce(vecToTarget * force * Time.deltaTime);
-        }
-        else
-        {
-            thisRigidbody.MovePosition(thisTransform.position + vecToTarget * force * Time.deltaTime);
+            case MoveType.Force:
+                thisRigidbody.AddForce(vecToTarget * force * Time.deltaTime);
+                break;
+            case MoveType.MovePos:
+                thisRigidbody.MovePosition(thisTransform.position + vecToTarget * force * Time.deltaTime);
+                break;
+            case MoveType.Translate:
+                transform.Translate(vecToTarget * force * Time.deltaTime);
+                break;
         }
 	}
 

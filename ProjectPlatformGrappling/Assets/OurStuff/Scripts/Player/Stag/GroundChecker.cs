@@ -6,12 +6,6 @@ public class GroundChecker : BaseClass {
     private CharacterController cController;
     private CameraShaker cameraShaker;
 
-    private Transform activePlatform;
-
-    private Vector3 activeGlobalPlatformPoint;
-    private Vector3 activeLocalPlatformPoint;
-
-    private Vector3 platformVelocity;
 
     void Start()
     {
@@ -25,41 +19,41 @@ public class GroundChecker : BaseClass {
         cameraShaker = GameObject.FindGameObjectWithTag("MainCamera").GetComponentsInChildren<Transform>()[1].transform.GetComponent<CameraShaker>();
     }
 
-    void LateUpdate()
-    {
-        return;
-        if(activePlatform != null)
-        {
-            Vector3 newGlobalPlatformPoint = activePlatform.TransformPoint(activeLocalPlatformPoint);
-            Vector3 moveDistance = (newGlobalPlatformPoint - activeGlobalPlatformPoint);
-            stagObject.position = stagObject.position + moveDistance;
+    //void LateUpdate()
+    //{
+    //    return;
+    //    if(activePlatform != null)
+    //    {
+    //        Vector3 newGlobalPlatformPoint = activePlatform.TransformPoint(activeLocalPlatformPoint);
+    //        Vector3 moveDistance = (newGlobalPlatformPoint - activeGlobalPlatformPoint);
+    //        stagObject.position = stagObject.position + moveDistance;
 
-            platformVelocity = moveDistance / Time.deltaTime;
+    //        platformVelocity = moveDistance / Time.deltaTime;
 
-            //if (moveDistance != Vector3.zero)
-            //{
-            //    stagObject.GetComponent<CharacterController>().Move(moveDistance);
-            //}
+    //        //if (moveDistance != Vector3.zero)
+    //        //{
+    //        //    stagObject.GetComponent<CharacterController>().Move(moveDistance);
+    //        //}
 
-        }
-        else
-        {
-            platformVelocity = Vector3.zero;
-        }
+    //    }
+    //    else
+    //    {
+    //        platformVelocity = Vector3.zero;
+    //    }
 
-        activeGlobalPlatformPoint = stagObject.position;
-        activeLocalPlatformPoint = activePlatform.InverseTransformPoint(stagObject.position);
+    //    activeGlobalPlatformPoint = stagObject.position;
+    //    activeLocalPlatformPoint = activePlatform.InverseTransformPoint(stagObject.position);
         
-    }
+    //}
 
-    void OnTriggerStay(Collider col)
-    {
+    //void OnTriggerStay(Collider col)
+    //{
 
-        if (col.gameObject.tag == "MovingPlatform")
-        {
-            activePlatform = col.transform;
-        }
-    }
+    //    if (col.gameObject.tag == "MovingPlatform")
+    //    {
+    //        activePlatform = col.transform;
+    //    }
+    //}
 
     void OnTriggerEnter(Collider col)
     {
@@ -69,12 +63,4 @@ public class GroundChecker : BaseClass {
         }
     }
 
-    void OnTriggerExit(Collider col)
-    {
-        if (col.gameObject.tag == "MovingPlatform")
-        {
-            activePlatform = null;
-
-        }
-    }
 }

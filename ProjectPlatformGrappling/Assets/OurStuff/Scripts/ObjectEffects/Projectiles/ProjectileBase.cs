@@ -19,6 +19,8 @@ public class ProjectileBase : BaseClass {
     public List<GameObject> particleObjectPool = new List<GameObject>();
     public int particleObjectPoolSize = 3;
 
+    public bool isGhost = true; //går igenom objekt
+
     void Awake()
     {
         Init();

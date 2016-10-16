@@ -107,10 +107,27 @@ public class StagMovement : BaseClass
         slideGroundParticleSystem.GetComponent<ParticleTimed>().isReady = true;
     }
 
-    void LateUpdate()
+    void FixedUpdate()
     {
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(cameraHolder.forward.x, 0, cameraHolder.forward.z));
         stagObject.rotation = Quaternion.Slerp(stagObject.rotation, lookRotation, Time.deltaTime * 20);
+
+        HandleMovement(); //moddar finalMoveDir
+        //characterController.Move(finalMoveDir * speed * stagSpeedMultiplier * Time.deltaTime);
+
+        if (isGrounded || GetGrounded(groundCheckObject)) //använd endast GetGrounded här, annars kommer man få samma problem när gravitationen slutar verka pga lång raycast
+        {
+            if (jumpTimePoint < Time.time - 1.2f) //så den inte ska fucka och resetta dirr efter man hoppat
+            {
+                if (Input.GetButtonDown("Jump"))
+                {
+                    jumpTimePoint = Time.time;
+                    ySpeed = jumpSpeed;
+                    //animationH.Play(jump.name);
+                    //animationH[jump.name].weight = 1.0f;
+                }
+            }
+        }
 
         if (activePlatform != null)
         {
@@ -142,6 +159,13 @@ public class StagMovement : BaseClass
             activeLocalPlatformPoint = activePlatform.InverseTransformPoint(transform.position);
         }
         activePlatform = null;
+
+
+        // apply gravity acceleration to vertical speed:
+        ySpeed -= gravity * Time.deltaTime;
+        Vector3 yVector = new Vector3(0, ySpeed, 0);
+
+        characterController.Move((finalMoveDir + dashVel + yVector) * Time.deltaTime);
     }
 
     void Update()
@@ -170,22 +194,6 @@ public class StagMovement : BaseClass
 
         distanceToGround = GetDistanceToGround(groundCheckObject);
 
-        HandleMovement();
-        //characterController.Move(finalMoveDir * speed * stagSpeedMultiplier * Time.deltaTime);
-
-        if (isGrounded || GetGrounded(groundCheckObject)) //använd endast GetGrounded här, annars kommer man få samma problem när gravitationen slutar verka pga lång raycast
-        {
-            if (jumpTimePoint < Time.time - 1.2f) //så den inte ska fucka och resetta dirr efter man hoppat
-            {
-                if (Input.GetButtonDown("Jump"))
-                {
-                    jumpTimePoint = Time.time;
-                    ySpeed = jumpSpeed;
-                    //animationH.Play(jump.name);
-                    //animationH[jump.name].weight = 1.0f;
-                }
-            }
-        }
         if (isGrounded) //dessa if-satser skall vara separata
         {
             if (jumpTimePoint < Time.time - 1.2f) //så den inte ska fucka och resetta dirr efter man hoppat
@@ -193,13 +201,6 @@ public class StagMovement : BaseClass
                 ySpeed = 0; // grounded character has vSpeed = 0...
             }
         }
-
-        // apply gravity acceleration to vertical speed:
-        ySpeed -= gravity * Time.deltaTime;
-        Vector3 yVector = new Vector3(0, ySpeed, 0);
-
-        characterController.Move((finalMoveDir + dashVel + yVector) * Time.deltaTime);
-
 
         if (Input.GetKeyDown(KeyCode.C))
         {

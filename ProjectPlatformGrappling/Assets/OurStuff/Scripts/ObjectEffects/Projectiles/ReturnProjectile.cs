@@ -11,6 +11,9 @@ public class ReturnProjectile : ProjectileBase {
     private float startDrag;
     private float returnHomingDrag = 3;
 
+    private float projLifeTime;
+    private Vector3 forceDirection;
+
     public override void Init()
     {
         base.Init();
@@ -24,6 +27,9 @@ public class ReturnProjectile : ProjectileBase {
         o_Rigidbody.velocity = new Vector3(0, 0, 0);
         returning = false;
         activated = false;
+        projLifeTime = lifeTime;
+        forceDirection = forceDir;
+
         Reset();
         StartCoroutine(Activate());
         StartCoroutine(FlyAway(lifeTime, forceDir));
@@ -36,6 +42,9 @@ public class ReturnProjectile : ProjectileBase {
         o_Rigidbody.velocity = new Vector3(0, 0, 0);
         returning = false;
         activated = false;
+        projLifeTime = lifeTime;
+        forceDirection = forceDir;
+
         Reset();
         StartCoroutine(Activate());
         StartCoroutine(FlyAway(lifeTime, forceDir));
@@ -49,6 +58,9 @@ public class ReturnProjectile : ProjectileBase {
         o_Rigidbody.velocity = new Vector3(0, 0, 0);
         returning = false;
         activated = false;
+        projLifeTime = lifeTime;
+        forceDirection = forceDir;
+
         Reset();
         StartCoroutine(Activate());
         StartCoroutine(FlyAway(lifeTime, forceDir));
@@ -103,7 +115,11 @@ public class ReturnProjectile : ProjectileBase {
             {
                 if (col.tag == healTags[i])
                 {
-                    col.GetComponent<PowerManager>().AddPower(powerFeedback);
+                    PowerManager pM = col.GetComponent<PowerManager>();
+                    if (pM != null)
+                    {
+                        pM.GetComponent<PowerManager>().AddPower(powerFeedback);
+                    }
                     Die();
                     break;
                 }
@@ -115,10 +131,19 @@ public class ReturnProjectile : ProjectileBase {
             {
                 if (col.tag == damageTags[i])
                 {
+                    if(col.tag == "Player") //spelaren dör på ett skott
+                    {
+                        col.GetComponent<PowerManager>().Die();
+                    }
                     PlayParticleSystem();
                     break;
                 }
             }
+        }
+
+        if(!isGhost)
+        {
+            Die();
         }
     }
 }

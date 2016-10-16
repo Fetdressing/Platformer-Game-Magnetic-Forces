@@ -181,7 +181,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013284321268}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 252.59686, y: -37.9, z: 664.4147}
+  m_LocalPosition: {x: 214, y: -37.9, z: 586}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -294,6 +294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useForce: 0
+  moveType: 2
   keyPoints:
   - {fileID: 4000012106760990}
   - {fileID: 4000011609698450}
