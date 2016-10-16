@@ -162,7 +162,7 @@ public class StagMovement : BaseClass
             airbourneTime += Time.deltaTime;
         }
 
-        if(airbourneTime > 0.4f)
+        if(airbourneTime > 0.4f) //vet inte riktigt hur man ska göra med detta, platformrnana verka lagga
         {
             activeGlobalPlatformPoint = Vector3.zero;
             activeLocalPlatformPoint = Vector3.zero;

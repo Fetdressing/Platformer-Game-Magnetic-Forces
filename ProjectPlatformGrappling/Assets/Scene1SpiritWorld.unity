@@ -179,6 +179,10 @@ Prefab:
       propertyPath: m_Name
       value: MovingPlatformCloud00
       objectReference: {fileID: 0}
+    - target: {fileID: 1000012132339762, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
   m_IsPrefabParent: 0
@@ -382,6 +386,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
+--- !u!1001 &374786511
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4000013977289364, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 190.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013977289364, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -37.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013977289364, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 664.4147
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013977289364, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013977289364, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013977289364, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013977289364, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013977289364, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_RootOrder
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013284321268, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_Name
+      value: MovingPlatformCloud00 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012132339762, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &386154308
 GameObject:
   m_ObjectHideFlags: 0
@@ -1312,6 +1366,56 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 09771dbea0dcb57459704d1404edf175, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1001 &1411311735
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4000013977289364, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 214
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013977289364, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -37.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013977289364, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 586
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013977289364, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013977289364, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013977289364, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013977289364, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013977289364, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_RootOrder
+      value: 27
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013284321268, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_Name
+      value: MovingPlatformCloud00 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012132339762, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 1ccc9c9932cd9da4eadb88ff8d1bceee, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1480053051
 GameObject:
