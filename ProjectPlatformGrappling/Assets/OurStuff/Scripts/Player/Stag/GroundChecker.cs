@@ -25,29 +25,31 @@ public class GroundChecker : BaseClass {
         cameraShaker = GameObject.FindGameObjectWithTag("MainCamera").GetComponentsInChildren<Transform>()[1].transform.GetComponent<CameraShaker>();
     }
 
-    void Update()
+    void LateUpdate()
     {
+        return;
         if(activePlatform != null)
         {
-            activeGlobalPlatformPoint = activePlatform.position;
-            activeLocalPlatformPoint = activePlatform.InverseTransformPoint(stagObject.position);
-
             Vector3 newGlobalPlatformPoint = activePlatform.TransformPoint(activeLocalPlatformPoint);
-            Vector3 moveDistance = newGlobalPlatformPoint - activeGlobalPlatformPoint;
+            Vector3 moveDistance = (newGlobalPlatformPoint - activeGlobalPlatformPoint);
+            stagObject.position = stagObject.position + moveDistance;
 
             platformVelocity = moveDistance / Time.deltaTime;
 
-            if(moveDistance != Vector3.zero)
-            {
-                cController.Move(platformVelocity);
-            }
+            //if (moveDistance != Vector3.zero)
+            //{
+            //    stagObject.GetComponent<CharacterController>().Move(moveDistance);
+            //}
+
         }
         else
         {
             platformVelocity = Vector3.zero;
         }
 
-        activePlatform = null;
+        activeGlobalPlatformPoint = stagObject.position;
+        activeLocalPlatformPoint = activePlatform.InverseTransformPoint(stagObject.position);
+        
     }
 
     void OnTriggerStay(Collider col)
@@ -56,7 +58,6 @@ public class GroundChecker : BaseClass {
         if (col.gameObject.tag == "MovingPlatform")
         {
             activePlatform = col.transform;
-
         }
     }
 

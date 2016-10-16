@@ -34,6 +34,17 @@ public class StagMovement : BaseClass
     private float dashPowerCost = 0.03f; //hur mycket power det drar varje gång man dashar
     public GameObject dashEffectObject;
 
+    //moving platform
+
+    private Transform activePlatform;
+
+    private Vector3 activeGlobalPlatformPoint;
+    private Vector3 activeLocalPlatformPoint;
+
+    private Vector3 platformVelocity;
+    private float airbourneTime = 0.0f;
+    //moving platform
+
     private Vector3 horVector = new Vector3(0, 0, 0); //har dem här så jag kan hämta värdena via update
     private Vector3 verVector = new Vector3(0, 0, 0);
     private float hor, ver;
@@ -100,6 +111,37 @@ public class StagMovement : BaseClass
     {
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(cameraHolder.forward.x, 0, cameraHolder.forward.z));
         stagObject.rotation = Quaternion.Slerp(stagObject.rotation, lookRotation, Time.deltaTime * 20);
+
+        if (activePlatform != null)
+        {
+            Vector3 newGlobalPlatformPoint = activePlatform.TransformPoint(activeLocalPlatformPoint);
+            Vector3 moveDistance = (newGlobalPlatformPoint - activeGlobalPlatformPoint);
+
+            if (activeLocalPlatformPoint != Vector3.zero)
+            {
+                //transform.position = transform.position + moveDistance;
+                characterController.Move(moveDistance);
+            }
+
+            platformVelocity = moveDistance / Time.deltaTime;
+
+            //if (moveDistance != Vector3.zero)
+            //{
+            //    stagObject.GetComponent<CharacterController>().Move(moveDistance);
+            //}
+
+        }
+        else
+        {
+            platformVelocity = Vector3.zero;
+        }
+
+        if (activePlatform != null)
+        {
+            activeGlobalPlatformPoint = transform.position;
+            activeLocalPlatformPoint = activePlatform.InverseTransformPoint(transform.position);
+        }
+        activePlatform = null;
     }
 
     void Update()
@@ -110,6 +152,21 @@ public class StagMovement : BaseClass
         verVector = ver * cameraHolder.forward;
 
         isGrounded = characterController.isGrounded;
+
+        if(isGrounded)
+        {
+            airbourneTime = 0;
+        }
+        else
+        {
+            airbourneTime += Time.deltaTime;
+        }
+
+        if(airbourneTime > 0.4f)
+        {
+            activeGlobalPlatformPoint = Vector3.zero;
+            activeLocalPlatformPoint = Vector3.zero;
+        }
 
         distanceToGround = GetDistanceToGround(groundCheckObject);
 
@@ -151,6 +208,17 @@ public class StagMovement : BaseClass
 
         PlayAnimationStates();
 
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.gameObject.tag == "MovingPlatform")
+        {
+            if (hit.moveDirection.y < -0.9 && hit.normal.y > 0.5f)
+            {
+                activePlatform = hit.transform;
+            }
+        }
     }
 
     void HandleMovement()
@@ -325,9 +393,6 @@ public class StagMovement : BaseClass
         //}
     }
 
-    void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-    }
 
     void ToggleInfiniteGravity(bool b)
     {
