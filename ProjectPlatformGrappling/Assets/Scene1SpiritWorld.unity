@@ -962,6 +962,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 24
+--- !u!1001 &972338581
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -22
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 627.5188
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
+      propertyPath: m_RootOrder
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010387120304, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
+      propertyPath: m_Name
+      value: SquidPlatformer (3)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &995518791
 GameObject:
   m_ObjectHideFlags: 0
@@ -1803,77 +1849,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollSpeedU: 0.5
   scrollSpeedV: 0.5
---- !u!1001 &1833905394
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -22
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 627.5188
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
-      propertyPath: m_RootOrder
-      value: 29
-      objectReference: {fileID: 0}
-    - target: {fileID: 1000010387120304, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
-      propertyPath: m_Name
-      value: SquidPlatformer (3)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012157019140, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000010770851272, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012157019140, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000010770851272, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: -155
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000010770851272, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -16
-      objectReference: {fileID: 0}
-    - target: {fileID: 114000011206374512, guid: c8f75383aae546e41840b83fae9e8926,
-        type: 2}
-      propertyPath: rotateMesh
-      value: 
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1001 &1880108345
 Prefab:
   m_ObjectHideFlags: 0
@@ -1887,7 +1862,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -69
+      value: -54
       objectReference: {fileID: 0}
     - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1935,9 +1910,17 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000010770851272, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 216.4
+      value: 127
       objectReference: {fileID: 0}
-    - target: {fileID: 114000011206374512, guid: c8f75383aae546e41840b83fae9e8926,
+    - target: {fileID: 0}
+      propertyPath: rotateMesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: rotateMesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013137792370, guid: c8f75383aae546e41840b83fae9e8926,
         type: 2}
       propertyPath: rotateMesh
       value: 
