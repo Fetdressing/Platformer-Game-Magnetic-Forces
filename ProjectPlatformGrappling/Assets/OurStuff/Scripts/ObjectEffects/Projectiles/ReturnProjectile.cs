@@ -11,9 +11,6 @@ public class ReturnProjectile : ProjectileBase {
     private float startDrag;
     private float returnHomingDrag = 3;
 
-    private float projLifeTime;
-    private Vector3 forceDirection;
-
     public override void Init()
     {
         base.Init();
@@ -24,14 +21,9 @@ public class ReturnProjectile : ProjectileBase {
     public override void Fire(float lifeTime, Vector3 forceDir)
     {
         if (initTimes == 0) return;
-        o_Rigidbody.velocity = new Vector3(0, 0, 0);
+        base.Fire(lifeTime, forceDir);
         returning = false;
-        activated = false;
-        projLifeTime = lifeTime;
-        forceDirection = forceDir;
 
-        Reset();
-        StartCoroutine(Activate());
         StartCoroutine(FlyAway(lifeTime, forceDir));
     }
 
@@ -39,31 +31,16 @@ public class ReturnProjectile : ProjectileBase {
     {
         if (initTimes == 0) return;
         powerFeedback = powFeedback;
-        o_Rigidbody.velocity = new Vector3(0, 0, 0);
-        returning = false;
-        activated = false;
-        projLifeTime = lifeTime;
-        forceDirection = forceDir;
+        Fire(lifeTime, forceDir);
 
-        Reset();
-        StartCoroutine(Activate());
-        StartCoroutine(FlyAway(lifeTime, forceDir));
     }
 
     public void Fire(float lifeTime, Vector3 forceDir, float powFeedback, Transform returnTar)
     {
         if (initTimes == 0) return;
-        powerFeedback = powFeedback;
         returnTarget = returnTar;
-        o_Rigidbody.velocity = new Vector3(0, 0, 0);
-        returning = false;
-        activated = false;
-        projLifeTime = lifeTime;
-        forceDirection = forceDir;
+        Fire(lifeTime, forceDir, powFeedback);
 
-        Reset();
-        StartCoroutine(Activate());
-        StartCoroutine(FlyAway(lifeTime, forceDir));
     }
 
     public IEnumerator FlyAway(float lifeTime, Vector3 forceDir)
@@ -106,8 +83,10 @@ public class ReturnProjectile : ProjectileBase {
 
     void OnTriggerEnter(Collider col)
     {
-        if (activated == false) return;
-        //PlayParticleSystem();
+        if( shooter != null)
+        {
+            if (col.transform == shooter) return; //inte träffa sig själv
+        }
 
         if (returning)
         {
@@ -135,6 +114,14 @@ public class ReturnProjectile : ProjectileBase {
                     {
                         col.GetComponent<PowerManager>().Die();
                     }
+                    else
+                    {
+                        HealthSpirit hSp = col.GetComponent<HealthSpirit>();
+                        if(hSp != null)
+                        {
+                            hSp.AddHealth(-1);
+                        }
+                    }
                     PlayParticleSystem();
                     break;
                 }
@@ -143,7 +130,7 @@ public class ReturnProjectile : ProjectileBase {
 
         if(!isGhost)
         {
-            Die();
+            StartCoroutine(FlyBack(projLifeTime, -forceDirection));
         }
     }
 }

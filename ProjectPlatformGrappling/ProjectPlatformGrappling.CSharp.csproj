@@ -80,6 +80,7 @@
     <Compile Include="Assets\OurStuff\Scripts\Game\SceneHandler.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Game\SpawnManager.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Health.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\HealthSpirit.cs" />
     <Compile Include="Assets\OurStuff\Scripts\MagneticForces\MagneticBall.cs" />
     <Compile Include="Assets\OurStuff\Scripts\MagneticForces\MagneticForce.cs" />
     <Compile Include="Assets\OurStuff\Scripts\MagneticForces\PullField.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PhaseOutObject.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PowerCharger.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PowerPickup.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Projectiles\ForwardProjectile.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Projectiles\ProjectileBase.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Projectiles\ReturnProjectile.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Teleport.cs" />

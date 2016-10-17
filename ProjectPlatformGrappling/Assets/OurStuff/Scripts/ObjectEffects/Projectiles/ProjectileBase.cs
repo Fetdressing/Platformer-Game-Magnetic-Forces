@@ -4,22 +4,19 @@ using System.Collections.Generic;
 
 public class ProjectileBase : BaseClass {
     public LayerMask targetsLM;
-    [HideInInspector]
-    public Rigidbody o_Rigidbody;
+    protected Rigidbody o_Rigidbody;
     public string[] healTags = { "Player" };
     public string[] damageTags = { "Enemy" };
 
-    [HideInInspector]
-    public bool activated; //gör inte skada dirr, nån sekunds då den inte gör något i luften
-    [HideInInspector]
-    public float activationTime = 0.3f;
-
     public GameObject particleExplosionObj;
-    [HideInInspector]
-    public List<GameObject> particleObjectPool = new List<GameObject>();
+    protected List<GameObject> particleObjectPool = new List<GameObject>();
     public int particleObjectPoolSize = 3;
 
     public bool isGhost = true; //går igenom objekt
+    
+    protected Transform shooter;
+    protected float projLifeTime;
+    protected Vector3 forceDirection;
 
     void Awake()
     {
@@ -29,6 +26,12 @@ public class ProjectileBase : BaseClass {
     void Start()
     {
         Init();
+    }
+
+
+    public void SetShooter(Transform t)
+    {
+        shooter = t;
     }
 
     public override void Init()
@@ -62,11 +65,12 @@ public class ProjectileBase : BaseClass {
     {
         if (initTimes == 0) return;
         o_Rigidbody.velocity = new Vector3(0, 0, 0);
-        activated = false;
         Reset();
-        StartCoroutine(Activate());
-        StartCoroutine(LifeTime(lifeTime));
-        o_Rigidbody.AddForce(forceDir, ForceMode.Impulse);
+        transform.gameObject.SetActive(true);
+        projLifeTime = lifeTime;
+        forceDirection = forceDir;
+        //StartCoroutine(LifeTime(lifeTime));
+        //o_Rigidbody.AddForce(forceDir, ForceMode.Impulse);
     }
 
     public virtual IEnumerator LifeTime(float lifeTime)
@@ -75,18 +79,11 @@ public class ProjectileBase : BaseClass {
         Die();
     }
 
-    public virtual IEnumerator Activate()
-    {
-        yield return new WaitForSeconds(activationTime);
-        activated = true;
-    }
-
     public override void Reset()
     {
         base.Reset();
         o_Rigidbody.velocity = new Vector3(0, 0, 0);
         StopAllCoroutines();
-        transform.gameObject.SetActive(true);
     }
 
     public virtual void Die()

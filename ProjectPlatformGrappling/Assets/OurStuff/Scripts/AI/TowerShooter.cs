@@ -45,8 +45,11 @@ public class TowerShooter : BaseClass {
         {
             GameObject temp = Instantiate(projectileType.gameObject);
             projectilePool.Add(temp);
+            temp.GetComponent<ProjectileBase>().SetShooter(transform);
             temp.SetActive(false);
         }
+
+        Reset();
         initTimes++;
     }
     public override void Reset()
@@ -54,6 +57,15 @@ public class TowerShooter : BaseClass {
         base.Reset();
         cooldonwTimer = 0.0f;
         activasionTimer = 0.0f;
+        bActivated = true;
+
+        for (int i = 0; i < projectilePool.Count; i++)
+        {
+            if (projectilePool[i].activeSelf == true)
+            {
+                projectilePool[i].SetActive(false);
+            }
+        }
     }
     public override void Dealloc()
     {
@@ -65,9 +77,24 @@ public class TowerShooter : BaseClass {
         }
         projectilePool.Clear();
     }
+    public override void Deactivate()
+    {
+        base.Deactivate();
+
+        for (int i = 0; i < projectilePool.Count; i++)
+        {
+            if (projectilePool[i].activeSelf == true)
+            {
+                projectilePool[i].SetActive(false);
+            }
+        }
+                bActivated = false;
+        emissiveActivasionMaterial.SetColor("_EmissionColor", new Color(1, 1, 1) * 0); //lys igång
+    }
 
     void Update()
     {
+        if (bActivated == false) return;
         if (initTimes == 0) return;
         if (Vector3.Distance(target.position, transform.position) < maxShootRange)
         {

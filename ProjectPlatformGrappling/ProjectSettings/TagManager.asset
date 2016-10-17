@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Manager
   - MovingPlatform
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - 
   - 
   - Player
-  - MagneticBall
+  - 
   - EffectOnly
   - PlayerOnly
   - Affector
@@ -29,7 +30,7 @@ TagManager:
   - 
   - 
   - 
-  - AINormal
+  - Unit
   - 
   - 
   - 
