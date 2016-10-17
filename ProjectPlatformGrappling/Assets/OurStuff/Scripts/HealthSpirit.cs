@@ -79,7 +79,7 @@ public class HealthSpirit : BaseClass
         isAlive = true;
         thisTransform.gameObject.SetActive(true);
         transparentValue = 1;
-        ApplyTransparency(transparentValue);
+        SetTransparency(transparentValue, false);
 
         ApplyMaterial(damagedMaterial, 0.1f);
     }
@@ -101,8 +101,8 @@ public class HealthSpirit : BaseClass
 
         if (isAlive == false)
         {
-            transparentValue -= (Time.deltaTime * 0.0001f);
-            ApplyTransparency(transparentValue);
+            transparentValue -= (Time.deltaTime * 0.00001f);
+            SetTransparency(transparentValue - (Time.deltaTime * 0.1f), false);
             return;
         }
 
@@ -114,7 +114,7 @@ public class HealthSpirit : BaseClass
             AddHealth(healthRegAmount);
         }
 
-        ApplyTransparency(Mathf.Clamp(transparentValue, 0.2f, 1));
+        ApplyTransparency();
     }
 
     public virtual bool AddHealth(int h)
@@ -134,13 +134,13 @@ public class HealthSpirit : BaseClass
         }
         else if (currHealth <= 0)
         {
-            transparentValue = (float)currHealth / (float)maxHealth;
+            SetTransparency(((float)currHealth / (float)maxHealth), true);
             Die();
             return false; //target dog
             //die
         }
 
-        transparentValue = (float)currHealth / (float)maxHealth;
+        SetTransparency(((float)currHealth / (float)maxHealth), true);
         //Debug.Log(currHealth.ToString());
         return true; //target vid liv
     }
@@ -153,11 +153,10 @@ public class HealthSpirit : BaseClass
             currHealth = maxHealth;
         }
 
-        transparentValue = (float)currHealth / (float)maxHealth;
+        SetTransparency(((float)currHealth / (float)maxHealth), false);
 
         if (currHealth <= 0)
         {
-            transparentValue = (float)currHealth / (float)maxHealth;
             Die();
         }
     }
@@ -239,12 +238,24 @@ public class HealthSpirit : BaseClass
         StartCoroutine(MarkMaterial(m, time));
     }
 
-    void ApplyTransparency(float tVal)
+
+    void SetTransparency(float tra, bool limit)
+    {
+        if(limit)
+            transparentValue = Mathf.Clamp(tra, 0.2f, 1); //min värde
+        else
+        {
+            transparentValue = tra;
+        }
+        ApplyTransparency();
+    }
+
+    void ApplyTransparency()
     {
         for (int i = 0; i < thisMaterial.Count; i++)
         {
             Color c = thisMaterial[i].color;
-            thisMaterial[i].color = new Color(c.r, c.g, c.b, tVal);
+            thisMaterial[i].color = new Color(c.r, c.g, c.b, transparentValue);
         }
 
         //for (int i = 0; i < thisRenderer.Length; i++)

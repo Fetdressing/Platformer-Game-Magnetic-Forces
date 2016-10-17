@@ -80,6 +80,7 @@ public class TowerShooter : BaseClass {
     public override void Deactivate()
     {
         base.Deactivate();
+        bActivated = false;
 
         for (int i = 0; i < projectilePool.Count; i++)
         {
@@ -88,7 +89,7 @@ public class TowerShooter : BaseClass {
                 projectilePool[i].SetActive(false);
             }
         }
-                bActivated = false;
+        
         emissiveActivasionMaterial.SetColor("_EmissionColor", new Color(1, 1, 1) * 0); //lys igång
     }
 
@@ -134,14 +135,14 @@ public class TowerShooter : BaseClass {
         }
         if (currProj == null) return;
         Rigidbody currRig = currProj.GetComponent<Rigidbody>();
-        ReturnProjectile currProjectile = currProj.GetComponent<ReturnProjectile>();
+        ProjectileBase currProjectile = currProj.GetComponent<ProjectileBase>();
 
         
         Vector3 vecToTarget = (target.position - transform.position).normalized;
 
         currProj.transform.position = shooterObj.position; //kommer från en random riktning kanske?
         currProj.transform.forward = vecToTarget;
-        currProjectile.Fire(2, currProjectile.transform.forward * shootForce, 0, transform);
+        currProjectile.Fire(2, currProjectile.transform.forward * shootForce);
 
     }
 }
