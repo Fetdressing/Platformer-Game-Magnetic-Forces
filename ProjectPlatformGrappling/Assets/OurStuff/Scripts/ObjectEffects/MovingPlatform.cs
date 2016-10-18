@@ -5,6 +5,7 @@ public class MovingPlatform : MonoBehaviour {
     private Rigidbody thisRigidbody;
     private Transform thisTransform;
     public Transform rotateMesh;
+    public float rotationSpeed = 2;
     public float multRot = -1; //vänder rotationen helt tex
 
     public bool useForce = true;
@@ -35,7 +36,12 @@ public class MovingPlatform : MonoBehaviour {
         Vector3 vecToTarget = (currTarget.position - thisTransform.position).normalized;
 
         if (rotateMesh != null)
-            rotateMesh.forward = vecToTarget * multRot;
+        {
+            float step = rotationSpeed * Time.deltaTime;
+            Vector3 newDir = Vector3.RotateTowards(rotateMesh.forward, vecToTarget * multRot, step, 0.0F);
+            rotateMesh.rotation = Quaternion.LookRotation(newDir);
+            
+        }
         //if (useForce == true)
         //{
         //    thisRigidbody.AddForce(vecToTarget * force * Time.deltaTime);

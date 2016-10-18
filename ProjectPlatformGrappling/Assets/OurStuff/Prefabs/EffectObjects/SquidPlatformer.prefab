@@ -514,6 +514,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotateMesh: {fileID: 4000013462811698}
+  rotationSpeed: 10
   multRot: -1
   useForce: 0
   moveType: 2
@@ -532,7 +533,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 351a6299a7f558f4f96aec7e063c8ec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedIncrease: 1
+  speedIncrease: 0.1
 --- !u!137 &137000011856015272
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
