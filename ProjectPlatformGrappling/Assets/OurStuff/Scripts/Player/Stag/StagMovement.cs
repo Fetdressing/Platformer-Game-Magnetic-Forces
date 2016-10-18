@@ -41,7 +41,6 @@ public class StagMovement : BaseClass
     private Vector3 activeGlobalPlatformPoint;
     private Vector3 activeLocalPlatformPoint;
 
-    private Vector3 platformVelocity;
     private float airbourneTime = 0.0f;
     //moving platform
 
@@ -112,60 +111,7 @@ public class StagMovement : BaseClass
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(cameraHolder.forward.x, 0, cameraHolder.forward.z));
         stagObject.rotation = Quaternion.Slerp(stagObject.rotation, lookRotation, Time.deltaTime * 20);
 
-        HandleMovement(); //moddar finalMoveDir
-        //characterController.Move(finalMoveDir * speed * stagSpeedMultiplier * Time.deltaTime);
-
-        if (isGrounded || GetGrounded(groundCheckObject)) //använd endast GetGrounded här, annars kommer man få samma problem när gravitationen slutar verka pga lång raycast
-        {
-            if (jumpTimePoint < Time.time - 1.2f) //så den inte ska fucka och resetta dirr efter man hoppat
-            {
-                if (Input.GetButtonDown("Jump"))
-                {
-                    jumpTimePoint = Time.time;
-                    ySpeed = jumpSpeed;
-                    //animationH.Play(jump.name);
-                    //animationH[jump.name].weight = 1.0f;
-                }
-            }
-        }
-
-        if (activePlatform != null)
-        {
-            Vector3 newGlobalPlatformPoint = activePlatform.TransformPoint(activeLocalPlatformPoint);
-            Vector3 moveDistance = (newGlobalPlatformPoint - activeGlobalPlatformPoint);
-
-            if (activeLocalPlatformPoint != Vector3.zero)
-            {
-                //transform.position = transform.position + moveDistance;
-                characterController.Move(moveDistance);
-            }
-
-            platformVelocity = moveDistance / Time.deltaTime;
-
-            //if (moveDistance != Vector3.zero)
-            //{
-            //    stagObject.GetComponent<CharacterController>().Move(moveDistance);
-            //}
-
-        }
-        else
-        {
-            platformVelocity = Vector3.zero;
-        }
-
-        if (activePlatform != null)
-        {
-            activeGlobalPlatformPoint = transform.position;
-            activeLocalPlatformPoint = activePlatform.InverseTransformPoint(transform.position);
-        }
-        activePlatform = null;
-
-
-        // apply gravity acceleration to vertical speed:
-        ySpeed -= gravity * Time.deltaTime;
-        Vector3 yVector = new Vector3(0, ySpeed, 0);
-
-        characterController.Move((finalMoveDir + dashVel + yVector) * Time.deltaTime);
+ 
     }
 
     void Update()
@@ -174,33 +120,65 @@ public class StagMovement : BaseClass
         ver = Input.GetAxis("Vertical");
         horVector = hor * cameraHolder.right;
         verVector = ver * cameraHolder.forward;
-
+        
         isGrounded = characterController.isGrounded;
-
-        if(isGrounded)
-        {
-            airbourneTime = 0;
-        }
-        else
-        {
-            airbourneTime += Time.deltaTime;
-        }
-
-        if(airbourneTime > 0.4f) //vet inte riktigt hur man ska göra med detta, platformrnana verka lagga
-        {
-            activeGlobalPlatformPoint = Vector3.zero;
-            activeLocalPlatformPoint = Vector3.zero;
-        }
 
         distanceToGround = GetDistanceToGround(groundCheckObject);
 
+        //FUNKAAAAAAR EJ?!?!?!? kallas bara när man rör på sig wtf
         if (isGrounded) //dessa if-satser skall vara separata
         {
             if (jumpTimePoint < Time.time - 1.2f) //så den inte ska fucka och resetta dirr efter man hoppat
             {
+                Debug.Log(Time.time.ToString() + "händer??");
                 ySpeed = 0; // grounded character has vSpeed = 0...
             }
         }
+
+        if (isGrounded || GetGrounded(groundCheckObject)) //använd endast GetGrounded här, annars kommer man få samma problem när gravitationen slutar verka pga lång raycast
+        {
+            if (jumpTimePoint < Time.time - 1.2f) //så den inte ska fucka och resetta dirr efter man hoppat
+            {
+                if (Input.GetButtonDown("Jump"))
+                {
+                    activePlatform = null;
+                    jumpTimePoint = Time.time;
+                    ySpeed = jumpSpeed;
+                    //animationH.Play(jump.name);
+                    //animationH[jump.name].weight = 1.0f;
+                }
+            }
+        }
+        // apply gravity acceleration to vertical speed:
+        ySpeed -= gravity * Time.deltaTime;
+        Vector3 yVector = new Vector3(0, ySpeed, 0);
+        characterController.Move((yVector) * Time.deltaTime);
+
+        if (activePlatform != null)
+        {
+            ySpeed = 0; //behöver inte lägga på gravity när man står på moving platform, varför funkar inte grounded? lol
+            Vector3 newGlobalPlatformPoint = activePlatform.TransformPoint(activeLocalPlatformPoint);
+            Vector3 moveDistance = (newGlobalPlatformPoint - activeGlobalPlatformPoint);
+
+            if (activeLocalPlatformPoint != Vector3.zero)
+            {
+                //transform.position = transform.position + moveDistance;
+                characterController.Move(moveDistance);
+            }
+        }
+
+        if (activePlatform != null)
+        {
+            activeGlobalPlatformPoint = transform.position;
+            activeLocalPlatformPoint = activePlatform.InverseTransformPoint(transform.position);
+        }
+
+        if(GetGroundedTransform(groundCheckObject) != activePlatform)
+            activePlatform = null; //kolla om platformen fortfarande finns under mig eller ej
+
+        HandleMovement(); //moddar finalMoveDir
+        characterController.Move((finalMoveDir + dashVel) * Time.deltaTime);
+
 
         if (Input.GetKeyDown(KeyCode.C))
         {
@@ -217,6 +195,11 @@ public class StagMovement : BaseClass
         {
             if (hit.moveDirection.y < -0.9 && hit.normal.y > 0.5f)
             {
+                if(activePlatform != hit.transform)
+                {
+                    activeGlobalPlatformPoint = Vector3.zero;
+                    activeLocalPlatformPoint = Vector3.zero;
+                }
                 activePlatform = hit.transform;
             }
         }
@@ -459,6 +442,23 @@ public class StagMovement : BaseClass
         {
             groundedTimePoint = Time.time + 1000;
             return false;
+        }
+    }
+
+
+    public Transform GetGroundedTransform(Transform tChecker) //får den transformen man står på, från en annan utgångspunkt
+    {
+        RaycastHit rHit;
+        if (Physics.Raycast(tChecker.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, groundedCheckDistance, groundCheckLM))
+        {
+            if (rHit.transform == this.transform) { Debug.Log(this.transform.name); return transform; } //MEH DEN SKA EJ COLLIDA MED SIG SJÄLV
+
+            return rHit.transform;
+        }
+        else
+        {
+            groundedTimePoint = Time.time + 1000;
+            return transform;
         }
     }
 

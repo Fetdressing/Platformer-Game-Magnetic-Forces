@@ -6,6 +6,8 @@ public class GroundChecker : BaseClass {
     private CharacterController cController;
     private CameraShaker cameraShaker;
 
+    private Transform lastGroundedObj;
+    private float groundedTimePoint = 0.0f;
 
     void Start()
     {
@@ -59,7 +61,11 @@ public class GroundChecker : BaseClass {
     {
         if (LayerMask.LayerToName(col.gameObject.layer) != "Player")
         {
-            cameraShaker.ShakeCamera(0.1f, 0.5f, true);
+            if (lastGroundedObj == null || lastGroundedObj != col.transform)
+            {
+                lastGroundedObj = col.transform;
+                cameraShaker.ShakeCamera(0.1f, 0.5f, true);
+            }
         }
     }
 
