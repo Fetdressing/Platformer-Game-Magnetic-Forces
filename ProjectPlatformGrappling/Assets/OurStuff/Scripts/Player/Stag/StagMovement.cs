@@ -32,6 +32,7 @@ public class StagMovement : BaseClass
     private float currDashTime;
     private float maxDashTime = 0.1f;
     private float dashPowerCost = 0.03f; //hur mycket power det drar varje gång man dashar
+    private bool dashUsed = false; //så att man måste bli grounded innan man kan använda den igen
     public GameObject dashEffectObject;
 
     //moving platform
@@ -104,9 +105,10 @@ public class StagMovement : BaseClass
         jumpTimePoint = -5; //behöver vara under 0 så att man kan hoppa dirr när spelet börjar
         ToggleInfiniteGravity(false);
         slideGroundParticleSystem.GetComponent<ParticleTimed>().isReady = true;
+        dashUsed = false;
     }
 
-    void FixedUpdate()
+    void LateUpdate()
     {
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(cameraHolder.forward.x, 0, cameraHolder.forward.z));
         stagObject.rotation = Quaternion.Slerp(stagObject.rotation, lookRotation, Time.deltaTime * 20);
@@ -125,12 +127,12 @@ public class StagMovement : BaseClass
 
         distanceToGround = GetDistanceToGround(groundCheckObject);
 
-        //FUNKAAAAAAR EJ?!?!?!? kallas bara när man rör på sig wtf
+        //FUNKAAAAAAR EJ?!?!?!? kallas bara när man rör på sig wtf, kan funka ändå
         if (isGrounded) //dessa if-satser skall vara separata
         {
+            dashUsed = false; //när man blir grounded så kan man använda dash igen
             if (jumpTimePoint < Time.time - 1.2f) //så den inte ska fucka och resetta dirr efter man hoppat
             {
-                Debug.Log(Time.time.ToString() + "händer??");
                 ySpeed = 0; // grounded character has vSpeed = 0...
             }
         }
@@ -141,7 +143,8 @@ public class StagMovement : BaseClass
             {
                 if (Input.GetButtonDown("Jump"))
                 {
-                    activePlatform = null;
+                    dashUsed = false; //när man blir grounded så kan man använda dash igen, men oxå när man hoppar, SKILLZ!!!
+                    activePlatform = null; //när man hoppar så är man ej längre attached till movingplatform
                     jumpTimePoint = Time.time;
                     ySpeed = jumpSpeed;
                     //animationH.Play(jump.name);
@@ -300,6 +303,8 @@ public class StagMovement : BaseClass
     IEnumerator MoveDash(Vector3 dir)
     {
         if (dashTimePoint + dashCooldown > Time.time) yield break;
+        if (dashUsed) yield break;
+        dashUsed = true;
         ToggleDashEffect(true);
         powerManager.AddPower(-dashPowerCost);
         dashTimePoint = Time.time;

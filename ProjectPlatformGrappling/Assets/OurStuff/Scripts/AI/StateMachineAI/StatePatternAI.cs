@@ -1,19 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class StatePatternAI : BaseClass {
+public class StatePatternAI {
     protected AIEntity entity;
     protected AIState currState;
 	// Use this for initialization
 
-    public StatePatternAI(AIEntity entity)
+    public StatePatternAI(AIEntity entityAI)
     {
-        this.entity = entity;
+        entity = entityAI;
     }
 
-    public override void UpdateLoop()
-    {
-        base.UpdateLoop();
+    public void UpdateLoop()
+    { 
         if (currState != null)
         {
             currState.Execute(entity);

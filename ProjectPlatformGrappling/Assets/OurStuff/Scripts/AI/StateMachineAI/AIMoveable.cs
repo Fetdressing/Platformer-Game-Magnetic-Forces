@@ -5,6 +5,15 @@ public class AIMoveable : AIEntity {
     [HideInInspector]
     public Transform target;
 
+    //***speed and stats***
+    [Header("MoveStats")]
+    [HideInInspector]
+    public float currMovementSpeed;
+    public float normalMoveSpeed = 10;
+
+    public float gravity = 10;
+    //***speed and stats***
+
     //***patrol***
     [Header("Patrolling")]
     public Transform[] patrolPoints;
@@ -19,6 +28,9 @@ public class AIMoveable : AIEntity {
     public override void Init()
     {
         base.Init();
+        patrolState = new PatrolState();
+        chaseState = new ChaseState();
+
         statePattern.ChangeState(patrolState);
     }
 

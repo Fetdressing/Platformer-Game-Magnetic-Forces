@@ -7,6 +7,7 @@ public class AICharacterController : AIMoveable {
     public override void Init()
     {
         base.Init();
+        cController = transform.GetComponent<CharacterController>();
     }
 
     public override void Move(Vector3 pos, float speed)

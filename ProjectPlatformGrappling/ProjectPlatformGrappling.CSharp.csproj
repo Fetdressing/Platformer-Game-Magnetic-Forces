@@ -73,6 +73,7 @@
     <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\AICharacterController.cs" />
     <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\AIEntity.cs" />
     <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\AIMoveable.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\AITraverser.cs" />
     <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\StatePatternAI.cs" />
     <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\States\AIState.cs" />
     <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\States\ChaseState.cs" />

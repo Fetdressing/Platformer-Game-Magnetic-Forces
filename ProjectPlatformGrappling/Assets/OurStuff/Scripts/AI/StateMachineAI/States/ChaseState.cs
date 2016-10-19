@@ -14,8 +14,11 @@ public class ChaseState : AIState {
     }
     public override void Execute(AIEntity entity)
     {
-
-        _AIMoveable.Move(_AIMoveable.target.position, 10);
+        while (_AIMoveable.target != null)
+        {
+            _AIMoveable.Move(_AIMoveable.target.position, _AIMoveable.currMovementSpeed);
+        }
+        Exit(entity);
     }
     public override void Exit(AIEntity entity)
     {
