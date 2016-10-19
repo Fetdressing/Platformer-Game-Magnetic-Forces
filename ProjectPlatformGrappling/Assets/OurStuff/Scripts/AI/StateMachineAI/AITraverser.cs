@@ -9,9 +9,7 @@ public class AITraverser : AICharacterController
 
     public override void Init()
     {
-        Debug.Log("Jaha");
         base.Init();
-        Debug.Log("Jaha");
     }
 
     //funktioner som kan användas

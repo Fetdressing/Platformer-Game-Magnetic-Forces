@@ -27,6 +27,5 @@ public class StatePatternAI {
         }
         currState = newState;
         currState.Enter(entity);
-        currState.Execute(entity);
     }
 }
