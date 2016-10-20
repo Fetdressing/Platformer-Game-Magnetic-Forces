@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 
 public class PatrolState : AIState {
-    AIMoveable _AIMoveable;
+    protected AIMoveable _AIMoveable;
 
     protected Vector3 currPatrolPoint = Vector3.zero;
 
@@ -22,18 +22,18 @@ public class PatrolState : AIState {
         {
             currPatrolPoint = _AIMoveable.GetPatrolPoint();
         }
-        _AIMoveable.Move(currPatrolPoint, 10);
+        _AIMoveable.Move(currPatrolPoint, _AIMoveable.currMovementSpeed);
     }
     public override void Exit(AIEntity entity)
     {
 
-        entity.StateEnded(PatrolState.instance);
+        entity.StateEnded(PatrolState.Instance);
     }
 
     // singleton
     private static PatrolState instance;
 
-    public static PatrolState Instance
+    private static PatrolState Instance
     {
         get
         {

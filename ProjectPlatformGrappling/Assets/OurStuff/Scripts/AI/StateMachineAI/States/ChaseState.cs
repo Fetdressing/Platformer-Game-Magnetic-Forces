@@ -14,22 +14,25 @@ public class ChaseState : AIState {
     }
     public override void Execute(AIEntity entity)
     {
-        while (_AIMoveable.target != null)
+        if (_AIMoveable.target != null && _AIMoveable.target.gameObject.activeSelf == true)
         {
             _AIMoveable.Move(_AIMoveable.target.position, _AIMoveable.currMovementSpeed);
         }
-        Exit(entity);
+        else
+        {
+            Exit(entity);
+        }
     }
     public override void Exit(AIEntity entity)
     {
 
-        entity.StateEnded(ChaseState.instance);
+        entity.StateEnded(ChaseState.Instance);
     }
 
     // singleton
     private static ChaseState instance;
 
-    public static ChaseState Instance
+    private static ChaseState Instance
     {
         get
         {

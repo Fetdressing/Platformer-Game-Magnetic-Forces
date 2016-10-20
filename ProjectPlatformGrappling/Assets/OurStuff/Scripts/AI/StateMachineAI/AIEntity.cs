@@ -14,6 +14,7 @@ public class AIEntity : BaseClass
     {
         base.Init();
         statePattern = new StatePatternAI(this);
+        Reset();
     }
     // Use this for initialization
     void Start () {
@@ -22,7 +23,6 @@ public class AIEntity : BaseClass
 	
 	// Update is called once per frame
 	void Update () {
-        //statePattern.ChangeState()
         statePattern.UpdateLoop();
 	}
 
