@@ -35,6 +35,10 @@ public class AITraverser : AICharacterController
         Vector3 modTPos = new Vector3(transform.position.x, 0, transform.position.z);
 
         Vector3 dir = (modPos - modTPos).normalized; //vill inte den ska röra sig upp o ned genom dessa vektorer
+
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnRatio);
+
         upVelocity -= gravity;
 
         if(Physics.Raycast(traverseRCCheckOrigin.position, dir, forwardDistanceCheck, forwardRayLM))

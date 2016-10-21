@@ -11,6 +11,8 @@ public class AIMoveable : AIEntity {
     public float normalDetectRange = 280;
     protected float currDetectRange;
 
+    public float maxChaseDistance = 300;
+
     //***speed and stats***
     [Header("MoveStats")]
     [HideInInspector]
@@ -18,6 +20,8 @@ public class AIMoveable : AIEntity {
     public float normalMoveSpeed = 15;
 
     public float gravity = 10;
+
+    public float turnRatio = 10;
     //***speed and stats***
 
     //***patrol***
@@ -90,6 +94,11 @@ public class AIMoveable : AIEntity {
         }
 
         return false;
+    }
+
+    public float DistanceToT(Transform t)
+    {
+        return Vector3.Distance(t.position, transform.position);
     }
 
 

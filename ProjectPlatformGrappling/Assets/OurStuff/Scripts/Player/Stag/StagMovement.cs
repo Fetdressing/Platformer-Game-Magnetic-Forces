@@ -214,7 +214,7 @@ public class StagMovement : BaseClass
                 }
                 activePlatform = hit.transform;
             }
-            else //knuffa spelaren lite för denne kom emot en kant
+            else //knuffa spelaren lite för denne kom emot en kant, kolla ifall den rör sig mot en? då knockar den ju bort en, bättre än att den alltid gör det?
             {
                 ApplyExternalForce((transform.position - hit.transform.position).normalized * knockForceMovingPlatform); //knocked away
             }

@@ -265,6 +265,7 @@ GameObject:
   - 23: {fileID: 240074604}
   - 114: {fileID: 240074603}
   - 143: {fileID: 240074608}
+  - 114: {fileID: 240074609}
   m_Layer: 0
   m_Name: EnemyTraverser
   m_TagString: Untagged
@@ -290,15 +291,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   normalDetectRange: 150
+  maxChaseDistance: 300
   currMovementSpeed: 0
   normalMoveSpeed: 35
   gravity: 10
   patrolPoints: []
   randomPatrol_MaxDistance: 50
-  traverseRCCheckOrigin: {fileID: 0}
+  traverseRCCheckOrigin: {fileID: 1866932246}
   forwardRayLM:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294967039
 --- !u!23 &240074604
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -356,9 +358,10 @@ Transform:
   m_GameObject: {fileID: 240074602}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 131, y: 43.7, z: 563}
-  m_LocalScale: {x: 5.47573, y: 5.4757347, z: 5.4757347}
+  m_LocalScale: {x: 10.894728, y: 10.894732, z: 10.894732}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
+  m_Children:
+  - {fileID: 1866932246}
   m_Father: {fileID: 0}
   m_RootOrder: 31
 --- !u!143 &240074608
@@ -378,6 +381,34 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &240074609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 240074602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a35b63ed7135f824381abf51064a43fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currRigidbody: {fileID: 0}
+  thisRigidbody: {fileID: 0}
+  thisCollider: {fileID: 0}
+  SlowDrag: 0.8
+  fastDrag: 0.04
+  slowMaxSpeed: 0
+  maxSpeedAccelerationMult: 4
+  minTime_ApplySlowDrag: 0.5
+  groundedCheckOffsetY: 0.5
+  groundedCheckDistance: 1.9
+  isGrounded: 0
+  groundCheckLM:
+    serializedVersion: 2
+    m_Bits: 0
+  isContinuous: 0
+  pushAway: 1
+  pushForce: 1000
 --- !u!1 &248951619
 GameObject:
   m_ObjectHideFlags: 0
@@ -2242,6 +2273,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollSpeedU: 0.5
   scrollSpeedV: 0.5
+--- !u!1 &1866932245
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1866932246}
+  m_Layer: 0
+  m_Name: TraverserCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1866932246
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1866932245}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 240074607}
+  m_RootOrder: 0
 --- !u!1001 &1880108345
 Prefab:
   m_ObjectHideFlags: 0

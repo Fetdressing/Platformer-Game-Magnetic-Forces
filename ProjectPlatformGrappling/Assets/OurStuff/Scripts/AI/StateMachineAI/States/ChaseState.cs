@@ -14,7 +14,7 @@ public class ChaseState : AIState {
     }
     public override void Execute(AIEntity entity)
     {
-        if (_AIMoveable.target != null && _AIMoveable.target.gameObject.activeSelf == true)
+        if (_AIMoveable.target != null && _AIMoveable.target.gameObject.activeSelf == true && _AIMoveable.DistanceToT(_AIMoveable.target) < _AIMoveable.maxChaseDistance)
         {
             _AIMoveable.Move(_AIMoveable.target.position, _AIMoveable.currMovementSpeed);
         }

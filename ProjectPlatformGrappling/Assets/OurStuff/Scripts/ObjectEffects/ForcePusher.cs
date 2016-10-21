@@ -3,16 +3,41 @@ using System.Collections;
 
 public class ForcePusher : BaseRigidbody {
     public bool isContinuous = false;
+    public bool pushAway = false; //om true så pushar denna ifrån sig själv oavsett vilket riktning objekten kommer ifrån
     public float pushForce = 100;
 
     void OnTriggerEnter(Collider col)
     {
         if (isContinuous) return;
+        if(col.tag == "Player")
+        {
+            StagMovement sM = col.GetComponent<StagMovement>();
+            if(sM != null)
+            {
+                if (pushAway)
+                {
+                    Vector3 dir = (col.transform.position - transform.position).normalized;
+                    sM.ApplyExternalForce(dir * pushForce);
+                }
+                else
+                {
+                    sM.ApplyExternalForce(transform.forward * pushForce);
+                }
+            }
+            return;
+        }
+
         Rigidbody rbody = col.GetComponent<Rigidbody>();
 
         if (rbody != null)
         {
-            AddForceFastDrag(transform.forward * pushForce, ForceMode.Impulse, rbody);
+            if (pushAway)
+            {
+                Vector3 dir = (col.transform.position - transform.position).normalized;
+                AddForceFastDrag(dir * pushForce, ForceMode.Impulse, rbody);
+            }
+            else
+                AddForceFastDrag(transform.forward * pushForce, ForceMode.Impulse, rbody);
         }
     }
 
@@ -20,11 +45,35 @@ public class ForcePusher : BaseRigidbody {
     {
         if (!isContinuous) return;
 
+        if (col.tag == "Player")
+        {
+            StagMovement sM = col.GetComponent<StagMovement>();
+            if (sM != null)
+            {
+                if (pushAway)
+                {
+                    Vector3 dir = (col.transform.position - transform.position).normalized;
+                    sM.ApplyExternalForce(dir * pushForce * Time.deltaTime);
+                }
+                else
+                {
+                    sM.ApplyExternalForce(transform.forward * Time.deltaTime * pushForce);
+                }
+            }
+            return;
+        }
+
         Rigidbody rbody = col.GetComponent<Rigidbody>();
 
         if (rbody != null)
         {
-            AddForceFastDrag(transform.forward * pushForce * Time.deltaTime, ForceMode.Force, rbody); //vill kanske använda fixedupdate I guess
+            if (pushAway)
+            {
+                Vector3 dir = (col.transform.position - transform.position).normalized;
+                AddForceFastDrag(dir * pushForce * Time.deltaTime, ForceMode.Force, rbody);
+            }
+            else
+                AddForceFastDrag(transform.forward * pushForce * Time.deltaTime, ForceMode.Force, rbody);
         }
     }
 }
