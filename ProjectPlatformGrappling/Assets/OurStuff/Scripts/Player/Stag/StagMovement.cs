@@ -35,6 +35,8 @@ public class StagMovement : BaseClass
     private bool dashUsed = false; //så att man måste bli grounded innan man kan använda den igen
     public GameObject dashEffectObject;
 
+    private float knockForceMovingPlatform = 700; //om man hamnar på fel sidan av moving platform så knuffas man bort lite
+
     //moving platform
 
     private Transform activePlatform;
@@ -50,6 +52,7 @@ public class StagMovement : BaseClass
     private float hor, ver;
     private Vector3 dashVel = new Vector3(0, 0, 0);
     private Vector3 finalMoveDir = new Vector3(0,0,0);
+    private Vector3 externalVel = new Vector3(0, 0, 0);
 
     private LayerMask layermaskForces;
     public ParticleSystem slideGroundParticleSystem;
@@ -100,7 +103,11 @@ public class StagMovement : BaseClass
         base.Reset();
         ToggleDashEffect(false);
         currMovementSpeed = startSpeed;
+
         dashVel = new Vector3(0, 0, 0);
+        externalVel = new Vector3(0, 0, 0);
+        ySpeed = 0;
+
         dashTimePoint = 0;
         jumpTimePoint = -5; //behöver vara under 0 så att man kan hoppa dirr när spelet börjar
         ToggleInfiniteGravity(false);
@@ -179,8 +186,10 @@ public class StagMovement : BaseClass
         if(GetGroundedTransform(groundCheckObject) != activePlatform)
             activePlatform = null; //kolla om platformen fortfarande finns under mig eller ej
 
+        externalVel = Vector3.Lerp(externalVel, Vector3.zero, Time.deltaTime * 10);
+
         HandleMovement(); //moddar finalMoveDir
-        characterController.Move((finalMoveDir + dashVel) * Time.deltaTime);
+        characterController.Move((finalMoveDir + dashVel + externalVel) * Time.deltaTime);
 
 
         if (Input.GetKeyDown(KeyCode.C))
@@ -204,6 +213,10 @@ public class StagMovement : BaseClass
                     activeLocalPlatformPoint = Vector3.zero;
                 }
                 activePlatform = hit.transform;
+            }
+            else //knuffa spelaren lite för denne kom emot en kant
+            {
+                ApplyExternalForce((transform.position - hit.transform.position).normalized * knockForceMovingPlatform); //knocked away
             }
         }
     }
@@ -319,6 +332,11 @@ public class StagMovement : BaseClass
         ToggleDashEffect(false);
         dashVel = Vector3.zero;
 
+    }
+
+    public void ApplyExternalForce(Vector3 moveDir)
+    {
+        externalVel = moveDir;
     }
 
     void ToggleDashEffect(bool b)

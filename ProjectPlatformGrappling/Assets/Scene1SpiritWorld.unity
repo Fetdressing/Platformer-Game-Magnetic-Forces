@@ -1176,11 +1176,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -147
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -22
+      value: -17
       objectReference: {fileID: 0}
     - target: {fileID: 4000012477092006, guid: c8f75383aae546e41840b83fae9e8926, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1402,6 +1402,100 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 28
+--- !u!1 &1101921352
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1101921357}
+  - 33: {fileID: 1101921356}
+  - 65: {fileID: 1101921355}
+  - 23: {fileID: 1101921354}
+  - 114: {fileID: 1101921353}
+  m_Layer: 0
+  m_Name: Cube (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1101921353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1101921352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7559e2b1e0c289d478c6702bce2c310b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  phaseOutMaterial: {fileID: 2100000, guid: 2f5f7fd61f9d38a4ea4a7a9d26c359fb, type: 2}
+  phaseCooldown: 2
+  startTime: 2
+--- !u!23 &1101921354
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1101921352}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: ab40475de6e541f4ca233b358ba2a4ae, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedWireframeHidden: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!65 &1101921355
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1101921352}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &1101921356
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1101921352}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1101921357
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1101921352}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 265.3, y: -41.7, z: 643.9}
+  m_LocalScale: {x: 119.06288, y: 12.718045, z: 119.06292}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 33
 --- !u!1 &1129357447
 GameObject:
   m_ObjectHideFlags: 0
@@ -1941,9 +2035,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   phaseOutMaterial: {fileID: 2100000, guid: 2f5f7fd61f9d38a4ea4a7a9d26c359fb, type: 2}
-  phaseTime: 1
   phaseCooldown: 2
-  startTime: 1
+  startTime: 0
 --- !u!23 &1533108500
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1999,7 +2092,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1533108498}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 144.7, y: -25.6, z: 643.9}
+  m_LocalPosition: {x: 144.7, y: -41.7, z: 643.9}
   m_LocalScale: {x: 119.06288, y: 12.718045, z: 119.06292}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []

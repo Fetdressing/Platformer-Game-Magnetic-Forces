@@ -10,7 +10,7 @@ public class PhaseOutObject : BaseClass {
     private Material startMaterial;
     public Material phaseOutMaterial;
 
-    public float phaseTime = 1.0f;
+    //public float phaseTime = 1.0f;
     public float phaseCooldown = 1.5f;
     public float startTime = 1.0f; //när hela börjar köras, kan behövas offset för att få dem ur fas
 
