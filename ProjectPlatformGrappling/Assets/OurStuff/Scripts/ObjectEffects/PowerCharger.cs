@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PowerCharger : BaseClass {
+public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
     private Transform thisTransform;
     private Collider[] thisColliders;
     PowerManager pM; //powermanager på playern, hämtas i ontrigger och manipuleras via update

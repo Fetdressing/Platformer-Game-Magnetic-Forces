@@ -5,7 +5,7 @@ public class AIMindless : AICharacterController //denna rör sig bara mellan pun
 {
     protected float upVelocity = 0;
 
-    protected float viewAngle = 25; //grader som denne ser target/spelaren på
+    protected float viewAngle = 15; //grader som denne ser target/spelaren på
     protected float viewDistance = 150;
     
     public override void Init()
@@ -43,8 +43,11 @@ public class AIMindless : AICharacterController //denna rör sig bara mellan pun
 
         for(int i = 0; i < col.Length; i++)
         {
-            Vector3 vecToTar = col[i].transform.position - transform.position;
-            if(Vector3.Angle(vecToTar, transform.forward) < viewAngle)
+            Vector3 colPosM = new Vector3(col[i].transform.position.x, 0, col[i].transform.position.z); //använd inte y
+            Vector3 tPosM = new Vector3(transform.position.x, 0, transform.position.z);
+            Vector3 vecToTar = colPosM - tPosM;
+
+            if (Vector3.Angle(vecToTar, transform.forward) < viewAngle)
             {
                 return true;
             }

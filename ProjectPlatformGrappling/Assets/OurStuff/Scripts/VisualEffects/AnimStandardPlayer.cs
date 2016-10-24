@@ -21,17 +21,19 @@ public class AnimStandardPlayer : BaseClass { //hämtar speeden på denna transf
     // Use this for initialization
     void Start () {
         Init();
+    }
+
+    public override void Init()
+    {
+        base.Init();
+
         if (animationH == null)
             animationH = transform.GetComponent<Animation>();
 
         animationH[walk.name].speed = walkASpeed;
         animationH[run.name].speed = runASpeed;
         animationH[idle.name].speed = idleASpeed;
-    }
 
-    public override void Init()
-    {
-        base.Init();
         Reset();
     }
 

@@ -75,7 +75,7 @@ public class PowerManager : BaseClass {
 
     public void AddPower(float p, float maxPercentage) //tex ger max upp till 80% av max powern
     {
-        if (p > 0 && (currPower / maxPower) * 100 > maxPercentage) return; //kolla oxå så att värdet är positivt, dvs INTE gör skada
+        if (p > 0 && ((currPower / maxPower) * 100) > maxPercentage) return; //kolla oxå så att värdet är positivt, dvs INTE gör skada
 
         currPower += p;
 
