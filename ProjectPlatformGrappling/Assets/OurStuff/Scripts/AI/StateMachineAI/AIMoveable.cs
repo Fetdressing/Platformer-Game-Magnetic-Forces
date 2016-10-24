@@ -18,6 +18,7 @@ public class AIMoveable : AIEntity {
     [HideInInspector]
     public float currMovementSpeed;
     public float normalMoveSpeed = 15;
+    public float runMoveSpeed = 30;
 
     public float gravity = 10;
 

@@ -41,6 +41,11 @@ public class AITraverser : AICharacterController
 
         upVelocity -= gravity;
 
+        if (cController.isGrounded)
+        {
+            upVelocity = 0;
+        }
+
         if(Physics.Raycast(traverseRCCheckOrigin.position, dir, forwardDistanceCheck, forwardRayLM))
         {
             upVelocity += gravity * 2;

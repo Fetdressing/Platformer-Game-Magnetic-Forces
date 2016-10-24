@@ -327,7 +327,7 @@ public class StagMovement : BaseClass
         {
             dashVel = dir * dashSpeed;
             currDashTime = Time.time - startDashTime;
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForEndOfFrame();
         }
         ToggleDashEffect(false);
         dashVel = Vector3.zero;

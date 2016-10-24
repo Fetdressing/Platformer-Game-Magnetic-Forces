@@ -22,7 +22,7 @@ public class AIEntity : BaseClass
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	public virtual void Update () {
         statePattern.UpdateLoop();
 	}
 
