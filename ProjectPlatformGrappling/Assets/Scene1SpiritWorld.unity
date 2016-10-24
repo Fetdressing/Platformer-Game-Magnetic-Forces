@@ -2420,7 +2420,7 @@ MonoBehaviour:
   phaseTime: 0
   phaseCooldown: 0.01
   startTime: 0
-  decayPowerMultiplayer: -400000
+  decayPowerMultiplayer: -40000
   maxPowerPercentage: 60
 --- !u!135 &1757863350
 SphereCollider:

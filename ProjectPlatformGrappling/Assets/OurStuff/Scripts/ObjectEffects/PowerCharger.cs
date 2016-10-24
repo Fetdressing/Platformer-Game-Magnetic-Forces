@@ -4,9 +4,9 @@ using System.Collections;
 public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
     private Transform thisTransform;
     private Collider[] thisColliders;
-    PowerManager pM; //powermanager på playern, hämtas i ontrigger och manipuleras via update
+    private PowerManager pM; //powermanager på playern, hämtas i ontrigger och manipuleras via update
 
-    public float phaseTime = 1.0f;
+    public float phaseTime = 0.0f; //används vid automatisk toggle, set till 0 ifall man inte vill ha
     public float phaseCooldown = 1.5f;
     public float startTime = 1.0f; //när hela börjar köras, kan behövas offset för att få dem ur fas
 
@@ -17,12 +17,12 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
     private Light lightActive;
 
     //ett particlesystem på den som de påverkar oxå, eller linerenderer
-    private bool beamIsOnPlayer = false;
+    private bool isEffectActive = false;
     private LineRenderer playerBeam;
     private Transform player;
 
-    private float beamOnDurTime = 1.0f;
-    private float beamOnTimer = 0.0f;
+    private float effectDurTime = 1.0f;
+    private float effectTimer = 0.0f;
     void Start()
     {
         Init();
@@ -55,7 +55,7 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
     {
         base.Reset();
         StopAllCoroutines();
-        beamOnTimer = 0.0f;
+        effectTimer = 0.0f;
         if (phaseTime != 0)
         {
             StartCoroutine(KillZoneLifetime());
@@ -68,23 +68,30 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
 
     void Update()
     {
-        beamIsOnPlayer = GetBeamIsOnPlayer();
+        isEffectActive = IsEffectValid();
 
-        if (playerBeam == null) return;
-        if(beamIsOnPlayer)
+        if (playerBeam != null)
         {
-            playerBeam.enabled = true;
-            Vector3[] positions = { transform.position, player.position };
-            playerBeam.SetPositions(positions);
+            if (isEffectActive)
+            {
+                playerBeam.enabled = true;
+                Vector3[] positions = { transform.position, player.position };
+                playerBeam.SetPositions(positions);
+            }
+            else
+            {
+                playerBeam.enabled = false;
+            }
+        }
+
+        if (isEffectActive)
+        {
+            pM.AddPower(-(pM.powerDecay * decayPowerMultiplayer * Time.deltaTime), maxPowerPercentage);
         }
         else
         {
-            playerBeam.enabled = false;
-        }
-
-        if (pM != null && beamIsOnPlayer)
-        {
-            pM.AddPower(-(pM.powerDecay * decayPowerMultiplayer * Time.deltaTime), maxPowerPercentage);
+            pM = null;
+            effectTimer = 0.0f;
         }
 
     }
@@ -164,23 +171,26 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
 
     void OnTriggerStay(Collider col)
     {
-        //Health h = col.GetComponent<Health>();
         pM = col.GetComponent<PowerManager>();
         if(pM == null)
         {
             Debug.Log("Ett objekt har player-layer som ej ska ha?");
         }
-
-        if (playerBeam == null) return;
-
         //if (col.tag != "Player") return;
 
-        beamOnTimer = beamOnDurTime + Time.time;
+        effectTimer = effectDurTime + Time.time;
     }
 
-    public bool GetBeamIsOnPlayer()
+    public bool IsEffectValid()
     {
-        if (beamOnTimer > Time.time) return true;
+        if (pM == null) return false;
+
+        if (pM.gameObject.activeSelf == false || pM.isAlive == false)
+        {
+            return false;
+        }
+
+        if (effectTimer > Time.time) return true;
 
         return false;
     }

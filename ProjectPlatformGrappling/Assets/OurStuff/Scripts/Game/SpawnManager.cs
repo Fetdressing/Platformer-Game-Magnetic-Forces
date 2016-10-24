@@ -9,9 +9,11 @@ public class SpawnManager : BaseClass {
     public Transform player;
 
     public Transform[] spawnPoints;
+
+    private bool isRespawning;
 	// Use this for initialization
 	void Start () {
-	
+        Init();
 	}
 
     public override void Init()
@@ -24,10 +26,14 @@ public class SpawnManager : BaseClass {
     {
         base.Reset();
         currLives = maxLives;
+        isRespawning = false;
     }
 
     public void Respawn(Vector3 playerDeathPos)
     {
+        if (isRespawning == true) return;
+        isRespawning = true;
+
         Vector3 closestSpawnPos = new Vector3(1000000000, 1000000000, 10000000000);
 
         for(int i = 0; i < spawnPoints.Length; i++)
@@ -62,5 +68,6 @@ public class SpawnManager : BaseClass {
         {
             Debug.Log("Ingen magneticplacer");
         }
+        isRespawning = false;
     }
 }

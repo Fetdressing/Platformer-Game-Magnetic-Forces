@@ -41,9 +41,11 @@ public class PowerManager : BaseClass {
     public override void Reset()
     {
         base.Reset();
+        StopAllCoroutines();
         transform.gameObject.SetActive(true);
-        isAlive = true;
+        
         AddPower(maxPower);
+        isAlive = true;
     }
     // Update is called once per frame
     void Update () {
@@ -109,6 +111,7 @@ public class PowerManager : BaseClass {
         if (isAlive == false) return; //så den inte spammar
         Debug.Log("död");
         isAlive = false;
+        currPower = 0; //så att det inte blir overkill och man dör massa gånger
 
         deathLocation = transform.position;
         //if (aiBase.GetComponent<AgentBase>() != null)

@@ -386,21 +386,6 @@ public class StagMovement : BaseClass
         }
     }
 
-    void OnCollisionEnter(Collision col)
-    {
-
-        //if (GetGrounded() && col.contacts[0].point.y < transform.position.y)
-        //{
-        //    float speedHit = col.relativeVelocity.magnitude;
-
-        //    if (speedHit > thisHealth.speedDamageThreshhold * 0.7f)
-        //    {
-        //        //ForcePush(speedHit);
-        //    }
-        //}
-    }
-
-
     void ToggleInfiniteGravity(bool b)
     {
         pullField.enabled = b;
