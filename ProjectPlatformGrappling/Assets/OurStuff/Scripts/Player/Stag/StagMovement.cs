@@ -25,6 +25,8 @@ public class StagMovement : BaseClass
     private float currMovementSpeed; //movespeeden, kan påverkas av slows
     private float ySpeed; //aktiv variable för vad som händer med gravitation/jump
     private float jumpTimePoint = -5; //när man hoppas så den inte ska resetta stuff dirr efter man hoppat
+    private int jumpAmount = 2;
+    private int jumpsAvaible = 0; //så man kan hoppa i luften also, förutsatt att man resettat den på marken
 
     private float dashTimePoint;
     private float dashCooldown = 0.8f;
@@ -113,6 +115,7 @@ public class StagMovement : BaseClass
         ToggleInfiniteGravity(false);
         slideGroundParticleSystem.GetComponent<ParticleTimed>().isReady = true;
         dashUsed = false;
+        jumpsAvaible = jumpAmount;
     }
 
     void LateUpdate()
@@ -148,15 +151,21 @@ public class StagMovement : BaseClass
         {
             if (jumpTimePoint < Time.time - 1.2f) //så den inte ska fucka och resetta dirr efter man hoppat
             {
-                if (Input.GetButtonDown("Jump"))
-                {
-                    dashUsed = false; //när man blir grounded så kan man använda dash igen, men oxå när man hoppar, SKILLZ!!!
-                    activePlatform = null; //när man hoppar så är man ej längre attached till movingplatform
-                    jumpTimePoint = Time.time;
-                    ySpeed = jumpSpeed;
-                    //animationH.Play(jump.name);
-                    //animationH[jump.name].weight = 1.0f;
-                }
+                jumpsAvaible = jumpAmount;
+            }
+        }
+
+        if (jumpsAvaible > 0)
+        {
+            if (Input.GetButtonDown("Jump"))
+            {
+                jumpsAvaible = Mathf.Max(0, (jumpsAvaible-1));
+                dashUsed = false; //när man blir grounded så kan man använda dash igen, men oxå när man hoppar, SKILLZ!!!
+                activePlatform = null; //när man hoppar så är man ej längre attached till movingplatform
+                jumpTimePoint = Time.time;
+                ySpeed = jumpSpeed;
+                //animationH.Play(jump.name);
+                //animationH[jump.name].weight = 1.0f;
             }
         }
         // apply gravity acceleration to vertical speed:
@@ -258,6 +267,7 @@ public class StagMovement : BaseClass
     void PlayAnimationStates()
     {
         if (animationH == null) return;
+        float fadeLengthA = 0.1f;
 
         if (isGrounded || GetGrounded(groundCheckObject))
         {
@@ -266,31 +276,31 @@ public class StagMovement : BaseClass
 
                 if (hor > 0.1f || hor < -0.1f) //rär sig sidledes
                 {
-                    animationH.CrossFade(runForwardAngle.name);
+                    animationH.CrossFade(runForwardAngle.name, fadeLengthA);
                 }
                 else
                 {
-                    animationH.CrossFade(runForward.name);
+                    animationH.CrossFade(runForward.name, fadeLengthA);
                 }
             }
             else if (hor > 0.1f || hor < -0.1f) //bara rör sig sidledes
             {
-                animationH.CrossFade(runForwardAngle.name);
+                animationH.CrossFade(runForwardAngle.name, fadeLengthA);
             }
             else
             {
-                animationH.CrossFade(idle.name);
+                animationH.CrossFade(idle.name, fadeLengthA);
             }
         }
         else //air
         {
             if (ySpeed > 0.01f)
             {
-                animationH.CrossFade(jump.name);
+                animationH.CrossFade(jump.name, fadeLengthA);
             }
             else
             {
-                animationH.CrossFade(idleAir.name);
+                animationH.CrossFade(idleAir.name, fadeLengthA);
             }
         }
     }
@@ -317,6 +327,7 @@ public class StagMovement : BaseClass
     {
         if (dashTimePoint + dashCooldown > Time.time) yield break;
         if (dashUsed) yield break;
+        ySpeed = 0;
         dashUsed = true;
         ToggleDashEffect(true);
         powerManager.AddPower(-dashPowerCost);
@@ -400,16 +411,6 @@ public class StagMovement : BaseClass
         else
         {
             pullps.Stop();
-        }
-
-
-        if (b)
-        {
-
-        }
-        else
-        {
-
         }
     }
 

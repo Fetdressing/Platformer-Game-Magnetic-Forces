@@ -48,7 +48,7 @@ public class PhaseOutObject : BaseClass {
 
         if (b)
         {
-            wC = new Color(c.r, c.g, c.b, 0.0f); //fadea ut
+            //wC = new Color(c.r, c.g, c.b, 0.0f); //fadea ut
 
             currAlpha -= 1 / ((1 / Time.deltaTime) * phaseCooldown);
 

@@ -1775,10 +1775,10 @@ MonoBehaviour:
   walk: {fileID: 7400000, guid: 84ef7aabeb8284c4194fd554c172dc6b, type: 3}
   run: {fileID: 7400002, guid: 84ef7aabeb8284c4194fd554c172dc6b, type: 3}
   idle: {fileID: 7400004, guid: 84ef7aabeb8284c4194fd554c172dc6b, type: 3}
-  walkASpeed: 0.6
+  walkASpeed: 2.2
   runASpeed: 2
   idleASpeed: 1
-  runSpeedThreshhold: 35
+  runSpeedThreshhold: 80
 --- !u!114 &114000011763492640
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1799,8 +1799,8 @@ MonoBehaviour:
   normalDetectRange: 280
   maxChaseDistance: 300
   currMovementSpeed: 15
-  normalMoveSpeed: 25
-  runMoveSpeed: 60
+  normalMoveSpeed: 55
+  runMoveSpeed: 90
   gravity: 10
   turnRatio: 4
   patrolPoints:
@@ -1808,6 +1808,8 @@ MonoBehaviour:
   - {fileID: 4000010765921882}
   currPatrolPoint: {x: 0, y: 0, z: 0}
   randomPatrol_MaxDistance: 50
+  viewAngle: 38
+  minDistanceTarget: 30
   turnAnim: {fileID: 7400006, guid: 84ef7aabeb8284c4194fd554c172dc6b, type: 3}
 --- !u!114 &114000014269049790
 MonoBehaviour:
@@ -1973,10 +1975,10 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 20.93
-  m_Radius: 9.4
+  m_Height: 24.28
+  m_Radius: 10.28
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 9.8, z: 0}
+  m_Center: {x: 0, y: 10.81, z: 0}

@@ -5,9 +5,9 @@ public class AIMindless : AICharacterController //denna rör sig bara mellan pun
 {
     protected float upVelocity = 0;
 
-    protected float viewAngle = 28; //grader som denne ser target/spelaren på
+    public float viewAngle = 28; //grader som denne ser target/spelaren på
     protected float viewDistance = 150;
-    protected float minDistanceTarget = 20; //hur långt ifrån den stannar ifrån target/spelaren
+    public float minDistanceTarget = 20; //hur långt ifrån den stannar ifrån target/spelaren
 
     private Vector3 lastFrameDirection; //för att se ifall karaktären byter riktning helt -> spela vänd animation
     public AnimationClip turnAnim;
@@ -78,7 +78,7 @@ public class AIMindless : AICharacterController //denna rör sig bara mellan pun
         //rotera
         Vector3 dir = (modPos - modTPos).normalized;
 
-        if(Vector3.Distance(transform.position, currPatrolPoint) < 20)
+        if(Vector3.Distance(modTPos, modPos) < 20) //kolla ifall man är såpass nära att man ska vända
         {
             GetComponent<AnimStandardPlayer>().PlayAnimation(turnAnim, 1.0f, 0.4f);
         }

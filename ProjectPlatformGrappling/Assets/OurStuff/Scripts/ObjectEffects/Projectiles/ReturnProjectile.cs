@@ -56,7 +56,7 @@ public class ReturnProjectile : ProjectileBase {
         float startTime = Time.time;
         returning = true;
         o_Rigidbody.velocity = new Vector3(0, 0, 0);
-        o_Rigidbody.drag = returnHomingDrag;
+ 
         if (returnTarget == null || returnHomingForce < 0.1f)
         {
             o_Rigidbody.AddForce(forceDir, ForceMode.Impulse);
@@ -64,6 +64,7 @@ public class ReturnProjectile : ProjectileBase {
         }
         else
         {
+            o_Rigidbody.drag = returnHomingDrag;
             while (((startTime + lifeTime * 2)) > Time.time)
             {
                 if (returnTarget != null && returnHomingForce > 0.1f)
