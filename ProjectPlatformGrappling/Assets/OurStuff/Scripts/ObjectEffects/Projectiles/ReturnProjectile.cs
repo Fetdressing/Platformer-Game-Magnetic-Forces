@@ -7,7 +7,7 @@ public class ReturnProjectile : ProjectileBase {
     public float powerFeedback = 0.5f;
     [HideInInspector]
     public Transform returnTarget;
-    private float returnHomingForce = 500000;
+    public float returnHomingForce = 500000;
     private float startDrag;
     private float returnHomingDrag = 3;
 
@@ -59,15 +59,19 @@ public class ReturnProjectile : ProjectileBase {
         o_Rigidbody.drag = returnHomingDrag;
         if (returnTarget == null || returnHomingForce < 0.1f)
         {
-            o_Rigidbody.AddForce(forceDir * 0.5f, ForceMode.Impulse);
+            o_Rigidbody.AddForce(forceDir, ForceMode.Impulse);
+            yield return new WaitForSeconds(lifeTime);
         }
-        while(((startTime + lifeTime * 2)) > Time.time)
+        else
         {
-            if(returnTarget != null && returnHomingForce > 0.1f)
+            while (((startTime + lifeTime * 2)) > Time.time)
             {
-                Vector3 toTarget = (returnTarget.position - transform.position).normalized;
-                o_Rigidbody.AddForce(toTarget * returnHomingForce * Time.deltaTime, ForceMode.Force);
-                yield return new WaitForSeconds(0.1f);
+                if (returnTarget != null && returnHomingForce > 0.1f)
+                {
+                    Vector3 toTarget = (returnTarget.position - transform.position).normalized;
+                    o_Rigidbody.AddForce(toTarget * returnHomingForce * Time.deltaTime, ForceMode.Force);
+                    yield return new WaitForSeconds(0.1f);
+                }
             }
         }
         Die();
@@ -106,6 +110,9 @@ public class ReturnProjectile : ProjectileBase {
         }
         else
         {
+            if (col.tag != "Player")
+                PlayParticleSystem();
+
             for (int i = 0; i < damageTags.Length; i++)
             {
                 if (col.tag == damageTags[i])
@@ -122,13 +129,12 @@ public class ReturnProjectile : ProjectileBase {
                             hSp.AddHealth(-1);
                         }
                     }
-                    PlayParticleSystem();
                     break;
                 }
             }
         }
 
-        if(!isGhost)
+        if(!isGhost && col.tag != "Player")
         {
             StartCoroutine(FlyBack(projLifeTime, -forceDirection));
         }

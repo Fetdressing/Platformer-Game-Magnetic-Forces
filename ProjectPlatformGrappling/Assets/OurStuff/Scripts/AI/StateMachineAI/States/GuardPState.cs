@@ -4,11 +4,11 @@ using System.Collections;
 public class GuardPState : PatrolState { //patrol fast letar efter spelaren
     public override void Execute(AIEntity entity)
     {
-        if (currPatrolPoint == Vector3.zero || HasReached(_AIMoveable.transform.position, currPatrolPoint, 5, false))
+        if (_AIMoveable.currPatrolPoint == Vector3.zero || HasReached(_AIMoveable.transform.position, _AIMoveable.currPatrolPoint, 5, false))
         {
-            currPatrolPoint = _AIMoveable.GetPatrolPoint();
+            _AIMoveable.currPatrolPoint = _AIMoveable.GetPatrolPoint();
         }
-        _AIMoveable.Move(currPatrolPoint, _AIMoveable.currMovementSpeed);
+        _AIMoveable.Move(_AIMoveable.currPatrolPoint, _AIMoveable.currMovementSpeed);
 
         if(_AIMoveable.CheckForTarget(ref _AIMoveable.target))
         {

@@ -5,8 +5,12 @@ public class AIMindless : AICharacterController //denna rör sig bara mellan pun
 {
     protected float upVelocity = 0;
 
-    protected float viewAngle = 15; //grader som denne ser target/spelaren på
+    protected float viewAngle = 28; //grader som denne ser target/spelaren på
     protected float viewDistance = 150;
+    protected float minDistanceTarget = 20; //hur långt ifrån den stannar ifrån target/spelaren
+
+    private Vector3 lastFrameDirection; //för att se ifall karaktären byter riktning helt -> spela vänd animation
+    public AnimationClip turnAnim;
     
     public override void Init()
     {
@@ -27,9 +31,18 @@ public class AIMindless : AICharacterController //denna rör sig bara mellan pun
     {
         base.Update();
 
-        if(IsTargetInFront())
+        Transform potTarget = null;
+        if (IsTargetInFront(ref potTarget))
         {
-            currMovementSpeed = runMoveSpeed;
+
+            if (Vector3.Distance(potTarget.position, transform.position) < minDistanceTarget)
+            {
+                currMovementSpeed = 0;
+            }
+            else
+            {
+                currMovementSpeed = runMoveSpeed;
+            }
         }
         else
         {
@@ -37,7 +50,7 @@ public class AIMindless : AICharacterController //denna rör sig bara mellan pun
         }
     }
 
-    public bool IsTargetInFront()
+    public bool IsTargetInFront(ref Transform potTarget)
     {
         Collider[] col = Physics.OverlapSphere(transform.position, viewDistance, targetSearchLM);
 
@@ -49,6 +62,7 @@ public class AIMindless : AICharacterController //denna rör sig bara mellan pun
 
             if (Vector3.Angle(vecToTar, transform.forward) < viewAngle)
             {
+                potTarget = col[i].transform;
                 return true;
             }
         }
@@ -61,10 +75,20 @@ public class AIMindless : AICharacterController //denna rör sig bara mellan pun
         Vector3 modPos = new Vector3(pos.x, 0, pos.z);
         Vector3 modTPos = new Vector3(transform.position.x, 0, transform.position.z);
 
+        //rotera
         Vector3 dir = (modPos - modTPos).normalized;
+
+        if(Vector3.Distance(transform.position, currPatrolPoint) < 20)
+        {
+            GetComponent<AnimStandardPlayer>().PlayAnimation(turnAnim, 1.0f, 0.4f);
+        }
 
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnRatio);
+
+        lastFrameDirection = dir;
+
+        //rotera
 
         upVelocity -= gravity;
 

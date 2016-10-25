@@ -68,4 +68,12 @@ public class AnimStandardPlayer : BaseClass { //hämtar speeden på denna transf
             animationH.CrossFade(currMoveClip.name);
         }
 	}
+
+    public void PlayAnimation(AnimationClip aClip, float weight, float animSpeed)
+    {
+        animationH[aClip.name].speed = animSpeed;
+        animationH[aClip.name].layer = 1;
+        animationH[aClip.name].weight = weight;
+        animationH.CrossFade(aClip.name, 0.1f);
+    }
 }

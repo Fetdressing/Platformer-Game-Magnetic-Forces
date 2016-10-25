@@ -23,6 +23,11 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
 
     private float effectDurTime = 1.0f;
     private float effectTimer = 0.0f;
+
+    [Header("Animation")]
+    public AnimStandardPlayer animationPlayer;
+    public AnimationClip activeAnim;
+    public float animationSpeed = 1.0f;
     void Start()
     {
         Init();
@@ -66,7 +71,7 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
         }
     }
 
-    void Update()
+    void LateUpdate()
     {
         isEffectActive = IsEffectValid();
 
@@ -86,6 +91,10 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
 
         if (isEffectActive)
         {
+            if (animationPlayer != null)
+            {
+                animationPlayer.PlayAnimation(activeAnim, 1.0f, animationSpeed);
+            }
             pM.AddPower(-(pM.powerDecay * decayPowerMultiplayer * Time.deltaTime), maxPowerPercentage);
         }
         else

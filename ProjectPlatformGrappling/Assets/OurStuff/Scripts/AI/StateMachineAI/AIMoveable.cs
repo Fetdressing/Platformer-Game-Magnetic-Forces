@@ -29,6 +29,7 @@ public class AIMoveable : AIEntity {
     [Header("Patrolling")]
     public Transform[] patrolPoints;
     protected int currPatrolPointIndex = 0;
+    [HideInInspector] public Vector3 currPatrolPoint = Vector3.zero;
 
     public float randomPatrol_MaxDistance = 50;
     protected Vector3 startPosition;

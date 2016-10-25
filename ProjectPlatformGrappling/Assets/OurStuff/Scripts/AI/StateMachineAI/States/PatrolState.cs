@@ -5,8 +5,6 @@ using System;
 public class PatrolState : AIState {
     protected AIMoveable _AIMoveable;
 
-    protected Vector3 currPatrolPoint = Vector3.zero;
-
     public override void Enter(AIEntity entity)
     {
         if (entity is AIMoveable)
@@ -18,11 +16,11 @@ public class PatrolState : AIState {
     }
     public override void Execute(AIEntity entity)
     {
-        if(currPatrolPoint == Vector3.zero || HasReached(_AIMoveable.transform.position, currPatrolPoint, 5, false))
+        if(_AIMoveable.currPatrolPoint == Vector3.zero || HasReached(_AIMoveable.transform.position, _AIMoveable.currPatrolPoint, 5, false))
         {
-            currPatrolPoint = _AIMoveable.GetPatrolPoint();
+            _AIMoveable.currPatrolPoint = _AIMoveable.GetPatrolPoint();
         }
-        _AIMoveable.Move(currPatrolPoint, _AIMoveable.currMovementSpeed);
+        _AIMoveable.Move(_AIMoveable.currPatrolPoint, _AIMoveable.currMovementSpeed);
     }
     public override void Exit(AIEntity entity)
     {
