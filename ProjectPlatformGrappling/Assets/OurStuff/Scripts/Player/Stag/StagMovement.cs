@@ -23,13 +23,15 @@ public class StagMovement : BaseClass
     private float stagSpeedMultMin = 0.85f;
 
     private float currMovementSpeed; //movespeeden, kan påverkas av slows
-    private float ySpeed; //aktiv variable för vad som händer med gravitation/jump
+    [HideInInspector]public float currMoveSpeedEffector = 1.0f; //100% movespeed, påverkar slows n shit
+    [HideInInspector]public float ySpeed; //aktiv variable för vad som händer med gravitation/jump
     private float jumpTimePoint = -5; //när man hoppas så den inte ska resetta stuff dirr efter man hoppat
-    private int jumpAmount = 2;
+    private int jumpAmount = 2; //hur många hopp man får
     private int jumpsAvaible = 0; //så man kan hoppa i luften also, förutsatt att man resettat den på marken
+    private float jumpCooldown = 0.3f;
 
-    private float dashTimePoint;
-    private float dashCooldown = 0.8f;
+    [HideInInspector]public float dashTimePoint; //mud påverkar denna så att man inte kan dasha
+    private float dashCooldown = 0.3f;
     private float dashSpeed = 1200;
     private float currDashTime;
     private float maxDashTime = 0.1f;
@@ -109,6 +111,7 @@ public class StagMovement : BaseClass
         dashVel = new Vector3(0, 0, 0);
         externalVel = new Vector3(0, 0, 0);
         ySpeed = 0;
+        currMoveSpeedEffector = 1.0f;
 
         dashTimePoint = 0;
         jumpTimePoint = -5; //behöver vara under 0 så att man kan hoppa dirr när spelet börjar
@@ -123,7 +126,7 @@ public class StagMovement : BaseClass
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(cameraHolder.forward.x, 0, cameraHolder.forward.z));
         stagObject.rotation = Quaternion.Slerp(stagObject.rotation, lookRotation, Time.deltaTime * 20);
 
- 
+        currMoveSpeedEffector = 1.0f; //resetta den varje frame, så ifall någon vill påverka så får den oxå sätta varje frame
     }
 
     void Update()
@@ -141,7 +144,7 @@ public class StagMovement : BaseClass
         if (isGrounded) //dessa if-satser skall vara separata
         {
             dashUsed = false; //när man blir grounded så kan man använda dash igen
-            if (jumpTimePoint < Time.time - 1.2f) //så den inte ska fucka och resetta dirr efter man hoppat
+            if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
             {
                 ySpeed = 0; // grounded character has vSpeed = 0...
             }
@@ -149,7 +152,7 @@ public class StagMovement : BaseClass
 
         if (isGrounded || GetGrounded(groundCheckObject)) //använd endast GetGrounded här, annars kommer man få samma problem när gravitationen slutar verka pga lång raycast
         {
-            if (jumpTimePoint < Time.time - 1.2f) //så den inte ska fucka och resetta dirr efter man hoppat
+            if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
             {
                 jumpsAvaible = jumpAmount;
             }
@@ -159,13 +162,20 @@ public class StagMovement : BaseClass
         {
             if (Input.GetButtonDown("Jump"))
             {
-                jumpsAvaible = Mathf.Max(0, (jumpsAvaible-1));
-                dashUsed = false; //när man blir grounded så kan man använda dash igen, men oxå när man hoppar, SKILLZ!!!
-                activePlatform = null; //när man hoppar så är man ej längre attached till movingplatform
-                jumpTimePoint = Time.time;
-                ySpeed = jumpSpeed;
-                //animationH.Play(jump.name);
-                //animationH[jump.name].weight = 1.0f;
+                if (Time.time > jumpTimePoint + jumpCooldown)
+                {
+                    jumpsAvaible = Mathf.Max(0, (jumpsAvaible - 1));
+                    dashUsed = false; //när man blir grounded så kan man använda dash igen, men oxå när man hoppar, SKILLZ!!!
+                    activePlatform = null; //när man hoppar så är man ej längre attached till movingplatform
+                    jumpTimePoint = Time.time;
+
+                    if (ySpeed < 0) //ska motverka gravitationen
+                        ySpeed = 0;
+
+                    ySpeed = jumpSpeed;
+                    //animationH.Play(jump.name);
+                    //animationH[jump.name].weight = 1.0f;
+                }
             }
         }
         // apply gravity acceleration to vertical speed:
@@ -212,11 +222,16 @@ public class StagMovement : BaseClass
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        if (hit.moveDirection.y < -0.9 && hit.normal.y > 0.5f)
+        {
+            ySpeed = 0;
+        }
+
         if (hit.gameObject.tag == "MovingPlatform")
         {
             if (hit.moveDirection.y < -0.9 && hit.normal.y > 0.5f)
             {
-                if(activePlatform != hit.transform)
+                if (activePlatform != hit.transform)
                 {
                     activeGlobalPlatformPoint = Vector3.zero;
                     activeLocalPlatformPoint = Vector3.zero;
@@ -230,6 +245,14 @@ public class StagMovement : BaseClass
         }
     }
 
+    void OnTriggerEnter(Collider col)
+    {
+        if(col.tag == "BreakerObject")
+        {
+            col.GetComponent<BreakerObject>().Break();
+        }
+    }
+
     void HandleMovement()
     {
         float stagSpeedMultiplier = 1.0f;
@@ -238,6 +261,8 @@ public class StagMovement : BaseClass
             stagSpeedMultiplier = Mathf.Max(Mathf.Abs(stagRootJointStartY - stagRootJoint.localPosition.y), stagSpeedMultMin); //min värde
             stagSpeedMultiplier = Mathf.Min(stagSpeedMultiplier, stagSpeedMultMax); //max värde
         }
+
+        currMovementSpeed = startSpeed * currMoveSpeedEffector;
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {

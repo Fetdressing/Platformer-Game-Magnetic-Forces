@@ -97,6 +97,7 @@
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\BreakerObject.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\ForcePusher.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\MovingPlatform.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Mud.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\ObjectSpawner.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PhaseOutObject.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PowerCharger.cs" />

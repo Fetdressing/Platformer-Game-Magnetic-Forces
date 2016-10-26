@@ -7,6 +7,8 @@ TagManager:
   - Manager
   - MovingPlatform
   - Enemy
+  - BreakerObject
+  - Mud
   layers:
   - Default
   - TransparentFX

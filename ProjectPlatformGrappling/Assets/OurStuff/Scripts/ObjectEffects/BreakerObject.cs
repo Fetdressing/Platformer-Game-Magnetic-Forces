@@ -16,6 +16,10 @@ public class BreakerObject : BaseClass {
     float currAlpha = 1;
 
     private bool fading = false;
+
+    private Animation animationH;
+    public AnimationClip breakAnimation;
+    public float animSpeed = 1.0f;
     // Use this for initialization
     void Start()
     {
@@ -30,6 +34,11 @@ public class BreakerObject : BaseClass {
         startMaterial = thisRenderer.material;
 
         thisColliders = thisTransform.GetComponentsInChildren<Collider>();
+
+        animationH = transform.GetComponent<Animation>();
+
+        transform.tag = "BreakerObject";
+
         Reset();
     }
 
@@ -42,14 +51,21 @@ public class BreakerObject : BaseClass {
         //StartCoroutine(PhaseLifetime());
     }
 
-    void OnTriggerEnter(Collider col)
+    //void OnTriggerEnter(Collider col)
+    //{
+    //    if(col.tag == "Player")
+    //    {
+    //        if (fading)
+    //            return;
+    //        StartCoroutine(FadeOut());
+    //    }
+    //}
+
+    public void Break() //låt någon kalla på det
     {
-        if(col.tag == "Player")
-        {
-            if (fading)
-                return;
-            StartCoroutine(FadeOut());
-        }
+        if (fading)
+            return;
+        StartCoroutine(FadeOut());
     }
 
     IEnumerator FadeOut()
@@ -62,6 +78,12 @@ public class BreakerObject : BaseClass {
             
             currAlpha -= 1 / ((1 / Time.deltaTime) * fadeTime);
             thisRenderer.material.color = new Color(c.r, c.g, c.b, currAlpha);
+
+            if(animationH != null)
+            {
+                animationH[breakAnimation.name].speed = animSpeed * (1 - currAlpha);
+                animationH.CrossFade(breakAnimation.name);
+            }
 
             yield return new WaitForEndOfFrame();
         }
@@ -79,12 +101,16 @@ public class BreakerObject : BaseClass {
         Color wC;
 
         //yield return new WaitForSeconds(fadeTime);
+        if (animationH != null)
+        {
+            animationH.Stop();
+        }
 
         while (currAlpha < 1.0f)
         {
             Color c = thisRenderer.material.color;
             
-            currAlpha += 1 / ((1 / Time.deltaTime) * fadeTime);
+            currAlpha += 1 / ((1 / Time.deltaTime) * (fadeTime * 2));
             thisRenderer.material.color = new Color(c.r, c.g, c.b, currAlpha);
             yield return new WaitForEndOfFrame();
         }

@@ -66,6 +66,11 @@ public class GroundChecker : BaseClass {
                 lastGroundedObj = col.transform;
                 cameraShaker.ShakeCamera(0.1f, 0.5f, true);
             }
+
+            if (col.tag == "BreakerObject")
+            {
+                col.GetComponent<BreakerObject>().Break();
+            }
         }
     }
 
