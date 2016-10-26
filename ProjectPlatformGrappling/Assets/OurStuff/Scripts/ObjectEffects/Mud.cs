@@ -4,8 +4,8 @@ using System.Collections;
 public class Mud : BaseClass { //slöar ner och gör så att spelaren inte kan dasha (hoppa ?)
     StagMovement stagMovement;
 
-    private float moveSpeedChange = 0.5f;
-    private float timePointEntered;
+    private float moveSpeedChange = 0.65f;
+    private static float timePointEntered;
 	// Use this for initialization
 	void Start () {
         Init();
@@ -30,7 +30,7 @@ public class Mud : BaseClass { //slöar ner och gör så att spelaren inte kan d
         {
             stagMovement.ySpeed = -10;
             stagMovement.dashTimePoint = Time.time;
-            stagMovement.currMoveSpeedEffector = moveSpeedChange;
+            stagMovement.ApplySpeedMultiplier(moveSpeedChange, 0.2f);
         }
     }
 

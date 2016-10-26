@@ -23,7 +23,9 @@ public class StagMovement : BaseClass
     private float stagSpeedMultMin = 0.85f;
 
     private float currMovementSpeed; //movespeeden, kan påverkas av slows
-    [HideInInspector]public float currMoveSpeedEffector = 1.0f; //100% movespeed, påverkar slows n shit
+    [HideInInspector]public float currExternalSpeedMult = 1.0f; //100% movespeed, påverkar slows n shit
+    private float moveSpeedMultTimePoint = -5; //när extern slow/speed-up var applyat
+    private float moveSpeedMultDuration;
     [HideInInspector]public float ySpeed; //aktiv variable för vad som händer med gravitation/jump
     private float jumpTimePoint = -5; //när man hoppas så den inte ska resetta stuff dirr efter man hoppat
     private int jumpAmount = 2; //hur många hopp man får
@@ -111,7 +113,7 @@ public class StagMovement : BaseClass
         dashVel = new Vector3(0, 0, 0);
         externalVel = new Vector3(0, 0, 0);
         ySpeed = 0;
-        currMoveSpeedEffector = 1.0f;
+        currExternalSpeedMult = 1.0f;
 
         dashTimePoint = 0;
         jumpTimePoint = -5; //behöver vara under 0 så att man kan hoppa dirr när spelet börjar
@@ -126,7 +128,10 @@ public class StagMovement : BaseClass
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(cameraHolder.forward.x, 0, cameraHolder.forward.z));
         stagObject.rotation = Quaternion.Slerp(stagObject.rotation, lookRotation, Time.deltaTime * 20);
 
-        currMoveSpeedEffector = 1.0f; //resetta den varje frame, så ifall någon vill påverka så får den oxå sätta varje frame
+        if((moveSpeedMultTimePoint + moveSpeedMultDuration) < Time.time)
+        {
+            currExternalSpeedMult = 1.0f;
+        }
     }
 
     void Update()
@@ -249,7 +254,7 @@ public class StagMovement : BaseClass
     {
         if(col.tag == "BreakerObject")
         {
-            col.GetComponent<BreakerObject>().Break();
+            col.GetComponent<BreakerObject>().Break(); //tar sönder objekten
         }
     }
 
@@ -262,7 +267,7 @@ public class StagMovement : BaseClass
             stagSpeedMultiplier = Mathf.Min(stagSpeedMultiplier, stagSpeedMultMax); //max värde
         }
 
-        currMovementSpeed = startSpeed * currMoveSpeedEffector;
+        currMovementSpeed = startSpeed * currExternalSpeedMult;
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
@@ -420,6 +425,13 @@ public class StagMovement : BaseClass
             tR.endWidth -= Time.deltaTime;
             yield return new WaitForSeconds(0.01f);
         }
+    }
+
+    public void ApplySpeedMultiplier(float multiplier, float duration) //slows o liknande, updateras i LateUpdate()
+    {
+        currExternalSpeedMult = multiplier;
+        moveSpeedMultTimePoint = Time.time;
+        moveSpeedMultDuration = duration;
     }
 
     void ToggleInfiniteGravity(bool b)

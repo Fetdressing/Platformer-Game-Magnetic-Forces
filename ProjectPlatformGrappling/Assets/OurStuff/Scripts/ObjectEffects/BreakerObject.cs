@@ -48,6 +48,9 @@ public class BreakerObject : BaseClass {
         StopAllCoroutines();
         fading = false;
         currAlpha = 1;
+
+        Color c = thisRenderer.material.color;
+        thisRenderer.material.color = new Color(c.r, c.g, c.b, currAlpha);
         //StartCoroutine(PhaseLifetime());
     }
 
@@ -99,6 +102,7 @@ public class BreakerObject : BaseClass {
     IEnumerator FadeIn()
     {
         Color wC;
+        Color c;
 
         //yield return new WaitForSeconds(fadeTime);
         if (animationH != null)
@@ -106,12 +110,14 @@ public class BreakerObject : BaseClass {
             animationH.Stop();
         }
 
+        c = thisRenderer.material.color;
+
         while (currAlpha < 1.0f)
         {
-            Color c = thisRenderer.material.color;
+            c = thisRenderer.material.color;
             
             currAlpha += 1 / ((1 / Time.deltaTime) * (fadeTime * 2));
-            thisRenderer.material.color = new Color(c.r, c.g, c.b, currAlpha);
+            thisRenderer.material.color = new Color(c.r, c.g, c.b, currAlpha * 0.2f);
             yield return new WaitForEndOfFrame();
         }
 
@@ -119,6 +125,7 @@ public class BreakerObject : BaseClass {
         {
             thisColliders[i].enabled = true;
         }
+        thisRenderer.material.color = new Color(c.r, c.g, c.b, currAlpha);
         fading = false;
     }
 }
