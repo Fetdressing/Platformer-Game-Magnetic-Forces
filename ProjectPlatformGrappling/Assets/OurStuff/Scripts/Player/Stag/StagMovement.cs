@@ -72,8 +72,11 @@ public class StagMovement : BaseClass
     public float groundedCheckDistance = 3.5f;
     [HideInInspector]
     public bool isGrounded;
+    [HideInInspector]
+    public bool isGroundedRaycast;
     public LayerMask groundCheckLM;
     private float groundedTimePoint = 0; //när man blev grounded
+    private float maxSlopeGrounded = 65; //vilken vinkel det som mest får skilja på ytan och vector3.down när man kollar grounded
 
     [Header("Animation")]
     public Animation animationH;
@@ -94,7 +97,6 @@ public class StagMovement : BaseClass
         base.Init();
         characterController = transform.GetComponent<CharacterController>();
         powerManager = transform.GetComponent<PowerManager>();
-        isGrounded = false;
         layermaskForces = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("MagneticBall") | 1 << LayerMask.NameToLayer("Ragdoll"));
         cameraObj = cameraHolder.GetComponentsInChildren<Transform>()[1].transform;
         cameraShaker = cameraObj.GetComponent<CameraShaker>();
@@ -121,6 +123,9 @@ public class StagMovement : BaseClass
         slideGroundParticleSystem.GetComponent<ParticleTimed>().isReady = true;
         dashUsed = false;
         jumpsAvaible = jumpAmount;
+
+        isGrounded = false;
+        isGroundedRaycast = false;
     }
 
     void LateUpdate()
@@ -142,23 +147,26 @@ public class StagMovement : BaseClass
         verVector = ver * cameraHolder.forward;
         
         isGrounded = characterController.isGrounded;
+        isGroundedRaycast = GetGrounded(groundCheckObject);
 
         distanceToGround = GetDistanceToGround(groundCheckObject);
 
         //FUNKAAAAAAR EJ?!?!?!? kallas bara när man rör på sig wtf, kan funka ändå
         if (isGrounded) //dessa if-satser skall vara separata
         {
-            dashUsed = false; //när man blir grounded så kan man använda dash igen
+            //dashUsed = false; //när man blir grounded så kan man använda dash igen
             if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
             {
                 ySpeed = 0; // grounded character has vSpeed = 0...
             }
         }
 
-        if (isGrounded || GetGrounded(groundCheckObject)) //använd endast GetGrounded här, annars kommer man få samma problem när gravitationen slutar verka pga lång raycast
+        if (isGroundedRaycast) //använd endast GetGrounded här, annars kommer man få samma problem när gravitationen slutar verka pga lång raycast
         {
             if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
             {
+                //dessa resetsen görs här eftersom denna groundchecken är mycket mer pålitlig
+                dashUsed = false;
                 jumpsAvaible = jumpAmount;
             }
         }
@@ -174,7 +182,7 @@ public class StagMovement : BaseClass
                     activePlatform = null; //när man hoppar så är man ej längre attached till movingplatform
                     jumpTimePoint = Time.time;
 
-                    if (ySpeed < 0) //ska motverka gravitationen
+                    if (ySpeed < 0) //ska motverka gravitationen, behövs ej atm?
                         ySpeed = 0;
 
                     ySpeed = jumpSpeed;
@@ -227,9 +235,22 @@ public class StagMovement : BaseClass
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        //fan viktigt :o ful hacks men still
+        float slope = GetSlope(hit.normal);
+
+        if (!isGroundedRaycast && slope > maxSlopeGrounded)
+        {
+            ApplyExternalForce(hit.normal * 20); // så man glider för slopes
+        }
+        //fan viktigt
+
         if (hit.moveDirection.y < -0.9 && hit.normal.y > 0.5f)
         {
-            ySpeed = 0;
+            //dashUsed = false; //när man blir grounded så kan man använda dash igen
+            if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
+            {
+                ySpeed = 0; // grounded character has vSpeed = 0...
+            }
         }
 
         if (hit.gameObject.tag == "MovingPlatform")
@@ -456,8 +477,15 @@ public class StagMovement : BaseClass
     public bool GetGrounded()
     {
         RaycastHit rHit;
+
         if (Physics.Raycast(this.transform.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, groundedCheckDistance, groundCheckLM))
         {
+            if (rHit.transform == this.transform || rHit.normal.y < 0.5f) { groundedTimePoint = Time.time + 1000; return false; } //MEH DEN SKA EJ COLLIDA MED SIG SJÄLV
+
+            float slope = GetSlope(rHit.normal);
+
+            if (slope > maxSlopeGrounded) { groundedTimePoint = Time.time + 1000; return false; }
+
             if (isGrounded == false) //om man inte var grounded innan
             {
                 groundedTimePoint = Time.time;
@@ -476,7 +504,11 @@ public class StagMovement : BaseClass
         RaycastHit rHit;
         if (Physics.Raycast(tChecker.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, groundedCheckDistance, groundCheckLM))
         {
-            if (rHit.transform == this.transform) { Debug.Log(this.transform.name); return false; } //MEH DEN SKA EJ COLLIDA MED SIG SJÄLV
+            if (rHit.transform == this.transform || rHit.normal.y < 0.5f) { groundedTimePoint = Time.time + 1000; return false; } //MEH DEN SKA EJ COLLIDA MED SIG SJÄLV
+
+            float slope = GetSlope(rHit.normal);
+
+            if (slope > maxSlopeGrounded) { groundedTimePoint = Time.time + 1000; return false; }
 
             if (isGrounded == false) //om man inte var grounded innan
             {
@@ -497,7 +529,11 @@ public class StagMovement : BaseClass
         RaycastHit rHit;
         if (Physics.Raycast(tChecker.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, groundedCheckDistance, groundCheckLM))
         {
-            if (rHit.transform == this.transform) { Debug.Log(this.transform.name); return transform; } //MEH DEN SKA EJ COLLIDA MED SIG SJÄLV
+            if (rHit.transform == this.transform || rHit.normal.y < 0.5f) { groundedTimePoint = Time.time + 1000; return transform; } //MEH DEN SKA EJ COLLIDA MED SIG SJÄLV
+
+            float slope = GetSlope(rHit.normal);
+
+            if (slope > maxSlopeGrounded) { groundedTimePoint = Time.time + 1000; return transform; }
 
             return rHit.transform;
         }
@@ -505,6 +541,18 @@ public class StagMovement : BaseClass
         {
             groundedTimePoint = Time.time + 1000;
             return transform;
+        }
+    }
+
+    public float GetSlope(Vector3 normalSurface)
+    {
+        if(normalSurface.y > 0.5f) //normalen är uppåt
+        {
+            return(Vector3.Angle(Vector3.down, -normalSurface));
+        }
+        else //normalen är neråt
+        {
+            return (Vector3.Angle(Vector3.down, normalSurface));
         }
     }
 

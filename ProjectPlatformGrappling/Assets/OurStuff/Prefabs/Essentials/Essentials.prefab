@@ -1008,7 +1008,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011310479508}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 22.3, z: -55.1}
+  m_LocalPosition: {x: 0, y: 6.01, z: -17.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1079,7 +1079,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011624216690}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 999.1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1774,7 +1774,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2892718a31b33b34cadb04c454836ec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initTimes: 0
   shooterObj: {fileID: 4000011839564482}
   targetLM:
     serializedVersion: 2
@@ -1819,7 +1818,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 782ecbeaa85fec24c9a0b04f57affc5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initTimes: 0
 --- !u!114 &114000010577849772
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1831,7 +1829,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aca12bbc6ee7b5459402aa4ad0b279d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initTimes: 0
   currRigidbody: {fileID: 0}
   thisRigidbody: {fileID: 0}
   thisCollider: {fileID: 0}
@@ -1868,7 +1865,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc5635b513bc33e4a86fc9c8b8a7456e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initTimes: 0
   stagObject: {fileID: 4000011412557584}
 --- !u!114 &114000011163655248
 MonoBehaviour:
@@ -1881,11 +1877,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a9e27da9fad0740a6a33f17406b20e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initTimes: 0
   cameraHolder: {fileID: 4000010914960778}
   movementAudioSource: {fileID: 82000013940334992}
   stagRootJoint: {fileID: 4000010511524650}
   stagObject: {fileID: 4000010338020148}
+  currExternalSpeedMult: 1
+  ySpeed: 0
+  dashTimePoint: 0
   dashEffectObject: {fileID: 1000013548107072}
   slideGroundParticleSystem: {fileID: 198000010572112006}
   slideGroundSound: {fileID: 8300000, guid: e9567ca3be2babd4d8f361805e5340d1, type: 3}
@@ -1914,7 +1912,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a178af597971e4c4d82ede980fd2acf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initTimes: 0
   cameraPlayerFollow: {fileID: 20000010582969338}
   currCamera: {fileID: 0}
 --- !u!114 &114000012269019566
@@ -1949,7 +1946,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6425c2189048784788fcdad61697631, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initTimes: 0
   lifeTime: 0.6
   isReady: 1
 --- !u!114 &114000012803374624
@@ -1979,7 +1975,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51c53dc872e23014fb5b578d49a8dc23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initTimes: 0
   hornRenderer: {fileID: 137000014216331990}
   lifeLights:
   - {fileID: 108000013787727152}
@@ -2060,7 +2055,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdc8a827a77618c46adbbd5b62ac07a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initTimes: 0
   maxLives: 3
   currLives: 0
   player: {fileID: 4000011412557584}
