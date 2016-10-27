@@ -36,7 +36,7 @@ public class StagMovement : BaseClass
     private float dashCooldown = 0.3f;
     private float dashSpeed = 1200;
     private float currDashTime;
-    private float maxDashTime = 0.1f;
+    private float maxDashTime = 0.06f;
     private float dashPowerCost = 0.03f; //hur mycket power det drar varje gång man dashar
     private bool dashUsed = false; //så att man måste bli grounded innan man kan använda den igen
     public GameObject dashEffectObject;
@@ -368,7 +368,7 @@ public class StagMovement : BaseClass
         {
             dashVel = dir * dashSpeed;
             currDashTime = Time.time - startDashTime;
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
         ToggleDashEffect(false);
         dashVel = Vector3.zero;
