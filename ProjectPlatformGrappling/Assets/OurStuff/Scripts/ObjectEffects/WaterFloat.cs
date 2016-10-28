@@ -17,15 +17,15 @@ public class WaterFloat : BaseRigidbody {
         if (colRig != null && colRig.isKinematic == false)
         {
 
-            AddForceSlowDrag(streamFloatVector * streamForce, ForceMode.Force, colRig);
-            AddForceSlowDrag(upFloatVector * streamForce * 0.5f, ForceMode.Force, colRig);
+            AddForceSlowDrag(streamFloatVector * streamForce * Time.deltaTime, ForceMode.Force, colRig);
+            AddForceSlowDrag(upFloatVector * streamForce * 0.5f * Time.deltaTime, ForceMode.Force, colRig);
         }
         else
         {
             StagMovement stagM = col.GetComponent<StagMovement>();
             if(stagM != null)
             {
-                stagM.ApplyYForce(streamForce * 0.01f, streamForce * 0.1f);
+                stagM.ApplyYForce(streamForce * Time.deltaTime, streamForce * 0.1f);
             }
         }
     }

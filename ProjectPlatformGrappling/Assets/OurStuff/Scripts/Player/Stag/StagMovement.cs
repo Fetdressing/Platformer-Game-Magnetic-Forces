@@ -69,7 +69,7 @@ public class StagMovement : BaseClass
     [Header("Ground Check")]
     public Transform groundCheckObject;
     private float groundedCheckOffsetY = 0.6f;
-    private float groundedCheckDistance = 6.5f;
+    private float groundedCheckDistance = 8.5f;
     [HideInInspector]
     public bool isGrounded;
     [HideInInspector]
@@ -251,19 +251,27 @@ public class StagMovement : BaseClass
         //fan viktigt :o ful hacks men still
         float slope = GetSlope(hit.normal);
 
-        if (!isGroundedRaycast && slope > maxSlopeGrounded)
+        if (slope > maxSlopeGrounded)
         {
             ApplyExternalForce(hit.normal * 20); // så man glider för slopes
         }
-        //fan viktigt
+        else //ingen slope, dvs man står på marken, resetta stuff!
+        {
+            if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
+            {
+                dashUsed = false;
+                jumpsAvaible = jumpAmount;
+                ySpeed = 0; // grounded character has vSpeed = 0...
+            }
+        }
 
         if (hit.moveDirection.y < -0.9 && hit.normal.y > 0.5f)
         {
             //dashUsed = false; //när man blir grounded så kan man använda dash igen
-            if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
-            {
-                ySpeed = 0; // grounded character has vSpeed = 0...
-            }
+            //if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
+            //{
+            //    ySpeed = 0; // grounded character has vSpeed = 0...
+            //}
         }
 
         if (hit.gameObject.tag == "MovingPlatform")
