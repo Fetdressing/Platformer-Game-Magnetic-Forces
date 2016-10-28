@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 6800255ccc3eea646959901dcc7cd3c1
-timeCreated: 1476736688
+guid: e19a91dc95c6bbd4b9b6ab4cc6dd1f38
+timeCreated: 1477687344
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -14,8 +14,8 @@ ModelImporter:
     100012: joint7
     100014: joint8
     100016: SquidCollision
-    100018: //RootNode
-    100020: SquidPlatform
+    100018: SquidPlatform
+    100020: //RootNode
     400000: joint1
     400002: joint2
     400004: joint3
@@ -25,13 +25,14 @@ ModelImporter:
     400012: joint7
     400014: joint8
     400016: SquidCollision
-    400018: //RootNode
-    400020: SquidPlatform
+    400018: SquidPlatform
+    400020: //RootNode
     2300000: SquidCollision
     3300000: SquidCollision
     4300000: SquidPlatform
     4300002: SquidCollision
-    7400000: SquidPlatform_Idle
+    7400000: SquidPlatform_Idle1
+    7400002: SquidPlatform_Idle2
     9500000: //RootNode
     11100000: //RootNode
     13700000: SquidPlatform
@@ -57,10 +58,10 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: SquidPlatform_Idle
+      name: SquidPlatform_Idle1
       takeName: Take 001
       firstFrame: 1
-      lastFrame: 15
+      lastFrame: 14
       wrapMode: 2
       orientationOffsetY: 0
       level: 0
@@ -106,10 +107,60 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: SquidPlatform_Idle2
+      takeName: Take 001
+      firstFrame: 16
+      lastFrame: 29
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 1
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: joint1
+        weight: 1
+      - path: joint1/joint2
+        weight: 1
+      - path: joint1/joint3
+        weight: 1
+      - path: joint1/joint4
+        weight: 1
+      - path: joint1/joint5
+        weight: 1
+      - path: joint1/joint6
+        weight: 1
+      - path: joint1/joint7
+        weight: 1
+      - path: joint1/joint8
+        weight: 1
+      - path: SquidCollision
+        weight: 1
+      - path: SquidPlatform
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 500
+    globalScale: 700
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
