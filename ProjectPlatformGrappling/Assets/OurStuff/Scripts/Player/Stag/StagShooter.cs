@@ -9,7 +9,7 @@ public class StagShooter : BaseClass {
     public Transform shooterObj;
 
     public LayerMask targetLM;
-    private float shootForce = 300;
+    private float shootForce = 200;
     private float cooldown_Time = 0.2f;
     private float cooldonwTimer = 0.0f;
     private float projectilePowerCost = 0.05f;

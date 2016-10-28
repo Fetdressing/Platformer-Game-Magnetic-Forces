@@ -8,6 +8,7 @@ public class GroundChecker : BaseClass {
 
     private Transform lastGroundedObj;
     private float groundedTimePoint = 0.0f;
+    private float maxValueAirTime = 3; //hur många sekunder som ger max camerashake
 
     void Start()
     {
@@ -19,6 +20,13 @@ public class GroundChecker : BaseClass {
         base.Init();
         cController = stagObject.GetComponent<CharacterController>();
         cameraShaker = GameObject.FindGameObjectWithTag("MainCamera").GetComponentsInChildren<Transform>()[1].transform.GetComponent<CameraShaker>();
+    }
+
+    public virtual void Reset(float timePointAirBourne)
+    {
+        base.Reset();
+        lastGroundedObj = null;
+        groundedTimePoint = timePointAirBourne; //kan man avgöra hur länga han varit i luften
     }
 
     //void LateUpdate()
@@ -45,7 +53,7 @@ public class GroundChecker : BaseClass {
 
     //    activeGlobalPlatformPoint = stagObject.position;
     //    activeLocalPlatformPoint = activePlatform.InverseTransformPoint(stagObject.position);
-        
+
     //}
 
     //void OnTriggerStay(Collider col)
@@ -64,7 +72,9 @@ public class GroundChecker : BaseClass {
             if (lastGroundedObj == null || lastGroundedObj != col.transform)
             {
                 lastGroundedObj = col.transform;
-                cameraShaker.ShakeCamera(0.1f, 0.5f, true);
+
+                float airBourneTimeValue = Mathf.Min((Time.time - groundedTimePoint), maxValueAirTime) / maxValueAirTime; //går mellan 0 och 1
+                cameraShaker.ShakeCamera(0.1f, 0.5f * airBourneTimeValue, true);
             }
 
             if (col.tag == "BreakerObject")

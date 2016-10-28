@@ -16,9 +16,9 @@ public class StagMovement : BaseClass
     private float stagRootJointStartY; //krävs att animationen börjar i bottnen isåfall
     public Transform stagObject; //denna roteras så det står korrekt
 
-    private float startSpeed = 100;
-    private float jumpSpeed = 100;
-    private float gravity = 140;
+    private float startSpeed = 60;
+    private float jumpSpeed = 60;
+    private float gravity = 90;
     private float stagSpeedMultMax = 1.5f;
     private float stagSpeedMultMin = 0.85f;
 
@@ -34,7 +34,7 @@ public class StagMovement : BaseClass
 
     [HideInInspector]public float dashTimePoint; //mud påverkar denna så att man inte kan dasha
     private float dashCooldown = 0.3f;
-    private float dashSpeed = 1200;
+    private float dashSpeed = 800;
     private float currDashTime;
     private float maxDashTime = 0.06f;
     private float dashPowerCost = 0.03f; //hur mycket power det drar varje gång man dashar
@@ -68,15 +68,18 @@ public class StagMovement : BaseClass
 
     [Header("Ground Check")]
     public Transform groundCheckObject;
-    public float groundedCheckOffsetY = 0.5f;
-    public float groundedCheckDistance = 3.5f;
+    private float groundedCheckOffsetY = 0.6f;
+    private float groundedCheckDistance = 6.5f;
     [HideInInspector]
     public bool isGrounded;
     [HideInInspector]
     public bool isGroundedRaycast;
     public LayerMask groundCheckLM;
     private float groundedTimePoint = 0; //när man blev grounded
-    private float maxSlopeGrounded = 65; //vilken vinkel det som mest får skilja på ytan och vector3.down när man kollar grounded
+    private float maxSlopeGrounded = 45; //vilken vinkel det som mest får skilja på ytan och vector3.down när man kollar grounded
+    private float groundedSlope = 0;
+    private Vector3 groundedNormal = Vector3.zero;
+    private GroundChecker groundChecker; //så man kan resetta stuff till camerashake tex
 
     [Header("Animation")]
     public Animation animationH;
@@ -100,6 +103,7 @@ public class StagMovement : BaseClass
         layermaskForces = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("MagneticBall") | 1 << LayerMask.NameToLayer("Ragdoll"));
         cameraObj = cameraHolder.GetComponentsInChildren<Transform>()[1].transform;
         cameraShaker = cameraObj.GetComponent<CameraShaker>();
+        groundChecker = GetComponentsInChildren<GroundChecker>()[0];
 
         stagRootJointStartY = stagRootJoint.localPosition.y;
 
@@ -169,6 +173,15 @@ public class StagMovement : BaseClass
                 dashUsed = false;
                 jumpsAvaible = jumpAmount;
             }
+
+            if(groundedSlope > maxSlopeGrounded) //denna checken görs här när man är grounded och i charactercontrollerhit när man INTE är grounded
+            {
+                ApplyExternalForce(groundedNormal * 20); // så man glider för slopes
+            }
+        }
+        else
+        {
+            groundChecker.Reset(groundedTimePoint);
         }
 
         if (jumpsAvaible > 0)
@@ -480,11 +493,12 @@ public class StagMovement : BaseClass
 
         if (Physics.Raycast(this.transform.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, groundedCheckDistance, groundCheckLM))
         {
-            if (rHit.transform == this.transform || rHit.normal.y < 0.5f) { groundedTimePoint = Time.time + 1000; return false; } //MEH DEN SKA EJ COLLIDA MED SIG SJÄLV
+            if (rHit.transform == this.transform || rHit.normal.y < 0.5f) {  return false; } //MEH DEN SKA EJ COLLIDA MED SIG SJÄLV
 
-            float slope = GetSlope(rHit.normal);
+            groundedSlope = GetSlope(rHit.normal);
+            groundedNormal = rHit.normal;
 
-            if (slope > maxSlopeGrounded) { groundedTimePoint = Time.time + 1000; return false; }
+            if (groundedSlope > maxSlopeGrounded) {  return false; }
 
             if (isGrounded == false) //om man inte var grounded innan
             {
@@ -494,7 +508,6 @@ public class StagMovement : BaseClass
         }
         else
         {
-            groundedTimePoint = Time.time + 1000;
             return false;
         }
     }
@@ -504,11 +517,12 @@ public class StagMovement : BaseClass
         RaycastHit rHit;
         if (Physics.Raycast(tChecker.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, groundedCheckDistance, groundCheckLM))
         {
-            if (rHit.transform == this.transform || rHit.normal.y < 0.5f) { groundedTimePoint = Time.time + 1000; return false; } //MEH DEN SKA EJ COLLIDA MED SIG SJÄLV
+            if (rHit.transform == this.transform || rHit.normal.y < 0.5f) { return false; } //MEH DEN SKA EJ COLLIDA MED SIG SJÄLV
 
-            float slope = GetSlope(rHit.normal);
+            groundedSlope = GetSlope(rHit.normal);
+            groundedNormal = rHit.normal;
 
-            if (slope > maxSlopeGrounded) { groundedTimePoint = Time.time + 1000; return false; }
+            if (groundedSlope > maxSlopeGrounded) { return false; }
 
             if (isGrounded == false) //om man inte var grounded innan
             {
@@ -518,7 +532,6 @@ public class StagMovement : BaseClass
         }
         else
         {
-            groundedTimePoint = Time.time + 1000;
             return false;
         }
     }
@@ -529,17 +542,17 @@ public class StagMovement : BaseClass
         RaycastHit rHit;
         if (Physics.Raycast(tChecker.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, groundedCheckDistance, groundCheckLM))
         {
-            if (rHit.transform == this.transform || rHit.normal.y < 0.5f) { groundedTimePoint = Time.time + 1000; return transform; } //MEH DEN SKA EJ COLLIDA MED SIG SJÄLV
+            if (rHit.transform == this.transform || rHit.normal.y < 0.5f) { return transform; } //MEH DEN SKA EJ COLLIDA MED SIG SJÄLV
 
-            float slope = GetSlope(rHit.normal);
+            groundedSlope = GetSlope(rHit.normal);
+            groundedNormal = rHit.normal;
 
-            if (slope > maxSlopeGrounded) { groundedTimePoint = Time.time + 1000; return transform; }
+            if (groundedSlope > maxSlopeGrounded) { return transform; }
 
             return rHit.transform;
         }
         else
         {
-            groundedTimePoint = Time.time + 1000;
             return transform;
         }
     }
