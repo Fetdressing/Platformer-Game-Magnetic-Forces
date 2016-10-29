@@ -28,7 +28,9 @@ public class Trigger : BaseClass {
         ToggleTrigger(false);
         initTimes++;
         audioSource = transform.GetComponent<AudioSource>();
-        startVolume = audioSource.volume;
+        if(audioSource != null)
+            startVolume = audioSource.volume;
+
         Reset();
         //psActivated = this.transform.GetComponent<ParticleSystem>();
     }
@@ -83,10 +85,13 @@ public class Trigger : BaseClass {
         {
             if (isTriggered != b)
             {
-                psActivated.Simulate(0.0f, true, true);
-                ParticleSystem.EmissionModule psemit = psActivated.emission;
-                psemit.enabled = true;
-                psActivated.Play();
+                if (psActivated != null)
+                {
+                    psActivated.Simulate(0.0f, true, true);
+                    ParticleSystem.EmissionModule psemit = psActivated.emission;
+                    psemit.enabled = true;
+                    psActivated.Play();
+                }
                 StartTrigger();
                 
             }
@@ -98,7 +103,10 @@ public class Trigger : BaseClass {
             {
                 ExitTrigger();
             }
-            psActivated.Stop();                
+            if (psActivated != null)
+            {
+                psActivated.Stop();
+            }                
             isTriggered = false;
             
         }

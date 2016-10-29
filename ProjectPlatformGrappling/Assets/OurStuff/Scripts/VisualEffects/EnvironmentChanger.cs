@@ -1,18 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnvironmentChanger : MonoBehaviour {
+public class EnvironmentChanger : BaseClass {
+
     public Color[] fogColors;
     private int currFogColorIndex = 0;
     private Color currColor;
     public float fogColorChangingSpeed = 0.8f;
+    
 	// Use this for initialization
 	void Start () {
-        NextFogColor();
+        Init();
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    public override void Init()
+    {
+        base.Init();
+        Reset();
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
+        NextFogColor();
+    }
+
+    // Update is called once per frame
+    void Update () {
 
         if (fogColors.Length != 0)
         {
@@ -33,6 +47,21 @@ public class EnvironmentChanger : MonoBehaviour {
         }
         //if ((currColor.r - ))
 	}
+
+    public void StartfogDensityChange(float dens)
+    {
+        StartCoroutine(ChangeFogDensity(dens));
+    }
+
+    IEnumerator ChangeFogDensity(float density)
+    {
+        while(Mathf.Abs(RenderSettings.fogEndDistance - density) < 0.1f)
+        {
+            Debug.Log(Time.time.ToString());
+            RenderSettings.fogEndDistance = Mathf.Lerp(RenderSettings.fogEndDistance, density, Time.deltaTime * 0.1f);
+            yield return new WaitForEndOfFrame();
+        }
+    }
 
     void NextFogColor()
     {

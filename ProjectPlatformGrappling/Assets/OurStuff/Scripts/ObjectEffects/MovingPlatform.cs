@@ -7,9 +7,7 @@ public class MovingPlatform : MonoBehaviour {
     public Transform rotateMesh;
     public float rotationSpeed = 2;
     public float multRot = -1; //vänder rotationen helt tex
-
-    public bool useForce = true;
-
+    
     public enum MoveType
     {
         Force, MovePos, Translate
@@ -21,8 +19,10 @@ public class MovingPlatform : MonoBehaviour {
     private int currIndex = 0;
     public Transform[] keyPoints;
     public float force = 20000;
-	// Use this for initialization
-	void Start () {
+
+    private Vector3 vecToTarget = Vector3.zero;
+    // Use this for initialization
+    void Start () {
         thisTransform = this.transform;
         thisRigidbody = thisTransform.GetComponent<Rigidbody>();
 
@@ -33,15 +33,8 @@ public class MovingPlatform : MonoBehaviour {
 	void Update () {
         CheckReached();
 
-        Vector3 vecToTarget = (currTarget.position - thisTransform.position).normalized;
+        vecToTarget = (currTarget.position - thisTransform.position).normalized;
 
-        if (rotateMesh != null)
-        {
-            float step = rotationSpeed * Time.deltaTime;
-            Vector3 newDir = Vector3.RotateTowards(rotateMesh.forward, vecToTarget * multRot, step, 0.0F);
-            rotateMesh.rotation = Quaternion.LookRotation(newDir);
-            
-        }
         //if (useForce == true)
         //{
         //    thisRigidbody.AddForce(vecToTarget * force * Time.deltaTime);
@@ -60,10 +53,22 @@ public class MovingPlatform : MonoBehaviour {
                 thisRigidbody.MovePosition(thisTransform.position + vecToTarget * force * Time.deltaTime);
                 break;
             case MoveType.Translate:
-                transform.Translate(vecToTarget * force * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, currTarget.position, force * Time.deltaTime);
+                //transform.Translate(vecToTarget * force * Time.deltaTime);
                 break;
         }
 	}
+
+    void LateUpdate()
+    {
+        if (rotateMesh != null)
+        {
+            float step = rotationSpeed * Time.deltaTime;
+            Vector3 newDir = Vector3.RotateTowards(rotateMesh.forward, vecToTarget * multRot, step, 0.0F);
+            rotateMesh.rotation = Quaternion.LookRotation(newDir);
+
+        }
+    }
 
     void CheckReached()
     {

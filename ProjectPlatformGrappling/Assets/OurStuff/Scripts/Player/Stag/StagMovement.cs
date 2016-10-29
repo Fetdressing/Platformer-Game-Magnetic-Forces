@@ -125,7 +125,7 @@ public class StagMovement : BaseClass
         jumpTimePoint = -5; //behöver vara under 0 så att man kan hoppa dirr när spelet börjar
         ToggleInfiniteGravity(false);
         slideGroundParticleSystem.GetComponent<ParticleTimed>().isReady = true;
-        dashUsed = false;
+        dashUsed = true;
         jumpsAvaible = jumpAmount;
 
         isGrounded = false;
@@ -170,7 +170,7 @@ public class StagMovement : BaseClass
             if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
             {
                 //dessa resetsen görs här eftersom denna groundchecken är mycket mer pålitlig
-                dashUsed = false;
+                dashUsed = true;
                 jumpsAvaible = jumpAmount;
             }
 
@@ -253,13 +253,23 @@ public class StagMovement : BaseClass
 
         if (slope > maxSlopeGrounded)
         {
-            ApplyExternalForce(hit.normal * 20); // så man glider för slopes
+            if (isGroundedRaycast)
+            {
+                if (groundedSlope > maxSlopeGrounded)
+                {
+                    ApplyExternalForce(hit.normal * 20);
+                }
+            }
+            else
+            {
+                ApplyExternalForce(hit.normal * 20); // så man glider för slopes
+            }
         }
         else //ingen slope, dvs man står på marken, resetta stuff!
         {
             if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
             {
-                dashUsed = false;
+                dashUsed = true;
                 jumpsAvaible = jumpAmount;
                 ySpeed = 0; // grounded character has vSpeed = 0...
             }
