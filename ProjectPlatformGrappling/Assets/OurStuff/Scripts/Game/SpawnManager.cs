@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SpawnManager : BaseClass {
     public int maxLives = 3;
@@ -7,8 +8,10 @@ public class SpawnManager : BaseClass {
     public int currLives;
 
     public Transform player;
+    private StagMovement stagMovement;
 
-    public Transform[] spawnPoints;
+    private List<Transform> spawnPoints = new List<Transform>();
+    public Transform startSpawn;
 
     private bool isRespawning;
 
@@ -22,6 +25,16 @@ public class SpawnManager : BaseClass {
     {
         base.Init();
         powerPickups = FindObjectsOfType(typeof(PowerPickup)) as PowerPickup[];
+
+        GameObject[] spawnpointObjects = GameObject.FindGameObjectsWithTag("SpawnPoint");
+
+        for(int i = 0; i < spawnpointObjects.Length; i++)
+        {
+            spawnPoints.Add(spawnpointObjects[i].transform);
+        }
+
+        stagMovement = player.GetComponent<StagMovement>();
+
         Reset();
     }
 
@@ -30,16 +43,31 @@ public class SpawnManager : BaseClass {
         base.Reset();
         currLives = maxLives;
         isRespawning = false;
+
+        StartSpawn();
+    }
+
+    public void StartSpawn()
+    {
+        if (startSpawn == null) return;
+        if (isRespawning == true) return;
+        
+        isRespawning = true;
+        stagMovement.isLocked = true;
+
+        player.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+        StartCoroutine(SpawnPlayerAtLocation(startSpawn.position));
     }
 
     public void Respawn(Vector3 playerDeathPos)
     {
         if (isRespawning == true) return;
         isRespawning = true;
+        stagMovement.isLocked = true;
 
         Vector3 closestSpawnPos = new Vector3(1000000000, 1000000000, 10000000000);
 
-        for(int i = 0; i < spawnPoints.Length; i++)
+        for(int i = 0; i < spawnPoints.Count; i++)
         {
             if(Vector3.Distance(playerDeathPos, spawnPoints[i].position) < Vector3.Distance(playerDeathPos, closestSpawnPos))
             {
@@ -76,6 +104,7 @@ public class SpawnManager : BaseClass {
         {
             Debug.Log("Ingen magneticplacer");
         }
+        stagMovement.isLocked = false;
         isRespawning = false;
     }
 }

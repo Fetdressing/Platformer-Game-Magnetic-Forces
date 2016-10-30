@@ -58,6 +58,7 @@ public class PowerPickup : BaseClass {
 
     void Update()
     {
+        if (player.gameObject.activeSelf == false) return;
         if (playerChaseSpeed < 0.1f) return;
 
         float distanceToPlayer = Vector3.Distance(player.position, this.transform.position);

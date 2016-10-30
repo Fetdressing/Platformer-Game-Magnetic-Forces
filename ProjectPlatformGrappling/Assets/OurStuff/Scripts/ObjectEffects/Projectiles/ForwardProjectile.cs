@@ -27,6 +27,12 @@ public class ForwardProjectile : ProjectileBase {
 
     void OnTriggerEnter(Collider col)
     {
+        for(int i = 0; i < noGoTags.Length; i++)
+        {
+            if (col.tag == noGoTags[i])
+                return;
+        }
+
         if (shooter != null)
         {
             if (col.transform == shooter) return; //inte träffa sig själv

@@ -27,7 +27,7 @@ GameObject:
   - 198: {fileID: 198000011310005532}
   - 199: {fileID: 199000010168547794}
   - 96: {fileID: 96000013126126932}
-  m_Layer: 0
+  m_Layer: 25
   m_Name: StagProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}

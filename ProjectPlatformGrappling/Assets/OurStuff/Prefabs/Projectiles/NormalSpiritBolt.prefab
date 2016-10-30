@@ -27,7 +27,7 @@ GameObject:
   - 198: {fileID: 198000013805792966}
   - 199: {fileID: 199000010022270190}
   - 96: {fileID: 96000012242644592}
-  m_Layer: 0
+  m_Layer: 25
   m_Name: NormalSpiritBolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,6 +172,7 @@ MonoBehaviour:
   returning: 0
   powerFeedback: 0
   returnTarget: {fileID: 0}
+  returnHomingForce: 500000
 --- !u!135 &135000010703182642
 SphereCollider:
   m_ObjectHideFlags: 1

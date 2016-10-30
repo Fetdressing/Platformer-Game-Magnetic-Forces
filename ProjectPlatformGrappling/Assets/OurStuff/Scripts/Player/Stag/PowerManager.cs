@@ -133,10 +133,15 @@ public class PowerManager : BaseClass {
     public IEnumerator DieDelayed()
     {
         yield return new WaitForSeconds(delayedDeathTime);
-        transform.gameObject.SetActive(false);
+        
         if (transform.tag == "Player")
         {
+            transform.gameObject.SetActive(false);
             GameObject.FindGameObjectWithTag("Manager").GetComponent<SpawnManager>().Respawn(deathLocation);
+        }
+        else
+        {
+            transform.gameObject.SetActive(false);
         }
     }
 }

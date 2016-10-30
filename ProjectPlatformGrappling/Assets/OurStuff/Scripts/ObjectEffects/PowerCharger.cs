@@ -37,6 +37,7 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
     {
         base.Init();
         thisTransform = this.transform;
+        thisTransform.gameObject.layer = LayerMask.NameToLayer("PlayerOnly");
 
         thisColliders = thisTransform.GetComponentsInChildren<Collider>();
         ps = thisTransform.GetComponent<ParticleSystem>();

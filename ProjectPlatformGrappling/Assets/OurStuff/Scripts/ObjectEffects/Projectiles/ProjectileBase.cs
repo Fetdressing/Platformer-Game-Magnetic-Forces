@@ -7,6 +7,7 @@ public class ProjectileBase : BaseClass {
     protected Rigidbody o_Rigidbody;
     public string[] healTags = { "Player" };
     public string[] damageTags = { "Enemy" };
+    public string[] noGoTags; //tags som inte kan bli träffade
 
     public GameObject particleExplosionObj;
     protected List<GameObject> particleObjectPool = new List<GameObject>();

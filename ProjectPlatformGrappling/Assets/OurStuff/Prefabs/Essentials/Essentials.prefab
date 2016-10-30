@@ -1008,7 +1008,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011310479508}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 6.01, z: -17.29}
+  m_LocalPosition: {x: -3.9, y: 47, z: -200.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1079,7 +1079,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011624216690}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -3.4, y: 44.2, z: -177.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1759,7 +1759,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fogColors:
-  - {r: 0, g: 0.01987833, b: 0.41176468, a: 1}
+  - {r: 0, g: 0.41176468, b: 0.3947261, a: 1}
   - {r: 0.35532457, g: 0, b: 0.6691177, a: 1}
   - {r: 0.43382353, g: 0, b: 0.13463484, a: 1}
   fogColorChangingSpeed: 0.1
@@ -1877,6 +1877,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a9e27da9fad0740a6a33f17406b20e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLocked: 0
   cameraHolder: {fileID: 4000010914960778}
   movementAudioSource: {fileID: 82000013940334992}
   stagRootJoint: {fileID: 4000010511524650}
@@ -2057,8 +2058,7 @@ MonoBehaviour:
   maxLives: 3
   currLives: 0
   player: {fileID: 4000011412557584}
-  spawnPoints:
-  - {fileID: 0}
+  startSpawn: {fileID: 0}
 --- !u!114 &114000013984679992
 MonoBehaviour:
   m_ObjectHideFlags: 1

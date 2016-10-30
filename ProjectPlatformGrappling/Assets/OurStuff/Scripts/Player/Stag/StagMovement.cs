@@ -4,6 +4,8 @@ using System.Collections;
 [RequireComponent(typeof(CharacterController))]
 public class StagMovement : BaseClass
 {
+    [HideInInspector]
+    public bool isLocked = false; //förhindrar alla actions
     public Transform cameraHolder; //den som förflyttas när man rör sig med musen
     private Transform cameraObj; //kameran själv
     private CameraShaker cameraShaker;
@@ -34,9 +36,9 @@ public class StagMovement : BaseClass
 
     [HideInInspector]public float dashTimePoint; //mud påverkar denna så att man inte kan dasha
     private float dashCooldown = 0.3f;
-    private float dashSpeed = 800;
+    private float dashSpeed = 600;
     private float currDashTime;
-    private float maxDashTime = 0.06f;
+    private float maxDashTime = 0.05f;
     private float dashPowerCost = 0.03f; //hur mycket power det drar varje gång man dashar
     private bool dashUsed = false; //så att man måste bli grounded innan man kan använda den igen
     public GameObject dashEffectObject;
@@ -74,6 +76,8 @@ public class StagMovement : BaseClass
     public bool isGrounded;
     [HideInInspector]
     public bool isGroundedRaycast;
+    private Transform groundedRaycastObject; //objektet som man blev grounded med raycast på
+
     public LayerMask groundCheckLM;
     private float groundedTimePoint = 0; //när man blev grounded
     private float maxSlopeGrounded = 45; //vilken vinkel det som mest får skilja på ytan och vector3.down när man kollar grounded
@@ -130,10 +134,13 @@ public class StagMovement : BaseClass
 
         isGrounded = false;
         isGroundedRaycast = false;
+        isLocked = false;
     }
 
     void LateUpdate()
     {
+        if (isLocked) return;
+
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(cameraHolder.forward.x, 0, cameraHolder.forward.z));
         stagObject.rotation = Quaternion.Slerp(stagObject.rotation, lookRotation, Time.deltaTime * 20);
 
@@ -145,6 +152,8 @@ public class StagMovement : BaseClass
 
     void Update()
     {
+        if (isLocked) return;
+
         hor = Input.GetAxis("Horizontal");
         ver = Input.GetAxis("Vertical");
         horVector = hor * cameraHolder.right;
@@ -197,6 +206,11 @@ public class StagMovement : BaseClass
 
                     if (ySpeed < 0) //ska motverka gravitationen, behövs ej atm?
                         ySpeed = 0;
+
+                    if(groundedRaycastObject != null && groundedRaycastObject.tag == "BreakerObject")
+                    {
+                        groundedRaycastObject.GetComponent<BreakerObject>().Break();
+                    }
 
                     ySpeed = jumpSpeed;
                     //animationH.Play(jump.name);
@@ -522,6 +536,8 @@ public class StagMovement : BaseClass
             {
                 groundedTimePoint = Time.time;
             }
+
+            groundedRaycastObject = rHit.transform;
             return true;
         }
         else
@@ -546,6 +562,7 @@ public class StagMovement : BaseClass
             {
                 groundedTimePoint = Time.time;
             }
+            groundedRaycastObject = rHit.transform;
             return true;
         }
         else
@@ -567,6 +584,7 @@ public class StagMovement : BaseClass
 
             if (groundedSlope > maxSlopeGrounded) { return transform; }
 
+            groundedRaycastObject = rHit.transform;
             return rHit.transform;
         }
         else
