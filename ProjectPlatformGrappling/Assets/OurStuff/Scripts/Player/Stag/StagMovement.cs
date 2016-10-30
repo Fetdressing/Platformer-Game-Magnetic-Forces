@@ -17,8 +17,8 @@ public class StagMovement : BaseClass
     public Transform stagObject; //denna roteras så det står korrekt
 
     private float startSpeed = 60;
-    private float jumpSpeed = 60;
-    private float gravity = 90;
+    private float jumpSpeed = 70;
+    private float gravity = 110;
     private float stagSpeedMultMax = 1.5f;
     private float stagSpeedMultMin = 0.85f;
 
@@ -41,7 +41,7 @@ public class StagMovement : BaseClass
     private bool dashUsed = false; //så att man måste bli grounded innan man kan använda den igen
     public GameObject dashEffectObject;
 
-    private float knockForceMovingPlatform = 700; //om man hamnar på fel sidan av moving platform så knuffas man bort lite
+    private float knockForceMovingPlatform = 420; //om man hamnar på fel sidan av moving platform så knuffas man bort lite
 
     //moving platform
 

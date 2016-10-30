@@ -29,6 +29,12 @@ public class PowerPickup : BaseClass {
         startPos = this.transform.position;
     }
 
+    public override void Reset()
+    {
+        base.Reset();
+        Spawn();
+    }
+
     //void FixedUpdate()
     //{
     //    if (playerChaseSpeed < 0.1f || thisRigidbody.isKinematic) return;

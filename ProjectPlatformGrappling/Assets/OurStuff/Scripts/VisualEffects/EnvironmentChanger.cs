@@ -55,9 +55,8 @@ public class EnvironmentChanger : BaseClass {
 
     IEnumerator ChangeFogDensity(float density)
     {
-        while(Mathf.Abs(RenderSettings.fogEndDistance - density) < 0.1f)
+        while(Mathf.Abs(RenderSettings.fogEndDistance - density) > 0.1f)
         {
-            Debug.Log(Time.time.ToString());
             RenderSettings.fogEndDistance = Mathf.Lerp(RenderSettings.fogEndDistance, density, Time.deltaTime * 0.1f);
             yield return new WaitForEndOfFrame();
         }

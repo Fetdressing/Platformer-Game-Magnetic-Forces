@@ -11,6 +11,8 @@ public class SpawnManager : BaseClass {
     public Transform[] spawnPoints;
 
     private bool isRespawning;
+
+    PowerPickup[] powerPickups;
 	// Use this for initialization
 	void Start () {
         Init();
@@ -19,6 +21,7 @@ public class SpawnManager : BaseClass {
     public override void Init()
     {
         base.Init();
+        powerPickups = FindObjectsOfType(typeof(PowerPickup)) as PowerPickup[];
         Reset();
     }
 
@@ -46,6 +49,11 @@ public class SpawnManager : BaseClass {
 
         player.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         StartCoroutine(SpawnPlayerAtLocation(closestSpawnPos));
+        
+        for(int i = 0; i < powerPickups.Length; i++)
+        {
+            powerPickups[i].Reset();
+        }
         //player.position = closestSpawnPos;
     }
 
