@@ -11,8 +11,8 @@ public class TowerShooter : BaseClass {
     public AnimationClip aggressiveA;
 
     public float maxShootRange = 50;
-    private float shootForce = 300;
-    private float cooldown_Time = 0.2f;
+    public float shootForce = 120;
+    public float cooldown_Time = 0.2f;
     private float cooldonwTimer = 0.0f;
     private float projectilePowerCost = 0.05f;
 

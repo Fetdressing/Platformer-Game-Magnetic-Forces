@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BreakerObject : BaseClass {
     private Transform thisTransform;
-    private Renderer thisRenderer;
+    public Renderer thisRenderer;
     private Collider[] thisColliders;
 
 
@@ -17,9 +17,14 @@ public class BreakerObject : BaseClass {
 
     private bool fading = false;
 
-    private Animation animationH;
-    public AnimationClip breakAnimation;
+    public Animation animationH;
+    public AnimationClip breakAnim;
+    public AnimationClip renewAnim;
+
+    public AnimationClip idleAnim;
+    public AnimationClip breakingAnim;
     public float animSpeed = 1.0f;
+    public float idleASpeed = 1.0f;
     // Use this for initialization
     void Start()
     {
@@ -30,12 +35,21 @@ public class BreakerObject : BaseClass {
     {
         base.Init();
         thisTransform = this.transform;
-        thisRenderer = thisTransform.GetComponent<Renderer>();
+
+        if (thisRenderer == null)
+        {
+            thisRenderer = thisTransform.GetComponent<Renderer>();
+        }
+
         startMaterial = thisRenderer.material;
 
         thisColliders = thisTransform.GetComponentsInChildren<Collider>();
 
-        animationH = transform.GetComponent<Animation>();
+        if (animationH == null)
+        {
+            animationH = transform.GetComponent<Animation>();
+            animationH[breakingAnim.name].speed = idleASpeed;
+        }
 
         transform.tag = "BreakerObject";
 
@@ -64,6 +78,17 @@ public class BreakerObject : BaseClass {
     //    }
     //}
 
+    void Update()
+    {
+        if(!fading)
+        {
+            if (animationH != null && animationH.isPlaying == false)
+            {
+                animationH.CrossFade(idleAnim.name);
+            }
+        }
+    }
+
     public void Break() //låt någon kalla på det
     {
         if (fading)
@@ -84,12 +109,14 @@ public class BreakerObject : BaseClass {
 
             if(animationH != null)
             {
-                animationH[breakAnimation.name].speed = animSpeed * (1 - currAlpha);
-                animationH.CrossFade(breakAnimation.name);
+                animationH[breakingAnim.name].speed = animSpeed * (1 - currAlpha);
+                animationH.CrossFade(breakingAnim.name);
             }
 
             yield return new WaitForEndOfFrame();
         }
+
+        animationH.Play(breakAnim.name);
 
         for (int i = 0; i < thisColliders.Length; i++)
         {
@@ -104,12 +131,6 @@ public class BreakerObject : BaseClass {
         Color wC;
         Color c;
 
-        //yield return new WaitForSeconds(fadeTime);
-        if (animationH != null)
-        {
-            animationH.Stop();
-        }
-
         c = thisRenderer.material.color;
 
         while (currAlpha < 1.0f)
@@ -118,8 +139,11 @@ public class BreakerObject : BaseClass {
             
             currAlpha += 1 / ((1 / Time.deltaTime) * (fadeTime * 2));
             thisRenderer.material.color = new Color(c.r, c.g, c.b, currAlpha * 0.2f);
+
             yield return new WaitForEndOfFrame();
         }
+
+        animationH.Play(renewAnim.name);
 
         for (int i = 0; i < thisColliders.Length; i++)
         {

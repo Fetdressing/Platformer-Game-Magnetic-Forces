@@ -1,39 +1,37 @@
 fileFormatVersion: 2
-guid: 9cfad5d6d76c30948bf3c5ab5f8b7093
-timeCreated: 1476715545
+guid: 87fea1e1a4c073c41bbeb8791ab56d1d
+timeCreated: 1477829064
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: DemonPlant
-    100004: DemonPlantBall
-    100006: joint1
-    100008: joint2
-    100010: joint3
-    100012: joint4
-    100014: joint5
-    100016: joint6
-    100018: joint7
-    400000: //RootNode
-    400002: DemonPlant
-    400004: DemonPlantBall
-    400006: joint1
-    400008: joint2
-    400010: joint3
-    400012: joint4
-    400014: joint5
-    400016: joint6
-    400018: joint7
-    4300000: DemonPlant
-    4300002: DemonPlantBall
-    7400000: DemonPlant_Idle
-    7400002: DemonPlant_Aggressive
-    7400004: DemonPlant_Death
+    100000: Collision
+    100002: joint1
+    100004: joint2
+    100006: joint3
+    100008: joint4
+    100010: joint5
+    100012: //RootNode
+    100014: PlatformBreaker
+    400000: Collision
+    400002: joint1
+    400004: joint2
+    400006: joint3
+    400008: joint4
+    400010: joint5
+    400012: //RootNode
+    400014: PlatformBreaker
+    2300000: Collision
+    3300000: Collision
+    4300000: PlatformBreaker
+    4300002: Collision
+    7400000: PlatformBreaker_Idle
+    7400002: PlatformBreaker_Breaking
+    7400004: PlatformBreaker_Break
+    7400006: PlatformBreaker_Renew
     9500000: //RootNode
     11100000: //RootNode
-    13700000: DemonPlant
-    13700002: DemonPlantBall
+    13700000: PlatformBreaker
   materials:
     importMaterials: 1
     materialName: 0
@@ -56,10 +54,10 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: DemonPlant_Idle
+      name: PlatformBreaker_Idle
       takeName: Take 001
-      firstFrame: 0
-      lastFrame: 14
+      firstFrame: 1
+      lastFrame: 10
       wrapMode: 2
       orientationOffsetY: 0
       level: 0
@@ -82,32 +80,28 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: DemonPlant
-        weight: 1
-      - path: DemonPlantBall
+      - path: Collision
         weight: 1
       - path: joint1
         weight: 1
       - path: joint1/joint2
         weight: 1
-      - path: joint1/joint2/joint3
+      - path: joint1/joint3
         weight: 1
-      - path: joint1/joint2/joint3/joint4
+      - path: joint1/joint4
         weight: 1
-      - path: joint1/joint2/joint3/joint4/joint5
+      - path: joint1/joint5
         weight: 1
-      - path: joint1/joint2/joint3/joint4/joint5/joint6
-        weight: 1
-      - path: joint1/joint2/joint3/joint4/joint5/joint6/joint7
+      - path: PlatformBreaker
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: DemonPlant_Aggressive
+      name: PlatformBreaker_Breaking
       takeName: Take 001
-      firstFrame: 16
-      lastFrame: 26
+      firstFrame: 12
+      lastFrame: 19
       wrapMode: 2
       orientationOffsetY: 0
       level: 0
@@ -130,33 +124,29 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: DemonPlant
-        weight: 1
-      - path: DemonPlantBall
+      - path: Collision
         weight: 1
       - path: joint1
         weight: 1
       - path: joint1/joint2
         weight: 1
-      - path: joint1/joint2/joint3
+      - path: joint1/joint3
         weight: 1
-      - path: joint1/joint2/joint3/joint4
+      - path: joint1/joint4
         weight: 1
-      - path: joint1/joint2/joint3/joint4/joint5
+      - path: joint1/joint5
         weight: 1
-      - path: joint1/joint2/joint3/joint4/joint5/joint6
-        weight: 1
-      - path: joint1/joint2/joint3/joint4/joint5/joint6/joint7
+      - path: PlatformBreaker
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: DemonPlant_Death
+      name: PlatformBreaker_Break
       takeName: Take 001
-      firstFrame: 27
-      lastFrame: 35
-      wrapMode: 8
+      firstFrame: 22
+      lastFrame: 31
+      wrapMode: 1
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -178,23 +168,63 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: DemonPlant
-        weight: 1
-      - path: DemonPlantBall
+      - path: Collision
         weight: 1
       - path: joint1
         weight: 1
       - path: joint1/joint2
         weight: 1
-      - path: joint1/joint2/joint3
+      - path: joint1/joint3
         weight: 1
-      - path: joint1/joint2/joint3/joint4
+      - path: joint1/joint4
         weight: 1
-      - path: joint1/joint2/joint3/joint4/joint5
+      - path: joint1/joint5
         weight: 1
-      - path: joint1/joint2/joint3/joint4/joint5/joint6
+      - path: PlatformBreaker
         weight: 1
-      - path: joint1/joint2/joint3/joint4/joint5/joint6/joint7
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: PlatformBreaker_Renew
+      takeName: Take 001
+      firstFrame: 32
+      lastFrame: 40
+      wrapMode: 1
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Collision
+        weight: 1
+      - path: joint1
+        weight: 1
+      - path: joint1/joint2
+        weight: 1
+      - path: joint1/joint3
+        weight: 1
+      - path: joint1/joint4
+        weight: 1
+      - path: joint1/joint5
+        weight: 1
+      - path: PlatformBreaker
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
@@ -202,7 +232,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 400
+    globalScale: 1400
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
