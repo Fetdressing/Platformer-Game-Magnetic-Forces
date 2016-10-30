@@ -269,10 +269,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013039317298}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 265, y: 52.7, z: -9.1}
+  m_LocalRotation: {x: -0, y: 0.4588008, z: -0, w: 0.8885392}
+  m_LocalPosition: {x: -2018.8, y: -19.8, z: 882.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 54.398003, z: 0}
   m_Children:
   - {fileID: 4000010306913780}
   - {fileID: 4000010061859636}
@@ -381,6 +381,8 @@ MonoBehaviour:
   idleA: {fileID: 7400000, guid: 9cfad5d6d76c30948bf3c5ab5f8b7093, type: 3}
   aggressiveA: {fileID: 7400002, guid: 9cfad5d6d76c30948bf3c5ab5f8b7093, type: 3}
   maxShootRange: 250
+  shootForce: 300
+  cooldown_Time: 1
   projectileType: {fileID: 1000011113750582, guid: 94b8afde64b98d44d923e82d3b61f2ff,
     type: 2}
   activasionTime: 2
