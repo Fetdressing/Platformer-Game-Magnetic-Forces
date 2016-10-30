@@ -168,7 +168,7 @@ MonoBehaviour:
   particleExplosionObj: {fileID: 1000013712628432, guid: c238073cbe7ec884b96298d378828783,
     type: 2}
   particleObjectPoolSize: 3
-  isGhost: 1
+  isGhost: 0
 --- !u!135 &135000010042137874
 SphereCollider:
   m_ObjectHideFlags: 1
