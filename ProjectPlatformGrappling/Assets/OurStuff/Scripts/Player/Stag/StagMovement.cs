@@ -42,6 +42,7 @@ public class StagMovement : BaseClass
     private float dashPowerCost = 0.03f; //hur mycket power det drar varje gång man dashar
     private bool dashUsed = false; //så att man måste bli grounded innan man kan använda den igen
     public GameObject dashEffectObject;
+    public ParticleSystem dashReadyPS; //particlesystem som körs när dash är redo att användas
 
     private float knockForceMovingPlatform = 420; //om man hamnar på fel sidan av moving platform så knuffas man bort lite
 
@@ -193,9 +194,9 @@ public class StagMovement : BaseClass
             groundChecker.Reset(groundedTimePoint);
         }
 
-        if (jumpsAvaible > 0)
+        if (Input.GetButtonDown("Jump"))
         {
-            if (Input.GetButtonDown("Jump"))
+            if (jumpsAvaible > 0)
             {
                 if (Time.time > jumpTimePoint + jumpCooldown)
                 {
@@ -218,6 +219,28 @@ public class StagMovement : BaseClass
                 }
             }
         }
+
+        if(IsDashReady())
+        {
+            ToggleDashReadyPS(true); //visa att man kan dasha
+        }
+        else
+        {
+            ToggleDashReadyPS(false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            if (ver < 0.0f) //bakåt
+            {
+                Dash(-cameraHolder.forward);
+            }
+            else
+            {
+                Dash(cameraHolder.forward);
+            }
+        }
+
         // apply gravity acceleration to vertical speed:
         ySpeed -= gravity * Time.deltaTime;
         Vector3 yVector = new Vector3(0, ySpeed, 0);
@@ -335,26 +358,6 @@ public class StagMovement : BaseClass
 
         currMovementSpeed = startSpeed * currExternalSpeedMult;
 
-        if (Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            if (stagSpeedMultiplier > 0)
-            {
-                //if ((horVector + verVector).magnitude > 0.1f)
-                //{
-                //    //Dash((horVector + verVector).normalized);
-                //    Dash(cameraHolder.forward);
-                //}
-                if (ver < 0.0f) //bakåt
-                {
-                    Dash(-cameraHolder.forward);
-                }
-                else
-                {
-                    Dash(cameraHolder.forward);
-                }
-            }
-        }
-
         verVector = new Vector3(verVector.x, 0, verVector.z); //denna behöver vara under dash så att man kan dasha upp/ned oxå
 
         finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currMovementSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
@@ -413,16 +416,24 @@ public class StagMovement : BaseClass
         ySpeed += velY;
     }
 
-    void Dash(Vector3 dir)
+    bool Dash(Vector3 dir)
     {
-        if (!powerManager.SufficentPower(-dashPowerCost)) return;
+        if (!IsDashReady()) return false;
         StartCoroutine(MoveDash(dir));
+        return true;
+    }
+
+    bool IsDashReady()
+    {
+        if (!powerManager.SufficentPower(-dashPowerCost)) return false;
+        if (dashTimePoint + dashCooldown > Time.time) return false;
+        if (dashUsed) return false;
+
+        return true;
     }
 
     IEnumerator MoveDash(Vector3 dir)
     {
-        if (dashTimePoint + dashCooldown > Time.time) yield break;
-        if (dashUsed) yield break;
         ySpeed = 0;
         dashUsed = true;
         ToggleDashEffect(true);
@@ -514,6 +525,21 @@ public class StagMovement : BaseClass
         else
         {
             pullps.Stop();
+        }
+    }
+
+    void ToggleDashReadyPS(bool b)
+    {
+        if (dashReadyPS == null) return;
+        if (b)
+        {
+            if (!dashReadyPS.isPlaying)
+                dashReadyPS.Play();
+        }
+        else
+        {
+            if (dashReadyPS.isPlaying)
+                dashReadyPS.Stop();
         }
     }
 

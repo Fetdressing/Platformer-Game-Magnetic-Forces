@@ -10,6 +10,8 @@ public class GroundChecker : BaseClass {
     private float groundedTimePoint = 0.0f;
     private float maxValueAirTime = 3; //hur många sekunder som ger max camerashake
 
+    public ParticleTimed touchGroundPS;
+
     void Start()
     {
         Init();
@@ -74,7 +76,15 @@ public class GroundChecker : BaseClass {
                 lastGroundedObj = col.transform;
 
                 float airBourneTimeValue = Mathf.Min((Time.time - groundedTimePoint), maxValueAirTime) / maxValueAirTime; //går mellan 0 och 1
-                cameraShaker.ShakeCamera(0.1f, 0.5f * airBourneTimeValue, true);
+                cameraShaker.ShakeCamera(0.1f, 0.8f * airBourneTimeValue, true);
+
+                if (airBourneTimeValue > 0.5f) //procent av max tiden
+                {
+                    if (touchGroundPS != null)
+                    {
+                        touchGroundPS.StartParticleSystem();
+                    }
+                }
             }
 
             if (col.tag == "BreakerObject")
