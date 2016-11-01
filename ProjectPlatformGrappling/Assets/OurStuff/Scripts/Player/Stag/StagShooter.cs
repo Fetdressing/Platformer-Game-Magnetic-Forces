@@ -35,11 +35,14 @@ public class StagShooter : BaseClass {
             projectilePool.Add(temp);
             temp.SetActive(false);
         }
+
+        Reset();
     }
 
     public override void Reset()
     {
         base.Reset();
+        isLocked = false;
         cooldonwTimer = 0.0f;
     }
 
@@ -56,6 +59,7 @@ public class StagShooter : BaseClass {
 
     // Update is called once per frame
     void Update () {
+        if (isLocked) return;
         if (Input.GetKey(KeyCode.Mouse0))
         {
             Fire();

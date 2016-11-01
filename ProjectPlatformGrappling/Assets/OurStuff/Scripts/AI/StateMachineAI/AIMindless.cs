@@ -37,6 +37,15 @@ public class AIMindless : AICharacterController //denna rör sig bara mellan pun
 
             if (Vector3.Distance(potTarget.position, transform.position) < minDistanceTarget)
             {
+                Vector3 modPos = new Vector3(potTarget.position.x, 0, potTarget.position.z);
+                Vector3 modTPos = new Vector3(transform.position.x, 0, transform.position.z);
+
+                //rotera
+                Vector3 dir = (modPos - modTPos).normalized;
+
+                Quaternion lookRotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnRatio * 2);
+
                 currMovementSpeed = 0;
             }
             else
@@ -80,7 +89,8 @@ public class AIMindless : AICharacterController //denna rör sig bara mellan pun
 
         if(Vector3.Distance(modTPos, modPos) < 20) //kolla ifall man är såpass nära att man ska vända
         {
-            GetComponent<AnimStandardPlayer>().PlayAnimation(turnAnim, 1.0f, 0.4f);
+            if(turnAnim != null)
+                GetComponent<AnimStandardPlayer>().PlayAnimation(turnAnim, 1.0f, 0.4f);
         }
 
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));

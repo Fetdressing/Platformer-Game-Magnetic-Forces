@@ -5,7 +5,7 @@ using System.Collections;
 public class StagMovement : BaseClass
 {
     [HideInInspector]
-    public bool isLocked = false; //förhindrar alla actions
+    //public bool isLocked = false; //förhindrar alla actions, ligger i baseclass
     public Transform cameraHolder; //den som förflyttas när man rör sig med musen
     private Transform cameraObj; //kameran själv
     private CameraShaker cameraShaker;

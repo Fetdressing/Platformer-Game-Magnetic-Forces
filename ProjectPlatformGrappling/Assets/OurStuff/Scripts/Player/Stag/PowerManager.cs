@@ -1,9 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(StagMovement))]
+[RequireComponent(typeof(StagShooter))]
+
 public class PowerManager : BaseClass {
     private Camera activeCamera;
     public Renderer hornRenderer;
+    private Renderer[] allRenderers;
+    private StagMovement stagMovement;
+    private StagShooter stagShooter;
+
     private float[] uvStartOffsetHorns = { 0, 0};
     public Light[] lifeLights; //fadear med powern
     public float lightsMaxIntensity = 2;
@@ -34,6 +41,11 @@ public class PowerManager : BaseClass {
     {
         base.Init();
         activeCamera = GameObject.FindGameObjectWithTag("Manager").GetComponent<CameraManager>().cameraPlayerFollow;
+        stagMovement = GetComponent<StagMovement>();
+        stagShooter = GetComponent<StagShooter>();
+
+        allRenderers = GetComponentsInChildren<Renderer>();
+
         Reset();
         //GameObject.FindGameObjectWithTag("Manager").GetComponent<SpawnManager>().Respawn(transform.position); //viktigt denna inte ligger i reset, infinite loop annars
     }
@@ -46,6 +58,11 @@ public class PowerManager : BaseClass {
         
         AddPower(maxPower);
         isAlive = true;
+
+        for(int i = 0; i < allRenderers.Length; i++)
+        {
+            allRenderers[i].enabled = true;
+        }
     }
     // Update is called once per frame
     void Update () {
@@ -113,6 +130,9 @@ public class PowerManager : BaseClass {
         isAlive = false;
         currPower = 0; //så att det inte blir overkill och man dör massa gånger
 
+        stagMovement.isLocked = true; //så man inte kan styra
+        stagShooter.isLocked = true;
+
         deathLocation = transform.position;
         //if (aiBase.GetComponent<AgentBase>() != null)
         //{
@@ -125,6 +145,13 @@ public class PowerManager : BaseClass {
         if (deathAnimation != null)
         {
             animationObj.GetComponent<Animation>().Play(deathAnimation.name);
+        }
+        else
+        {
+            for (int i = 0; i < allRenderers.Length; i++)
+            {
+                allRenderers[i].enabled = false;
+            }
         }
 
         StartCoroutine(DieDelayed());
