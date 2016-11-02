@@ -125,6 +125,7 @@
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\CameraShaker.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\EnvironmentChanger.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\FadingLight.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\VisualEffects\HitSound.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\ParticleTimed.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\UVDisplacer.cs" />
     <Compile Include="Assets\Quantum Theory\Polyworld\Scripts\QT_InteractContainer.cs" />

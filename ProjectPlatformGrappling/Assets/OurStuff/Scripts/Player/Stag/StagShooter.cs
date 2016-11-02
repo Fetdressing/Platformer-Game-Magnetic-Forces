@@ -17,6 +17,10 @@ public class StagShooter : BaseClass {
     public GameObject projectileType;
     private int poolSize = 100;
     private List<GameObject> projectilePool = new List<GameObject>();
+
+    private AudioSource audioSource;
+    public AudioClip shootSound;
+    public float volume = 0.7f;
 	// Use this for initialization
 	void Start () {
         Init();
@@ -28,6 +32,7 @@ public class StagShooter : BaseClass {
         cameraObj = GameObject.FindGameObjectWithTag("MainCamera").gameObject.transform;
         mainCamera = cameraObj.GetComponentsInChildren<Transform>()[1].GetComponent<Camera>();
         powerManager = transform.GetComponent<PowerManager>();
+        audioSource = shooterObj.GetComponent<AudioSource>();
 
         for(int i = 0; i < poolSize; i++)
         {
@@ -73,6 +78,8 @@ public class StagShooter : BaseClass {
 
         if (!powerManager.SufficentPower(projectilePowerCost)) return;
         powerManager.AddPower(-projectilePowerCost);
+
+        audioSource.PlayOneShot(shootSound, volume);
 
         GameObject currProj = null;
         for(int i = 0; i < projectilePool.Count; i++)

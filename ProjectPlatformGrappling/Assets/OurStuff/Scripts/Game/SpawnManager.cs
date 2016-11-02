@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class SpawnManager : BaseClass {
     public int maxLives = 3;
@@ -16,6 +17,12 @@ public class SpawnManager : BaseClass {
     private bool isRespawning;
 
     PowerPickup[] powerPickups;
+
+    [HideInInspector]
+    public bool levelStarted = false;
+    private float timePointLevelStarted = 0;
+    [HideInInspector] public float timePassed = 0;
+    public Text timeText;
 	// Use this for initialization
 	void Start () {
         Init();
@@ -45,6 +52,26 @@ public class SpawnManager : BaseClass {
         isRespawning = false;
 
         StartSpawn();
+    }
+
+    void Update()
+    {
+        if(Vector3.Distance(player.position, startSpawn.position) > 100 && levelStarted == false && isRespawning == false)
+        {
+            LevelBegin();
+        }
+
+        if(levelStarted)
+        {
+            timePassed = Time.time - timePointLevelStarted;
+            timeText.text = timePassed.ToString("F1");
+        }
+    }
+
+    void LevelBegin()
+    {
+        levelStarted = true;
+        timePointLevelStarted = Time.time;
     }
 
     public void StartSpawn()
