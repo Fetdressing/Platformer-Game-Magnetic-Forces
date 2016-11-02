@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013712628432}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 135.82086, y: -24.8, z: 12.596725}
+  m_LocalPosition: {x: -450.14124, y: 63.76, z: 448.98346}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -52,9 +52,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e9567ca3be2babd4d8f361805e5340d1, type: 3}
+  m_audioClip: {fileID: 8300000, guid: c8ce032bef7332f4d93e66d7ff3a68fc, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.272
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6425c2189048784788fcdad61697631, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initTimes: 0
+  isLocked: 0
   lifeTime: 1.5
   isReady: 1
 --- !u!198 &198000010565927666
@@ -346,7 +346,7 @@ ParticleSystem:
       maxColor: {r: 0.007843138, g: 1, b: 1, a: 1}
       minMaxState: 0
     startSize:
-      scalar: 3
+      scalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:

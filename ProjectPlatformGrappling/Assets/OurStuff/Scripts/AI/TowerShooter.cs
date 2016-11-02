@@ -15,6 +15,7 @@ public class TowerShooter : BaseClass {
     public float cooldown_Time = 0.2f;
     private float cooldonwTimer = 0.0f;
     private float projectilePowerCost = 0.05f;
+    public float offsetYAim = 1.2f;
 
     public GameObject projectileType;
     private int poolSize = 100;
@@ -138,7 +139,7 @@ public class TowerShooter : BaseClass {
         ProjectileBase currProjectile = currProj.GetComponent<ProjectileBase>();
 
         
-        Vector3 vecToTarget = (target.position - transform.position).normalized;
+        Vector3 vecToTarget = ((target.position + new Vector3(0, offsetYAim, 0)) - transform.position).normalized;
 
         currProj.transform.position = shooterObj.position; //kommer från en random riktning kanske?
         currProj.transform.forward = vecToTarget;

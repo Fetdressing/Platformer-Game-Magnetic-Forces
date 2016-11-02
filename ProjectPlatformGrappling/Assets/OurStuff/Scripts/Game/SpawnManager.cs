@@ -98,7 +98,10 @@ public class SpawnManager : BaseClass {
         {
             if(Vector3.Distance(playerDeathPos, spawnPoints[i].position) < Vector3.Distance(playerDeathPos, closestSpawnPos))
             {
-                closestSpawnPos = spawnPoints[i].position;
+                if (spawnPoints[i].GetComponent<Spawnpoint>().isPassed)
+                {
+                    closestSpawnPos = spawnPoints[i].position;
+                }
             }
         }
 

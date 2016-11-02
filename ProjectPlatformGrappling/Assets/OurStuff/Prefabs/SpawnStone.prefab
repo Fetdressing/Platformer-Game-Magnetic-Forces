@@ -75,7 +75,9 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 4000012787229782}
-  m_Layer: 0
+  - 114: {fileID: 114000010385588796}
+  - 135: {fileID: 135000013303876522}
+  m_Layer: 11
   m_Name: Spawnpoint
   m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
@@ -89,7 +91,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012961054914}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 261.5, y: -2.4, z: 975.2}
+  m_LocalPosition: {x: -216.1, y: -24, z: 267}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -234,6 +236,19 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &114000010385588796
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014267038092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 873f5f7cea7b428429d49180e4cca11b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLocked: 0
+  isPassed: 0
 --- !u!114 &114000013950575352
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -245,6 +260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01ff407f431cfdf4b9b298c11fa6a471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLocked: 0
   phaseTime: 0
   phaseCooldown: 1.5
   startTime: 0
@@ -319,6 +335,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 75
   m_Center: {x: 0, y: -0.0000009536743, z: 0}
+--- !u!135 &135000013303876522
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014267038092}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 140
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!198 &198000012643964418
 ParticleSystem:
   m_ObjectHideFlags: 1

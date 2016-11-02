@@ -23,6 +23,7 @@ GameObject:
   - 65: {fileID: 65000012011613740}
   - 23: {fileID: 23000011363055436}
   - 114: {fileID: 114000012557143142}
+  - 114: {fileID: 114000012634921428}
   m_Layer: 0
   m_Name: Mud
   m_TagString: Mud
@@ -36,9 +37,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012443983358}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 402.3, y: -30.1, z: 679.7}
-  m_LocalScale: {x: 156.20166, y: 16.298864, z: 207.3505}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -925.82446, y: -249.79727, z: -1291.0557}
+  m_LocalScale: {x: 215.16396, y: 22.451292, z: 285.6203}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
@@ -56,7 +57,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 7fbbb10a14d46b941ba33f7fe2591f36, type: 2}
+  - {fileID: 2100000, guid: c40e340524ac37745ac2459d0ada8b57, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -102,3 +103,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06ec266ab242e7b4a83fe524587358cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLocked: 0
+--- !u!114 &114000012634921428
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012443983358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2436979d2bdbc2c4aaab61b50d7749a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scrollSpeedU: 0.01
+  scrollSpeedV: 0.01
