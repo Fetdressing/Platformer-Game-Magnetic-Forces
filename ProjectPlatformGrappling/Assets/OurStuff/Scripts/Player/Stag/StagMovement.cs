@@ -288,37 +288,41 @@ public class StagMovement : BaseClass
         //fan viktigt :o ful hacks men still
         float slope = GetSlope(hit.normal);
 
-        if (slope > maxSlopeGrounded)
+        if (!hit.collider.isTrigger)
         {
-            if (isGroundedRaycast)
+            if (slope > maxSlopeGrounded)
             {
-                if (groundedSlope > maxSlopeGrounded)
+                if (isGroundedRaycast)
                 {
-                    ApplyExternalForce(hit.normal * 20);
+                    if (groundedSlope > maxSlopeGrounded)
+                    {
+                        ApplyExternalForce(hit.normal * 20);
+                    }
+                }
+                else
+                {
+                    ApplyExternalForce(hit.normal * 20); // så man glider för slopes
                 }
             }
-            else
+            else //ingen slope, dvs man står på marken, resetta stuff!
             {
-                ApplyExternalForce(hit.normal * 20); // så man glider för slopes
+                if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
+                {
+                    dashUsed = true;
+                    jumpsAvaible = jumpAmount;
+                    ySpeed = 0; // grounded character has vSpeed = 0...
+                }
             }
-        }
-        else //ingen slope, dvs man står på marken, resetta stuff!
-        {
-            if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
-            {
-                dashUsed = true;
-                jumpsAvaible = jumpAmount;
-                ySpeed = 0; // grounded character has vSpeed = 0...
-            }
-        }
+        
 
-        if (hit.moveDirection.y < -0.9 && hit.normal.y > 0.5f)
-        {
-            //dashUsed = false; //när man blir grounded så kan man använda dash igen
-            //if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
-            //{
-            //    ySpeed = 0; // grounded character has vSpeed = 0...
-            //}
+            if (hit.moveDirection.y < -0.9 && hit.normal.y > 0.5f)
+            {
+                //dashUsed = false; //när man blir grounded så kan man använda dash igen
+                //if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
+                //{
+                //    ySpeed = 0; // grounded character has vSpeed = 0...
+                //}
+            }
         }
 
         if (hit.gameObject.tag == "MovingPlatform")

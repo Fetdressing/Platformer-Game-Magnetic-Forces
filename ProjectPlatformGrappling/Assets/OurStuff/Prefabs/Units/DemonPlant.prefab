@@ -335,13 +335,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0d8d3e0e7d4488468a3fafda699239d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLocked: 0
   thisRenderer:
   - {fileID: 137000013153227596}
   - {fileID: 137000012807644526}
   damagedMaterial: {fileID: 2100000, guid: 5a5a1a50a180c2246b70601cbc08ebef, type: 2}
   middlePoint: {x: 0, y: 0, z: 0}
   middlePointOffsetY: 0.5
-  startHealth: 4
+  startHealth: 3
   maxHealth: 3
   startHealthRegAmount: 1
   healthRegAmount: 1
@@ -376,6 +377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b690847d1c46f541932e46c8c1383eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLocked: 0
   shooterObj: {fileID: 0}
   animationH: {fileID: 111000012311457988}
   idleA: {fileID: 7400000, guid: 9cfad5d6d76c30948bf3c5ab5f8b7093, type: 3}
@@ -383,6 +385,7 @@ MonoBehaviour:
   maxShootRange: 250
   shootForce: 300
   cooldown_Time: 1
+  offsetYAim: 1.2
   projectileType: {fileID: 1000011113750582, guid: 94b8afde64b98d44d923e82d3b61f2ff,
     type: 2}
   activasionTime: 2

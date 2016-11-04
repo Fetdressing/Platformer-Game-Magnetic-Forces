@@ -4,6 +4,11 @@ using System.Collections;
 public class GuardPState : PatrolState { //patrol fast letar efter spelaren
     public override void Execute(AIEntity entity)
     {
+        if (!_AIMoveable.IsWalkable())
+        {
+            _AIMoveable.currPatrolPoint = _AIMoveable.GetPatrolPoint();
+        }
+
         if (_AIMoveable.currPatrolPoint == Vector3.zero || HasReached(_AIMoveable.transform.position, _AIMoveable.currPatrolPoint, 5, false))
         {
             _AIMoveable.currPatrolPoint = _AIMoveable.GetPatrolPoint();

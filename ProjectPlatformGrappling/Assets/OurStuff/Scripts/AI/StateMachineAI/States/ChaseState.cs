@@ -16,7 +16,12 @@ public class ChaseState : AIState {
     {
         if (_AIMoveable.target != null && _AIMoveable.target.gameObject.activeSelf == true && _AIMoveable.DistanceToT(_AIMoveable.target) < _AIMoveable.maxChaseDistance)
         {
-            _AIMoveable.Move(_AIMoveable.target.position, _AIMoveable.currMovementSpeed);
+            _AIMoveable.RotateTowards(_AIMoveable.target.position);
+
+            if (_AIMoveable.IsWalkable())
+            {
+                _AIMoveable.Move(_AIMoveable.target.position, _AIMoveable.currMovementSpeed);
+            }
         }
         else
         {

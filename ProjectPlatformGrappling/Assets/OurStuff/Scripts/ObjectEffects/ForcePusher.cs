@@ -6,11 +6,20 @@ public class ForcePusher : BaseRigidbody {
     public bool pushAway = false; //om true så pushar denna ifrån sig själv oavsett vilket riktning objekten kommer ifrån
     public float pushForce = 100;
 
+    public AnimStandardPlayer animPlayer;
+    public AnimationClip pushAnim;
+    public float animationSpeed = 1.0f;
+
     void OnTriggerEnter(Collider col)
     {
         if (isContinuous) return;
         if(col.tag == "Player")
         {
+            if(animPlayer != null)
+            {
+                animPlayer.PlayAnimation(pushAnim, 1, animationSpeed);
+            }
+
             StagMovement sM = col.GetComponent<StagMovement>();
             if(sM != null)
             {

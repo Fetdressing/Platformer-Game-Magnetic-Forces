@@ -4,6 +4,7 @@ using System.Collections;
 public class AIMoveable : AIEntity {
     [HideInInspector]
     public Transform target;
+    protected AnimStandardPlayer animPlayer;
 
     [Header("Target Search")]
     public string[] targetTags = { "Player"};
@@ -21,6 +22,7 @@ public class AIMoveable : AIEntity {
     public float runMoveSpeed = 30;
 
     public float gravity = 10;
+    public LayerMask groundCheckLM;
 
     public float turnRatio = 10;
     //***speed and stats***
@@ -42,6 +44,7 @@ public class AIMoveable : AIEntity {
     public override void Init()
     {
         startPosition = transform.position;
+        animPlayer = GetComponent<AnimStandardPlayer>();
         base.Init();
 
         //statePattern.ChangeState(patrolState);
@@ -110,5 +113,27 @@ public class AIMoveable : AIEntity {
         if (currIndex >= arrayLength)
             currIndex = 0;
         return currIndex;
+    }
+
+    public bool IsWalkable()
+    {
+        if (Physics.Raycast(transform.position + (transform.forward * 4), Vector3.down, 10, groundCheckLM))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void RotateTowards(Vector3 pos)
+    {
+        Vector3 modPos = new Vector3(pos.x, 0, pos.z);
+        Vector3 modTPos = new Vector3(transform.position.x, 0, transform.position.z);
+
+        Vector3 dir = (modPos - modTPos).normalized; //vill inte den ska röra sig upp o ned genom dessa vektorer
+
+        if (dir == Vector3.zero) return;
+
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnRatio);
     }
 }
