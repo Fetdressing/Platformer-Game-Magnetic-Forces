@@ -180,7 +180,7 @@ public class StagMovement : BaseClass
             if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
             {
                 //dessa resetsen görs här eftersom denna groundchecken är mycket mer pålitlig
-                dashUsed = true;
+                //dashUsed = true; //resettar bara med riktigt grounded så det ska vara mer "snällt"
                 jumpsAvaible = jumpAmount;
             }
 
