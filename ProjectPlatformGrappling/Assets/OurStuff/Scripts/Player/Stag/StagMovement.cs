@@ -465,11 +465,20 @@ public class StagMovement : BaseClass
     {
         if (gameObject.activeSelf == false) return;
         dashEffectObject.transform.rotation = cameraHolder.rotation;
-        float trailOriginalTime = 2.0f;
+        float trailOriginalTime = 1.0f;
         float startWidth = 1;
         float endWidth = 0.1f;
         TrailRenderer[] tR = dashEffectObject.GetComponentsInChildren<TrailRenderer>();
         ParticleSystem[] pS = dashEffectObject.GetComponentsInChildren<ParticleSystem>();
+        AudioSource dAS = dashEffectObject.GetComponent<AudioSource>();
+
+        if (b)
+        {
+            if (dAS != null)
+            {
+                dAS.Play();
+            }
+        }
 
         for(int i = 0; i < tR.Length; i++)
         {

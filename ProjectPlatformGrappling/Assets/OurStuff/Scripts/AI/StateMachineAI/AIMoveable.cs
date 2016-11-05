@@ -106,6 +106,13 @@ public class AIMoveable : AIEntity {
         return Vector3.Distance(t.position, transform.position);
     }
 
+    public float DistanceToT2D(Transform t) //utan Y
+    {
+        Vector3 modT = new Vector3(t.position.x, 0, t.position.z);
+        Vector3 modTransform = new Vector3(transform.position.x, 0, transform.position.z);
+        return Vector3.Distance(modT, modTransform);
+    }
+
 
     protected int NextIndex(int arrayLength, int currIndex)
     {
@@ -129,7 +136,11 @@ public class AIMoveable : AIEntity {
         Vector3 modPos = new Vector3(pos.x, 0, pos.z);
         Vector3 modTPos = new Vector3(transform.position.x, 0, transform.position.z);
 
-        Vector3 dir = (modPos - modTPos).normalized; //vill inte den ska röra sig upp o ned genom dessa vektorer
+        Vector3 dir = (modPos - modTPos); //vill inte den ska röra sig upp o ned genom dessa vektorer
+
+        if (dir.magnitude < 4) return; //så att om man är ovanför så ska den inte försöka titta på en
+
+        dir = dir.normalized;
 
         if (dir == Vector3.zero) return;
 

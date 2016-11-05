@@ -27,6 +27,8 @@ public class PowerPickup : BaseClass {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         thisRigidbody = this.transform.GetComponent<Rigidbody>();
         startPos = this.transform.position;
+
+        Reset();
     }
 
     public override void Reset()
@@ -112,12 +114,8 @@ public class PowerPickup : BaseClass {
     {
         if(respawnTime > 0.0f)
         {
-            pickUpObj.gameObject.SetActive(false);
             StartCoroutine(Respawn());
         }
-        else
-        {
-            Destroy(pickUpObj.gameObject);
-        }
+        pickUpObj.gameObject.SetActive(false);
     }
 }
