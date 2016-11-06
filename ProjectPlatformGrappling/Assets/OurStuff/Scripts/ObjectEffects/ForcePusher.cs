@@ -10,11 +10,17 @@ public class ForcePusher : BaseRigidbody {
     public AnimationClip pushAnim;
     public float animationSpeed = 1.0f;
 
+    public AudioSource audioSource;
+
     void OnTriggerEnter(Collider col)
     {
         if (isContinuous) return;
         if(col.tag == "Player")
         {
+            if(audioSource != null)
+            {
+                audioSource.Play();
+            }
             if(animPlayer != null)
             {
                 animPlayer.PlayAnimation(pushAnim, 1, animationSpeed);

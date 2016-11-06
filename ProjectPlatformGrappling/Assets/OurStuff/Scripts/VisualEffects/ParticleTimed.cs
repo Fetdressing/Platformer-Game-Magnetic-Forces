@@ -6,6 +6,8 @@ public class ParticleTimed : BaseClass {
     private ParticleSystem ps;
     public float lifeTime = 3;
 
+    public bool deactivateAfter = true; //ska den stänga av objektet eller köra ps.stop
+
     [HideInInspector]
     public bool isReady = true;
 	// Use this for initialization
@@ -28,6 +30,7 @@ public class ParticleTimed : BaseClass {
 
     public void StartParticleSystem()
     {
+        if (isReady == false) return;
         StopAllCoroutines();
         thisObject.SetActive(true);
         ps.Simulate(0.0f, true, true);
@@ -41,6 +44,15 @@ public class ParticleTimed : BaseClass {
         isReady = false;
         yield return new WaitForSeconds(lifeTime);
         isReady = true;
-        thisObject.SetActive(false);
+
+        if (deactivateAfter)
+        {
+            thisObject.SetActive(false);
+        }
+        else
+        {
+            ps.Stop();
+        }
+        
     }
 }

@@ -9,7 +9,6 @@ public class StagMovement : BaseClass
     public Transform cameraHolder; //den som förflyttas när man rör sig med musen
     private Transform cameraObj; //kameran själv
     private CameraShaker cameraShaker;
-    public AudioSource movementAudioSource;
     private CharacterController characterController;
     private PowerManager powerManager;
 
@@ -19,8 +18,8 @@ public class StagMovement : BaseClass
     public Transform stagObject; //denna roteras så det står korrekt
 
     private float startSpeed = 60;
-    private float jumpSpeed = 70;
-    private float gravity = 110;
+    private float jumpSpeed = 90;
+    private float gravity = 140;
     private float stagSpeedMultMax = 1.5f;
     private float stagSpeedMultMin = 0.85f;
 
@@ -33,10 +32,11 @@ public class StagMovement : BaseClass
     private int jumpAmount = 2; //hur många hopp man får
     private int jumpsAvaible = 0; //så man kan hoppa i luften also, förutsatt att man resettat den på marken
     private float jumpCooldown = 0.3f;
+    public GameObject jumpEffectObject;
 
     [HideInInspector]public float dashTimePoint; //mud påverkar denna så att man inte kan dasha
     private float dashCooldown = 0.3f;
-    private float dashSpeed = 600;
+    private float dashSpeed = 450;
     private float currDashTime;
     private float maxDashTime = 0.05f;
     private float dashPowerCost = 0.03f; //hur mycket power det drar varje gång man dashar
@@ -62,10 +62,6 @@ public class StagMovement : BaseClass
     private Vector3 dashVel = new Vector3(0, 0, 0);
     private Vector3 finalMoveDir = new Vector3(0,0,0);
     private Vector3 externalVel = new Vector3(0, 0, 0);
-
-    private LayerMask layermaskForces;
-    public ParticleSystem slideGroundParticleSystem;
-    public AudioClip slideGroundSound;
 
     public PullField pullField; //som drar till sig grejer till spelaren, infinite gravity!
 
@@ -95,6 +91,9 @@ public class StagMovement : BaseClass
     public AnimationClip idleAir;
     public AnimationClip jump;
 
+    //[Header("Audio")]
+    //public AudioSource jumpAudioSource;
+
     void Start()
     {
         Init();
@@ -105,7 +104,6 @@ public class StagMovement : BaseClass
         base.Init();
         characterController = transform.GetComponent<CharacterController>();
         powerManager = transform.GetComponent<PowerManager>();
-        layermaskForces = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("MagneticBall") | 1 << LayerMask.NameToLayer("Ragdoll"));
         cameraObj = cameraHolder.GetComponentsInChildren<Transform>()[1].transform;
         cameraShaker = cameraObj.GetComponent<CameraShaker>();
         groundChecker = GetComponentsInChildren<GroundChecker>()[0];
@@ -129,13 +127,11 @@ public class StagMovement : BaseClass
         dashTimePoint = 0;
         jumpTimePoint = -5; //behöver vara under 0 så att man kan hoppa dirr när spelet börjar
         ToggleInfiniteGravity(false);
-        slideGroundParticleSystem.GetComponent<ParticleTimed>().isReady = true;
         dashUsed = true;
         jumpsAvaible = jumpAmount;
 
         isGrounded = false;
         isGroundedRaycast = false;
-        isLocked = false;
     }
 
     void LateUpdate()
@@ -196,28 +192,7 @@ public class StagMovement : BaseClass
 
         if (Input.GetButtonDown("Jump"))
         {
-            if (jumpsAvaible > 0)
-            {
-                if (Time.time > jumpTimePoint + jumpCooldown)
-                {
-                    jumpsAvaible = Mathf.Max(0, (jumpsAvaible - 1));
-                    dashUsed = false; //när man blir grounded så kan man använda dash igen, men oxå när man hoppar, SKILLZ!!!
-                    activePlatform = null; //när man hoppar så är man ej längre attached till movingplatform
-                    jumpTimePoint = Time.time;
-
-                    if (ySpeed < 0) //ska motverka gravitationen, behövs ej atm?
-                        ySpeed = 0;
-
-                    if(groundedRaycastObject != null && groundedRaycastObject.tag == "BreakerObject")
-                    {
-                        groundedRaycastObject.GetComponent<BreakerObject>().Break();
-                    }
-
-                    ySpeed = jumpSpeed;
-                    //animationH.Play(jump.name);
-                    //animationH[jump.name].weight = 1.0f;
-                }
-            }
+            Jump();
         }
 
         if(IsDashReady())
@@ -367,6 +342,34 @@ public class StagMovement : BaseClass
         finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currMovementSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
     }
 
+    void Jump()
+    {
+        if (jumpsAvaible > 0)
+        {
+            if (Time.time > jumpTimePoint + jumpCooldown)
+            {
+                PlayJumpEffect();
+
+                jumpsAvaible = Mathf.Max(0, (jumpsAvaible - 1));
+                dashUsed = false; //när man blir grounded så kan man använda dash igen, men oxå när man hoppar, SKILLZ!!!
+                activePlatform = null; //när man hoppar så är man ej längre attached till movingplatform
+                jumpTimePoint = Time.time;
+
+                if (ySpeed < 0) //ska motverka gravitationen, behövs ej atm?
+                    ySpeed = 0;
+
+                if (groundedRaycastObject != null && groundedRaycastObject.tag == "BreakerObject") //breakar objekt om man hoppar på dem
+                {
+                    groundedRaycastObject.GetComponent<BreakerObject>().Break();
+                }
+
+                ySpeed = jumpSpeed;
+                //animationH.Play(jump.name);
+                //animationH[jump.name].weight = 1.0f;
+            }
+        }
+    }
+
     void PlayAnimationStates()
     {
         if (animationH == null) return;
@@ -459,6 +462,25 @@ public class StagMovement : BaseClass
     public void ApplyExternalForce(Vector3 moveDir)
     {
         externalVel = moveDir;
+    }
+
+    void PlayJumpEffect()
+    {
+        if (gameObject.activeSelf == false) return;
+
+        AudioSource dAS = jumpEffectObject.GetComponent<AudioSource>();
+        ParticleTimed psTimed = jumpEffectObject.GetComponentInChildren<ParticleTimed>();
+
+        if (dAS != null)
+        {
+            dAS.Play();
+        }
+
+        if (psTimed != null)
+        {
+            psTimed.StartParticleSystem();
+        }
+        
     }
 
     void ToggleDashEffect(bool b)

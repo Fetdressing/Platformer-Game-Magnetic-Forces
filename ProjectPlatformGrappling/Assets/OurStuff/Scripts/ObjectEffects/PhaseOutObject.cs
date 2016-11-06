@@ -14,6 +14,8 @@ public class PhaseOutObject : BaseClass {
     public float phaseCooldown = 1.5f;
     public float startTime = 1.0f; //när hela börjar köras, kan behövas offset för att få dem ur fas
 
+    public AudioSource audioSource;
+
     float currAlpha = 1;
 	// Use this for initialization
 	void Start () {
@@ -94,6 +96,11 @@ public class PhaseOutObject : BaseClass {
 
             c = thisRenderer.material.color;
             thisRenderer.material.color = new Color(c.r, c.g, c.b, 1.0f);
+
+            if(audioSource != null)
+            {
+                audioSource.Play();
+            }
         }
 
         for(int i = 0; i < thisColliders.Length; i++)

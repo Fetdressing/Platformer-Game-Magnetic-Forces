@@ -6,6 +6,7 @@ public class PowerPickup : BaseClass {
 
     private Rigidbody thisRigidbody;
     private Transform player;
+    private StagMovement stagMovement;
     private Vector3 startPos;
     public float playerChaseSpeed = 0;
     public float playerChaseDistance = 140;
@@ -16,6 +17,7 @@ public class PowerPickup : BaseClass {
 
     public string[] acceptedTags;
     public ParticleTimed particlePicked;
+    public AudioSource audioSource;
 	// Use this for initialization
 	void Start () {
         Init();
@@ -25,8 +27,14 @@ public class PowerPickup : BaseClass {
     {
         base.Init();
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        stagMovement = player.GetComponent<StagMovement>();
         thisRigidbody = this.transform.GetComponent<Rigidbody>();
         startPos = this.transform.position;
+
+        if(audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
 
         Reset();
     }
@@ -61,6 +69,7 @@ public class PowerPickup : BaseClass {
     void Update()
     {
         if (player.gameObject.activeSelf == false) return;
+        if (stagMovement.isLocked) return;
         if (playerChaseSpeed < 0.1f) return;
 
         float distanceToPlayer = Vector3.Distance(player.position, this.transform.position);
@@ -116,6 +125,7 @@ public class PowerPickup : BaseClass {
         {
             StartCoroutine(Respawn());
         }
+        audioSource.Play();
         pickUpObj.gameObject.SetActive(false);
     }
 }

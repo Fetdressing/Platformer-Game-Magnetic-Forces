@@ -33,8 +33,6 @@ public class HealthSpirit : BaseClass
     public GameObject animationObj;
     public AnimationClip deathAnimation;
     public GameObject deathParticleSystemObj;
-    [HideInInspector]
-    public GameObject deathParticleSystemSpawned;
     public float delayedDeathTime = 0;
     [HideInInspector]
     public bool isAlive = true;
@@ -181,10 +179,12 @@ public class HealthSpirit : BaseClass
         //{
         //    aiBase.GetComponent<AgentBase>().agent.enabled = false;
         //}
-        if (deathParticleSystemSpawned != null)
+        if (deathParticleSystemObj != null)
         {
+            GameObject deathParticleSystemSpawned = GameObject.Instantiate(deathParticleSystemObj.gameObject);
             deathParticleSystemSpawned.transform.position = middlePoint;
             deathParticleSystemSpawned.GetComponent<ParticleTimed>().StartParticleSystem();
+            Destroy(deathParticleSystemSpawned, 5);
         }
         if (deathAnimation != null)
         {
