@@ -4,7 +4,7 @@ using System.Collections;
 public class Mud : BaseClass { //slöar ner och gör så att spelaren inte kan dasha (hoppa ?)
     StagMovement stagMovement;
 
-    private float moveSpeedChange = 0.65f;
+    private float moveSpeedChange = 0.80f;
     private static float timePointEntered;
 	// Use this for initialization
 	void Start () {

@@ -124,7 +124,7 @@ public class AIMoveable : AIEntity {
 
     public bool IsWalkable()
     {
-        if (Physics.Raycast(transform.position + (transform.forward * 4), Vector3.down, 10, groundCheckLM))
+        if (Physics.Raycast(transform.position + (transform.forward * 4), Vector3.down, 15, groundCheckLM))
         {
             return true;
         }

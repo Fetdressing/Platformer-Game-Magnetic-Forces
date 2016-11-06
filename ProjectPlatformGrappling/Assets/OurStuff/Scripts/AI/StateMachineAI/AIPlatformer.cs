@@ -26,6 +26,20 @@ public class AIPlatformer : AICharacterController
         statePattern.ChangeState(guardPState);
     }
 
+    public override void Update()
+    {
+        base.Update();
+        upVelocity -= gravity * Time.deltaTime;
+
+        if (cController.isGrounded)
+        {
+            upVelocity = 0;
+        }
+
+        Vector3 upVector = new Vector3(0, upVelocity * Time.deltaTime, 0);
+
+        cController.Move(upVector);
+    }
     //funktioner som kan användas
 
     public override void Move(Vector3 pos, float speed)
@@ -37,16 +51,7 @@ public class AIPlatformer : AICharacterController
 
         RotateTowards(pos);
 
-        upVelocity -= gravity;
-
-        if (cController.isGrounded)
-        {
-            upVelocity = 0;
-        }
-
-        Vector3 upVector = new Vector3(0, upVelocity, 0);
-
-        cController.Move((dir * speed + upVector) * Time.deltaTime);
+        cController.Move((dir * speed) * Time.deltaTime);
     }
 
     public override void StateEnded(AIState endedState)

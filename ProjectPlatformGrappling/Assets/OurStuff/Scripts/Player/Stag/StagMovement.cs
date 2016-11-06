@@ -268,7 +268,7 @@ public class StagMovement : BaseClass
         if(GetGroundedTransform(groundCheckObject) != activePlatform)
             activePlatform = null; //kolla om platformen fortfarande finns under mig eller ej
 
-        externalVel = Vector3.Lerp(externalVel, Vector3.zero, Time.deltaTime * 10);
+        externalVel = Vector3.Lerp(externalVel, Vector3.zero, Time.deltaTime * 10); //ta sakta bort den externa forcen
 
         HandleMovement(); //moddar finalMoveDir
         characterController.Move((finalMoveDir + dashVel + externalVel) * Time.deltaTime);
