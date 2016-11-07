@@ -58,7 +58,7 @@ GameObject:
   - 135: {fileID: 135000010044772296}
   m_Layer: 30
   m_Name: PGlobe
-  m_TagString: Untagged
+  m_TagString: PowerGlobe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,7 +113,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010267190188}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 704.0484, y: 461.2, z: 316}
+  m_LocalPosition: {x: -835.1, y: 117.1, z: -1330.1}
   m_LocalScale: {x: 0.46042597, y: 0.4604259, z: 0.4604259}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -288,6 +288,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLocked: 0
   pickUpObj: {fileID: 1000014119565378}
+  hasBeenPicked: 0
   playerChaseSpeed: 160
   playerChaseDistance: 35
   powerWorth: 0.1

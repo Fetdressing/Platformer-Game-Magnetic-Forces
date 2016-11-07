@@ -87,6 +87,8 @@
     <Compile Include="Assets\OurStuff\Scripts\BaseRagdoll.cs" />
     <Compile Include="Assets\OurStuff\Scripts\BaseRigidbody.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Game\CameraManager.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\Game\GameManager.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\Game\GameSettings.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Game\SceneHandler.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Game\SpawnManager.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Health.cs" />
@@ -120,6 +122,7 @@
     <Compile Include="Assets\OurStuff\Scripts\Player\Stag\PowerManager.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Stag\StagMovement.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Stag\StagShooter.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\Player\WoWCCamera.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Spawnpoint.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\AnimStandardPlayer.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\AnimationSpeedModifier.cs" />

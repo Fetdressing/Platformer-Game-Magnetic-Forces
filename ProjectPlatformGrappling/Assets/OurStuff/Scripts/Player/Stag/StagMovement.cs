@@ -136,6 +136,7 @@ public class StagMovement : BaseClass
 
     void LateUpdate()
     {
+        if (Time.timeScale == 0) return;
         if (isLocked) return;
 
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(cameraHolder.forward.x, 0, cameraHolder.forward.z));
@@ -149,6 +150,7 @@ public class StagMovement : BaseClass
 
     void Update()
     {
+        if (Time.timeScale == 0) return;
         if (isLocked) return;
 
         hor = Input.GetAxis("Horizontal");
@@ -260,6 +262,7 @@ public class StagMovement : BaseClass
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        if (Time.timeScale == 0) return;
         //fan viktigt :o ful hacks men still
         float slope = GetSlope(hit.normal);
 

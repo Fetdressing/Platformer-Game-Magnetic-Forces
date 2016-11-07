@@ -4,6 +4,7 @@ using System.Collections;
 public class PowerPickup : BaseClass {
     public GameObject pickUpObj;
 
+    [HideInInspector]public bool hasBeenPicked = false; //resettas bara när man kör om hela lvlen
     private Rigidbody thisRigidbody;
     private Transform player;
     private StagMovement stagMovement;
@@ -18,6 +19,9 @@ public class PowerPickup : BaseClass {
     public string[] acceptedTags;
     public ParticleTimed particlePicked;
     public AudioSource audioSource;
+
+    public int globeValue = 1; //hur mycket "score" den är värd
+    private SpawnManager spawnManager; //håller koll på hur många globes som plockats
 	// Use this for initialization
 	void Start () {
         Init();
@@ -29,6 +33,14 @@ public class PowerPickup : BaseClass {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         stagMovement = player.GetComponent<StagMovement>();
         thisRigidbody = this.transform.GetComponent<Rigidbody>();
+
+        try {
+            spawnManager = GameObject.FindGameObjectWithTag("Manager").GetComponent<SpawnManager>();
+        }
+        catch
+        {
+            Debug.Log("Hittade ingen spawnmanager");
+        }
         startPos = this.transform.position;
 
         if(audioSource == null)
@@ -101,6 +113,12 @@ public class PowerPickup : BaseClass {
         if(col.transform.GetComponent<PowerManager>() != null)
         {
             col.transform.GetComponent<PowerManager>().AddPower(powerWorth);
+
+            if(hasBeenPicked == false)
+            {
+                spawnManager.PowerGlobeCollected(globeValue);
+            }
+            hasBeenPicked = true;
             particlePicked.StartParticleSystem();
             Die();
         }

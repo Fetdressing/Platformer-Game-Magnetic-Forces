@@ -64,6 +64,7 @@ public class StagShooter : BaseClass {
 
     // Update is called once per frame
     void Update () {
+        if (Time.timeScale == 0) return;
         if (isLocked) return;
         if (Input.GetKey(KeyCode.Mouse0))
         {

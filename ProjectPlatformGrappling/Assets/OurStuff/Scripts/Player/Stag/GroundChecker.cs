@@ -69,6 +69,7 @@ public class GroundChecker : BaseClass {
 
     void OnTriggerEnter(Collider col)
     {
+        if (Time.timeScale == 0) return;
         if (LayerMask.LayerToName(col.gameObject.layer) != "Player")
         {
             if (lastGroundedObj == null || lastGroundedObj != col.transform)

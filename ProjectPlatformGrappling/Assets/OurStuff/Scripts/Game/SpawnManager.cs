@@ -16,13 +16,15 @@ public class SpawnManager : BaseClass {
 
     private bool isRespawning;
 
-    PowerPickup[] powerPickups;
-
     [HideInInspector]
     public bool levelStarted = false;
     private float timePointLevelStarted = 0;
     [HideInInspector] public float timePassed = 0;
     public Text timeText;
+
+    public Text powerGlobeText;
+    PowerPickup[] powerPickups;
+    private int collectedPowerGlobes = 0;
 	// Use this for initialization
 	void Start () {
         Init();
@@ -31,6 +33,7 @@ public class SpawnManager : BaseClass {
     public override void Init()
     {
         base.Init();
+        collectedPowerGlobes = 0;
         powerPickups = FindObjectsOfType(typeof(PowerPickup)) as PowerPickup[];
 
         GameObject[] spawnpointObjects = GameObject.FindGameObjectsWithTag("SpawnPoint");
@@ -41,6 +44,7 @@ public class SpawnManager : BaseClass {
         }
 
         stagMovement = player.GetComponent<StagMovement>();
+        PowerGlobeCollected(0);
 
         Reset();
     }
@@ -137,5 +141,11 @@ public class SpawnManager : BaseClass {
         }
         stagMovement.isLocked = false;
         isRespawning = false;
+    }
+
+    public void PowerGlobeCollected(int value)
+    {
+        collectedPowerGlobes += value;
+        powerGlobeText.text = collectedPowerGlobes.ToString() + " / " + powerPickups.Length;
     }
 }

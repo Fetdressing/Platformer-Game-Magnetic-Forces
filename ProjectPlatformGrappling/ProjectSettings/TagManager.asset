@@ -10,6 +10,7 @@ TagManager:
   - BreakerObject
   - Mud
   - SpawnPoint
+  - PowerGlobe
   layers:
   - Default
   - TransparentFX
