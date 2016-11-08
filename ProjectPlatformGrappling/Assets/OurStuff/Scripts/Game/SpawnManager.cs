@@ -131,14 +131,6 @@ public class SpawnManager : BaseClass {
         player.GetComponent<StagShooter>().Reset();
         player.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
 
-        try
-        {
-            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<MagneticPlacer>().Reset();
-        }
-        catch
-        {
-            Debug.Log("Ingen magneticplacer");
-        }
         stagMovement.isLocked = false;
         isRespawning = false;
     }

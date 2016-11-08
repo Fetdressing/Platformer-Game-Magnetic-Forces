@@ -131,6 +131,15 @@ public class AIMoveable : AIEntity {
         return false;
     }
 
+    public bool IsWalkableFront(float yOffsetCheck, float distance) //distance kan nog runt 8-10 vara lämpligt
+    {
+        if (Physics.Raycast(transform.position + new Vector3(0, yOffsetCheck, 0), transform.forward, distance, groundCheckLM))
+        {
+            return false;
+        }
+        return true;
+    }
+
     public void RotateTowards(Vector3 pos)
     {
         Vector3 modPos = new Vector3(pos.x, 0, pos.z);

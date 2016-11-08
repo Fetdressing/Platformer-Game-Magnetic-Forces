@@ -9,7 +9,7 @@ public class GuardPState : PatrolState { //patrol fast letar efter spelaren
             _AIMoveable.currPatrolPoint = _AIMoveable.GetPatrolPoint();
         }
 
-        if (_AIMoveable.currPatrolPoint == Vector3.zero || HasReached(_AIMoveable.transform.position, _AIMoveable.currPatrolPoint, 5, false))
+        if (_AIMoveable.currPatrolPoint == Vector3.zero || HasReached(_AIMoveable.transform.position, _AIMoveable.currPatrolPoint, 5, false) || !_AIMoveable.IsWalkableFront(0.5f, 5))
         {
             _AIMoveable.currPatrolPoint = _AIMoveable.GetPatrolPoint();
         }

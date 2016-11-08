@@ -80,6 +80,7 @@ public class PowerPickup : BaseClass {
 
     void Update()
     {
+        if (Time.timeScale == 0) return;
         if (player.gameObject.activeSelf == false) return;
         if (stagMovement.isLocked) return;
         if (playerChaseSpeed < 0.1f) return;
