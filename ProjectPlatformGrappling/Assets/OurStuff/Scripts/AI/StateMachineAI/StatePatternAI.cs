@@ -12,7 +12,8 @@ public class StatePatternAI {
     }
 
     public void UpdateLoop()
-    { 
+    {
+        if (entity == null) return;
         if (currState != null)
         {
             currState.Execute(entity);

@@ -277,7 +277,7 @@ public class StagMovement : BaseClass
                         ApplyExternalForce(hit.normal * 20);
                     }
                 }
-                else
+                else //om man inte är grounded så använder man ju en gammal slope? denna kan vara farlig att ha här
                 {
                     ApplyExternalForce(hit.normal * 20); // så man glider för slopes
                 }
@@ -343,6 +343,14 @@ public class StagMovement : BaseClass
         verVector = new Vector3(verVector.x, 0, verVector.z); //denna behöver vara under dash så att man kan dasha upp/ned oxå
 
         finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currMovementSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
+        if (IsWalkable(1.2f, 4, (horVector + verVector).normalized)) //dessa värden kan behöva justeras
+        {
+            
+        }
+        else
+        {
+            finalMoveDir *= 0.1f;
+        }
     }
 
     void Jump()
@@ -581,7 +589,33 @@ public class StagMovement : BaseClass
         }
     }
 
+    public bool IsWalkable(float yOffset, float distance, Vector3 direction)
+    {
+        //if(isGroundedRaycast)
+        //{
+        //    if (groundedSlope > maxSlopeGrounded) //lutning
+        //    {
+        //        if (Physics.Raycast(transform.position + new Vector3(0, yOffset, 0), direction, distance, groundCheckLM))
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //    return true; //man står på marken utan lutning, då ska man kunna gå
+        //}
+        RaycastHit rHit;
+        if(Physics.Raycast(transform.position + new Vector3(0, yOffset, 0), direction, out rHit, distance, groundCheckLM))
+        {
 
+            float angleValue = Vector3.Angle(rHit.normal, Vector3.up);
+            //Debug.Log(angleValue.ToString());
+
+            if (angleValue > maxSlopeGrounded)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public bool GetGrounded()
     {

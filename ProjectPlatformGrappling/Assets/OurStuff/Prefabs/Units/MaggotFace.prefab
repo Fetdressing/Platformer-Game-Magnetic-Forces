@@ -2202,7 +2202,7 @@ MonoBehaviour:
   walkASpeed: 0.7
   runASpeed: 2
   idleASpeed: 1
-  runSpeedThreshhold: 95
+  runSpeedThreshhold: 105
 --- !u!114 &114000014286629874
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -1191,6 +1191,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1000014055076688
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 224000012335639870}
+  - 222: {fileID: 222000012651950296}
+  - 114: {fileID: 114000010175744040}
+  m_Layer: 5
+  m_Name: ControlsInstructions
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1000014137850690
 GameObject:
   m_ObjectHideFlags: 1
@@ -1751,7 +1768,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010004750282}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.95, z: 0.81}
+  m_LocalPosition: {x: 0, y: 3.95, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -2829,6 +2846,33 @@ MonoBehaviour:
   - {r: 0.35532457, g: 0, b: 0.6691177, a: 1}
   - {r: 0.43382353, g: 0, b: 0.13463484, a: 1}
   fogColorChangingSpeed: 0.1
+--- !u!114 &114000010175744040
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014055076688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 2c94cecabecbf914a9b8fd0f9556bf99, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
 --- !u!114 &114000010187357378
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3597,7 +3641,12 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "G\xD6R S\xC5H\xC4R"
+  m_Text: "Welcome to my alpha-demo-test! This playtest is for testing ideas and hopefully
+    getting some feedback from you. \nWhat type of game is this aiming to be?\n-It's
+    a fast phased platformer, taking alot of inspiration from older platformer games
+    while also trying to feel abit unique. I want there to both be a speed run aspect
+    (so alot of emphasis on responsive controls and precision) but also to have a
+    somewhat soft feel, depending on what kind of gamer you are."
 --- !u!114 &114000012297794104
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -13506,6 +13555,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012404051424}
+--- !u!222 &222000012651950296
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014055076688}
 --- !u!222 &222000012869688298
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -13781,7 +13836,7 @@ RectTransform:
   m_Children:
   - {fileID: 224000011758395960}
   m_Father: {fileID: 224000014022138114}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 13.5, y: 14}
@@ -13918,6 +13973,24 @@ RectTransform:
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224000012335639870
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014055076688}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 224000014022138114}
+  m_RootOrder: 1
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -194, y: -122}
+  m_SizeDelta: {x: 389, y: 245}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224000012473668874
 RectTransform:
@@ -14126,6 +14199,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 224000011483502796}
+  - {fileID: 224000012335639870}
   - {fileID: 224000014139075802}
   - {fileID: 224000010947621328}
   m_Father: {fileID: 224000011911445782}
@@ -14187,10 +14261,10 @@ RectTransform:
   m_Children:
   - {fileID: 224000012307457140}
   m_Father: {fileID: 224000014022138114}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0.0000019073, y: 125}
+  m_AnchoredPosition: {x: 0.0000019073, y: 29}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &225000012888576864
