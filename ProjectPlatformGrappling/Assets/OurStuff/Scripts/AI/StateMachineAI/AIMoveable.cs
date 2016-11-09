@@ -25,6 +25,8 @@ public class AIMoveable : AIEntity {
     public LayerMask groundCheckLM;
 
     public float turnRatio = 10;
+
+    float maxSlopeGround = 28;
     //***speed and stats***
 
     //***patrol***
@@ -133,9 +135,17 @@ public class AIMoveable : AIEntity {
 
     public bool IsWalkableFront(float yOffsetCheck, float distance) //distance kan nog runt 8-10 vara lämpligt
     {
-        if (Physics.Raycast(transform.position + new Vector3(0, yOffsetCheck, 0), transform.forward, distance, groundCheckLM))
+        RaycastHit rHit;
+
+        if (Physics.Raycast(transform.position + new Vector3(0, yOffsetCheck, 0), transform.forward, out rHit, distance, groundCheckLM))
         {
-            return false;
+            float angleValue = Vector3.Angle(rHit.normal, Vector3.up);
+            //Debug.Log(angleValue.ToString());
+
+            if (angleValue > maxSlopeGround)
+            {
+                return false;
+            }
         }
         return true;
     }
