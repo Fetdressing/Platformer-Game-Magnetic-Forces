@@ -18,7 +18,7 @@ public class StagMovement : BaseClass
     public Transform stagObject; //denna roteras så det står korrekt
 
     private float startSpeed = 60;
-    private float jumpSpeed = 90;
+    private float jumpSpeed = 85;
     private float gravity = 140;
     private float stagSpeedMultMax = 1.5f;
     private float stagSpeedMultMin = 0.85f;
@@ -31,7 +31,7 @@ public class StagMovement : BaseClass
     private float jumpTimePoint = -5; //när man hoppas så den inte ska resetta stuff dirr efter man hoppat
     private int jumpAmount = 2; //hur många hopp man får
     private int jumpsAvaible = 0; //så man kan hoppa i luften also, förutsatt att man resettat den på marken
-    private float jumpCooldown = 0.3f;
+    private float jumpCooldown = 0.15f;
     public GameObject jumpEffectObject;
 
     [HideInInspector]public float dashTimePoint; //mud påverkar denna så att man inte kan dasha
@@ -329,6 +329,14 @@ public class StagMovement : BaseClass
         }
     }
 
+    void OnTriggerStay(Collider col)
+    {
+        if (col.tag == "BreakerObject")
+        {
+            cameraShaker.ShakeCamera(0.2f, 0.6f, true);
+        }
+    }
+
     void HandleMovement()
     {
         float stagSpeedMultiplier = 1.0f;
@@ -374,7 +382,14 @@ public class StagMovement : BaseClass
                     groundedRaycastObject.GetComponent<BreakerObject>().Break();
                 }
 
-                ySpeed = jumpSpeed;
+                if (ySpeed <= 0)
+                {
+                    ySpeed += jumpSpeed;
+                }
+                else
+                {
+                    ySpeed += (jumpSpeed * 0.8f); //mindre force när man redan har force
+                }
                 //animationH.Play(jump.name);
                 //animationH[jump.name].weight = 1.0f;
             }
