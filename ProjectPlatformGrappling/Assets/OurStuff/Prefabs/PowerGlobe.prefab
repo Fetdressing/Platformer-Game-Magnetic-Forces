@@ -113,7 +113,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010267190188}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 348.534, y: 215.6991, z: -2591.539}
+  m_LocalPosition: {x: -575.4848, y: 126.11578, z: -1505.296}
   m_LocalScale: {x: 0.46042597, y: 0.4604259, z: 0.4604259}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -289,7 +289,7 @@ MonoBehaviour:
   isLocked: 0
   pickUpObj: {fileID: 1000014119565378}
   hasBeenPicked: 0
-  playerChaseSpeed: 160
+  playerChaseSpeed: 180
   playerChaseDistance: 35
   powerWorth: 0.1
   respawnTime: 0
@@ -316,7 +316,7 @@ ParticleSystem:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013368882478}
-  serializedVersion: 2
+  serializedVersion: 4
   lengthInSec: 2
   startDelay:
     scalar: 0
@@ -354,12 +354,13 @@ ParticleSystem:
       m_RotationOrder: 4
     minMaxState: 0
   speed: 1
-  randomSeed: 0
   looping: 0
   prewarm: 0
   playOnAwake: 0
   moveWithTransform: 1
+  autoRandomSeed: 1
   scalingMode: 1
+  randomSeed: 0
   InitialModule:
     serializedVersion: 2
     enabled: 1

@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : BaseClass {
     public GameObject gameUIPanel;
     public GameObject menuUIPanel;
     public GameObject settingsUIPanel;
@@ -11,14 +12,22 @@ public class GameManager : MonoBehaviour {
     public GameObject goalDisplay; //aktiveras när man går i mål
 	// Use this for initialization
 	void Start () {
+        Init();
+	}
+
+    public override void Init()
+    {
+        base.Init();
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
         goalDisplay.SetActive(false);
         ToggleMenu(false);
-	}
-	
-	// Update is called once per frame
-	void LateUpdate () {
+    }
+
+    // Update is called once per frame
+    void LateUpdate () {
+        if (isLocked) return;
+
 	    if(Input.GetKeyDown(KeyCode.Escape))
         {
             ToggleMenu();
@@ -72,13 +81,24 @@ public class GameManager : MonoBehaviour {
 
     public void ToggleUI(GameObject uiM)
     {
+        if (isLocked) return;
+
         if (uiM.gameObject == gameUIPanel.gameObject) { gameUIPanel.SetActive(true); Cursor.visible = false; } else { gameUIPanel.SetActive(false); Cursor.visible = true; }
         if (uiM.gameObject == settingsUIPanel.gameObject) settingsUIPanel.SetActive(true); else settingsUIPanel.SetActive(false);
         if (uiM.gameObject == menuUIPanel.gameObject) menuUIPanel.SetActive(true); else menuUIPanel.SetActive(false);
     }
 
+    public void RestartLevel()
+    {
+        if (isLocked) return;
+        LevelLoader lLoader = FindObjectOfType(typeof(LevelLoader)) as LevelLoader;
+        string sceneToLoad = SceneManager.GetActiveScene().name;
+        lLoader.LoadLevel(sceneToLoad);
+    }
+
     public void ExitGame()
     {
+        if (isLocked) return;
         Application.Quit();
     }
 }

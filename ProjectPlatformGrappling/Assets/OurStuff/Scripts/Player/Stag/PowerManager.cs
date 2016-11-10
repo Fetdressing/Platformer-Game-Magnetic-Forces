@@ -66,6 +66,7 @@ public class PowerManager : BaseClass {
     }
     // Update is called once per frame
     void Update () {
+        if (isLocked) return;
         AddPower(powerDecay * Time.deltaTime);
 	}
 
@@ -153,6 +154,8 @@ public class PowerManager : BaseClass {
                 allRenderers[i].enabled = false;
             }
         }
+
+        activeCamera.GetComponent<CameraShaker>().ShakeCamera(0.7f, 4, true);
 
         StartCoroutine(DieDelayed());
     }
