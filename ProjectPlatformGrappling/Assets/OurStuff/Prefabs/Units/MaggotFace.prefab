@@ -2132,7 +2132,7 @@ MonoBehaviour:
   - {fileID: 4000010765921882}
   currPatrolPoint: {x: 0, y: 0, z: 0}
   randomPatrol_MaxDistance: 50
-  viewAngle: 38
+  viewAngle: 10
   minDistanceTarget: 30
   turnAnim: {fileID: 7400006, guid: 84ef7aabeb8284c4194fd554c172dc6b, type: 3}
 --- !u!114 &114000010488268410
@@ -2460,7 +2460,7 @@ ParticleSystem:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011263925110}
-  serializedVersion: 2
+  serializedVersion: 4
   lengthInSec: 5
   startDelay:
     scalar: 0
@@ -2498,12 +2498,13 @@ ParticleSystem:
       m_RotationOrder: 4
     minMaxState: 0
   speed: 1
-  randomSeed: 1111302376
   looping: 1
   prewarm: 0
   playOnAwake: 1
   moveWithTransform: 1
+  autoRandomSeed: 0
   scalingMode: 1
+  randomSeed: 1111302376
   InitialModule:
     serializedVersion: 2
     enabled: 1
