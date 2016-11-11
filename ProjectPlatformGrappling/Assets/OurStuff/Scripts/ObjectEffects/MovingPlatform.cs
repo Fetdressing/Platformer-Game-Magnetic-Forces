@@ -21,6 +21,8 @@ public class MovingPlatform : MonoBehaviour {
     public float force = 20000;
 
     private Vector3 vecToTarget = Vector3.zero;
+    [HideInInspector]
+    public Vector3 moveDirection = Vector3.zero;
     // Use this for initialization
     void Start () {
         thisTransform = this.transform;
@@ -34,7 +36,7 @@ public class MovingPlatform : MonoBehaviour {
         CheckReached();
 
         vecToTarget = (currTarget.position - thisTransform.position).normalized;
-
+        moveDirection = vecToTarget; //kan hämtas av tex playermovmentet
         //if (useForce == true)
         //{
         //    thisRigidbody.AddForce(vecToTarget * force * Time.deltaTime);
@@ -44,7 +46,7 @@ public class MovingPlatform : MonoBehaviour {
         //    thisRigidbody.MovePosition(thisTransform.position + vecToTarget * force * Time.deltaTime);
         //}
 
-        switch(moveType)
+        switch (moveType)
         {
             case MoveType.Force:
                 thisRigidbody.AddForce(vecToTarget * force * Time.deltaTime);

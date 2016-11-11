@@ -305,6 +305,14 @@ public class StagMovement : BaseClass
 
         if (hit.gameObject.tag == "MovingPlatform")
         {
+            MovingPlatform movingPlatform = hit.gameObject.GetComponent<MovingPlatform>();
+            Vector3 platToPlayer = (transform.position - hit.transform.position).normalized;
+
+            if (Vector3.Angle(movingPlatform.moveDirection, platToPlayer) < 90) //rör sig platformen mot spelaren va?
+            {
+                Debug.Log("Fixa mig!");
+            }
+
             if (hit.moveDirection.y < -0.9 && hit.normal.y > 0.5f)
             {
                 if (activePlatform != hit.transform)
