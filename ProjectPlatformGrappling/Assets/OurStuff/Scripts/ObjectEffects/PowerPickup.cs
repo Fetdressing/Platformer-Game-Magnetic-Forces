@@ -19,6 +19,7 @@ public class PowerPickup : BaseClass {
     public string[] acceptedTags;
     public ParticleTimed particlePicked;
     public AudioSource audioSource;
+    public AudioClip[] audioClips;
 
     public int globeValue = 1; //hur mycket "score" den är värd
     private SpawnManager spawnManager; //håller koll på hur många globes som plockats
@@ -144,7 +145,17 @@ public class PowerPickup : BaseClass {
         {
             StartCoroutine(Respawn());
         }
-        audioSource.Play();
+
+        if (audioClips.Length > 0)
+        {
+            int rand = Random.Range(0, audioClips.Length);
+            audioSource.PlayOneShot(audioClips[rand]);
+        }
+        else
+        {
+            audioSource.Play();
+        }
+
         pickUpObj.gameObject.SetActive(false);
     }
 }

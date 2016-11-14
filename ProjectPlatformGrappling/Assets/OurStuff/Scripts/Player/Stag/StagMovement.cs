@@ -86,7 +86,8 @@ public class StagMovement : BaseClass
     public Animation animationH;
 
     public AnimationClip runForward;
-    public AnimationClip runForwardAngle;
+    public AnimationClip runForwardRight;
+    public AnimationClip runForwardLeft;
     public AnimationClip idle;
     public AnimationClip idleAir;
     public AnimationClip jump;
@@ -140,7 +141,7 @@ public class StagMovement : BaseClass
         if (isLocked) return;
 
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(cameraHolder.forward.x, 0, cameraHolder.forward.z));
-        stagObject.rotation = Quaternion.Slerp(stagObject.rotation, lookRotation, Time.deltaTime * 20);
+        stagObject.rotation = Quaternion.Slerp(stagObject.rotation, lookRotation, deltaTime * 20);
 
         if((moveSpeedMultTimePoint + moveSpeedMultDuration) < Time.time)
         {
@@ -219,9 +220,9 @@ public class StagMovement : BaseClass
         }
 
         // apply gravity acceleration to vertical speed:
-        ySpeed -= gravity * Time.deltaTime;
+        ySpeed -= gravity * deltaTime;
         Vector3 yVector = new Vector3(0, ySpeed, 0);
-        characterController.Move((yVector) * Time.deltaTime);
+        characterController.Move((yVector) * deltaTime);
 
         if (activePlatform != null)
         {
@@ -245,10 +246,10 @@ public class StagMovement : BaseClass
         if(GetGroundedTransform(groundCheckObject) != activePlatform)
             activePlatform = null; //kolla om platformen fortfarande finns under mig eller ej
 
-        externalVel = Vector3.Lerp(externalVel, Vector3.zero, Time.deltaTime * 10); //ta sakta bort den externa forcen
+        externalVel = Vector3.Lerp(externalVel, Vector3.zero, deltaTime * 10); //ta sakta bort den externa forcen
 
         HandleMovement(); //moddar finalMoveDir
-        characterController.Move((finalMoveDir + dashVel + externalVel) * Time.deltaTime);
+        characterController.Move((finalMoveDir + dashVel + externalVel) * deltaTime);
 
 
         if (Input.GetKeyDown(KeyCode.C))
@@ -293,8 +294,9 @@ public class StagMovement : BaseClass
             }
         
 
-            if (hit.moveDirection.y < -0.9 && hit.normal.y > 0.5f)
+            if (hit.normal.y < 0.5f) //slå i taket
             {
+                ySpeed = 0;
                 //dashUsed = false; //när man blir grounded så kan man använda dash igen
                 //if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
                 //{
@@ -305,15 +307,10 @@ public class StagMovement : BaseClass
 
         if (hit.gameObject.tag == "MovingPlatform")
         {
-            MovingPlatform movingPlatform = hit.gameObject.GetComponent<MovingPlatform>();
-            Vector3 platToPlayer = (transform.position - hit.transform.position).normalized;
-
-            if (Vector3.Angle(movingPlatform.moveDirection, platToPlayer) < 90) //rör sig platformen mot spelaren va?
-            {
-                Debug.Log("Fixa mig!");
-            }
-
-            if (hit.moveDirection.y < -0.9 && hit.normal.y > 0.5f)
+            //MovingPlatform movingPlatform = hit.gameObject.GetComponent<MovingPlatform>();
+            //Vector3 platToPlayer = (transform.position - hit.point).normalized;
+            
+            if (hit.moveDirection.y < -0.9f && hit.normal.y > 0.5f)
             {
                 if (activePlatform != hit.transform)
                 {
@@ -322,10 +319,12 @@ public class StagMovement : BaseClass
                 }
                 activePlatform = hit.transform;
             }
-            else //knuffa spelaren lite för denne kom emot en kant, kolla ifall den rör sig mot en? då knockar den ju bort en, bättre än att den alltid gör det?
-            {
-                ApplyExternalForce((transform.position - hit.transform.position).normalized * knockForceMovingPlatform); //knocked away
-            }
+
+            //if (Vector3.Angle(movingPlatform.moveDirection, platToPlayer) < 80) //rör sig platformen mot spelaren va?//knuffa spelaren lite för denne kom emot en kant, kolla ifall den rör sig mot en? då knockar den ju bort en, bättre än att den alltid gör det?
+            //{
+            //    Debug.Log(Time.time.ToString());
+            //    ApplyExternalForce((transform.position - hit.transform.position).normalized * knockForceMovingPlatform); //knocked away
+            //}
         }
     }
 
@@ -413,19 +412,26 @@ public class StagMovement : BaseClass
         {
             if (ver > 0.1f || ver < -0.1f) //för sig frammåt/bakåt
             {
-
-                if (hor > 0.1f || hor < -0.1f) //rär sig sidledes
+                if (hor > 0.1f) //rär sig sidledes
                 {
-                    animationH.CrossFade(runForwardAngle.name, fadeLengthA);
+                    animationH.CrossFade(runForwardRight.name, fadeLengthA);
+                }
+                else if(hor < -0.1f)
+                {
+                    animationH.CrossFade(runForwardLeft.name, fadeLengthA);
                 }
                 else
                 {
                     animationH.CrossFade(runForward.name, fadeLengthA);
                 }
             }
-            else if (hor > 0.1f || hor < -0.1f) //bara rör sig sidledes
+            else if (hor > 0.1f) //rär sig sidledes
             {
-                animationH.CrossFade(runForwardAngle.name, fadeLengthA);
+                animationH.CrossFade(runForwardRight.name, fadeLengthA);
+            }
+            else if(hor < -0.1f)
+            {
+                animationH.CrossFade(runForwardLeft.name, fadeLengthA);
             }
             else
             {
@@ -566,9 +572,9 @@ public class StagMovement : BaseClass
     {
         while(tR.time > 0.0f)
         {
-            tR.time -= 3 * Time.deltaTime;
-            tR.startWidth -= Time.deltaTime;
-            tR.endWidth -= Time.deltaTime;
+            tR.time -= 3 * deltaTime;
+            tR.startWidth -= deltaTime;
+            tR.endWidth -= deltaTime;
             yield return new WaitForSeconds(0.01f);
         }
     }

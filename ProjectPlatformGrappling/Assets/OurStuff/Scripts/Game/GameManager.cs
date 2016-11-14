@@ -27,8 +27,10 @@ public class GameManager : BaseClass {
     // Update is called once per frame
     void LateUpdate () {
         if (isLocked) return;
+        deltaTime = Mathf.Min(Time.deltaTime, maxDeltaTime);
 
-	    if(Input.GetKeyDown(KeyCode.Escape))
+
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             ToggleMenu();
         }

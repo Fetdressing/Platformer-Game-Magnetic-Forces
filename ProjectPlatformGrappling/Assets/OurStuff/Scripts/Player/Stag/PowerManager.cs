@@ -11,7 +11,8 @@ public class PowerManager : BaseClass {
     private StagMovement stagMovement;
     private StagShooter stagShooter;
 
-    private float[] uvStartOffsetHorns = { 0, 0};
+    private float[] uvStartOffsetHorns = { 0, 1.0f};
+    private float uvOffsetMult = 0.3f; //hur mkt power från hornen som ska tas bort
     public Light[] lifeLights; //fadear med powern
     public float lightsMaxIntensity = 2;
 
@@ -85,7 +86,7 @@ public class PowerManager : BaseClass {
 
         float offsetV = (currPower / maxPower);
 
-        hornRenderer.material.SetTextureOffset("_MainTex", new Vector2(uvStartOffsetHorns[0], uvStartOffsetHorns[1] - offsetV));
+        hornRenderer.material.SetTextureOffset("_MainTex", new Vector2(uvStartOffsetHorns[0], uvStartOffsetHorns[1] - (offsetV * uvOffsetMult)));
         emissiveStagMaterial.SetColor("_EmissionColor", new Color(1,1,1) * offsetV);
         for (int i = 0; i < lifeLights.Length; i++)
         {
@@ -110,7 +111,7 @@ public class PowerManager : BaseClass {
 
         float offsetV = (currPower / maxPower);
 
-        hornRenderer.material.SetTextureOffset("_MainTex", new Vector2(uvStartOffsetHorns[0], uvStartOffsetHorns[1] - offsetV));
+        hornRenderer.material.SetTextureOffset("_MainTex", new Vector2(uvStartOffsetHorns[0], uvStartOffsetHorns[1] - (offsetV * uvOffsetMult)));
         emissiveStagMaterial.SetColor("_EmissionColor", new Color(1, 1, 1) * offsetV);
         for (int i = 0; i < lifeLights.Length; i++)
         {
