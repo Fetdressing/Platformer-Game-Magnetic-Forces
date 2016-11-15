@@ -28,8 +28,6 @@ public class PowerManager : BaseClass {
     [HideInInspector]
     public Vector3 deathLocation;
     public GameObject deathParticleSystemObj;
-    [HideInInspector]
-    public GameObject deathParticleSystemSpawned;
     public float delayedDeathTime = 0;
     public GameObject animationObj;
     public AnimationClip deathAnimation;
@@ -140,9 +138,12 @@ public class PowerManager : BaseClass {
         //{
         //    aiBase.GetComponent<AgentBase>().agent.enabled = false;
         //}
-        if (deathParticleSystemSpawned != null)
+        if (deathParticleSystemObj != null)
         {
-            deathParticleSystemSpawned.GetComponent<ParticleTimed>().StartParticleSystem();
+            GameObject tempPar = Instantiate(deathParticleSystemObj.gameObject);
+            tempPar.transform.position = transform.position;
+            Destroy(tempPar, delayedDeathTime);
+            //deathParticleSystemSpawned.GetComponent<ParticleTimed>().StartParticleSystem();
         }
         if (deathAnimation != null)
         {

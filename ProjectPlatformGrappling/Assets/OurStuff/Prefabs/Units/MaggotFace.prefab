@@ -877,7 +877,7 @@ GameObject:
   - 114: {fileID: 114000010354555118}
   - 114: {fileID: 114000012839241216}
   - 54: {fileID: 54000011023978974}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: MaggotFace (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2169,6 +2169,8 @@ MonoBehaviour:
   isLocked: 0
   audioClip: {fileID: 8300000, guid: 9cf25e02bb98a2e41ad9e0459be3def0, type: 3}
   volume: 0.1
+  dontRepeatTags:
+  - MovingPlatforms
 --- !u!114 &114000011676273912
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2183,6 +2185,8 @@ MonoBehaviour:
   isLocked: 0
   audioClip: {fileID: 8300000, guid: 9cf25e02bb98a2e41ad9e0459be3def0, type: 3}
   volume: 0.1
+  dontRepeatTags:
+  - MovingPlatforms
 --- !u!114 &114000012839241216
 MonoBehaviour:
   m_ObjectHideFlags: 1

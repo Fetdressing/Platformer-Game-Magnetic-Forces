@@ -7,6 +7,9 @@ public class HitSound : BaseClass {
     private AudioSource audioSource;
     public AudioClip audioClip;
     public float volume = 0.4f;
+
+    public string[] dontRepeatTags = { "MovingPlatform"}; //grejer som bara ska kunna träffas en gång i streck
+    private Transform lastHit;
 	// Use this for initialization
 	void Start () {
         Init();
@@ -20,6 +23,27 @@ public class HitSound : BaseClass {
 
     void OnTriggerEnter(Collider col)
     {
-        audioSource.PlayOneShot(audioClip, volume);
+        bool isRepeatTag = false;
+        for(int i = 0; i < dontRepeatTags.Length; i++)
+        {
+            if(col.tag == dontRepeatTags[i])
+            {
+                isRepeatTag = true;
+                break;
+            }
+        }
+
+        if (isRepeatTag)
+        {
+            if (lastHit != col.transform)
+            {
+                audioSource.PlayOneShot(audioClip, volume);
+            }
+            lastHit = col.transform;
+        }
+        else
+        {
+            audioSource.PlayOneShot(audioClip, volume);
+        }
     }
 }

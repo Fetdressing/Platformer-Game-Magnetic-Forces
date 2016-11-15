@@ -13,6 +13,7 @@ public class SpawnManager : BaseClass {
 
     private List<Transform> spawnPoints = new List<Transform>();
     public Transform startSpawn;
+    public GameObject spawnObject; //som ett particlesystem
 
     private bool isRespawning;
 
@@ -130,6 +131,12 @@ public class SpawnManager : BaseClass {
         player.GetComponent<StagMovement>().Reset();
         player.GetComponent<StagShooter>().Reset();
         player.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+
+        if(spawnObject != null)
+        {
+            GameObject tempPar = Instantiate(spawnObject, player.position, Quaternion.identity) as GameObject;
+            Destroy(tempPar.gameObject, 5);
+        }
 
         stagMovement.isLocked = false;
         isRespawning = false;

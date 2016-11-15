@@ -84,6 +84,7 @@ public class StagMovement : BaseClass
 
     [Header("Animation")]
     public Animation animationH;
+    public float animationSpeedMult = 2.0f; //en overall speed som sätts i början
 
     public AnimationClip runForward;
     public AnimationClip runForwardRight;
@@ -108,6 +109,13 @@ public class StagMovement : BaseClass
         cameraObj = cameraHolder.GetComponentsInChildren<Transform>()[1].transform;
         cameraShaker = cameraObj.GetComponent<CameraShaker>();
         groundChecker = GetComponentsInChildren<GroundChecker>()[0];
+
+        animationH[runForward.name].speed = animationSpeedMult;
+        animationH[runForwardRight.name].speed = animationSpeedMult;
+        animationH[runForwardLeft.name].speed = animationSpeedMult;
+        animationH[idle.name].speed = animationSpeedMult;
+        animationH[idleAir.name].speed = animationSpeedMult;
+        animationH[jump.name].speed = animationSpeedMult;
 
         stagRootJointStartY = stagRootJoint.localPosition.y;
 
@@ -220,9 +228,12 @@ public class StagMovement : BaseClass
         }
 
         // apply gravity acceleration to vertical speed:
-        ySpeed -= gravity * deltaTime;
-        Vector3 yVector = new Vector3(0, ySpeed, 0);
-        characterController.Move((yVector) * deltaTime);
+        if (activePlatform == null)
+        {
+            ySpeed -= gravity * deltaTime;
+            Vector3 yVector = new Vector3(0, ySpeed, 0);
+            characterController.Move((yVector) * deltaTime);
+        }
 
         if (activePlatform != null)
         {
@@ -243,8 +254,10 @@ public class StagMovement : BaseClass
             activeLocalPlatformPoint = activePlatform.InverseTransformPoint(transform.position);
         }
 
-        if(GetGroundedTransform(groundCheckObject) != activePlatform)
+        if (GetGroundedTransform(groundCheckObject, 2) != activePlatform)
+        {
             activePlatform = null; //kolla om platformen fortfarande finns under mig eller ej
+        }
 
         externalVel = Vector3.Lerp(externalVel, Vector3.zero, deltaTime * 10); //ta sakta bort den externa forcen
 
@@ -309,7 +322,7 @@ public class StagMovement : BaseClass
         {
             //MovingPlatform movingPlatform = hit.gameObject.GetComponent<MovingPlatform>();
             //Vector3 platToPlayer = (transform.position - hit.point).normalized;
-            
+            transform.position = new Vector3(transform.position.x, hit.point.y - 0.2f, transform.position.z);
             if (hit.moveDirection.y < -0.9f && hit.normal.y > 0.5f)
             {
                 if (activePlatform != hit.transform)
@@ -703,6 +716,27 @@ public class StagMovement : BaseClass
     {
         RaycastHit rHit;
         if (Physics.Raycast(tChecker.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, groundedCheckDistance, groundCheckLM))
+        {
+            if (rHit.transform == this.transform || rHit.normal.y < 0.5f) { return transform; } //MEH DEN SKA EJ COLLIDA MED SIG SJÄLV
+
+            groundedSlope = GetSlope(rHit.normal);
+            groundedNormal = rHit.normal;
+
+            if (groundedSlope > maxSlopeGrounded) { return transform; }
+
+            groundedRaycastObject = rHit.transform;
+            return rHit.transform;
+        }
+        else
+        {
+            return transform;
+        }
+    }
+
+    public Transform GetGroundedTransform(Transform tChecker, float distance) //får den transformen man står på, från en annan utgångspunkt
+    {
+        RaycastHit rHit;
+        if (Physics.Raycast(tChecker.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, distance, groundCheckLM))
         {
             if (rHit.transform == this.transform || rHit.normal.y < 0.5f) { return transform; } //MEH DEN SKA EJ COLLIDA MED SIG SJÄLV
 
