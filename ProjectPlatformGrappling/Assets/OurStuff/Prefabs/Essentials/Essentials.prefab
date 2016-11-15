@@ -4706,7 +4706,7 @@ MonoBehaviour:
   maxDistance: 38
   minDistance: 5
   xSpeed: 600
-  ySpeed: 220
+  ySpeed: 340
   yMinLimit: -80
   yMaxLimit: 85
   zoomRate: 30
@@ -5041,7 +5041,7 @@ CharacterController:
   serializedVersion: 2
   m_Height: 1
   m_Radius: 0.86
-  m_SlopeLimit: 45
+  m_SlopeLimit: 65
   m_StepOffset: 1
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001

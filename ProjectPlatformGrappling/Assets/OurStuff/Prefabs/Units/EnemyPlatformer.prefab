@@ -1794,7 +1794,7 @@ MonoBehaviour:
   currMovementSpeed: 0
   normalMoveSpeed: 35
   runMoveSpeed: 30
-  gravity: 10
+  gravity: 40
   groundCheckLM:
     serializedVersion: 2
     m_Bits: 536870913

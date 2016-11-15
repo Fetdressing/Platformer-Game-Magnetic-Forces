@@ -77,7 +77,7 @@ public class StagMovement : BaseClass
 
     public LayerMask groundCheckLM;
     private float groundedTimePoint = 0; //när man blev grounded
-    private float maxSlopeGrounded = 45; //vilken vinkel det som mest får skilja på ytan och vector3.down när man kollar grounded
+    private float maxSlopeGrounded = 70; //vilken vinkel det som mest får skilja på ytan och vector3.down när man kollar grounded
     private float groundedSlope = 0;
     private Vector3 groundedNormal = Vector3.zero;
     private GroundChecker groundChecker; //så man kan resetta stuff till camerashake tex
@@ -130,7 +130,7 @@ public class StagMovement : BaseClass
 
         dashVel = new Vector3(0, 0, 0);
         externalVel = new Vector3(0, 0, 0);
-        ySpeed = 0;
+        ySpeed = -gravity * 0.01f; //nollställer ej helt
         currExternalSpeedMult = 1.0f;
 
         dashTimePoint = 0;
@@ -178,7 +178,7 @@ public class StagMovement : BaseClass
             //dashUsed = false; //när man blir grounded så kan man använda dash igen
             if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
             {
-                ySpeed = 0; // grounded character has vSpeed = 0...
+                ySpeed = -gravity * 0.01f; //nollställer ej helt // grounded character has vSpeed = 0...
             }
         }
 
@@ -302,18 +302,18 @@ public class StagMovement : BaseClass
                 {
                     dashUsed = true;
                     jumpsAvaible = jumpAmount;
-                    ySpeed = 0; // grounded character has vSpeed = 0...
+                    ySpeed = -gravity * 0.01f; //nollställer ej helt // grounded character has vSpeed = 0...
                 }
             }
         
 
             if (hit.normal.y < 0.5f) //slå i taket
             {
-                ySpeed = 0;
+                ySpeed = -gravity * 0.01f; //nollställer ej helt
                 //dashUsed = false; //när man blir grounded så kan man använda dash igen
                 //if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
                 //{
-                //    ySpeed = 0; // grounded character has vSpeed = 0...
+                //    ySpeed = -gravity * 0.01f; //nollställer ej helt // grounded character has vSpeed = 0...
                 //}
             }
         }
@@ -395,7 +395,7 @@ public class StagMovement : BaseClass
                 jumpTimePoint = Time.time;
 
                 if (ySpeed < 0) //ska motverka gravitationen, behövs ej atm?
-                    ySpeed = 0;
+                    ySpeed = 0; //nollställer ej helt
 
                 if (groundedRaycastObject != null && groundedRaycastObject.tag == "BreakerObject") //breakar objekt om man hoppar på dem
                 {
@@ -494,7 +494,7 @@ public class StagMovement : BaseClass
 
     IEnumerator MoveDash(Vector3 dir)
     {
-        ySpeed = 0;
+        ySpeed = -gravity * 0.01f; //nollställer ej helt
         dashUsed = true;
         ToggleDashEffect(true);
         powerManager.AddPower(-dashPowerCost);

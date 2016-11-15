@@ -33,7 +33,10 @@ public class AIPlatformer : AICharacterController
 
         if (cController.isGrounded)
         {
-            upVelocity = 0;
+            if (upVelocity < -gravity)
+            {
+                upVelocity = -gravity; //noll ställ den inte helt, så den hela tiden åker ned sakta
+            }
         }
 
         Vector3 upVector = new Vector3(0, upVelocity * Time.deltaTime, 0);
