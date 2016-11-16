@@ -5685,7 +5685,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 2bca4a91d2fddd7468938057987b7e40, type: 3}
       propertyPath: m_RootOrder
-      value: 15
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 2bca4a91d2fddd7468938057987b7e40, type: 3}
       propertyPath: m_Name
@@ -7422,7 +7422,7 @@ Transform:
   - {fileID: 835538917}
   - {fileID: 2028229620}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 15
 --- !u!1001 &301831504
 Prefab:
   m_ObjectHideFlags: 0

@@ -44,6 +44,10 @@ public class Mud : BaseClass { //slöar ner och gör så att spelaren inte kan d
     {
         if((timePointEntered + 0.2f) > Time.time)
         {
+            if(stagMovement.ySpeed > 0) //försöker hoppa
+            {
+                Splash(stagMovement.transform.position);
+            }
             stagMovement.ySpeed = -10;
             stagMovement.dashTimePoint = Time.time;
             stagMovement.ApplySpeedMultiplier(moveSpeedChange, 0.2f);
@@ -74,7 +78,7 @@ public class Mud : BaseClass { //slöar ner och gör så att spelaren inte kan d
         }
     }
 
-    void Splash(Vector3 pos)
+    public void Splash(Vector3 pos)
     {
         if (splashPool.Count <= 0) return;
         if (splashTimer > Time.time) return;
