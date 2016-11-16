@@ -7418,6 +7418,9 @@ Transform:
   - {fileID: 1010708037}
   - {fileID: 1330503711}
   - {fileID: 92922521}
+  - {fileID: 1219864821}
+  - {fileID: 835538917}
+  - {fileID: 2028229620}
   m_Father: {fileID: 0}
   m_RootOrder: 14
 --- !u!1001 &301831504
@@ -21322,6 +21325,90 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 982a4a75f89700c498008d3f2040d595, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &835538916
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 835538917}
+  - 65: {fileID: 835538919}
+  - 114: {fileID: 835538918}
+  m_Layer: 11
+  m_Name: FogStarter (13)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &835538917
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 835538916}
+  m_LocalRotation: {x: -0, y: 0.30722153, z: -0, w: 0.95163804}
+  m_LocalPosition: {x: -437, y: -340, z: -1266}
+  m_LocalScale: {x: 400.00067, y: 400, z: 400.00067}
+  m_LocalEulerAnglesHint: {x: 0, y: 36.016003, z: 0}
+  m_Children: []
+  m_Father: {fileID: 299459759}
+  m_RootOrder: 13
+--- !u!114 &835538918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 835538916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f225f3b3b7e58a2499552fdbead15c76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLocked: 0
+  isTriggered: 0
+  continous: 1
+  collisionExtent: 300
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 256
+  psActivated: {fileID: 0}
+  fEventStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1088178605}
+        m_MethodName: StartfogDensityChange
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 700
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: FunctionEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  fEventExit:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: FunctionEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  audioActive: {fileID: 0}
+  audioDeactive: {fileID: 0}
+--- !u!65 &835538919
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 835538916}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &839338919
 Prefab:
   m_ObjectHideFlags: 0
@@ -30956,6 +31043,90 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1218094283}
   m_Mesh: {fileID: 4300000, guid: 39e1c4e3b81e95c4c84a4fdf30a904ea, type: 2}
+--- !u!1 &1219864820
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1219864821}
+  - 65: {fileID: 1219864823}
+  - 114: {fileID: 1219864822}
+  m_Layer: 11
+  m_Name: FogStarter (12)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1219864821
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1219864820}
+  m_LocalRotation: {x: -0, y: 0.30722153, z: -0, w: 0.95163804}
+  m_LocalPosition: {x: -74, y: -340, z: -1555}
+  m_LocalScale: {x: 400.00067, y: 400, z: 400.00067}
+  m_LocalEulerAnglesHint: {x: 0, y: 36.016003, z: 0}
+  m_Children: []
+  m_Father: {fileID: 299459759}
+  m_RootOrder: 12
+--- !u!114 &1219864822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1219864820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f225f3b3b7e58a2499552fdbead15c76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLocked: 0
+  isTriggered: 0
+  continous: 1
+  collisionExtent: 300
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 256
+  psActivated: {fileID: 0}
+  fEventStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1088178605}
+        m_MethodName: StartfogDensityChange
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 200
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: FunctionEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  fEventExit:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: FunctionEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  audioActive: {fileID: 0}
+  audioDeactive: {fileID: 0}
+--- !u!65 &1219864823
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1219864820}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1220787083
 Prefab:
   m_ObjectHideFlags: 0
@@ -51706,16 +51877,6 @@ Prefab:
       propertyPath: m_Name
       value: ESSENTIALS
       objectReference: {fileID: 0}
-    - target: {fileID: 224000010436884462, guid: ecd38ba538801b04db904a661134a689,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011114611504, guid: ecd38ba538801b04db904a661134a689,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 224000010721061366, guid: ecd38ba538801b04db904a661134a689,
         type: 2}
       propertyPath: m_AnchorMax.y
@@ -51726,14 +51887,14 @@ Prefab:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 198000010572112006, guid: ecd38ba538801b04db904a661134a689,
+    - target: {fileID: 224000010436884462, guid: ecd38ba538801b04db904a661134a689,
         type: 2}
-      propertyPath: randomSeed
-      value: 1539720421
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 198000010572112006, guid: ecd38ba538801b04db904a661134a689,
+    - target: {fileID: 224000011114611504, guid: ecd38ba538801b04db904a661134a689,
         type: 2}
-      propertyPath: moveWithTransform
+      propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -53241,6 +53402,90 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e12e4ba46625f34dbcd03b88efda792, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &2028229619
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 2028229620}
+  - 65: {fileID: 2028229622}
+  - 114: {fileID: 2028229621}
+  m_Layer: 11
+  m_Name: FogStarter (14)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2028229620
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2028229619}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 107, y: -340, z: -1866}
+  m_LocalScale: {x: 400.00067, y: 400, z: 400.00067}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 299459759}
+  m_RootOrder: 14
+--- !u!114 &2028229621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2028229619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f225f3b3b7e58a2499552fdbead15c76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLocked: 0
+  isTriggered: 0
+  continous: 1
+  collisionExtent: 200
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 256
+  psActivated: {fileID: 0}
+  fEventStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1088178605}
+        m_MethodName: StartfogDensityChange
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 700
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: FunctionEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  fEventExit:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: FunctionEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  audioActive: {fileID: 0}
+  audioDeactive: {fileID: 0}
+--- !u!65 &2028229622
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2028229619}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2028332572
 Prefab:
   m_ObjectHideFlags: 0
