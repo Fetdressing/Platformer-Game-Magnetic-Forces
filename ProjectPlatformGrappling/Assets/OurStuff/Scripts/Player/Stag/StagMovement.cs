@@ -322,7 +322,7 @@ public class StagMovement : BaseClass
         {
             //MovingPlatform movingPlatform = hit.gameObject.GetComponent<MovingPlatform>();
             //Vector3 platToPlayer = (transform.position - hit.point).normalized;
-            transform.position = new Vector3(transform.position.x, hit.point.y - 0.2f, transform.position.z);
+            //transform.position = new Vector3(transform.position.x, hit.point.y - 0.2f, transform.position.z);
             if (hit.moveDirection.y < -0.9f && hit.normal.y > 0.5f)
             {
                 if (activePlatform != hit.transform)

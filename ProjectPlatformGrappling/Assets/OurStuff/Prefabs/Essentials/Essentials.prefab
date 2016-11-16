@@ -184,7 +184,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000012055689892}
   - 137: {fileID: 137000013060747340}
-  m_Layer: 0
+  m_Layer: 27
   m_Name: DeerHorn2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -743,7 +743,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000012642525218}
   - 137: {fileID: 137000010550600080}
-  m_Layer: 0
+  m_Layer: 27
   m_Name: SpiritDeer1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3212,7 +3212,7 @@ Light:
   m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967037
+    m_Bits: 4160749309
   m_Lightmapping: 4
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -6850,7 +6850,7 @@ ParticleSystem:
   moveWithTransform: 1
   autoRandomSeed: 1
   scalingMode: 1
-  randomSeed: 1539720421
+  randomSeed: -834041290
   InitialModule:
     serializedVersion: 2
     enabled: 1
@@ -7528,7 +7528,7 @@ ParticleSystem:
           rgba: 16633669
         key1:
           serializedVersion: 2
-          rgba: 2498493238
+          rgba: 2495806262
         key2:
           serializedVersion: 2
           rgba: 570425343
@@ -7548,7 +7548,7 @@ ParticleSystem:
           serializedVersion: 2
           rgba: 0
         ctime0: 0
-        ctime1: 18311
+        ctime1: 18890
         ctime2: 65535
         ctime3: 0
         ctime4: 0
@@ -16264,7 +16264,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -434.5, y: -293}
+  m_AnchoredPosition: {x: -800, y: 0}
   m_SizeDelta: {x: 435, y: 560}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224000011501570640
