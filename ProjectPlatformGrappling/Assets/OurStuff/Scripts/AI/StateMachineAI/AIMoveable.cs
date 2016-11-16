@@ -28,7 +28,9 @@ public class AIMoveable : AIEntity {
     [Header("Move Checks")]
     public LayerMask groundCheckLM;
     float maxSlopeGround = 28;
-    public float yHeightOffsetCheck = 0;
+    public float yHeightOffsetCheck = 1;
+    public float forwardCheckDistance = 15;
+    public float fallDistanceCheck = 40; //hur långt den ska kolla ned ifall det är ett stup eller ej, 0 så används standard värde från statesen
     //***speed and stats***
 
     //***patrol***
@@ -36,6 +38,8 @@ public class AIMoveable : AIEntity {
     public Transform[] patrolPoints;
     protected int currPatrolPointIndex = 0;
     [HideInInspector] public Vector3 currPatrolPoint = Vector3.zero;
+    protected float newPartrolCD = 2.0f; //behövs en cd så de inte fuckar sönder
+    protected float newPatrolTimer = 0.0f;
 
     public float randomPatrol_MaxDistance = 50;
     protected Vector3 startPosition;
@@ -57,6 +61,8 @@ public class AIMoveable : AIEntity {
     public override void Reset() //kallas i AIEntity
     {
         base.Reset();
+        newPatrolTimer = 0.0f;
+
         currMovementSpeed = normalMoveSpeed;
         currDetectRange = normalDetectRange;
 
@@ -71,6 +77,9 @@ public class AIMoveable : AIEntity {
 
     public virtual Vector3 GetPatrolPoint()
     {
+        if (newPatrolTimer > Time.time) return Vector3.zero;
+        newPatrolTimer = Time.time + newPartrolCD;
+
         if(patrolPoints.Length == 0)
         {
             //helt random
@@ -128,23 +137,18 @@ public class AIMoveable : AIEntity {
 
     public bool IsWalkable()
     {
-        if (Physics.Raycast(transform.position + new Vector3(0, yHeightOffsetCheck, 0) + (transform.forward * 4), Vector3.down, 15, groundCheckLM))
+        if (Physics.Raycast(transform.position + new Vector3(0, yHeightOffsetCheck, 0) + (transform.forward * 4), Vector3.down, fallDistanceCheck, groundCheckLM))
         {
             return true;
         }
         return false;
     }
 
-    public bool IsWalkableFront(float yOffsetCheck, float distance) //distance kan nog runt 8-10 vara lämpligt
+    public bool IsWalkableFront() //distance kan nog runt 8-10 vara lämpligt
     {
         RaycastHit rHit;
 
-        if(yHeightOffsetCheck > -0.01f && yHeightOffsetCheck < 0.01f)
-        {
-            yOffsetCheck = yHeightOffsetCheck;
-        }
-
-        if (Physics.Raycast(transform.position + new Vector3(0, yOffsetCheck, 0), transform.forward, out rHit, distance, groundCheckLM))
+        if (Physics.Raycast(transform.position + new Vector3(0, yHeightOffsetCheck, 0), transform.forward, out rHit, forwardCheckDistance, groundCheckLM))
         {
             float angleValue = Vector3.Angle(rHit.normal, Vector3.up);
             //Debug.Log(angleValue.ToString());

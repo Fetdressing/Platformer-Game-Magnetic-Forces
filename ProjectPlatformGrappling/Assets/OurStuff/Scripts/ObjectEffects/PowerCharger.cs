@@ -15,7 +15,8 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
 
     private ParticleSystem ps;
     private Light lightActive;
-    public AudioSource activeAudio;
+    private AudioSource audioSource;
+    public AudioClip activeAudio;
 
     //ett particlesystem på den som de påverkar oxå, eller linerenderer
     private bool isEffectActive = false;
@@ -43,6 +44,7 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
         thisColliders = thisTransform.GetComponentsInChildren<Collider>();
         ps = thisTransform.GetComponent<ParticleSystem>();
         lightActive = thisTransform.GetComponent<Light>();
+        audioSource = GetComponent<AudioSource>();
 
         try
         {
@@ -100,7 +102,7 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
 
             if(activeAudio != null)
             {
-                activeAudio.Play();
+                audioSource.PlayOneShot(activeAudio);
             }
 
             pM.AddPower(-(pM.powerDecay * decayPowerMultiplayer * Time.deltaTime), maxPowerPercentage);
@@ -109,7 +111,7 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
         {
             if (activeAudio != null)
             {
-                activeAudio.Stop();
+                audioSource.Stop();
             }
 
             pM = null;

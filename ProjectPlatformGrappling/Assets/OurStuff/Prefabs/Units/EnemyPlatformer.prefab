@@ -1795,14 +1795,16 @@ MonoBehaviour:
   normalMoveSpeed: 35
   runMoveSpeed: 30
   gravity: 40
+  turnRatio: 10
   groundCheckLM:
     serializedVersion: 2
     m_Bits: 536870913
-  turnRatio: 10
+  yHeightOffsetCheck: 1
+  forwardCheckDistance: 15
+  fallDistanceCheck: 20
   patrolPoints: []
   currPatrolPoint: {x: 0, y: 0, z: 0}
   randomPatrol_MaxDistance: 50
-  traverseRCCheckOrigin: {fileID: 4000012896554472}
 --- !u!114 &114000013056214650
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1985,7 +1987,7 @@ CharacterController:
   serializedVersion: 2
   m_Height: 5.43
   m_Radius: 1.8
-  m_SlopeLimit: 70
+  m_SlopeLimit: 60
   m_StepOffset: 2.63
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001

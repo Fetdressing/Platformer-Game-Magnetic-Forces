@@ -1248,7 +1248,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010602123804}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 332.18628, y: -106.54224, z: 1062.6226}
+  m_LocalPosition: {x: 274.32996, y: -63.885986, z: 789.65173}
   m_LocalScale: {x: 2.1, y: 2.1, z: 2.1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -2090,7 +2090,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 84d5612284c0fa443a88bcb3b3a98dcf, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.019
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2100,7 +2100,7 @@ AudioSource:
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
-  rolloffMode: 2
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -2198,10 +2198,12 @@ MonoBehaviour:
   normalMoveSpeed: 80
   runMoveSpeed: 140
   gravity: 10
+  turnRatio: 4
   groundCheckLM:
     serializedVersion: 2
     m_Bits: 0
-  turnRatio: 4
+  yHeightOffsetCheck: 0
+  fallDistanceCheck: 40
   patrolPoints:
   - {fileID: 4000012915480952}
   - {fileID: 4000010765921882}
@@ -2300,7 +2302,7 @@ MonoBehaviour:
   startTime: 0
   decayPowerMultiplayer: -20
   maxPowerPercentage: 60
-  activeAudio: {fileID: 82000012744495922}
+  activeAudio: {fileID: 8300000, guid: 84d5612284c0fa443a88bcb3b3a98dcf, type: 3}
   animationPlayer: {fileID: 0}
   activeAnim: {fileID: 0}
   animationSpeed: 1

@@ -478,9 +478,9 @@ GameObject:
   - 4: {fileID: 4000010230339080}
   - 111: {fileID: 111000011507125600}
   - 143: {fileID: 143000014121279990}
-  - 114: {fileID: 114000012773140990}
   - 114: {fileID: 114000013885281214}
   - 54: {fileID: 54000013708004554}
+  - 114: {fileID: 114000011697615660}
   m_Layer: 22
   m_Name: MaggotFaceFreeROAM
   m_TagString: Untagged
@@ -967,7 +967,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012476355838}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 259.2, y: -33.040703, z: 744}
+  m_LocalPosition: {x: -784.9338, y: -342.7, z: -1008.1584}
   m_LocalScale: {x: 2.1, y: 2.1, z: 2.1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1679,7 +1679,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000014130753070}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 8.8, z: 10.3}
+  m_LocalPosition: {x: 0, y: 6.55, z: 10.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -2001,9 +2001,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 84d5612284c0fa443a88bcb3b3a98dcf, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_audioClip: {fileID: 8300000, guid: 3f90301d23727a349a460d4885c48051, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.026
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2013,7 +2013,7 @@ AudioSource:
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
-  rolloffMode: 2
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -2124,6 +2124,40 @@ MonoBehaviour:
   volume: 0.1
   dontRepeatTags:
   - MovingPlatforms
+--- !u!114 &114000011697615660
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012476355838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d947d2b6e90b734c882278d8f8b2095, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLocked: 0
+  target: {fileID: 0}
+  targetTags:
+  - Player
+  targetSearchLM:
+    serializedVersion: 2
+    m_Bits: 256
+  normalDetectRange: 150
+  maxChaseDistance: 300
+  currMovementSpeed: 15
+  normalMoveSpeed: 25
+  runMoveSpeed: 30
+  gravity: 10
+  turnRatio: 10
+  groundCheckLM:
+    serializedVersion: 2
+    m_Bits: 536870912
+  yHeightOffsetCheck: 2
+  forwardCheckDistance: 30
+  fallDistanceCheck: 150
+  patrolPoints: []
+  currPatrolPoint: {x: 0, y: 0, z: 0}
+  randomPatrol_MaxDistance: 300
 --- !u!114 &114000012441579582
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2140,41 +2174,6 @@ MonoBehaviour:
   volume: 0.1
   dontRepeatTags:
   - MovingPlatforms
---- !u!114 &114000012773140990
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012476355838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f93e25586a1e994e8a9ebcf9b4a5ab2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isLocked: 0
-  target: {fileID: 0}
-  targetTags:
-  - Player
-  targetSearchLM:
-    serializedVersion: 2
-    m_Bits: 256
-  normalDetectRange: 280
-  maxChaseDistance: 300
-  currMovementSpeed: 15
-  normalMoveSpeed: 80
-  runMoveSpeed: 140
-  gravity: 10
-  groundCheckLM:
-    serializedVersion: 2
-    m_Bits: 536870912
-  turnRatio: 4
-  yHeightOffsetCheck: 1
-  patrolPoints: []
-  currPatrolPoint: {x: 0, y: 0, z: 0}
-  randomPatrol_MaxDistance: 100
-  viewAngle: 10
-  minDistanceTarget: 30
-  turnAnim: {fileID: 7400006, guid: 84ef7aabeb8284c4194fd554c172dc6b, type: 3}
 --- !u!114 &114000013781050660
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2192,7 +2191,7 @@ MonoBehaviour:
   startTime: 0
   decayPowerMultiplayer: -20
   maxPowerPercentage: 60
-  activeAudio: {fileID: 82000013759824830}
+  activeAudio: {fileID: 8300000, guid: 84d5612284c0fa443a88bcb3b3a98dcf, type: 3}
   animationPlayer: {fileID: 0}
   activeAnim: {fileID: 0}
   animationSpeed: 1
@@ -2442,7 +2441,7 @@ CharacterController:
   serializedVersion: 2
   m_Height: 15
   m_Radius: 6
-  m_SlopeLimit: 80
+  m_SlopeLimit: 65
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001

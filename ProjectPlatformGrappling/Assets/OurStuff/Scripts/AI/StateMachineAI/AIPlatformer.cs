@@ -3,7 +3,6 @@ using System.Collections;
 
 public class AIPlatformer : AICharacterController
 {
-    public Transform traverseRCCheckOrigin;
 
     protected float upVelocity = 0;
     protected float forwardDistanceCheck = 10;
@@ -14,8 +13,6 @@ public class AIPlatformer : AICharacterController
         chaseState = new ChaseState();
         guardPState = new GuardPState();
 
-        if (traverseRCCheckOrigin == null)
-            traverseRCCheckOrigin = transform;
         base.Init();
 
     }
@@ -24,6 +21,7 @@ public class AIPlatformer : AICharacterController
     {
         base.Reset();
         statePattern.ChangeState(guardPState);
+        upVelocity = -gravity * 20; //ett högt värde så denna faller ned dirr
     }
 
     public override void Update()
