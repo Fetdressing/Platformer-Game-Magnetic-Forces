@@ -22,11 +22,13 @@ public class AIMoveable : AIEntity {
     public float runMoveSpeed = 30;
 
     public float gravity = 10;
-    public LayerMask groundCheckLM;
 
     public float turnRatio = 10;
 
+    [Header("Move Checks")]
+    public LayerMask groundCheckLM;
     float maxSlopeGround = 28;
+    public float yHeightOffsetCheck = 0;
     //***speed and stats***
 
     //***patrol***
@@ -126,7 +128,7 @@ public class AIMoveable : AIEntity {
 
     public bool IsWalkable()
     {
-        if (Physics.Raycast(transform.position + (transform.forward * 4), Vector3.down, 15, groundCheckLM))
+        if (Physics.Raycast(transform.position + new Vector3(0, yHeightOffsetCheck, 0) + (transform.forward * 4), Vector3.down, 15, groundCheckLM))
         {
             return true;
         }
@@ -136,6 +138,11 @@ public class AIMoveable : AIEntity {
     public bool IsWalkableFront(float yOffsetCheck, float distance) //distance kan nog runt 8-10 vara lämpligt
     {
         RaycastHit rHit;
+
+        if(yHeightOffsetCheck > -0.01f && yHeightOffsetCheck < 0.01f)
+        {
+            yOffsetCheck = yHeightOffsetCheck;
+        }
 
         if (Physics.Raycast(transform.position + new Vector3(0, yOffsetCheck, 0), transform.forward, out rHit, distance, groundCheckLM))
         {

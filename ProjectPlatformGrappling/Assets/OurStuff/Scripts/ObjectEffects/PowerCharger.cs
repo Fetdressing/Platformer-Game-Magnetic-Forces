@@ -15,6 +15,7 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
 
     private ParticleSystem ps;
     private Light lightActive;
+    public AudioSource activeAudio;
 
     //ett particlesystem på den som de påverkar oxå, eller linerenderer
     private bool isEffectActive = false;
@@ -96,10 +97,21 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
             {
                 animationPlayer.PlayAnimation(activeAnim, 1.0f, animationSpeed);
             }
+
+            if(activeAudio != null)
+            {
+                activeAudio.Play();
+            }
+
             pM.AddPower(-(pM.powerDecay * decayPowerMultiplayer * Time.deltaTime), maxPowerPercentage);
         }
         else
         {
+            if (activeAudio != null)
+            {
+                activeAudio.Stop();
+            }
+
             pM = null;
             effectTimer = 0.0f;
         }
