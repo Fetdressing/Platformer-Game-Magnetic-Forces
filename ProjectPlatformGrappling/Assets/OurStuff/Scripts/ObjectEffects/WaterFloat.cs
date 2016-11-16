@@ -8,6 +8,8 @@ public class WaterFloat : BaseRigidbody {
     public float streamForce = 1600;
 
     public GameObject splashParticle;
+    private float splashCooldown = 0.5f;
+    private float splashTimer = 0.0f;
     // Use this for initialization
 
     void OnTriggerStay(Collider col)
@@ -33,6 +35,8 @@ public class WaterFloat : BaseRigidbody {
     void OnTriggerEnter(Collider col)
     {
         //splash
+        if (splashTimer > Time.time) return;
+        splashTimer = splashCooldown + Time.time;
         GameObject parTemp = GameObject.Instantiate(splashParticle.gameObject);
         parTemp.transform.position = col.transform.position;
         Destroy(parTemp, 3);

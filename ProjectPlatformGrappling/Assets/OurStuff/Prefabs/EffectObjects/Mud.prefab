@@ -26,12 +26,12 @@ GameObject:
   - 114: {fileID: 114000012634921428}
   - 114: {fileID: 114000012988463310}
   - 82: {fileID: 82000012535996542}
-  m_Layer: 0
+  m_Layer: 29
   m_Name: Mud
   m_TagString: Mud
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4000012918369882
 Transform:
@@ -180,6 +180,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLocked: 0
+  splashObject: {fileID: 1000012805949090, guid: 915c6cdd799a4224eb27f1b9d90313b8,
+    type: 2}
+  poolsize: 5
 --- !u!114 &114000012634921428
 MonoBehaviour:
   m_ObjectHideFlags: 1

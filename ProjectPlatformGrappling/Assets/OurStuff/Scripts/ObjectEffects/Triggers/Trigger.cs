@@ -4,6 +4,7 @@ using System.Collections;
 public class Trigger : BaseClass {
     [HideInInspector]
     public bool isTriggered;
+    public bool continous = false; //om true så kallar den kommandot hela tiden
     public float collisionExtent = 5;
     public LayerMask collisionMask;
 
@@ -94,6 +95,10 @@ public class Trigger : BaseClass {
                 }
                 StartTrigger();
                 
+            }
+            else if(continous)
+            {
+                StartTrigger();
             }
             isTriggered = true;
         }
