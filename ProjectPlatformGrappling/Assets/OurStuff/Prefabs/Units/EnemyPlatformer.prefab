@@ -1792,8 +1792,8 @@ MonoBehaviour:
   normalDetectRange: 40
   maxChaseDistance: 60
   currMovementSpeed: 0
-  normalMoveSpeed: 35
-  runMoveSpeed: 30
+  normalMoveSpeed: 30
+  runMoveSpeed: 45
   gravity: 40
   turnRatio: 10
   groundCheckLM:

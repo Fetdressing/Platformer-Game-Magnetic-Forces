@@ -10,9 +10,9 @@ public class StagShooter : BaseClass {
 
     public LayerMask targetLM;
     private float shootForce = 350;
-    private float cooldown_Time = 0.2f;
+    private float cooldown_Time = 0.1f;
     private float cooldonwTimer = 0.0f;
-    private float projectilePowerCost = 0.05f;
+    private float projectilePowerCost = 0.03f;
 
     public GameObject projectileType;
     private int poolSize = 100;
@@ -77,7 +77,7 @@ public class StagShooter : BaseClass {
         if (cooldonwTimer > Time.time) return;
         cooldonwTimer = Time.time + cooldown_Time;
 
-        if (!powerManager.SufficentPower(projectilePowerCost)) return;
+        if (!powerManager.SufficentPower(-projectilePowerCost * 4, true)) { Debug.Log(Time.time.ToString()); return; } //* ett värde för att ha lite marginal
         powerManager.AddPower(-projectilePowerCost);
 
         audioSource.PlayOneShot(shootSound, volume);

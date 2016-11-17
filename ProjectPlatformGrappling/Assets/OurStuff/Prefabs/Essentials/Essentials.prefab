@@ -3649,6 +3649,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 536870913
   animationH: {fileID: 111000012848951598}
+  runAnimSpeedMult: 1.5
   animationSpeedMult: 1.2
   runForward: {fileID: 7400000, guid: 9ee51745026143e4583b868b864989d4, type: 3}
   runForwardRight: {fileID: 7400008, guid: 9ee51745026143e4583b868b864989d4, type: 3}

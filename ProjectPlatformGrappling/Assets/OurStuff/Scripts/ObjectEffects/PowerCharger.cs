@@ -5,6 +5,7 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
     private Transform thisTransform;
     private Collider[] thisColliders;
     private PowerManager pM; //powermanager på playern, hämtas i ontrigger och manipuleras via update
+    private CameraShaker cameraShaker;
 
     public float phaseTime = 0.0f; //används vid automatisk toggle, set till 0 ifall man inte vill ha
     public float phaseCooldown = 1.5f;
@@ -45,6 +46,8 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
         ps = thisTransform.GetComponent<ParticleSystem>();
         lightActive = thisTransform.GetComponent<Light>();
         audioSource = GetComponent<AudioSource>();
+
+        cameraShaker = GameObject.FindGameObjectWithTag("Manager").GetComponent<CameraManager>().cameraPlayerFollow.GetComponent<CameraShaker>();
 
         try
         {
@@ -105,7 +108,12 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
                 audioSource.PlayOneShot(activeAudio);
             }
 
-            pM.AddPower(-(pM.powerDecay * decayPowerMultiplayer * Time.deltaTime), maxPowerPercentage);
+            float powerDecay = -(pM.powerDecay * decayPowerMultiplayer * Time.deltaTime);
+            if(powerDecay < 0)
+            {
+                cameraShaker.ShakeCamera(0.2f, 1, true);
+            }
+            pM.AddPower(powerDecay, maxPowerPercentage);
         }
         else
         {

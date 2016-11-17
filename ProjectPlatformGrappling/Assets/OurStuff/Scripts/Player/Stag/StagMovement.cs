@@ -39,7 +39,7 @@ public class StagMovement : BaseClass
     private float dashSpeed = 450;
     private float currDashTime;
     private float maxDashTime = 0.05f;
-    private float dashPowerCost = 0.03f; //hur mycket power det drar varje gång man dashar
+    private float dashPowerCost = 0.1f; //hur mycket power det drar varje gång man dashar
     private bool dashUsed = false; //så att man måste bli grounded innan man kan använda den igen
     public GameObject dashEffectObject;
     public ParticleSystem dashReadyPS; //particlesystem som körs när dash är redo att användas
@@ -84,6 +84,7 @@ public class StagMovement : BaseClass
 
     [Header("Animation")]
     public Animation animationH;
+    public float runAnimSpeedMult = 2.0f;
     public float animationSpeedMult = 2.0f; //en overall speed som sätts i början
 
     public AnimationClip runForward;
@@ -110,9 +111,9 @@ public class StagMovement : BaseClass
         cameraShaker = cameraObj.GetComponent<CameraShaker>();
         groundChecker = GetComponentsInChildren<GroundChecker>()[0];
 
-        animationH[runForward.name].speed = animationSpeedMult;
-        animationH[runForwardRight.name].speed = animationSpeedMult;
-        animationH[runForwardLeft.name].speed = animationSpeedMult;
+        animationH[runForward.name].speed = runAnimSpeedMult;
+        animationH[runForwardRight.name].speed = runAnimSpeedMult;
+        animationH[runForwardLeft.name].speed = runAnimSpeedMult;
         animationH[idle.name].speed = animationSpeedMult;
         animationH[idleAir.name].speed = animationSpeedMult;
         animationH[jump.name].speed = animationSpeedMult;
@@ -479,6 +480,7 @@ public class StagMovement : BaseClass
     bool Dash(Vector3 dir)
     {
         if (!IsDashReady()) return false;
+        powerManager.SufficentPower(-dashPowerCost, true); //camerashake, konstig syntax kanske du tycker, men palla göra det fancy!
         StartCoroutine(MoveDash(dir));
         return true;
     }

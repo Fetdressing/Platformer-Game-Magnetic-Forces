@@ -70,11 +70,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\OurStuff\Scripts\AI\AIBase.cs" />
-    <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\AICharacterController.cs" />
     <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\AIEntity.cs" />
-    <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\AIMindless.cs" />
     <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\AIMoveable.cs" />
-    <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\AIPlatformer.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\CharacterControllerAI\AICharacterController.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\CharacterControllerAI\AIMindless.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\CharacterControllerAI\AIPlatformer.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\NavmeshAI\AIGuardNavmesh.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\NavmeshAI\AINavmesh.cs" />
     <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\StatePatternAI.cs" />
     <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\States\AIState.cs" />
     <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\States\ChaseState.cs" />

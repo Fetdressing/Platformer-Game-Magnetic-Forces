@@ -11,12 +11,26 @@ public class ForcePusher : BaseRigidbody {
     public float animationSpeed = 1.0f;
 
     public AudioSource audioSource;
+    private CameraShaker cameraShaker;
+
+    void Start()
+    {
+        Init();
+    }
+
+    public override void Init()
+    {
+        base.Init();
+        cameraShaker = GameObject.FindGameObjectWithTag("Manager").GetComponent<CameraManager>().cameraPlayerFollow.GetComponent<CameraShaker>();
+    }
 
     void OnTriggerEnter(Collider col)
     {
         if (isContinuous) return;
         if(col.tag == "Player")
         {
+            cameraShaker.ShakeCamera(0.2f, 1, true);
+
             if(audioSource != null)
             {
                 audioSource.Play();

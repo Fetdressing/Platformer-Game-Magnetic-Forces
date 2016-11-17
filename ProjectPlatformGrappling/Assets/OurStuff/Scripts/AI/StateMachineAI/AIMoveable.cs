@@ -38,7 +38,7 @@ public class AIMoveable : AIEntity {
     public Transform[] patrolPoints;
     protected int currPatrolPointIndex = 0;
     [HideInInspector] public Vector3 currPatrolPoint = Vector3.zero;
-    protected float newPartrolCD = 2.0f; //behövs en cd så de inte fuckar sönder
+    protected float newPartrolCD = 0.5f; //behövs en cd så de inte fuckar sönder
     protected float newPatrolTimer = 0.0f;
 
     public float randomPatrol_MaxDistance = 50;
@@ -71,6 +71,11 @@ public class AIMoveable : AIEntity {
     //funktioner som kan användas
 
     public virtual void Move(Vector3 pos, float speed)
+    {
+
+    }
+
+    public virtual void Stop()
     {
 
     }
@@ -135,7 +140,7 @@ public class AIMoveable : AIEntity {
         return currIndex;
     }
 
-    public bool IsWalkable()
+    public virtual bool IsWalkable()
     {
         if (Physics.Raycast(transform.position + new Vector3(0, yHeightOffsetCheck, 0) + (transform.forward * 4), Vector3.down, fallDistanceCheck, groundCheckLM))
         {
@@ -144,7 +149,7 @@ public class AIMoveable : AIEntity {
         return false;
     }
 
-    public bool IsWalkableFront() //distance kan nog runt 8-10 vara lämpligt
+    public virtual bool IsWalkableFront() //distance kan nog runt 8-10 vara lämpligt
     {
         RaycastHit rHit;
 
@@ -161,7 +166,7 @@ public class AIMoveable : AIEntity {
         return true;
     }
 
-    public void RotateTowards(Vector3 pos)
+    public virtual void RotateTowards(Vector3 pos)
     {
         Vector3 modPos = new Vector3(pos.x, 0, pos.z);
         Vector3 modTPos = new Vector3(transform.position.x, 0, transform.position.z);

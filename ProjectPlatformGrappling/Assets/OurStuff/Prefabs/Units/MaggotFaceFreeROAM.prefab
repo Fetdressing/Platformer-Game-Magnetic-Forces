@@ -480,7 +480,8 @@ GameObject:
   - 143: {fileID: 143000014121279990}
   - 114: {fileID: 114000013885281214}
   - 54: {fileID: 54000013708004554}
-  - 114: {fileID: 114000011697615660}
+  - 195: {fileID: 195000010141433346}
+  - 114: {fileID: 114000010483395520}
   m_Layer: 22
   m_Name: MaggotFaceFreeROAM
   m_TagString: Untagged
@@ -967,7 +968,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012476355838}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -784.9338, y: -342.7, z: -1008.1584}
+  m_LocalPosition: {x: -784.9338, y: -352.5, z: -1008.1584}
   m_LocalScale: {x: 2.1, y: 2.1, z: 2.1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -2108,6 +2109,40 @@ MonoBehaviour:
   animationPlayer: {fileID: 0}
   activeAnim: {fileID: 0}
   animationSpeed: 1
+--- !u!114 &114000010483395520
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012476355838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d5f5f7b2f494f247b62ad1573cffde0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLocked: 0
+  target: {fileID: 0}
+  targetTags:
+  - Player
+  targetSearchLM:
+    serializedVersion: 2
+    m_Bits: 256
+  normalDetectRange: 140
+  maxChaseDistance: 300
+  currMovementSpeed: 15
+  normalMoveSpeed: 35
+  runMoveSpeed: 45
+  gravity: 10
+  turnRatio: 10
+  groundCheckLM:
+    serializedVersion: 2
+    m_Bits: 536870912
+  yHeightOffsetCheck: 1
+  forwardCheckDistance: 15
+  fallDistanceCheck: 40
+  patrolPoints: []
+  currPatrolPoint: {x: 0, y: 0, z: 0}
+  randomPatrol_MaxDistance: 170
 --- !u!114 &114000010501940162
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2124,40 +2159,6 @@ MonoBehaviour:
   volume: 0.1
   dontRepeatTags:
   - MovingPlatforms
---- !u!114 &114000011697615660
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012476355838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d947d2b6e90b734c882278d8f8b2095, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isLocked: 0
-  target: {fileID: 0}
-  targetTags:
-  - Player
-  targetSearchLM:
-    serializedVersion: 2
-    m_Bits: 256
-  normalDetectRange: 150
-  maxChaseDistance: 300
-  currMovementSpeed: 15
-  normalMoveSpeed: 25
-  runMoveSpeed: 30
-  gravity: 10
-  turnRatio: 10
-  groundCheckLM:
-    serializedVersion: 2
-    m_Bits: 536870912
-  yHeightOffsetCheck: 2
-  forwardCheckDistance: 30
-  fallDistanceCheck: 150
-  patrolPoints: []
-  currPatrolPoint: {x: 0, y: 0, z: 0}
-  randomPatrol_MaxDistance: 300
 --- !u!114 &114000012441579582
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2446,6 +2447,26 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 6.5, z: 0}
+--- !u!195 &195000010141433346
+NavMeshAgent:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012476355838}
+  m_Enabled: 1
+  m_Radius: 3.64
+  m_Speed: 3.5
+  m_Acceleration: 150
+  avoidancePriority: 50
+  m_AngularSpeed: 350
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 11.92
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!198 &198000013944029020
 ParticleSystem:
   m_ObjectHideFlags: 1

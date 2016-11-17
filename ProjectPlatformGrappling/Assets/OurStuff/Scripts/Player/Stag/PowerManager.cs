@@ -10,6 +10,7 @@ public class PowerManager : BaseClass {
     private Renderer[] allRenderers;
     private StagMovement stagMovement;
     private StagShooter stagShooter;
+    private CameraShaker cameraShaker;
 
     private float[] uvStartOffsetHorns = { 0, 1.0f};
     private float uvOffsetMult = 0.3f; //hur mkt power från hornen som ska tas bort
@@ -42,6 +43,7 @@ public class PowerManager : BaseClass {
         activeCamera = GameObject.FindGameObjectWithTag("Manager").GetComponent<CameraManager>().cameraPlayerFollow;
         stagMovement = GetComponent<StagMovement>();
         stagShooter = GetComponent<StagShooter>();
+        cameraShaker = activeCamera.GetComponent<CameraShaker>();
 
         allRenderers = GetComponentsInChildren<Renderer>();
 
@@ -119,7 +121,23 @@ public class PowerManager : BaseClass {
 
     public bool SufficentPower(float p) //kolla ifall det finns tillräkligt med power för att dra
     {
-        if ((currPower + p) <= 0) return false;
+        if ((currPower + p) <= 0)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public bool SufficentPower(float p, bool cameraShake) //kolla ifall det finns tillräkligt med power för att dra, med möjlighet att få den o skaka, bra feedback till spelaren
+    {
+        if ((currPower + p) <= 0)
+        {
+            if (cameraShake)
+            {
+                cameraShaker.ShakeCamera(0.2f, 1, true);
+            }
+            return false;
+        }
         return true;
     }
 
