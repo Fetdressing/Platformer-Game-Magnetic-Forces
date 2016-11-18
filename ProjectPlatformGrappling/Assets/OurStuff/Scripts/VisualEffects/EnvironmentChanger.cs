@@ -28,7 +28,6 @@ public class EnvironmentChanger : BaseClass {
         NextFogColor();
         wantedFogDensity = RenderSettings.fogEndDistance;
         fogDensitySpeedChange = 0.5f;
-        StartCoroutine(ChangeFogDensity());
     }
 
     // Update is called once per frame
@@ -51,8 +50,10 @@ public class EnvironmentChanger : BaseClass {
             
             RenderSettings.fogColor = currFogColor;
         }
+
+        RenderSettings.fogEndDistance = Mathf.Lerp(RenderSettings.fogEndDistance, wantedFogDensity, Time.deltaTime * fogDensitySpeedChange);
         //if ((currColor.r - ))
-	}
+    }
 
     public void StartfogDensityChange(float dens)
     {
@@ -65,15 +66,21 @@ public class EnvironmentChanger : BaseClass {
         fogDensitySpeedChange = speed;
     }
 
-    IEnumerator ChangeFogDensity()
+    public void StartFogColorChange(Color[] colors)
     {
-        //(Mathf.Abs(RenderSettings.fogEndDistance - wantedFogDensity) > 0.1f)
-        while (this != null)
-        {
-            RenderSettings.fogEndDistance = Mathf.Lerp(RenderSettings.fogEndDistance, wantedFogDensity, Time.deltaTime * fogDensitySpeedChange);
-            yield return new WaitForEndOfFrame();
-        }
+        fogColors = colors;
+        NextFogColor();
     }
+
+    //IEnumerator ChangeFogDensity()
+    //{
+    //    //(Mathf.Abs(RenderSettings.fogEndDistance - wantedFogDensity) > 0.1f)
+    //    while (this != null)
+    //    {
+    //        RenderSettings.fogEndDistance = Mathf.Lerp(RenderSettings.fogEndDistance, wantedFogDensity, Time.deltaTime * fogDensitySpeedChange);
+    //        yield return new WaitForEndOfFrame();
+    //    }
+    //}
 
     void NextFogColor()
     {

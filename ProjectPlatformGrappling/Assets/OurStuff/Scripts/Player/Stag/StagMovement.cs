@@ -33,6 +33,7 @@ public class StagMovement : BaseClass
     private int jumpsAvaible = 0; //så man kan hoppa i luften also, förutsatt att man resettat den på marken
     private float jumpCooldown = 0.15f;
     public GameObject jumpEffectObject;
+    [HideInInspector] public float currFrameMovespeed = 0; //hur snabbt man rört sig denna framen
 
     [HideInInspector]public float dashTimePoint; //mud påverkar denna så att man inte kan dasha
     private float dashCooldown = 0.3f;
@@ -149,7 +150,8 @@ public class StagMovement : BaseClass
         if (Time.timeScale == 0) return;
         if (isLocked) return;
 
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(cameraHolder.forward.x, 0, cameraHolder.forward.z));
+        if (finalMoveDir.magnitude < 0.01f) return;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(finalMoveDir.x, 0, finalMoveDir.z));
         stagObject.rotation = Quaternion.Slerp(stagObject.rotation, lookRotation, deltaTime * 20);
 
         if((moveSpeedMultTimePoint + moveSpeedMultDuration) < Time.time)
@@ -264,7 +266,7 @@ public class StagMovement : BaseClass
 
         HandleMovement(); //moddar finalMoveDir
         characterController.Move((finalMoveDir + dashVel + externalVel) * deltaTime);
-
+        currFrameMovespeed = (new Vector3(finalMoveDir.x, 0, finalMoveDir.z).magnitude + new Vector3(dashVel.x, 0, dashVel.z).magnitude + new Vector3(externalVel.x, 0, externalVel.z).magnitude) * Time.deltaTime;
 
         if (Input.GetKeyDown(KeyCode.C))
         {
@@ -372,6 +374,7 @@ public class StagMovement : BaseClass
         verVector = new Vector3(verVector.x, 0, verVector.z); //denna behöver vara under dash så att man kan dasha upp/ned oxå
 
         finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currMovementSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
+        Debug.Log("Justeras? man behöver kanske kolla rakt fram istället?");
         if (IsWalkable(1.2f, 4, (horVector + verVector).normalized)) //dessa värden kan behöva justeras
         {
             

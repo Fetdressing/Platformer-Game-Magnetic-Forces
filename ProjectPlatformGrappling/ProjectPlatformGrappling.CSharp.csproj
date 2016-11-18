@@ -116,7 +116,11 @@
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Triggers\MoveObjectTrigger.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Triggers\Trigger.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\WaterFloat.cs" />
-    <Compile Include="Assets\OurStuff\Scripts\Player\CameraController.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\Player\Camera\CameraController.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\Player\Camera\ThirdPersonLike\DebugDraw.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\Player\Camera\ThirdPersonLike\ImThirdPerson.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\Player\Camera\ThirdPersonLike\ThirdPersonCamera.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\Player\Camera\WoWCCamera.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\MagneticPlacer.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Movement.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Old\MagneticHandler.cs" />
@@ -126,13 +130,13 @@
     <Compile Include="Assets\OurStuff\Scripts\Player\Stag\PowerManager.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Stag\StagMovement.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Player\Stag\StagShooter.cs" />
-    <Compile Include="Assets\OurStuff\Scripts\Player\WoWCCamera.cs" />
     <Compile Include="Assets\OurStuff\Scripts\Spawnpoint.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\AnimStandardPlayer.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\AnimationSpeedModifier.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\CameraShaker.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\EnvironmentChanger.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\FadingLight.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\VisualEffects\FogColorChanger.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\HitSound.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\ParticleTimed.cs" />
     <Compile Include="Assets\OurStuff\Scripts\VisualEffects\Rotater.cs" />
