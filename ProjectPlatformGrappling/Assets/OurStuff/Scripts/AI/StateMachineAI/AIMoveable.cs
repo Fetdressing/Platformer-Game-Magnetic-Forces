@@ -38,7 +38,7 @@ public class AIMoveable : AIEntity {
     public Transform[] patrolPoints;
     protected int currPatrolPointIndex = 0;
     [HideInInspector] public Vector3 currPatrolPoint = Vector3.zero;
-    protected float newPartrolCD = 0.5f; //behövs en cd så de inte fuckar sönder
+    protected float newPartrolCD = 0.1f; //behövs en cd så de inte fuckar sönder
     protected float newPatrolTimer = 0.0f;
 
     public float randomPatrol_MaxDistance = 50;

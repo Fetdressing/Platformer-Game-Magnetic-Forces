@@ -374,7 +374,6 @@ public class StagMovement : BaseClass
         verVector = new Vector3(verVector.x, 0, verVector.z); //denna behöver vara under dash så att man kan dasha upp/ned oxå
 
         finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currMovementSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
-        Debug.Log("Justeras? man behöver kanske kolla rakt fram istället?");
         if (IsWalkable(1.2f, 4, (horVector + verVector).normalized)) //dessa värden kan behöva justeras
         {
             

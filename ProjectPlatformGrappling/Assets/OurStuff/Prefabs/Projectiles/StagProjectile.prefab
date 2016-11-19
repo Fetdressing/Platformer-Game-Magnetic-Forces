@@ -23,10 +23,10 @@ GameObject:
   - 135: {fileID: 135000010724525540}
   - 23: {fileID: 23000013760189714}
   - 54: {fileID: 54000014256398982}
-  - 114: {fileID: 114000013513236346}
   - 198: {fileID: 198000011310005532}
   - 199: {fileID: 199000010168547794}
   - 96: {fileID: 96000013126126932}
+  - 114: {fileID: 114000012518711610}
   m_Layer: 25
   m_Name: StagProjectile
   m_TagString: Untagged
@@ -41,7 +41,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010551313334}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 253.83, y: -52.36, z: 794.91}
+  m_LocalPosition: {x: 291.9829, y: -11.72, z: 968.1575}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -93,7 +93,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 0
@@ -148,7 +148,7 @@ TrailRenderer:
       rgba: 16777215
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
---- !u!114 &114000013513236346
+--- !u!114 &114000012518711610
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -156,14 +156,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000010551313334}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39275bab1e989164f9904e6dfb643c07, type: 3}
+  m_Script: {fileID: 11500000, guid: dd909b9ba63bca747af7bc0ace6afe8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isLocked: 0
   targetsLM:
     serializedVersion: 2
-    m_Bits: 0
-  healTags: []
+    m_Bits: 4194304
+  healTags:
+  - Player
   damageTags:
   - Enemy
   noGoTags: []
@@ -171,10 +172,9 @@ MonoBehaviour:
     type: 2}
   particleObjectPoolSize: 3
   isGhost: 0
-  returning: 0
-  powerFeedback: 1
-  returnTarget: {fileID: 0}
-  returnHomingForce: 0
+  checkRadius: 50
+  hoomingForce: 6000
+  maxVelocity: 120
 --- !u!135 &135000010724525540
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -193,7 +193,7 @@ ParticleSystem:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010551313334}
-  serializedVersion: 2
+  serializedVersion: 4
   lengthInSec: 5
   startDelay:
     scalar: 0
@@ -231,12 +231,13 @@ ParticleSystem:
       m_RotationOrder: 4
     minMaxState: 0
   speed: 1
-  randomSeed: 1111302376
   looping: 1
   prewarm: 1
   playOnAwake: 1
   moveWithTransform: 1
+  autoRandomSeed: 0
   scalingMode: 1
+  randomSeed: 1111302400
   InitialModule:
     serializedVersion: 2
     enabled: 1

@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\OurStuff\Scripts\AI\AIBase.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\AI\Boss\BossBase.cs" />
     <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\AIEntity.cs" />
     <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\AIMoveable.cs" />
     <Compile Include="Assets\OurStuff\Scripts\AI\StateMachineAI\CharacterControllerAI\AICharacterController.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PowerCharger.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\PowerPickup.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Projectiles\ForwardProjectile.cs" />
+    <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Projectiles\HoomingProjectile.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Projectiles\ProjectileBase.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Projectiles\ReturnProjectile.cs" />
     <Compile Include="Assets\OurStuff\Scripts\ObjectEffects\Teleport.cs" />

@@ -66,7 +66,7 @@ public class StagShooter : BaseClass {
     void Update () {
         if (Time.timeScale == 0) return;
         if (isLocked) return;
-        if (Input.GetKey(KeyCode.Mouse0))
+        if (Input.GetKey(KeyCode.KeypadEnter))
         {
             Fire();
         }
@@ -93,41 +93,44 @@ public class StagShooter : BaseClass {
         }
         if (currProj == null) return;
         Rigidbody currRig = currProj.GetComponent<Rigidbody>();
-        ReturnProjectile currProjectile = currProj.GetComponent<ReturnProjectile>();
+        ProjectileBase currProjectile = currProj.GetComponent<ProjectileBase>();
 
+        currProj.transform.position = shooterObj.position;
+        currProj.transform.forward = shooterObj.forward;
+        currProjectile.Fire(2, currProjectile.transform.forward * shootForce);
 
-        RaycastHit raycastHit;
-        if (Physics.Raycast(mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f)), out raycastHit, Mathf.Infinity, targetLM)) //kasta från mitten av skärmen!
-        {
-            if (Vector3.Dot(raycastHit.normal, mainCamera.transform.position - raycastHit.point) > 0) //normalen mot eller från sig?
-            {
-                if (Vector3.Distance(raycastHit.point, mainCamera.transform.position) > (Vector3.Distance(transform.position, mainCamera.transform.position))) //ligger raycasthit framför spelaren? man vill ju ej skjuta bakåt
-                {
-                    currProj.transform.position = shooterObj.position; //kommer från en random riktning kanske?
-                    currProj.transform.LookAt(raycastHit.point);
-                    currProjectile.Fire(2, currProjectile.transform.forward * shootForce, projectilePowerCost, transform);
-                }
-                else
-                {
-                    currProj.transform.position = shooterObj.position; //kommer från en random riktning kanske?
-                    currProj.transform.forward = cameraObj.forward;
-                    currProjectile.Fire(2, currProjectile.transform.forward * shootForce, projectilePowerCost, transform);
-                }
+        //RaycastHit raycastHit;
+        //if (Physics.Raycast(mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f)), out raycastHit, Mathf.Infinity, targetLM)) //kasta från mitten av skärmen!
+        //{
+        //    if (Vector3.Dot(raycastHit.normal, mainCamera.transform.position - raycastHit.point) > 0) //normalen mot eller från sig?
+        //    {
+        //        if (Vector3.Distance(raycastHit.point, mainCamera.transform.position) > (Vector3.Distance(transform.position, mainCamera.transform.position))) //ligger raycasthit framför spelaren? man vill ju ej skjuta bakåt
+        //        {
+        //            currProj.transform.position = shooterObj.position; //kommer från en random riktning kanske?
+        //            currProj.transform.LookAt(raycastHit.point);
+        //            currProjectile.Fire(2, currProjectile.transform.forward * shootForce, projectilePowerCost, transform);
+        //        }
+        //        else
+        //        {
+        //            currProj.transform.position = shooterObj.position; //kommer från en random riktning kanske?
+        //            currProj.transform.forward = cameraObj.forward;
+        //            currProjectile.Fire(2, currProjectile.transform.forward * shootForce, projectilePowerCost, transform);
+        //        }
 
-            }
-            else
-            {
-                currProj.transform.position = shooterObj.position; //kommer från en random riktning kanske?
-                currProj.transform.forward = cameraObj.forward;
-                currProjectile.Fire(2, currProjectile.transform.forward * shootForce, projectilePowerCost, transform);
-            }
-        }
-        else
-        {
-            currProj.transform.position = shooterObj.position; //kommer från en random riktning kanske?
-            currProj.transform.forward = cameraObj.forward;
-            currProjectile.Fire(2, currProjectile.transform.forward * shootForce, projectilePowerCost, transform);
-        }
+        //    }
+        //    else
+        //    {
+        //        currProj.transform.position = shooterObj.position; //kommer från en random riktning kanske?
+        //        currProj.transform.forward = cameraObj.forward;
+        //        currProjectile.Fire(2, currProjectile.transform.forward * shootForce, projectilePowerCost, transform);
+        //    }
+        //}
+        //else
+        //{
+        //    currProj.transform.position = shooterObj.position; //kommer från en random riktning kanske?
+        //    currProj.transform.forward = cameraObj.forward;
+        //    currProjectile.Fire(2, currProjectile.transform.forward * shootForce, projectilePowerCost, transform);
+        //}
 
     }
 }

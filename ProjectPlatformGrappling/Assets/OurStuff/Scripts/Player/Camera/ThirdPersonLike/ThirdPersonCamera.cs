@@ -17,6 +17,8 @@ public class ThirdPersonCamera : BaseClass {
     public float height = 4;
     public float cameraSpeed = 4;
 
+    public LayerMask collisionLayerMask; //mot vilka lager ska kameran kolla kollision?
+
     private Vector3 wantedPosition;
     private Vector3 velocityCamSmooth = Vector3.zero;
     private float camSmoothTime = 0.1f;
@@ -34,17 +36,22 @@ public class ThirdPersonCamera : BaseClass {
 
     // Update is called once per frame
     void LateUpdate () {
-        Vector3 toTarget = (target.position - transform.position).normalized;
-        Vector3 toCamera = (transform.position - target.position).normalized;
-        Vector3 toCameraNoY = new Vector3(toCamera.x, 0, toCamera.z).normalized;
-        Vector3 toTargetNoY = new Vector3(toTarget.x, 0, toTarget.z).normalized;
-        //wantedPosition = target.position + (Vector3.up * height) + (-target.forward * distance);
-        wantedPosition = target.position + (Vector3.up * height) + (-toTargetNoY * distance);
+        Vector3 focusOffset = target.position + new Vector3(0, 0.2f, 0); //använd denna med en offset för att få lite snyggare resultat
 
         targetSpeed = Mathf.Abs(Vector3.Distance(target.position, targetLastFramePos)) * Time.deltaTime;
         float currDistance = Vector3.Distance(target.position, transform.position);
         float currYDistance = Mathf.Abs(target.position.y - transform.position.y);
 
+        Vector3 toTarget = (focusOffset - transform.position);
+        Vector3 toCamera = (transform.position - focusOffset);
+
+        Vector3 toCameraNoY = new Vector3(toCamera.x, 0, toCamera.z).normalized;
+        Vector3 toTargetNoY = new Vector3(toTarget.x, 0, toTarget.z).normalized;
+
+        //wantedPosition = target.position + (Vector3.up * height) + (-target.forward * distance);
+        wantedPosition = focusOffset + (Vector3.up * height) + (-toTargetNoY * distance);
+
+        CompensateForWalls(focusOffset, ref wantedPosition);
         transform.position = Vector3.Lerp(transform.position, wantedPosition, Time.deltaTime * cameraSpeed);
 
         //if(currDistance < minDistance)
@@ -77,60 +84,59 @@ public class ThirdPersonCamera : BaseClass {
         transform.position = Vector3.SmoothDamp(startPos, wantedPos, ref velocityCamSmooth, camSmoothTime);
     }
 
-    //private void CompensateForWalls(Vector3 fromObject, ref Vector3 toCamera)
-    //{
-    //    // Compensate for walls between camera
-    //    RaycastHit wallHit = new RaycastHit();
-    //    if (Physics.Linecast(fromObject, toCamera, out wallHit))
-    //    {
-    //        Debug.DrawRay(wallHit.point, wallHit.normal, Color.red);
-    //        toCamera = wallHit.point;
-    //    }
+    private void CompensateForWalls(Vector3 fromObject, ref Vector3 toTar)
+    {
+        // Compensate for walls between camera
+        RaycastHit wallHit = new RaycastHit();
+        if (Physics.Linecast(fromObject, toTar, out wallHit, collisionLayerMask))
+        {
+            toTar = wallHit.point;
+        }
 
-    //    // Compensate for geometry intersecting with near clip plane
-    //    Vector3 camPosCache = GetComponent<Camera>().transform.position;
-    //    GetComponent<Camera>().transform.position = toCamera;
-    //    viewFrustum = DebugDraw.CalculateViewFrustum(cameraC, ref nearClipDimensions);
+        // Compensate for geometry intersecting with near clip plane
+        //Vector3 camPosCache = transform.position;
+        //transform.position = toCamera;
+        //viewFrustum = DebugDraw.CalculateViewFrustum(cameraC, ref nearClipDimensions);
 
-    //    for (int i = 0; i < (viewFrustum.Length / 2); i++)
-    //    {
-    //        RaycastHit cWHit = new RaycastHit();
-    //        RaycastHit cCWHit = new RaycastHit();
+        //for (int i = 0; i < (viewFrustum.Length / 2); i++)
+        //{
+        //    RaycastHit cWHit = new RaycastHit();
+        //    RaycastHit cCWHit = new RaycastHit();
 
-    //        // Cast lines in both directions around near clipping plane bounds
-    //        while (Physics.Linecast(viewFrustum[i], viewFrustum[(i + 1) % (viewFrustum.Length / 2)], out cWHit) ||
-    //               Physics.Linecast(viewFrustum[(i + 1) % (viewFrustum.Length / 2)], viewFrustum[i], out cCWHit))
-    //        {
-    //            Vector3 normal = wallHit.normal;
-    //            if (wallHit.normal == Vector3.zero)
-    //            {
-    //                // If there's no available wallHit, use normal of geometry intersected by LineCasts instead
-    //                if (cWHit.normal == Vector3.zero)
-    //                {
-    //                    if (cCWHit.normal == Vector3.zero)
-    //                    {
-    //                        Debug.LogError("No available geometry normal from near clip plane LineCasts. Something must be amuck.", this);
-    //                    }
-    //                    else
-    //                    {
-    //                        normal = cCWHit.normal;
-    //                    }
-    //                }
-    //                else
-    //                {
-    //                    normal = cWHit.normal;
-    //                }
-    //            }
+        //    // Cast lines in both directions around near clipping plane bounds
+        //    while (Physics.Linecast(viewFrustum[i], viewFrustum[(i + 1) % (viewFrustum.Length / 2)], out cWHit) ||
+        //           Physics.Linecast(viewFrustum[(i + 1) % (viewFrustum.Length / 2)], viewFrustum[i], out cCWHit))
+        //    {
+        //        Vector3 normal = wallHit.normal;
+        //        if (wallHit.normal == Vector3.zero)
+        //        {
+        //            // If there's no available wallHit, use normal of geometry intersected by LineCasts instead
+        //            if (cWHit.normal == Vector3.zero)
+        //            {
+        //                if (cCWHit.normal == Vector3.zero)
+        //                {
+        //                    Debug.LogError("No available geometry normal from near clip plane LineCasts. Something must be amuck.", this);
+        //                }
+        //                else
+        //                {
+        //                    normal = cCWHit.normal;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                normal = cWHit.normal;
+        //            }
+        //        }
 
-    //            toCamera += (compensationOffset * normal);
-    //            GetComponent<Camera>().transform.position += toCamera;
+        //        toCamera += (compensationOffset * normal);
+        //        GetComponent<Camera>().transform.position += toCamera;
 
-    //            // Recalculate positions of near clip plane
-    //            viewFrustum = DebugDraw.CalculateViewFrustum(GetComponent<Camera>(), ref nearClipDimensions);
-    //        }
-    //    }
+        //        // Recalculate positions of near clip plane
+        //        //viewFrustum = DebugDraw.CalculateViewFrustum(GetComponent<Camera>(), ref nearClipDimensions);
+        //    }
+        //}
 
-    //    GetComponent<Camera>().transform.position = camPosCache;
-    //    viewFrustum = DebugDraw.CalculateViewFrustum(GetComponent<Camera>(), ref nearClipDimensions);
-    //}
+        //GetComponent<Camera>().transform.position = camPosCache;
+        //viewFrustum = DebugDraw.CalculateViewFrustum(GetComponent<Camera>(), ref nearClipDimensions);
+    }
 }
