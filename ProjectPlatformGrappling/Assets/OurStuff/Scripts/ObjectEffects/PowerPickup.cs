@@ -24,6 +24,9 @@ public class PowerPickup : BaseClass {
 
     public int globeValue = 1; //hur mycket "score" den är värd
     private SpawnManager spawnManager; //håller koll på hur många globes som plockats
+
+    private Vector3 wantedPos = Vector3.zero; //sätts externaly
+    private bool moveToWantedPos = false;
 	// Use this for initialization
 	void Start () {
         Init();
@@ -97,6 +100,15 @@ public class PowerPickup : BaseClass {
         {
             this.transform.position = Vector3.Slerp(this.transform.position, player.position, Time.deltaTime * playerChaseSpeed / distanceToPlayer);
         }
+        else if (moveToWantedPos) //en external position
+        {
+            if (Vector3.Distance(transform.position, wantedPos) < 0.1f)
+            {
+                moveToWantedPos = false;
+            }
+
+            this.transform.position = Vector3.Slerp(this.transform.position, wantedPos, Time.deltaTime * playerChaseSpeed);
+        }
         else if (Vector3.Distance(startPos, this.transform.position) > (playerChaseDistance) && returnToStartPos)
         {
             this.transform.position = Vector3.Slerp(this.transform.position, startPos, Time.deltaTime * playerChaseSpeed);
@@ -163,5 +175,11 @@ public class PowerPickup : BaseClass {
         }
 
         pickUpObj.gameObject.SetActive(false);
+    }
+
+    public void SetWantedPos(Vector3 pos)
+    {
+        wantedPos = pos;
+        moveToWantedPos = true;
     }
 }

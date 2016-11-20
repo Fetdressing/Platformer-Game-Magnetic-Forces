@@ -74,7 +74,7 @@ public class BossBase : BaseClass {
     {
         //gör nånting
         yield return new WaitForSeconds(5);
-        Debug.Log(Time.time.ToString());
+        //Debug.Log(Time.time.ToString());
         RunNextEvent();
     }
 }
