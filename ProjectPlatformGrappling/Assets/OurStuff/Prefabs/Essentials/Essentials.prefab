@@ -465,6 +465,8 @@ GameObject:
   - 4: {fileID: 4000010914960778}
   - 114: {fileID: 114000013984679992}
   - 114: {fileID: 114000013162039704}
+  - 54: {fileID: 54000011051843054}
+  - 114: {fileID: 114000010772487486}
   m_Layer: 0
   m_Name: CameraParent
   m_TagString: MainCamera
@@ -1086,7 +1088,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1000012932722286
 GameObject:
   m_ObjectHideFlags: 1
@@ -2459,6 +2461,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 2
+--- !u!54 &54000011051843054
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011310479508}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 1
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!54 &54000013420440922
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -3579,6 +3596,27 @@ MonoBehaviour:
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
+--- !u!114 &114000010772487486
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011310479508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c975f4ec5b22b33439c3296372225c9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLocked: 0
+  target: {fileID: 4000011412557584}
+  cameraC: {fileID: 0}
+  distance: 22
+  minDistance: 18
+  height: 9
+  cameraSpeed: 4
+  collisionLayerMask:
+    serializedVersion: 2
+    m_Bits: 536870912
 --- !u!114 &114000011056868230
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3638,9 +3676,11 @@ MonoBehaviour:
   currExternalSpeedMult: 1
   ySpeed: 0
   jumpEffectObject: {fileID: 1000013884809932}
+  currFrameMovespeed: 0
   dashTimePoint: 0
   dashEffectObject: {fileID: 1000013548107072}
   dashReadyPS: {fileID: 198000010572112006}
+  dashVel: {x: 0, y: 0, z: 0}
   pullField: {fileID: 114000010577849772}
   groundCheckObject: {fileID: 4000011840728454}
   isGrounded: 0
@@ -4462,14 +4502,14 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011310479508}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c673890f95dec0e469a9de4a372d98e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 4000011412557584}
   targetHeight: 4
-  distance: 16
+  distance: 12
   extraDistance: 0
   maxDistance: 38
   minDistance: 5
@@ -5041,12 +5081,12 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 1
-  m_Radius: 0.86
+  m_Radius: 1.74
   m_SlopeLimit: 65
   m_StepOffset: 1
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.58, z: 0}
+  m_Center: {x: 0, y: 1.4, z: 0}
 --- !u!198 &198000010112006474
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -8610,7 +8650,7 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 1
     startLifetime:
-      scalar: 5
+      scalar: 10
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -9283,13 +9323,13 @@ ParticleSystem:
           rgba: 0
         key1:
           serializedVersion: 2
-          rgba: 3858758076
+          rgba: 201324988
         key2:
           serializedVersion: 2
-          rgba: 2952784384
+          rgba: 3858754048
         key3:
           serializedVersion: 2
-          rgba: 65310
+          rgba: 2936078110
         key4:
           serializedVersion: 2
           rgba: 0
@@ -9311,15 +9351,15 @@ ParticleSystem:
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 18504
-        atime2: 51850
-        atime3: 65535
-        atime4: 0
+        atime1: 16384
+        atime2: 29876
+        atime3: 51850
+        atime4: 65535
         atime5: 0
         atime6: 0
         atime7: 0
         m_NumColorKeys: 4
-        m_NumAlphaKeys: 4
+        m_NumAlphaKeys: 5
       minGradient:
         key0:
           serializedVersion: 2

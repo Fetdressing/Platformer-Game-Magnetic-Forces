@@ -1351,7 +1351,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010023548100}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1300.3154, y: -110, z: 1265.9855}
+  m_LocalPosition: {x: -377, y: -47.3, z: 217}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1789,8 +1789,8 @@ MonoBehaviour:
   targetSearchLM:
     serializedVersion: 2
     m_Bits: 256
-  normalDetectRange: 40
-  maxChaseDistance: 60
+  normalDetectRange: 65
+  maxChaseDistance: 75
   currMovementSpeed: 0
   normalMoveSpeed: 30
   runMoveSpeed: 45
@@ -1834,6 +1834,10 @@ MonoBehaviour:
   delayedDeathTime: 0
   isAlive: 1
   isIndestructable: 0
+  dropDeathObject: {fileID: 1000011286707946, guid: aad862bd58299a24995f2c0e07f9133c,
+    type: 2}
+  nrDropObjects: 3
+  dropObjLifeTime: 0
 --- !u!114 &114000013260371250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1988,7 +1992,7 @@ CharacterController:
   m_Height: 5.43
   m_Radius: 1.8
   m_SlopeLimit: 60
-  m_StepOffset: 2.63
+  m_StepOffset: 4
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}

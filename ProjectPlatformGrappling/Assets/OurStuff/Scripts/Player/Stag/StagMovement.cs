@@ -17,7 +17,7 @@ public class StagMovement : BaseClass
     private float stagRootJointStartY; //krävs att animationen börjar i bottnen isåfall
     public Transform stagObject; //denna roteras så det står korrekt
 
-    private float startSpeed = 60;
+    private float startSpeed = 50;
     private float jumpSpeed = 85;
     private float gravity = 140;
     private float stagSpeedMultMax = 1.5f;
@@ -37,7 +37,7 @@ public class StagMovement : BaseClass
 
     [HideInInspector]public float dashTimePoint; //mud påverkar denna så att man inte kan dasha
     private float dashCooldown = 0.3f;
-    private float dashSpeed = 450;
+    private float dashSpeed = 380;
     private float currDashTime;
     private float maxDashTime = 0.05f;
     private float dashPowerCost = 0.1f; //hur mycket power det drar varje gång man dashar
@@ -60,7 +60,7 @@ public class StagMovement : BaseClass
     private Vector3 horVector = new Vector3(0, 0, 0); //har dem här så jag kan hämta värdena via update
     private Vector3 verVector = new Vector3(0, 0, 0);
     private float hor, ver;
-    private Vector3 dashVel = new Vector3(0, 0, 0);
+    [HideInInspector] public Vector3 dashVel = new Vector3(0, 0, 0); //vill kunna komma åt denna, så därför public
     private Vector3 finalMoveDir = new Vector3(0,0,0);
     private Vector3 externalVel = new Vector3(0, 0, 0);
 
@@ -218,16 +218,18 @@ public class StagMovement : BaseClass
             ToggleDashReadyPS(false);
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (Input.GetKeyDown(KeyCode.RightShift))
         {
-            if (ver < 0.0f) //bakåt
-            {
-                Dash(-cameraHolder.forward);
-            }
-            else
-            {
-                Dash(cameraHolder.forward);
-            }
+            Dash(transform.forward);
+            //if (ver < 0.0f) //bakåt
+            //{
+            //    Dash(-transform.forward);
+            //    //Dash(-cameraHolder.forward);
+            //}
+            //else
+            //{
+            //    Dash(transform.forward);
+            //}
         }
 
         // apply gravity acceleration to vertical speed:
@@ -508,6 +510,12 @@ public class StagMovement : BaseClass
         while(currDashTime < maxDashTime)
         {
             dashVel = dir * dashSpeed;
+            if(!IsWalkable(0, 1, dashVel)) //så den slutar dasha när den går emot en vägg
+            {
+                ToggleDashEffect(false);
+                dashVel = Vector3.zero;
+                yield break;
+            }
             currDashTime = Time.time - startDashTime;
             yield return null;
         }

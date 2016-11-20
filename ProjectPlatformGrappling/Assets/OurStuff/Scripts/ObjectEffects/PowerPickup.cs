@@ -14,6 +14,7 @@ public class PowerPickup : BaseClass {
 
     public float powerWorth = 0.1f;
 
+    public bool returnToStartPos = true;
     public float respawnTime = 10;
 
     public string[] acceptedTags;
@@ -27,6 +28,11 @@ public class PowerPickup : BaseClass {
 	void Start () {
         Init();
 	}
+
+    void Awake()
+    {
+        Init();
+    }
 
     public override void Init()
     {
@@ -91,7 +97,7 @@ public class PowerPickup : BaseClass {
         {
             this.transform.position = Vector3.Slerp(this.transform.position, player.position, Time.deltaTime * playerChaseSpeed / distanceToPlayer);
         }
-        else if (Vector3.Distance(startPos, this.transform.position) > (playerChaseDistance))
+        else if (Vector3.Distance(startPos, this.transform.position) > (playerChaseDistance) && returnToStartPos)
         {
             this.transform.position = Vector3.Slerp(this.transform.position, startPos, Time.deltaTime * playerChaseSpeed);
         }

@@ -37,7 +37,11 @@ public class HealthSpirit : BaseClass
     [HideInInspector]
     public bool isAlive = true;
     public bool isIndestructable = false;
-    
+
+    [Header("Drop on death")]
+    public GameObject dropDeathObject;
+    public int nrDropObjects = 0;
+    public float dropObjLifeTime = 0; //0 så lever den förevigt
 
     void Start()
     {
@@ -189,6 +193,31 @@ public class HealthSpirit : BaseClass
         if (deathAnimation != null)
         {
             animationObj.GetComponent<Animation>().CrossFade(deathAnimation.name);
+        }
+
+        if(dropDeathObject != null && nrDropObjects > 0)
+        {
+            for(int i = 0; i < nrDropObjects; i++)
+            {
+                Debug.Log("dafuck" + Time.time.ToString());
+                GameObject tempD = Instantiate(dropDeathObject);
+                tempD.transform.position = transform.position + new Vector3(0, 2, 0);
+
+                Rigidbody tRigid = tempD.GetComponent<Rigidbody>();
+                if (tRigid == null)
+                    tRigid = tempD.AddComponent<Rigidbody>();
+
+                tRigid.isKinematic = false;
+                tRigid.mass = 10;
+                tRigid.drag = 6;
+                tRigid.useGravity = false;
+                tRigid.velocity = new Vector3(Random.Range(0, 1), 0, Random.Range(0, 1));
+
+                if (dropObjLifeTime != 0)
+                {
+                    Destroy(tempD, dropObjLifeTime);
+                }
+            }
         }
 
         if (destroyOnDeath == true)

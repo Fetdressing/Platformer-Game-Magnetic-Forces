@@ -54,6 +54,10 @@ public class ThirdPersonCamera : BaseClass {
         CompensateForWalls(focusOffset, ref wantedPosition);
         transform.position = Vector3.Lerp(transform.position, wantedPosition, Time.deltaTime * cameraSpeed);
 
+        if(stagMovement.dashVel.magnitude > 1)
+        {
+            transform.position += stagMovement.dashVel * Time.deltaTime;
+        }
         //if(currDistance < minDistance)
         //{
         //    wantedPosition = target.position + (Vector3.up * height) + toCameraNoY * minDistance;
