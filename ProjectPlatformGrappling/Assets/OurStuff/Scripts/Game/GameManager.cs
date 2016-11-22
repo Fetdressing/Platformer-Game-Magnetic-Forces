@@ -39,6 +39,7 @@ public class GameManager : BaseClass {
         {
             goalDisplay.SetActive(true);
             Time.timeScale = 0;
+            Cursor.visible = true;
         }
 	}
 

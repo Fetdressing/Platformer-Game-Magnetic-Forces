@@ -103,7 +103,7 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
                 animationPlayer.PlayAnimation(activeAnim, 1.0f, animationSpeed);
             }
 
-            if(activeAudio != null)
+            if(activeAudio != null && audioSource.isPlaying == false)
             {
                 audioSource.PlayOneShot(activeAudio);
             }
@@ -117,7 +117,7 @@ public class PowerCharger : BaseClass { //DENNA BÖR HA PLAYERONLY LAYER
         }
         else
         {
-            if (activeAudio != null)
+            if (activeAudio != null && audioSource.isPlaying == true)
             {
                 audioSource.Stop();
             }

@@ -218,7 +218,7 @@ public class StagMovement : BaseClass
             ToggleDashReadyPS(false);
         }
 
-        if (Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.M))
         {
             Dash(transform.forward);
             //if (ver < 0.0f) //bakåt

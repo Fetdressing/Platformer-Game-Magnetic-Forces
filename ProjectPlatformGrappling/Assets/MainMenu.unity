@@ -683,7 +683,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -12}
   m_SizeDelta: {x: 290, y: 530}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &434886154
@@ -2197,7 +2197,7 @@ MonoBehaviour:
     is in a very early stage so much may (will) change and some bugs may occur, feel
     free to report them to me! If you would like to have impact on this game and its
     development (ideas, thoughts, feedback); don't hesitate to contact me! \nYou can
-    reach me on tarandrus@outlook.com\nFollow me on twitter @hyltegard_simon !"
+    contact me on tarandrus@outlook.com\nFollow me on twitter @hyltegard_simon !"
 --- !u!222 &1516448389
 CanvasRenderer:
   m_ObjectHideFlags: 0
