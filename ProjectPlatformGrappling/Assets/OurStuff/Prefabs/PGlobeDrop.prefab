@@ -264,6 +264,7 @@ MonoBehaviour:
   playerChaseDistance: 35
   powerWorth: 0.1
   returnToStartPos: 1
+  respawn: 0
   respawnTime: 0
   acceptedTags:
   - Player

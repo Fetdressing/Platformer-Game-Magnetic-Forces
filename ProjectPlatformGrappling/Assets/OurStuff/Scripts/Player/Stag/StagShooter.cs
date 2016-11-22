@@ -66,7 +66,7 @@ public class StagShooter : BaseClass {
     void Update () {
         if (Time.timeScale == 0) return;
         if (isLocked) return;
-        if (Input.GetKey(KeyCode.KeypadEnter))
+        if (Input.GetKey(KeyCode.KeypadEnter) || Input.GetKey(KeyCode.N))
         {
             Fire();
         }

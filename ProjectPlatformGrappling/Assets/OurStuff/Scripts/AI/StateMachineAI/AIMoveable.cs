@@ -80,9 +80,9 @@ public class AIMoveable : AIEntity {
 
     }
 
-    public virtual Vector3 GetPatrolPoint()
+    public virtual bool GetPatrolPoint(ref Vector3 pos)
     {
-        if (newPatrolTimer > Time.time) return Vector3.zero;
+        if (newPatrolTimer > Time.time) return false;
         newPatrolTimer = Time.time + newPartrolCD;
 
         if(patrolPoints.Length == 0)
@@ -91,13 +91,14 @@ public class AIMoveable : AIEntity {
             float x = Random.Range(-randomPatrol_MaxDistance, randomPatrol_MaxDistance);
             float y = Random.Range(-randomPatrol_MaxDistance, randomPatrol_MaxDistance) * 0.3f; //den behöver inte vara så stor
             float z = Random.Range(-randomPatrol_MaxDistance, randomPatrol_MaxDistance);
-            return new Vector3(startPosition.x + x, startPosition.y + y, startPosition.z + z);
+            pos = new Vector3(startPosition.x + x, startPosition.y + y, startPosition.z + z);
         }
         else
         {
             currPatrolPointIndex = NextIndex(patrolPoints.Length, currPatrolPointIndex);
-            return patrolPoints[currPatrolPointIndex].position;
+            pos = patrolPoints[currPatrolPointIndex].position;
         }
+        return true;
     }
 
     public virtual bool CheckForTarget(ref Transform tar)
@@ -138,6 +139,15 @@ public class AIMoveable : AIEntity {
         if (currIndex >= arrayLength)
             currIndex = 0;
         return currIndex;
+    }
+
+    public virtual bool IsValidMove(Vector3 pos)
+    {
+        if(!IsWalkable() || !IsWalkableFront())
+        {
+            return true;
+        }
+        return false;
     }
 
     public virtual bool IsWalkable()
@@ -181,5 +191,35 @@ public class AIMoveable : AIEntity {
 
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnRatio);
+    }
+
+    public virtual bool HasReached(Vector3 reacher, Vector3 reachPos, float distanceMargin)
+    {
+        if (Vector3.Distance(reacher, reachPos) < distanceMargin)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public virtual bool HasReached(Vector3 reacher, Vector3 reachPos, float distanceMargin, bool useY)
+    {
+        Vector3 modReacher, modReachPos;
+        if (!useY)
+        {
+            modReacher = new Vector3(reacher.x, 0, reacher.z);
+            modReachPos = new Vector3(reachPos.x, 0, reachPos.z);
+        }
+        else
+        {
+            modReacher = reacher;
+            modReachPos = reachPos;
+        }
+
+        if (Vector3.Distance(modReacher, modReachPos) < distanceMargin)
+        {
+            return true;
+        }
+        return false;
     }
 }

@@ -4,6 +4,9 @@ using System.Collections;
 [RequireComponent(typeof(NavMeshAgent))]
 public class AINavmesh : AIMoveable {
     protected NavMeshAgent agent;
+
+    protected NavMeshPath currPath;
+    protected float standStillTimePoint = 0.0f; //för att kolla ifall den stått still för länge, dvs den klarar ej pathen
 	// Use this for initialization
 	void Start () {
         Init();
@@ -23,6 +26,7 @@ public class AINavmesh : AIMoveable {
     public override void Reset()
     {
         base.Reset();
+        newPatrolTimer = 0.0f;
         statePattern.ChangeState(guardPState);
     }
 
@@ -39,59 +43,92 @@ public class AINavmesh : AIMoveable {
         agent.Stop();
     }
 
-    public override Vector3 GetPatrolPoint() //returnerar vector3.zero ifall den ej klarar
+    public override bool GetPatrolPoint(ref Vector3 pos) //returnerar vector3.zero ifall den ej klarar
     {
-        if (newPatrolTimer > Time.time) return Vector3.zero;
+        if (agent.pathPending) return false;
+        if (newPatrolTimer > Time.time) return false;
         newPatrolTimer = Time.time + newPartrolCD;
 
-        Vector3 tempPatrol;
-
+        Vector3 tempPatrol = Vector3.zero;
         for (int i = 0; i < 30; i++)
         {
 
             if (patrolPoints.Length == 0)
             {
                 //helt random
-                float x = Random.Range(-randomPatrol_MaxDistance, randomPatrol_MaxDistance);
-                float y = Random.Range(-randomPatrol_MaxDistance, randomPatrol_MaxDistance) * 0.3f; //den behöver inte vara så stor
-                float z = Random.Range(-randomPatrol_MaxDistance, randomPatrol_MaxDistance);
-                tempPatrol = new Vector3(startPosition.x + x, startPosition.y + y, startPosition.z + z);
+                tempPatrol = startPosition + Random.insideUnitSphere * randomPatrol_MaxDistance;
+                NavMeshHit navHit;
+                if(NavMesh.Raycast(tempPatrol + Vector3.up * 150, tempPatrol + Vector3.down * 200, out navHit, NavMesh.AllAreas))
+                {
+                    tempPatrol = navHit.position;
+                }
+                //tempPatrol = new Vector3(startPosition.x + x, startPosition.y, startPosition.z + z);
             }
             else
             {
                 currPatrolPointIndex = NextIndex(patrolPoints.Length, currPatrolPointIndex);
                 tempPatrol = patrolPoints[currPatrolPointIndex].position;
             }
-            
+                        
             NavMeshHit hitH;
-            if (NavMesh.SamplePosition(tempPatrol, out hitH, 1.0f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(tempPatrol, out hitH, 2.0f, NavMesh.AllAreas)) //rangen är bara runt den positionen man redan valt
             {
                 NavMeshPath path = new NavMeshPath();
-                NavMesh.CalculatePath(transform.position, hitH.position, NavMesh.AllAreas, path); //kolla ifall det är en legit path
+                agent.CalculatePath(hitH.position, path); //kolla ifall det är en legit path
 
                 if (path.status == NavMeshPathStatus.PathComplete)
                 {
-                    return hitH.position;
+                    pos = hitH.position;
+                    return true;
+                }
+                else
+                {
+                    //Debug.Log(transform.name + " " + path.status.ToString());
                 }
             }
         }
 
-        return Vector3.zero;
+        return false;
     }
 
-    public override bool IsWalkable()
+    public override bool IsValidMove(Vector3 pos)
     {
+        if (agent.pathPending) return true;
+        NavMeshPath path = new NavMeshPath();
+        agent.CalculatePath(pos, path);
+        if (path.status != NavMeshPathStatus.PathComplete)
+        {
+            return false;
+        }
+        if (agent.isPathStale)
+        {
+            return false;
+        }
 
         return true;
     }
 
-    public override bool IsWalkableFront()
-    {
-        return true;
-    }
 
     public override void RotateTowards(Vector3 pos)
     {
         return;
+    }
+
+    public override bool HasReached(Vector3 reacher, Vector3 reachPos, float distanceMargin)
+    {
+        if(agent.isPathStale || agent.remainingDistance < distanceMargin || Vector3.Distance(new Vector3(reachPos.x, reacher.y, reachPos.z), reacher) < distanceMargin)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public override bool HasReached(Vector3 reacher, Vector3 reachPos, float distanceMargin, bool useY)
+    {
+        if (agent.isPathStale || agent.remainingDistance < distanceMargin || Vector3.Distance(reachPos, reacher) < distanceMargin)
+        {
+            return true;
+        }
+        return false;
     }
 }

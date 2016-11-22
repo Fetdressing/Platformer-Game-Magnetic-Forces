@@ -3,6 +3,7 @@ using System.Collections;
 
 public class AIGuardNavmesh : AINavmesh {
 
+
     public override void StateEnded(AIState endedState)
     {
         if (endedState is GuardPState)

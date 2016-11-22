@@ -40,6 +40,7 @@ public class ThirdPersonCamera : BaseClass {
 
         targetSpeed = Mathf.Abs(Vector3.Distance(target.position, targetLastFramePos)) * Time.deltaTime;
         float currDistance = Vector3.Distance(target.position, transform.position);
+        float currDistanceNoY = Vector3.Distance(new Vector3(target.position.x, 0, target.position.z), new Vector3(transform.position.x, 0, transform.position.z));
         float currYDistance = Mathf.Abs(target.position.y - transform.position.y);
 
         Vector3 toTarget = (focusOffset - transform.position);
@@ -52,28 +53,18 @@ public class ThirdPersonCamera : BaseClass {
         wantedPosition = focusOffset + (Vector3.up * height) + (-toTargetNoY * distance);
 
         CompensateForWalls(focusOffset, ref wantedPosition);
+
+        //if (currDistanceNoY < minDistance || currDistance > distance * 1.2f || stagMovement.activePlatform != null)
+        //{
+        //    transform.position = Vector3.Lerp(transform.position, wantedPosition, Time.deltaTime * cameraSpeed);
+        //}
         transform.position = Vector3.Lerp(transform.position, wantedPosition, Time.deltaTime * cameraSpeed);
 
-        if(stagMovement.dashVel.magnitude > 1)
+
+        if (stagMovement.dashVel.magnitude > 1)
         {
             transform.position += stagMovement.dashVel * Time.deltaTime;
         }
-        //if(currDistance < minDistance)
-        //{
-        //    wantedPosition = target.position + (Vector3.up * height) + toCameraNoY * minDistance;
-
-        //    transform.position = Vector3.Lerp(transform.position, wantedPosition, Time.deltaTime * cameraSpeed);
-
-        //}
-        //else if (currDistance > distance * 1.5f || currYDistance > distance * 0.75f)
-        //{
-        //    transform.position = Vector3.Lerp(transform.position, wantedPosition, Time.deltaTime * cameraSpeed);
-        //}
-
-        //if (currDistance < (minDistance * 0.8f)) //jättenära
-        //{
-        //    transform.Translate(toCameraNoY * Time.deltaTime * 12); //blir snett?? nån offset så börjar den väl
-        //}
 
         //look at
         //Quaternion lookRotation = Quaternion.LookRotation(toTarget);

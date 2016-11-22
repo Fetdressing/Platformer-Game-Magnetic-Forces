@@ -49,7 +49,7 @@ public class StagMovement : BaseClass
 
     //moving platform
 
-    private Transform activePlatform;
+    [HideInInspector] public Transform activePlatform;
 
     private Vector3 activeGlobalPlatformPoint;
     private Vector3 activeLocalPlatformPoint;
@@ -218,7 +218,7 @@ public class StagMovement : BaseClass
             ToggleDashReadyPS(false);
         }
 
-        if (Input.GetKeyDown(KeyCode.RightShift))
+        if (Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.M))
         {
             Dash(transform.forward);
             //if (ver < 0.0f) //bakåt

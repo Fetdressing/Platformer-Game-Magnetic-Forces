@@ -12,6 +12,7 @@ public class SpawnManager : BaseClass {
     private StagMovement stagMovement;
 
     private List<Transform> spawnPoints = new List<Transform>();
+    private Transform closestSpawn;
     public Transform startSpawn;
     public GameObject spawnObject; //som ett particlesystem
 
@@ -38,6 +39,10 @@ public class SpawnManager : BaseClass {
         powerPickups = FindObjectsOfType(typeof(PowerPickup)) as PowerPickup[];
 
         GameObject[] spawnpointObjects = GameObject.FindGameObjectsWithTag("SpawnPoint");
+        if(startSpawn == null)
+        {
+            startSpawn = spawnpointObjects[0].transform;
+        }
 
         for(int i = 0; i < spawnpointObjects.Length; i++)
         {
@@ -105,6 +110,7 @@ public class SpawnManager : BaseClass {
             {
                 if (spawnPoints[i].GetComponent<Spawnpoint>().isPassed)
                 {
+                    closestSpawn = spawnPoints[i];
                     closestSpawnPos = spawnPoints[i].position;
                 }
             }
@@ -127,6 +133,7 @@ public class SpawnManager : BaseClass {
             player.position = Vector3.Lerp(player.position, pos, Time.deltaTime * 4);
             yield return new WaitForSeconds(0.01f);
         }
+
         player.GetComponent<PowerManager>().Reset();
         player.GetComponent<StagMovement>().Reset();
         player.GetComponent<StagShooter>().Reset();

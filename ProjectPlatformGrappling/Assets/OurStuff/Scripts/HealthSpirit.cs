@@ -205,7 +205,7 @@ public class HealthSpirit : BaseClass
                 PowerPickup pp = tempD.GetComponent<PowerPickup>();
                 if(pp != null)
                 {
-                    pp.SetWantedPos(transform.position + new Vector3(Random.Range(1, 6), 0, Random.Range(1, 6)));
+                    pp.SetWantedPos(transform.position + new Vector3(Random.Range(1, 10), 0, Random.Range(1, 10)), 0.25f); //sprid drop objekten lite
                 }
 
                 if (dropObjLifeTime != 0)

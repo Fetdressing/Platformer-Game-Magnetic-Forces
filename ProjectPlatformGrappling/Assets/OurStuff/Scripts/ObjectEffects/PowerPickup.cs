@@ -15,6 +15,7 @@ public class PowerPickup : BaseClass {
     public float powerWorth = 0.1f;
 
     public bool returnToStartPos = true;
+    public bool respawn = true;
     public float respawnTime = 10;
 
     public string[] acceptedTags;
@@ -27,8 +28,10 @@ public class PowerPickup : BaseClass {
 
     private Vector3 wantedPos = Vector3.zero; //sätts externaly
     private bool moveToWantedPos = false;
-	// Use this for initialization
-	void Start () {
+
+    private float cooldownChase = 0.0f; //jagar ej spelaren när den är på cooldownChase
+
+    void Start () {
         Init();
 	}
 
@@ -96,7 +99,7 @@ public class PowerPickup : BaseClass {
         if (playerChaseSpeed < 0.1f) return;
 
         float distanceToPlayer = Vector3.Distance(player.position, this.transform.position);
-        if (distanceToPlayer < playerChaseDistance)
+        if (distanceToPlayer < playerChaseDistance && cooldownChase < Time.time)
         {
             this.transform.position = Vector3.Slerp(this.transform.position, player.position, Time.deltaTime * playerChaseSpeed / distanceToPlayer);
         }
@@ -107,7 +110,7 @@ public class PowerPickup : BaseClass {
                 moveToWantedPos = false;
             }
 
-            this.transform.position = Vector3.Slerp(this.transform.position, wantedPos, Time.deltaTime * playerChaseSpeed);
+            this.transform.position = Vector3.Slerp(this.transform.position, wantedPos, Time.deltaTime * playerChaseSpeed * 0.1f);
         }
         else if (Vector3.Distance(startPos, this.transform.position) > (playerChaseDistance) && returnToStartPos)
         {
@@ -146,8 +149,18 @@ public class PowerPickup : BaseClass {
 
     IEnumerator Respawn()
     {
-        yield return new WaitForSeconds(respawnTime);
-        Spawn();
+        if (respawn)
+        {
+            yield return new WaitForSeconds(respawnTime);
+            Spawn();
+        }
+        else
+        {
+            if(gameObject.activeSelf == false) //om det blivit deaktiverat så förstör det, då det inte behövs mer
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 
     void Spawn()
@@ -177,9 +190,10 @@ public class PowerPickup : BaseClass {
         pickUpObj.gameObject.SetActive(false);
     }
 
-    public void SetWantedPos(Vector3 pos)
+    public void SetWantedPos(Vector3 pos, float cooldownChase)
     {
         wantedPos = pos;
         moveToWantedPos = true;
+        cooldownChase = Time.time + cooldownChase;
     }
 }

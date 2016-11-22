@@ -16,9 +16,9 @@ public class PatrolState : AIState {
     }
     public override void Execute(AIEntity entity)
     {
-        if(_AIMoveable.currPatrolPoint == Vector3.zero || HasReached(_AIMoveable.transform.position, _AIMoveable.currPatrolPoint, 5, false))
+        if(_AIMoveable.currPatrolPoint == Vector3.zero || _AIMoveable.HasReached(_AIMoveable.transform.position, _AIMoveable.currPatrolPoint, 5, false))
         {
-            _AIMoveable.currPatrolPoint = _AIMoveable.GetPatrolPoint();
+           _AIMoveable.GetPatrolPoint(ref _AIMoveable.currPatrolPoint);
         }
         _AIMoveable.Move(_AIMoveable.currPatrolPoint, _AIMoveable.currMovementSpeed);
     }

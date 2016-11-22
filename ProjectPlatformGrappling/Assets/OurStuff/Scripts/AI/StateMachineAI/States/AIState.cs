@@ -10,33 +10,4 @@ public abstract class AIState {
 
     }
 
-    public virtual bool HasReached(Vector3 reacher, Vector3 reachPos, float distanceMargin)
-    {
-        if (Vector3.Distance(reacher, reachPos) < distanceMargin)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    public virtual bool HasReached(Vector3 reacher, Vector3 reachPos, float distanceMargin, bool useY)
-    {
-        Vector3 modReacher, modReachPos;
-        if(!useY)
-        {
-            modReacher = new Vector3(reacher.x, 0, reacher.z);
-            modReachPos = new Vector3(reachPos.x, 0, reachPos.z);
-        }
-        else
-        {
-            modReacher = reacher;
-            modReachPos = reachPos;
-        }
-
-        if (Vector3.Distance(modReacher, modReachPos) < distanceMargin)
-        {
-            return true;
-        }
-        return false;
-    }
 }

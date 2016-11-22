@@ -20,11 +20,11 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000012648319576}
   - 136: {fileID: 136000011098232214}
-  - 114: {fileID: 114000012774137000}
-  - 143: {fileID: 143000012307657564}
   - 114: {fileID: 114000014043969000}
   - 114: {fileID: 114000013260371250}
   - 114: {fileID: 114000013056214650}
+  - 195: {fileID: 195000011239802644}
+  - 114: {fileID: 114000010219476104}
   m_Layer: 22
   m_Name: EnemyPlatformer
   m_TagString: Enemy
@@ -1351,7 +1351,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010023548100}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -377, y: -47.3, z: 217}
+  m_LocalPosition: {x: -479.3, y: 106.5, z: 610.05}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1771,7 +1771,7 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 1
---- !u!114 &114000012774137000
+--- !u!114 &114000010219476104
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1779,7 +1779,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000010023548100}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d947d2b6e90b734c882278d8f8b2095, type: 3}
+  m_Script: {fileID: 11500000, guid: 2d5f5f7b2f494f247b62ad1573cffde0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isLocked: 0
@@ -1789,22 +1789,22 @@ MonoBehaviour:
   targetSearchLM:
     serializedVersion: 2
     m_Bits: 256
-  normalDetectRange: 65
-  maxChaseDistance: 75
-  currMovementSpeed: 0
-  normalMoveSpeed: 30
-  runMoveSpeed: 45
-  gravity: 40
+  normalDetectRange: 60
+  maxChaseDistance: 70
+  currMovementSpeed: 15
+  normalMoveSpeed: 45
+  runMoveSpeed: 65
+  gravity: 10
   turnRatio: 10
   groundCheckLM:
     serializedVersion: 2
     m_Bits: 536870913
   yHeightOffsetCheck: 1
   forwardCheckDistance: 15
-  fallDistanceCheck: 10
+  fallDistanceCheck: 40
   patrolPoints: []
   currPatrolPoint: {x: 0, y: 0, z: 0}
-  randomPatrol_MaxDistance: 50
+  randomPatrol_MaxDistance: 20
 --- !u!114 &114000013056214650
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1979,20 +1979,23 @@ SkinnedMeshRenderer:
     m_Center: {x: -1.0111094, y: -0.10265577, z: -0.0129675865}
     m_Extent: {x: 3.5809321, y: 2.8776655, z: 2.5183277}
   m_DirtyAABB: 0
---- !u!143 &143000012307657564
-CharacterController:
+--- !u!195 &195000011239802644
+NavMeshAgent:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010023548100}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 5.43
-  m_Radius: 1.8
-  m_SlopeLimit: 60
-  m_StepOffset: 4
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.93
+  m_Speed: 3.5
+  m_Acceleration: 300
+  avoidancePriority: 50
+  m_AngularSpeed: 340
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 4.56
+  m_BaseOffset: 2.51
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
