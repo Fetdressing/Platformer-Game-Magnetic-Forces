@@ -112,7 +112,7 @@ GameObject:
   - 82: {fileID: 82000013204454022}
   - 135: {fileID: 135000011794158640}
   - 114: {fileID: 114000010501940162}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: RightBackLegjoint7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,7 +130,7 @@ GameObject:
   - 82: {fileID: 82000013568428290}
   - 135: {fileID: 135000011739108624}
   - 114: {fileID: 114000012441579582}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: LeftBackLegjoint3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -477,7 +477,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000010230339080}
   - 111: {fileID: 111000011507125600}
-  - 143: {fileID: 143000014121279990}
   - 114: {fileID: 114000013885281214}
   - 54: {fileID: 54000013708004554}
   - 195: {fileID: 195000010141433346}
@@ -968,7 +967,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012476355838}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -784.9338, y: -352.5, z: -1008.1584}
+  m_LocalPosition: {x: 250.7732, y: -65.6, z: 736.77045}
   m_LocalScale: {x: 2.1, y: 2.1, z: 2.1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1864,7 +1863,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 0
   MinDistance: 1
-  MaxDistance: 320
+  MaxDistance: 300
   Pan2D: 0
   rolloffMode: 1
   BypassEffects: 0
@@ -1938,7 +1937,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 0
   MinDistance: 1
-  MaxDistance: 320
+  MaxDistance: 300
   Pan2D: 0
   rolloffMode: 1
   BypassEffects: 0
@@ -2430,23 +2429,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -3.0659819, y: 1.4400845, z: -0.36559582}
     m_Extent: {x: 13.555083, y: 12.549381, z: 5.6745253}
   m_DirtyAABB: 0
---- !u!143 &143000014121279990
-CharacterController:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012476355838}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 15
-  m_Radius: 6
-  m_SlopeLimit: 65
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 6.5, z: 0}
 --- !u!195 &195000010141433346
 NavMeshAgent:
   m_ObjectHideFlags: 1
@@ -2464,7 +2446,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 11.92
-  m_BaseOffset: 0
+  m_BaseOffset: 0.03
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!198 &198000013944029020

@@ -18,7 +18,7 @@ public class ChaseState : AIState {
         {
             _AIMoveable.RotateTowards(_AIMoveable.target.position);
 
-            if (_AIMoveable.IsWalkable() && _AIMoveable.DistanceToT2D(_AIMoveable.target) > 2)
+            if (_AIMoveable.IsValidMove(_AIMoveable.target.position) && _AIMoveable.DistanceToT2D(_AIMoveable.target) > 2)
             {
                 _AIMoveable.Move(_AIMoveable.target.position, _AIMoveable.currMovementSpeed);
             }
