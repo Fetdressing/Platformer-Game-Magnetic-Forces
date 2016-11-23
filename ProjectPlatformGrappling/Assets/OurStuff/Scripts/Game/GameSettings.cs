@@ -33,10 +33,10 @@ public class GameSettings : BaseClass {
 
         //om det är första gången man startar så set värdena till nått värde
         float gCheck = PlayerPrefs.GetFloat(gammaSaveName);
-        if(gCheck == 0) { gCheck = 0.5f; }
+        if(gCheck == 0) { gCheck = 0.3f; }
 
         float msCheck = PlayerPrefs.GetFloat(mouseSpeedSaveName);
-        if (msCheck == 0) { msCheck = 0.5f; }
+        if (msCheck == 0) { msCheck = 0.3f; }
 
         SetGamma(gCheck); //hämta från playerprefs
         SetMouseSpeed(msCheck);
