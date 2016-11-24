@@ -14,7 +14,8 @@ public class SpawnManager : BaseClass {
     private List<Transform> spawnPoints = new List<Transform>();
     private Transform closestSpawn;
     public Transform startSpawn;
-    public GameObject spawnObject; //som ett particlesystem
+    public GameObject spawnEffectObject; //som ett particlesystem
+    private Transform latestSpawn;
 
     private bool isRespawning;
 
@@ -42,11 +43,17 @@ public class SpawnManager : BaseClass {
         if(startSpawn == null)
         {
             startSpawn = spawnpointObjects[0].transform;
+            latestSpawn = startSpawn;
         }
 
         for(int i = 0; i < spawnpointObjects.Length; i++)
         {
             spawnPoints.Add(spawnpointObjects[i].transform);
+        }
+
+        if(latestSpawn == null)
+        {
+            latestSpawn = spawnPoints[0];
         }
 
         stagMovement = player.GetComponent<StagMovement>();
@@ -84,6 +91,11 @@ public class SpawnManager : BaseClass {
         timePointLevelStarted = Time.time;
     }
 
+    public void SetLatestSpawn(Transform spawn)
+    {
+        latestSpawn = spawn; //det senaste spawnpointet man passerar
+    }
+
     public void StartSpawn()
     {
         if (startSpawn == null) return;
@@ -102,22 +114,22 @@ public class SpawnManager : BaseClass {
         isRespawning = true;
         stagMovement.isLocked = true;
 
-        Vector3 closestSpawnPos = new Vector3(1000000000, 1000000000, 10000000000);
+        //Vector3 closestSpawnPos = new Vector3(1000000000, 1000000000, 10000000000);
 
-        for(int i = 0; i < spawnPoints.Count; i++)
-        {
-            if(Vector3.Distance(playerDeathPos, spawnPoints[i].position) < Vector3.Distance(playerDeathPos, closestSpawnPos))
-            {
-                if (spawnPoints[i].GetComponent<Spawnpoint>().isPassed)
-                {
-                    closestSpawn = spawnPoints[i];
-                    closestSpawnPos = spawnPoints[i].position;
-                }
-            }
-        }
+        //for(int i = 0; i < spawnPoints.Count; i++)
+        //{
+        //    if(Vector3.Distance(playerDeathPos, spawnPoints[i].position) < Vector3.Distance(playerDeathPos, closestSpawnPos))
+        //    {
+        //        if (spawnPoints[i].GetComponent<Spawnpoint>().isPassed)
+        //        {
+        //            closestSpawn = spawnPoints[i];
+        //            closestSpawnPos = spawnPoints[i].position;
+        //        }
+        //    }
+        //}
 
         player.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-        StartCoroutine(SpawnPlayerAtLocation(closestSpawnPos));
+        StartCoroutine(SpawnPlayerAtLocation(latestSpawn.position));
         
         for(int i = 0; i < powerPickups.Length; i++)
         {
@@ -139,9 +151,9 @@ public class SpawnManager : BaseClass {
         player.GetComponent<StagShooter>().Reset();
         player.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
 
-        if(spawnObject != null)
+        if(spawnEffectObject != null)
         {
-            GameObject tempPar = Instantiate(spawnObject, player.position, Quaternion.identity) as GameObject;
+            GameObject tempPar = Instantiate(spawnEffectObject, player.position, Quaternion.identity) as GameObject;
             Destroy(tempPar.gameObject, 5);
         }
 

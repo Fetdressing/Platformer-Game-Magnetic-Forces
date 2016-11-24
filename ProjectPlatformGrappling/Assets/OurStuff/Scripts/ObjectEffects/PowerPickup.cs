@@ -8,6 +8,7 @@ public class PowerPickup : BaseClass {
     private Rigidbody thisRigidbody;
     private Transform player;
     private StagMovement stagMovement;
+    public Renderer globeRenderer;
     private Vector3 startPos;
     public float playerChaseSpeed = 0;
     public float playerChaseDistance = 140;
@@ -30,6 +31,7 @@ public class PowerPickup : BaseClass {
     private bool moveToWantedPos = false;
 
     private float cooldownChase = 0.0f; //jagar ej spelaren när den är på cooldownChase
+    public Material takenMaterial;
 
     void Start () {
         Init();
@@ -185,6 +187,11 @@ public class PowerPickup : BaseClass {
         else
         {
             audioSource.Play();
+        }
+
+        if (takenMaterial != null && globeRenderer != null)
+        {
+            globeRenderer.material = takenMaterial;
         }
 
         pickUpObj.gameObject.SetActive(false);

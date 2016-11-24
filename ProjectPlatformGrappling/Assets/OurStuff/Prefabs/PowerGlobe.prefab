@@ -113,7 +113,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010267190188}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 75, y: 159.63904, z: -2213.7}
+  m_LocalPosition: {x: -184.33902, y: 163.6113, z: 1.9060493}
   m_LocalScale: {x: 0.46042597, y: 0.4604259, z: 0.4604259}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -289,9 +289,12 @@ MonoBehaviour:
   isLocked: 0
   pickUpObj: {fileID: 1000014119565378}
   hasBeenPicked: 0
+  globeRenderer: {fileID: 23000010434138584}
   playerChaseSpeed: 180
   playerChaseDistance: 35
   powerWorth: 0.1
+  returnToStartPos: 1
+  respawn: 1
   respawnTime: 0
   acceptedTags:
   - Player
@@ -307,6 +310,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0d47fce087f7bfb489c7410a2480e220, type: 3}
   - {fileID: 8300000, guid: f65151e4c20463941849123556209f5c, type: 3}
   globeValue: 1
+  takenMaterial: {fileID: 2100000, guid: 03d4902037ad56b4bbc95c16b9e74c60, type: 2}
 --- !u!135 &135000010044772296
 SphereCollider:
   m_ObjectHideFlags: 1

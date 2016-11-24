@@ -2193,11 +2193,11 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Tarandrus\nA fast-paced platformer game in development. The development
-    is in a very early stage so much may (will) change and some bugs may occur, feel
-    free to report them to me! If you would like to have impact on this game and its
-    development (ideas, thoughts, feedback); don't hesitate to contact me! \nYou can
-    contact me on tarandrus@outlook.com\nFollow me on twitter @hyltegard_simon !"
+  m_Text: "Tarandrus\nA fast-paced platformer game in development. The game is in
+    a very early stage so much may (will) change, and be aware that bugs may occur,
+    feel free to report them to me! Your feedback is important to me and how the game
+    will shape; don't hesitate to contact me! \nYou can reach me on tarandrus@outlook.com\nFollow
+    me on twitter @hyltegard_simon !"
 --- !u!222 &1516448389
 CanvasRenderer:
   m_ObjectHideFlags: 0
