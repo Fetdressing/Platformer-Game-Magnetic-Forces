@@ -20,6 +20,7 @@ public class HealthSpirit : BaseClass
     public int maxHealth; //public för att den skall kunna moddas från tex AgentStats
     private int currHealth;
     private Vector3 deathLocation; //spara ned vart denna dog, används för respawn
+    public bool fadeOnDamage = true; //ska denna fadea ut när denne tappar hp?
     private float transparentValue = 1; //hur mkt denna fadeas ut
 
     public int startHealthRegAmount = 1;
@@ -103,8 +104,11 @@ public class HealthSpirit : BaseClass
 
         if (isAlive == false)
         {
-            transparentValue -= (Time.deltaTime * 0.00001f);
-            SetTransparency(transparentValue - (Time.deltaTime * 0.1f), false);
+            if (fadeOnDamage)
+            {
+                transparentValue -= (Time.deltaTime * 0.00001f);
+                SetTransparency(((float)currHealth / (float)maxHealth), true);
+            }
             return;
         }
 
@@ -136,13 +140,19 @@ public class HealthSpirit : BaseClass
         }
         else if (currHealth <= 0)
         {
-            SetTransparency(((float)currHealth / (float)maxHealth), true);
+            if (fadeOnDamage)
+            {
+                SetTransparency(((float)currHealth / (float)maxHealth), true);
+            }
             Die();
             return false; //target dog
             //die
         }
 
-        SetTransparency(((float)currHealth / (float)maxHealth), true);
+        if (fadeOnDamage)
+        {
+            SetTransparency(((float)currHealth / (float)maxHealth), true);
+        }
         //Debug.Log(currHealth.ToString());
         return true; //target vid liv
     }
@@ -155,7 +165,10 @@ public class HealthSpirit : BaseClass
             currHealth = maxHealth;
         }
 
-        SetTransparency(((float)currHealth / (float)maxHealth), false);
+        if (fadeOnDamage)
+        {
+            SetTransparency(((float)currHealth / (float)maxHealth), true);
+        }
 
         if (currHealth <= 0)
         {
@@ -263,7 +276,7 @@ public class HealthSpirit : BaseClass
     }
 
 
-    void SetTransparency(float tra, bool limit)
+    public void SetTransparency(float tra, bool limit)
     {
         if(limit)
             transparentValue = Mathf.Clamp(tra, 0.2f, 1); //min värde
@@ -272,6 +285,11 @@ public class HealthSpirit : BaseClass
             transparentValue = tra;
         }
         ApplyTransparency();
+    }
+
+    public float GetTransparency()
+    {
+        return transparentValue;
     }
 
     void ApplyTransparency()
