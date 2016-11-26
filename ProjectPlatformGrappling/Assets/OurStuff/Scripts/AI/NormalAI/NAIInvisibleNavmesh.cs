@@ -32,7 +32,7 @@ public class NAIInvisibleNavmesh : NAINavmesh {
             }
         }
 
-        StartCoroutine(PlayAnimation(attackAnim, true));
+        StartCoroutine(PlayAnimation(attackAnim[Random.Range(0, attackAnim.Length)], true));
         while (runningAnim) //vänta på att animation är klar
         {
             yield return new WaitForEndOfFrame();

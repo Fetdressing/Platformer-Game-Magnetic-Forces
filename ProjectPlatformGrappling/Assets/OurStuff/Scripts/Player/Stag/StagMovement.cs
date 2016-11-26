@@ -1,87 +1,87 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(CharacterController))]
+//[RequireComponent(typeof(CharacterController))]
 public class StagMovement : BaseClass
 {
     [HideInInspector]
     //public bool isLocked = false; //förhindrar alla actions, ligger i baseclass
     public Transform cameraHolder; //den som förflyttas när man rör sig med musen
-    private Transform cameraObj; //kameran själv
-    private CameraShaker cameraShaker;
-    private CharacterController characterController;
-    private PowerManager powerManager;
+    protected Transform cameraObj; //kameran själv
+    protected CameraShaker cameraShaker;
+    protected CharacterController characterController;
+    protected PowerManager powerManager;
 
-    private float distanceToGround = 100000000;
+    protected float distanceToGround = 100000000;
     public Transform stagRootJoint; //den ska röra på sig i y-led
-    private float stagRootJointStartY; //krävs att animationen börjar i bottnen isåfall
+    protected float stagRootJointStartY; //krävs att animationen börjar i bottnen isåfall
     public Transform stagObject; //denna roteras så det står korrekt
 
-    private float startSpeed = 50;
-    private float jumpSpeed = 85;
-    private float gravity = 140;
-    private float stagSpeedMultMax = 1.5f;
-    private float stagSpeedMultMin = 0.85f;
+    public float startSpeed = 50;
+    public float jumpSpeed = 85;
+    protected float gravity = 140;
+    protected float stagSpeedMultMax = 1.5f;
+    protected float stagSpeedMultMin = 0.85f;
 
-    private float currMovementSpeed; //movespeeden, kan påverkas av slows
+    protected float currMovementSpeed; //movespeeden, kan påverkas av slows
     [HideInInspector]public float currExternalSpeedMult = 1.0f; //100% movespeed, påverkar slows n shit
-    private float moveSpeedMultTimePoint = -5; //när extern slow/speed-up var applyat
-    private float moveSpeedMultDuration;
+    protected float moveSpeedMultTimePoint = -5; //när extern slow/speed-up var applyat
+    protected float moveSpeedMultDuration;
     [HideInInspector]public float ySpeed; //aktiv variable för vad som händer med gravitation/jump
-    private float jumpTimePoint = -5; //när man hoppas så den inte ska resetta stuff dirr efter man hoppat
-    private int jumpAmount = 2; //hur många hopp man får
-    private int jumpsAvaible = 0; //så man kan hoppa i luften also, förutsatt att man resettat den på marken
-    private float jumpCooldown = 0.15f;
+    protected float jumpTimePoint = -5; //när man hoppas så den inte ska resetta stuff dirr efter man hoppat
+    protected int jumpAmount = 2; //hur många hopp man får
+    protected int jumpsAvaible = 0; //så man kan hoppa i luften also, förutsatt att man resettat den på marken
+    protected float jumpCooldown = 0.15f;
     public GameObject jumpEffectObject;
     [HideInInspector] public float currFrameMovespeed = 0; //hur snabbt man rört sig denna framen
 
     [HideInInspector]public float dashTimePoint; //mud påverkar denna så att man inte kan dasha
-    private float dashCooldown = 0.3f;
-    private float dashSpeed = 380;
-    private float currDashTime;
-    private float maxDashTime = 0.05f;
-    private float dashPowerCost = 0.1f; //hur mycket power det drar varje gång man dashar
-    private bool dashUsed = false; //så att man måste bli grounded innan man kan använda den igen
+    protected float dashCooldown = 0.3f;
+    protected float dashSpeed = 380;
+    protected float currDashTime;
+    protected float maxDashTime = 0.05f;
+    protected float dashPowerCost = 0.1f; //hur mycket power det drar varje gång man dashar
+    protected bool dashUsed = false; //så att man måste bli grounded innan man kan använda den igen
     public GameObject dashEffectObject;
     public ParticleSystem dashReadyPS; //particlesystem som körs när dash är redo att användas
 
-    private float knockForceMovingPlatform = 420; //om man hamnar på fel sidan av moving platform så knuffas man bort lite
+    protected float knockForceMovingPlatform = 420; //om man hamnar på fel sidan av moving platform så knuffas man bort lite
 
     //moving platform
 
     [HideInInspector] public Transform activePlatform;
 
-    private Vector3 activeGlobalPlatformPoint;
-    private Vector3 activeLocalPlatformPoint;
+    protected Vector3 activeGlobalPlatformPoint;
+    protected Vector3 activeLocalPlatformPoint;
 
-    private float airbourneTime = 0.0f;
+    protected float airbourneTime = 0.0f;
     //moving platform
 
-    private Vector3 horVector = new Vector3(0, 0, 0); //har dem här så jag kan hämta värdena via update
-    private Vector3 verVector = new Vector3(0, 0, 0);
-    private float hor, ver;
+    protected Vector3 horVector = new Vector3(0, 0, 0); //har dem här så jag kan hämta värdena via update
+    protected Vector3 verVector = new Vector3(0, 0, 0);
+    protected float hor, ver;
     [HideInInspector] public Vector3 dashVel = new Vector3(0, 0, 0); //vill kunna komma åt denna, så därför public
-    private Vector3 finalMoveDir = new Vector3(0,0,0);
-    private Vector3 externalVel = new Vector3(0, 0, 0);
+    protected Vector3 finalMoveDir = new Vector3(0,0,0);
+    protected Vector3 externalVel = new Vector3(0, 0, 0);
 
     public PullField pullField; //som drar till sig grejer till spelaren, infinite gravity!
 
     [Header("Ground Check")]
     public Transform groundCheckObject;
-    private float groundedCheckOffsetY = 0.6f;
-    private float groundedCheckDistance = 8.5f;
+    protected float groundedCheckOffsetY = 0.6f;
+    protected float groundedCheckDistance = 8.5f;
     [HideInInspector]
     public bool isGrounded;
     [HideInInspector]
     public bool isGroundedRaycast;
-    private Transform groundedRaycastObject; //objektet som man blev grounded med raycast på
+    protected Transform groundedRaycastObject; //objektet som man blev grounded med raycast på
 
     public LayerMask groundCheckLM;
-    private float groundedTimePoint = 0; //när man blev grounded
-    private float maxSlopeGrounded = 70; //vilken vinkel det som mest får skilja på ytan och vector3.down när man kollar grounded
-    private float groundedSlope = 0;
-    private Vector3 groundedNormal = Vector3.zero;
-    private GroundChecker groundChecker; //så man kan resetta stuff till camerashake tex
+    protected float groundedTimePoint = 0; //när man blev grounded
+    protected float maxSlopeGrounded = 70; //vilken vinkel det som mest får skilja på ytan och vector3.down när man kollar grounded
+    protected float groundedSlope = 0;
+    protected Vector3 groundedNormal = Vector3.zero;
+    protected GroundChecker groundChecker; //så man kan resetta stuff till camerashake tex
 
     [Header("Animation")]
     public Animation animationH;
@@ -108,6 +108,7 @@ public class StagMovement : BaseClass
         base.Init();
         characterController = transform.GetComponent<CharacterController>();
         powerManager = transform.GetComponent<PowerManager>();
+        cameraHolder = GameObject.FindGameObjectWithTag("MainCamera").transform;
         cameraObj = cameraHolder.GetComponentsInChildren<Transform>()[1].transform;
         cameraShaker = cameraObj.GetComponent<CameraShaker>();
         groundChecker = GetComponentsInChildren<GroundChecker>()[0];
@@ -137,7 +138,7 @@ public class StagMovement : BaseClass
 
         dashTimePoint = 0;
         jumpTimePoint = -5; //behöver vara under 0 så att man kan hoppa dirr när spelet börjar
-        ToggleInfiniteGravity(false);
+        //ToggleInfiniteGravity(false);
         dashUsed = true;
         jumpsAvaible = jumpAmount;
 
@@ -270,10 +271,10 @@ public class StagMovement : BaseClass
         characterController.Move((finalMoveDir + dashVel + externalVel) * deltaTime);
         currFrameMovespeed = (new Vector3(finalMoveDir.x, 0, finalMoveDir.z).magnitude + new Vector3(dashVel.x, 0, dashVel.z).magnitude + new Vector3(externalVel.x, 0, externalVel.z).magnitude) * Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            ToggleInfiniteGravity(!pullField.enabled);
-        }
+        //if (Input.GetKeyDown(KeyCode.C))
+        //{
+        //    ToggleInfiniteGravity(!pullField.enabled);
+        //}
 
         PlayAnimationStates();
 
@@ -312,15 +313,15 @@ public class StagMovement : BaseClass
             }
         
 
-            if (hit.normal.y < 0.5f) //slå i taket
-            {
-                ySpeed = -gravity * 0.01f; //nollställer ej helt
-                //dashUsed = false; //när man blir grounded så kan man använda dash igen
-                //if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
-                //{
-                //    ySpeed = -gravity * 0.01f; //nollställer ej helt // grounded character has vSpeed = 0...
-                //}
-            }
+            //if (hit.normal.y < 0.5f) //slå i taket
+            //{
+            //    ySpeed = -gravity * 0.01f; //nollställer ej helt
+            //    //dashUsed = false; //när man blir grounded så kan man använda dash igen
+            //    //if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
+            //    //{
+            //    //    ySpeed = -gravity * 0.01f; //nollställer ej helt // grounded character has vSpeed = 0...
+            //    //}
+            //}
         }
 
         if (hit.gameObject.tag == "MovingPlatform")
@@ -362,7 +363,7 @@ public class StagMovement : BaseClass
         }
     }
 
-    void HandleMovement()
+    public virtual void HandleMovement()
     {
         float stagSpeedMultiplier = 1.0f;
         if (isGrounded)
@@ -376,9 +377,9 @@ public class StagMovement : BaseClass
         verVector = new Vector3(verVector.x, 0, verVector.z); //denna behöver vara under dash så att man kan dasha upp/ned oxå
 
         finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currMovementSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
-        if (IsWalkable(1.2f, 4, (horVector + verVector).normalized)) //dessa värden kan behöva justeras
+        if (IsWalkable(1.0f, 1.8f, (horVector + verVector).normalized)) //dessa värden kan behöva justeras
         {
-            
+
         }
         else
         {
@@ -386,7 +387,7 @@ public class StagMovement : BaseClass
         }
     }
 
-    void Jump()
+    public virtual void Jump()
     {
         if (jumpsAvaible > 0)
         {
@@ -421,7 +422,7 @@ public class StagMovement : BaseClass
         }
     }
 
-    void PlayAnimationStates()
+    public virtual void PlayAnimationStates()
     {
         if (animationH == null) return;
         float fadeLengthA = 0.1f;
@@ -469,19 +470,19 @@ public class StagMovement : BaseClass
         }
     }
 
-    public void ApplyYForce(float velY) //till characterscontrollern, inte rigidbody
+    public virtual void ApplyYForce(float velY) //till characterscontrollern, inte rigidbody
     {
         jumpTimePoint = Time.time;
         ySpeed += velY;
     }
-    public void ApplyYForce(float velY, float maxVel) //till characterscontrollern, inte rigidbody, med ett max värde
+    public virtual void ApplyYForce(float velY, float maxVel) //till characterscontrollern, inte rigidbody, med ett max värde
     {
         if (ySpeed >= maxVel) return;
         jumpTimePoint = Time.time;
         ySpeed += velY;
     }
 
-    bool Dash(Vector3 dir)
+    public virtual bool Dash(Vector3 dir)
     {
         if (!IsDashReady()) return false;
         powerManager.SufficentPower(-dashPowerCost, true); //camerashake, konstig syntax kanske du tycker, men palla göra det fancy!
@@ -489,7 +490,7 @@ public class StagMovement : BaseClass
         return true;
     }
 
-    bool IsDashReady()
+    public virtual bool IsDashReady()
     {
         if (!powerManager.SufficentPower(-dashPowerCost)) return false;
         if (dashTimePoint + dashCooldown > Time.time) return false;
@@ -498,7 +499,7 @@ public class StagMovement : BaseClass
         return true;
     }
 
-    IEnumerator MoveDash(Vector3 dir)
+    public virtual IEnumerator MoveDash(Vector3 dir)
     {
         ySpeed = -gravity * 0.01f; //nollställer ej helt
         dashUsed = true;
@@ -524,12 +525,12 @@ public class StagMovement : BaseClass
 
     }
 
-    public void ApplyExternalForce(Vector3 moveDir)
+    public virtual void ApplyExternalForce(Vector3 moveDir)
     {
         externalVel = moveDir;
     }
 
-    void PlayJumpEffect()
+    public virtual void PlayJumpEffect()
     {
         if (gameObject.activeSelf == false) return;
 
@@ -548,7 +549,7 @@ public class StagMovement : BaseClass
         
     }
 
-    void ToggleDashEffect(bool b)
+    public virtual void ToggleDashEffect(bool b)
     {
         if (gameObject.activeSelf == false) return;
         dashEffectObject.transform.rotation = cameraHolder.rotation;
@@ -593,7 +594,7 @@ public class StagMovement : BaseClass
             }
         }
     }
-    IEnumerator ShutDownTrail(TrailRenderer tR)
+    public virtual IEnumerator ShutDownTrail(TrailRenderer tR)
     {
         while(tR.time > 0.0f)
         {
@@ -604,31 +605,31 @@ public class StagMovement : BaseClass
         }
     }
 
-    public void ApplySpeedMultiplier(float multiplier, float duration) //slows o liknande, updateras i LateUpdate()
+    public virtual void ApplySpeedMultiplier(float multiplier, float duration) //slows o liknande, updateras i LateUpdate()
     {
         currExternalSpeedMult = multiplier;
         moveSpeedMultTimePoint = Time.time;
         moveSpeedMultDuration = duration;
     }
 
-    void ToggleInfiniteGravity(bool b)
-    {
-        pullField.enabled = b;
-        ParticleSystem pullps = pullField.gameObject.GetComponent<ParticleSystem>();
+    //void ToggleInfiniteGravity(bool b)
+    //{
+    //    pullField.enabled = b;
+    //    ParticleSystem pullps = pullField.gameObject.GetComponent<ParticleSystem>();
 
-        //pullps.emission.enabled = b;
+    //    //pullps.emission.enabled = b;
 
-        if (b)
-        {
-            pullps.Play();
-        }
-        else
-        {
-            pullps.Stop();
-        }
-    }
+    //    if (b)
+    //    {
+    //        pullps.Play();
+    //    }
+    //    else
+    //    {
+    //        pullps.Stop();
+    //    }
+    //}
 
-    void ToggleDashReadyPS(bool b)
+    public virtual void ToggleDashReadyPS(bool b)
     {
         if (dashReadyPS == null) return;
         if (b)
@@ -643,7 +644,7 @@ public class StagMovement : BaseClass
         }
     }
 
-    public bool IsWalkable(float yOffset, float distance, Vector3 direction)
+    public virtual bool IsWalkable(float yOffset, float distance, Vector3 direction)
     {
         //if(isGroundedRaycast)
         //{
@@ -671,7 +672,7 @@ public class StagMovement : BaseClass
         return true;
     }
 
-    public bool GetGrounded()
+    public virtual bool GetGrounded()
     {
         RaycastHit rHit;
 
@@ -698,7 +699,7 @@ public class StagMovement : BaseClass
         }
     }
 
-    public bool GetGrounded(Transform tChecker) //från en annan utgångspunkt
+    public virtual bool GetGrounded(Transform tChecker) //från en annan utgångspunkt
     {
         RaycastHit rHit;
         if (Physics.Raycast(tChecker.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, groundedCheckDistance, groundCheckLM))
@@ -724,7 +725,7 @@ public class StagMovement : BaseClass
     }
 
 
-    public Transform GetGroundedTransform(Transform tChecker) //får den transformen man står på, från en annan utgångspunkt
+    public virtual Transform GetGroundedTransform(Transform tChecker) //får den transformen man står på, från en annan utgångspunkt
     {
         RaycastHit rHit;
         if (Physics.Raycast(tChecker.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, groundedCheckDistance, groundCheckLM))
@@ -745,7 +746,7 @@ public class StagMovement : BaseClass
         }
     }
 
-    public Transform GetGroundedTransform(Transform tChecker, float distance) //får den transformen man står på, från en annan utgångspunkt
+    public virtual Transform GetGroundedTransform(Transform tChecker, float distance) //får den transformen man står på, från en annan utgångspunkt
     {
         RaycastHit rHit;
         if (Physics.Raycast(tChecker.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, distance, groundCheckLM))

@@ -77,7 +77,7 @@ public class StagShooter : BaseClass {
         if (cooldonwTimer > Time.time) return;
         cooldonwTimer = Time.time + cooldown_Time;
 
-        if (!powerManager.SufficentPower(-projectilePowerCost * 4, true)) { Debug.Log(Time.time.ToString()); return; } //* ett värde för att ha lite marginal
+        if (!powerManager.SufficentPower(-projectilePowerCost * 4, true)) {  return; } //* ett värde för att ha lite marginal
         powerManager.AddPower(-projectilePowerCost);
 
         audioSource.PlayOneShot(shootSound, volume);

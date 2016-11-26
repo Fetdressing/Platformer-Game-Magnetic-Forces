@@ -1913,7 +1913,7 @@ MonoBehaviour:
   fEventStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1088178605}
+      - m_Target: {fileID: 0}
         m_MethodName: StartfogDensityChange
         m_Mode: 4
         m_Arguments:
@@ -2772,7 +2772,7 @@ MonoBehaviour:
   fEventStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1088178605}
+      - m_Target: {fileID: 0}
         m_MethodName: StartfogDensityChange
         m_Mode: 4
         m_Arguments:
@@ -4022,7 +4022,7 @@ MonoBehaviour:
   fEventStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1088178605}
+      - m_Target: {fileID: 0}
         m_MethodName: StartfogDensityChange
         m_Mode: 4
         m_Arguments:
@@ -7304,11 +7304,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 181895832}
   m_Mesh: {fileID: 4300000, guid: 07dff1fda50e9d24da1e2d61e2f95983, type: 2}
---- !u!1 &182014432 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1000011496577370, guid: ecd38ba538801b04db904a661134a689,
-    type: 2}
-  m_PrefabInternal: {fileID: 730227547}
 --- !u!1001 &183070474
 Prefab:
   m_ObjectHideFlags: 0
@@ -11912,6 +11907,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 299459759}
     m_Modifications:
+    - target: {fileID: 114000011180688178, guid: fa5c8d47366df9546af9124c99fba785,
+        type: 2}
+      propertyPath: activate_GameObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011662825170, guid: fa5c8d47366df9546af9124c99fba785, type: 2}
       propertyPath: m_LocalPosition.x
       value: 612
@@ -11948,7 +11948,7 @@ Prefab:
         type: 2}
       propertyPath: activate_GameObjects.Array.data[1]
       value: 
-      objectReference: {fileID: 1536620352}
+      objectReference: {fileID: 0}
     - target: {fileID: 1000013697039216, guid: fa5c8d47366df9546af9124c99fba785, type: 2}
       propertyPath: m_Name
       value: Sign (2)
@@ -12137,6 +12137,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 299459759}
     m_Modifications:
+    - target: {fileID: 114000011180688178, guid: fa5c8d47366df9546af9124c99fba785,
+        type: 2}
+      propertyPath: activate_GameObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011662825170, guid: fa5c8d47366df9546af9124c99fba785, type: 2}
       propertyPath: m_LocalPosition.x
       value: 504.7436
@@ -12173,7 +12178,7 @@ Prefab:
         type: 2}
       propertyPath: activate_GameObjects.Array.data[1]
       value: 
-      objectReference: {fileID: 386553891}
+      objectReference: {fileID: 0}
     - target: {fileID: 1000013697039216, guid: fa5c8d47366df9546af9124c99fba785, type: 2}
       propertyPath: m_Name
       value: Sign (1)
@@ -15938,7 +15943,7 @@ MonoBehaviour:
   fEventStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1088178605}
+      - m_Target: {fileID: 0}
         m_MethodName: StartfogDensityChange
         m_Mode: 4
         m_Arguments:
@@ -16019,11 +16024,6 @@ BoxCollider:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 11c9bcfda3dad2e45b218922ddcc678c, type: 3}
   m_PrefabInternal: {fileID: 1587475979}
---- !u!1 &386553891 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1000013696765888, guid: ecd38ba538801b04db904a661134a689,
-    type: 2}
-  m_PrefabInternal: {fileID: 730227547}
 --- !u!4 &390121222 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000010815985780, guid: 103dcee560e0909458cdd315e4a5a813,
@@ -17946,7 +17946,7 @@ MonoBehaviour:
   fEventStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1088178605}
+      - m_Target: {fileID: 0}
         m_MethodName: StartfogDensityChange
         m_Mode: 4
         m_Arguments:
@@ -27074,82 +27074,6 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 0755393d54d2e9e4fb4d1187118cc852, type: 3}
   m_PrefabInternal: {fileID: 728281364}
---- !u!1001 &730227547
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4000012220389674, guid: ecd38ba538801b04db904a661134a689, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012220389674, guid: ecd38ba538801b04db904a661134a689, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012220389674, guid: ecd38ba538801b04db904a661134a689, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012220389674, guid: ecd38ba538801b04db904a661134a689, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012220389674, guid: ecd38ba538801b04db904a661134a689, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012220389674, guid: ecd38ba538801b04db904a661134a689, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012220389674, guid: ecd38ba538801b04db904a661134a689, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012220389674, guid: ecd38ba538801b04db904a661134a689, type: 2}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1000012721125376, guid: ecd38ba538801b04db904a661134a689, type: 2}
-      propertyPath: m_Name
-      value: ESSENTIALS
-      objectReference: {fileID: 0}
-    - target: {fileID: 114000013941428046, guid: ecd38ba538801b04db904a661134a689,
-        type: 2}
-      propertyPath: startSpawn
-      value: 
-      objectReference: {fileID: 944002973}
-    - target: {fileID: 224000010436884462, guid: ecd38ba538801b04db904a661134a689,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011114611504, guid: ecd38ba538801b04db904a661134a689,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 82000012561521762, guid: ecd38ba538801b04db904a661134a689,
-        type: 2}
-      propertyPath: m_Volume
-      value: 0.068
-      objectReference: {fileID: 0}
-    - target: {fileID: 82000012561521762, guid: ecd38ba538801b04db904a661134a689,
-        type: 2}
-      propertyPath: m_Pitch
-      value: 1.06
-      objectReference: {fileID: 0}
-    - target: {fileID: 114000010772487486, guid: ecd38ba538801b04db904a661134a689,
-        type: 2}
-      propertyPath: cameraSpeed
-      value: 3.5
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: ecd38ba538801b04db904a661134a689, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1001 &731693647
 Prefab:
   m_ObjectHideFlags: 0
@@ -29634,7 +29558,7 @@ MonoBehaviour:
   fEventStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1088178605}
+      - m_Target: {fileID: 0}
         m_MethodName: StartfogDensityChange
         m_Mode: 4
         m_Arguments:
@@ -30062,7 +29986,7 @@ MonoBehaviour:
   fEventStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1088178605}
+      - m_Target: {fileID: 0}
         m_MethodName: StartfogDensityChange
         m_Mode: 4
         m_Arguments:
@@ -35945,7 +35869,7 @@ MonoBehaviour:
   fEventStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1088178605}
+      - m_Target: {fileID: 0}
         m_MethodName: StartfogDensityChange
         m_Mode: 4
         m_Arguments:
@@ -36010,7 +35934,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000013881427992, guid: 7a5e663eaa0de9143b2a1efdc913e3e5, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1000013438279190, guid: 7a5e663eaa0de9143b2a1efdc913e3e5, type: 2}
       propertyPath: m_IsActive
@@ -38593,12 +38517,6 @@ MeshCollider:
   serializedVersion: 2
   m_Convex: 0
   m_Mesh: {fileID: 4300000, guid: 5aeadc428fb736643b5c8b089b0a8faf, type: 2}
---- !u!114 &1088178605 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114000010171813366, guid: ecd38ba538801b04db904a661134a689,
-    type: 2}
-  m_PrefabInternal: {fileID: 730227547}
-  m_Script: {fileID: 11500000, guid: 47ecf0ca39eff284fb3f1ac62d051d53, type: 3}
 --- !u!4 &1091346253 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 8e12e4ba46625f34dbcd03b88efda792, type: 3}
@@ -41495,7 +41413,7 @@ MonoBehaviour:
   fEventStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1088178605}
+      - m_Target: {fileID: 0}
         m_MethodName: StartfogDensityChange
         m_Mode: 4
         m_Arguments:
@@ -42781,7 +42699,7 @@ MonoBehaviour:
   fEventStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1088178605}
+      - m_Target: {fileID: 0}
         m_MethodName: StartfogDensityChange
         m_Mode: 4
         m_Arguments:
@@ -45360,7 +45278,7 @@ MonoBehaviour:
   fEventStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1088178605}
+      - m_Target: {fileID: 0}
         m_MethodName: StartfogDensityChange
         m_Mode: 4
         m_Arguments:
@@ -47928,7 +47846,7 @@ MonoBehaviour:
   fEventStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1088178605}
+      - m_Target: {fileID: 0}
         m_MethodName: StartfogDensityChange
         m_Mode: 4
         m_Arguments:
@@ -51504,11 +51422,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e12e4ba46625f34dbcd03b88efda792, type: 3}
   m_IsPrefabParent: 0
---- !u!1 &1535810901 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1000011154944262, guid: ecd38ba538801b04db904a661134a689,
-    type: 2}
-  m_PrefabInternal: {fileID: 730227547}
 --- !u!1 &1536453596
 GameObject:
   m_ObjectHideFlags: 0
@@ -51566,11 +51479,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &1536620352 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1000013926867234, guid: ecd38ba538801b04db904a661134a689,
-    type: 2}
-  m_PrefabInternal: {fileID: 730227547}
 --- !u!1 &1537421963
 GameObject:
   m_ObjectHideFlags: 0
@@ -59436,7 +59344,7 @@ MonoBehaviour:
   fEventStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1088178605}
+      - m_Target: {fileID: 0}
         m_MethodName: StartfogDensityChange
         m_Mode: 4
         m_Arguments:
@@ -59460,6 +59368,63 @@ MonoBehaviour:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 11c9bcfda3dad2e45b218922ddcc678c, type: 3}
   m_PrefabInternal: {fileID: 945237385}
+--- !u!1001 &1767770675
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4000012220389674, guid: ecd38ba538801b04db904a661134a689, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012220389674, guid: ecd38ba538801b04db904a661134a689, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012220389674, guid: ecd38ba538801b04db904a661134a689, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012220389674, guid: ecd38ba538801b04db904a661134a689, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012220389674, guid: ecd38ba538801b04db904a661134a689, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012220389674, guid: ecd38ba538801b04db904a661134a689, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012220389674, guid: ecd38ba538801b04db904a661134a689, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012220389674, guid: ecd38ba538801b04db904a661134a689, type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013941428046, guid: ecd38ba538801b04db904a661134a689,
+        type: 2}
+      propertyPath: startSpawn
+      value: 
+      objectReference: {fileID: 944002973}
+    - target: {fileID: 224000010436884462, guid: ecd38ba538801b04db904a661134a689,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224000011114611504, guid: ecd38ba538801b04db904a661134a689,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: ecd38ba538801b04db904a661134a689, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1768064009
 GameObject:
   m_ObjectHideFlags: 0
@@ -59672,7 +59637,7 @@ MonoBehaviour:
   fEventStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1088178605}
+      - m_Target: {fileID: 0}
         m_MethodName: StartfogDensityChange
         m_Mode: 4
         m_Arguments:
@@ -63067,6 +63032,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 299459759}
     m_Modifications:
+    - target: {fileID: 114000011180688178, guid: fa5c8d47366df9546af9124c99fba785,
+        type: 2}
+      propertyPath: activate_GameObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011662825170, guid: fa5c8d47366df9546af9124c99fba785, type: 2}
       propertyPath: m_LocalPosition.x
       value: 633.2781
@@ -63103,7 +63073,7 @@ Prefab:
         type: 2}
       propertyPath: activate_GameObjects.Array.data[1]
       value: 
-      objectReference: {fileID: 1535810901}
+      objectReference: {fileID: 0}
     - target: {fileID: 114000011180688178, guid: fa5c8d47366df9546af9124c99fba785,
         type: 2}
       propertyPath: range
@@ -66415,7 +66385,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 2bca4a91d2fddd7468938057987b7e40, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9500000, guid: 2bca4a91d2fddd7468938057987b7e40, type: 3}
@@ -68200,6 +68170,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 299459759}
     m_Modifications:
+    - target: {fileID: 114000011180688178, guid: fa5c8d47366df9546af9124c99fba785,
+        type: 2}
+      propertyPath: activate_GameObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011662825170, guid: fa5c8d47366df9546af9124c99fba785, type: 2}
       propertyPath: m_LocalPosition.x
       value: -727.9
@@ -68236,7 +68211,7 @@ Prefab:
         type: 2}
       propertyPath: activate_GameObjects.Array.data[1]
       value: 
-      objectReference: {fileID: 182014432}
+      objectReference: {fileID: 0}
     - target: {fileID: 1000013697039216, guid: fa5c8d47366df9546af9124c99fba785, type: 2}
       propertyPath: m_Name
       value: Sign (3)
@@ -69104,7 +69079,7 @@ MonoBehaviour:
   fEventStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1088178605}
+      - m_Target: {fileID: 0}
         m_MethodName: StartfogDensityChange
         m_Mode: 4
         m_Arguments:

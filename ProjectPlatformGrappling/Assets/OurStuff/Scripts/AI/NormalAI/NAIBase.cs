@@ -37,7 +37,7 @@ public class NAIBase : BaseClass {
     public Anim detectedAnim;
     public Anim idleAnim;
     public Anim runAnim;
-    public Anim attackAnim;
+    public Anim[] attackAnim;
 
     protected bool runningAnim = false; //spelas en viktig animation?
 
@@ -89,6 +89,12 @@ public class NAIBase : BaseClass {
     {
         while (Vector3.Distance(player.position, transform.position) < maxChaseRange)
         {
+            if (Vector3.Distance(player.position, transform.position) < attackDistance)
+            {
+                StartCoroutine(Attack());
+                break;
+            }
+
             if (movingSpeed > 0.001f)
             {
                 StartCoroutine(PlayAnimation(runAnim, false));
@@ -99,19 +105,13 @@ public class NAIBase : BaseClass {
             }
             Move(player.position);
 
-            if(Vector3.Distance(player.position, transform.position) < attackDistance)
-            {
-                StartCoroutine(Attack());
-                break;
-            }
-
             yield return new WaitForEndOfFrame();
         }
     }
 
     public virtual IEnumerator Attack()
     {
-        StartCoroutine(PlayAnimation(attackAnim, true));
+        StartCoroutine(PlayAnimation(attackAnim[Random.Range(0, attackAnim.Length)], true));
         while (runningAnim) //vänta på att animation är klar
         {
             yield return new WaitForEndOfFrame();
