@@ -63,6 +63,14 @@ public class StagMovement : BaseClass
     [HideInInspector] public Vector3 dashVel = new Vector3(0, 0, 0); //vill kunna komma åt denna, så därför public
     protected Vector3 finalMoveDir = new Vector3(0,0,0);
     protected Vector3 externalVel = new Vector3(0, 0, 0);
+    protected Vector3 currMomentum = Vector3.zero; //så man behåller fart även efter man släppt på styrning
+    protected float startLimitSpeed = 80;
+    protected float currLimitSpeed;
+
+    protected float movementStackResetTimer = 0.0f;
+    protected float movementStackResetTime = 0.8f;
+    protected int movementStacks = 0; //får mer stacks när man dashar och hoppar mycket
+
 
     public PullField pullField; //som drar till sig grejer till spelaren, infinite gravity!
 
@@ -135,12 +143,14 @@ public class StagMovement : BaseClass
         externalVel = new Vector3(0, 0, 0);
         ySpeed = -gravity * 0.01f; //nollställer ej helt
         currExternalSpeedMult = 1.0f;
+        currLimitSpeed = startLimitSpeed;
 
         dashTimePoint = 0;
         jumpTimePoint = -5; //behöver vara under 0 så att man kan hoppa dirr när spelet börjar
         //ToggleInfiniteGravity(false);
         dashUsed = true;
         jumpsAvaible = jumpAmount;
+        movementStacks = 1;
 
         isGrounded = false;
         isGroundedRaycast = false;
@@ -165,6 +175,12 @@ public class StagMovement : BaseClass
     {
         if (Time.timeScale == 0) return;
         if (isLocked) return;
+
+        if(movementStackResetTimer < Time.time)
+        {
+            //movementStacks = 1;
+            AddMovementStack(-1);
+        }
 
         hor = Input.GetAxis("Horizontal");
         ver = Input.GetAxis("Vertical");
@@ -268,7 +284,7 @@ public class StagMovement : BaseClass
         externalVel = Vector3.Lerp(externalVel, Vector3.zero, deltaTime * 10); //ta sakta bort den externa forcen
 
         HandleMovement(); //moddar finalMoveDir
-        characterController.Move((finalMoveDir + dashVel + externalVel) * deltaTime);
+        characterController.Move((currMomentum + dashVel + externalVel) * deltaTime);
         currFrameMovespeed = (new Vector3(finalMoveDir.x, 0, finalMoveDir.z).magnitude + new Vector3(dashVel.x, 0, dashVel.z).magnitude + new Vector3(externalVel.x, 0, externalVel.z).magnitude) * Time.deltaTime;
 
         //if (Input.GetKeyDown(KeyCode.C))
@@ -385,6 +401,48 @@ public class StagMovement : BaseClass
         {
             finalMoveDir *= 0.1f;
         }
+
+
+        if (movementStacks > 14)
+        {
+            currMomentum += finalMoveDir * deltaTime * (1 + (float)movementStacks * 0.15f); //om inte man är uppe i hög speed så kan man alltid köra currMomentum = finalMoveDir som vanligt
+            float momY = currMomentum.y;
+
+            Vector3 currMomXZ = new Vector3(currMomentum.x, 0, currMomentum.z);
+
+            if (currMomXZ.magnitude > currLimitSpeed)
+            {
+                Break(15, ref currMomXZ);
+
+            }
+            else
+            {
+                if (finalMoveDir.magnitude <= 0.0f) //släppt kontrollerna, då kan man deaccelerera snabbare!
+                {
+                    Break(50, ref currMomXZ);
+                }
+            }
+
+            currMomentum = new Vector3(currMomXZ.x, momY, currMomXZ.z);
+        }
+        else
+        {
+            currMomentum = finalMoveDir * 0.18f * (1 + (float)movementStacks * 0.02f);
+        }
+
+        //if(finalMoveDir.magnitude > 0.0f)
+        //{
+        //    Break(0.99f);
+        //}
+        //else
+        //{
+        //    Break(0.9f);
+        //}
+    }
+
+    void Break(float breakamount, ref Vector3 vec) //brmosa
+    {
+        vec = Vector3.Lerp(vec, Vector3.zero, Time.deltaTime * breakamount); //detta är inte braa!
     }
 
     public virtual void Jump()
@@ -393,6 +451,7 @@ public class StagMovement : BaseClass
         {
             if (Time.time > jumpTimePoint + jumpCooldown)
             {
+                AddMovementStack(1);
                 PlayJumpEffect();
 
                 jumpsAvaible = Mathf.Max(0, (jumpsAvaible - 1));
@@ -501,6 +560,7 @@ public class StagMovement : BaseClass
 
     public virtual IEnumerator MoveDash(Vector3 dir)
     {
+        AddMovementStack(1);
         ySpeed = -gravity * 0.01f; //nollställer ej helt
         dashUsed = true;
         ToggleDashEffect(true);
@@ -523,6 +583,12 @@ public class StagMovement : BaseClass
         ToggleDashEffect(false);
         dashVel = Vector3.zero;
 
+    }
+
+    void AddMovementStack(int i)
+    {
+        movementStacks += i;
+        movementStackResetTimer = Time.time + movementStackResetTime - (movementStacks * 0.015f); //gör det svårare o svårare!
     }
 
     public virtual void ApplyExternalForce(Vector3 moveDir)
