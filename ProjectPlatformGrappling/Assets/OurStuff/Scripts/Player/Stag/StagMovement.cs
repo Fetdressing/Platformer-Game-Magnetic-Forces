@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 //[RequireComponent(typeof(CharacterController))]
 public class StagMovement : BaseClass
@@ -17,8 +18,8 @@ public class StagMovement : BaseClass
     protected float stagRootJointStartY; //krävs att animationen börjar i bottnen isåfall
     public Transform stagObject; //denna roteras så det står korrekt
 
-    public float startSpeed = 50;
-    public float jumpSpeed = 85;
+    protected float startSpeed = 190;
+    protected float jumpSpeed = 85;
     protected float gravity = 140;
     protected float stagSpeedMultMax = 1.5f;
     protected float stagSpeedMultMin = 0.85f;
@@ -64,12 +65,13 @@ public class StagMovement : BaseClass
     protected Vector3 finalMoveDir = new Vector3(0,0,0);
     protected Vector3 externalVel = new Vector3(0, 0, 0);
     protected Vector3 currMomentum = Vector3.zero; //så man behåller fart även efter man släppt på styrning
-    protected float startLimitSpeed = 80;
+    protected float startLimitSpeed = 60;
     protected float currLimitSpeed;
 
+    public Text moveStackText;
     protected float movementStackResetTimer = 0.0f;
-    protected float movementStackResetTime = 0.8f;
-    protected int movementStacks = 0; //får mer stacks när man dashar och hoppar mycket
+    protected float movementStackResetTime = 2.0f;
+    [HideInInspector]public int movementStacks = 0; //får mer stacks när man dashar och hoppar mycket
 
 
     public PullField pullField; //som drar till sig grejer till spelaren, infinite gravity!
@@ -179,7 +181,7 @@ public class StagMovement : BaseClass
         if(movementStackResetTimer < Time.time)
         {
             //movementStacks = 1;
-            AddMovementStack(-1);
+            AddMovementStack(-3);
         }
 
         hor = Input.GetAxis("Horizontal");
@@ -224,6 +226,11 @@ public class StagMovement : BaseClass
         if (Input.GetButtonDown("Jump"))
         {
             Jump();
+        }
+
+        if(Input.GetKeyDown(KeyCode.B))
+        {
+            Slam();
         }
 
         if(IsDashReady())
@@ -393,6 +400,7 @@ public class StagMovement : BaseClass
         verVector = new Vector3(verVector.x, 0, verVector.z); //denna behöver vara under dash så att man kan dasha upp/ned oxå
 
         finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currMovementSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
+
         if (IsWalkable(1.0f, 1.8f, (horVector + verVector).normalized)) //dessa värden kan behöva justeras
         {
 
@@ -400,34 +408,51 @@ public class StagMovement : BaseClass
         else
         {
             finalMoveDir *= 0.1f;
+            currMomentum *= 0.1f;
         }
 
+        //poängen i början ska dock vara värda mer!!
+        float flatMoveStacksSpeedBonues = Mathf.Max(1, Mathf.Log(movementStacks, 2));
+        flatMoveStacksSpeedBonues *= 0.1f;
+        Debug.Log(flatMoveStacksSpeedBonues.ToString());
 
-        if (movementStacks > 14)
+        float bonusStageSpeed = 1.0f; //ökar för vart X stacks
+        bonusStageSpeed = movementStacks / 3;
+        bonusStageSpeed = Mathf.Floor(bonusStageSpeed);
+        bonusStageSpeed = Mathf.Max(1, bonusStageSpeed);
+
+        bonusStageSpeed *= 0.2f;
+        bonusStageSpeed += 1;
+
+        //Debug.Log(bonusStageSpeed.ToString());
+
+        currLimitSpeed = startLimitSpeed * bonusStageSpeed;
+
+        if (movementStacks > 4)
         {
-            currMomentum += finalMoveDir * deltaTime * (1 + (float)movementStacks * 0.15f); //om inte man är uppe i hög speed så kan man alltid köra currMomentum = finalMoveDir som vanligt
+            currMomentum += finalMoveDir * deltaTime * bonusStageSpeed * (1 + flatMoveStacksSpeedBonues); //om inte man är uppe i hög speed så kan man alltid köra currMomentum = finalMoveDir som vanligt
             float momY = currMomentum.y;
 
             Vector3 currMomXZ = new Vector3(currMomentum.x, 0, currMomentum.z);
 
             if (currMomXZ.magnitude > currLimitSpeed)
             {
-                Break(15, ref currMomXZ);
+                Break((25 - movementStacks * 0.3f), ref currMomXZ);
 
             }
             else
             {
                 if (finalMoveDir.magnitude <= 0.0f) //släppt kontrollerna, då kan man deaccelerera snabbare!
                 {
-                    Break(50, ref currMomXZ);
+                    Break(4, ref currMomXZ);
                 }
             }
 
             currMomentum = new Vector3(currMomXZ.x, momY, currMomXZ.z);
         }
-        else
+        else //vanlig slö speed
         {
-            currMomentum = finalMoveDir * 0.18f * (1 + (float)movementStacks * 0.02f);
+            currMomentum = finalMoveDir * 0.22f * (1 + (float)movementStacks * 0.019f);
         }
 
         //if(finalMoveDir.magnitude > 0.0f)
@@ -479,6 +504,33 @@ public class StagMovement : BaseClass
                 //animationH[jump.name].weight = 1.0f;
             }
         }
+    }
+
+    public void Slam()
+    {
+        if (!isGrounded && !isGroundedRaycast && movementStacks < 5) return;
+
+        RaycastHit rHit;
+        float slamMaxDistance = 200;
+        if(Physics.Raycast(transform.position, Vector3.down, out rHit, slamMaxDistance, groundCheckLM))
+        {
+            float dist = Mathf.Abs(transform.position.y - rHit.point.y);
+            StartCoroutine(MoveSlam(dist));
+        }
+
+        StartCoroutine(MoveSlam(slamMaxDistance));
+    }
+    IEnumerator MoveSlam(float maxDistance)
+    {
+        while(!isGrounded)
+        {
+            currMomentum = Vector3.zero;
+            ySpeed = -170;
+            yield return new WaitForEndOfFrame();
+        }
+
+        //Slam!
+        AddMovementStack(-movementStacks);
     }
 
     public virtual void PlayAnimationStates()
@@ -588,7 +640,14 @@ public class StagMovement : BaseClass
     void AddMovementStack(int i)
     {
         movementStacks += i;
-        movementStackResetTimer = Time.time + movementStackResetTime - (movementStacks * 0.015f); //gör det svårare o svårare!
+        movementStackResetTimer = Time.time + movementStackResetTime - (movementStacks * 0.09f); //gör det svårare o svårare!
+
+        if(movementStacks < 0)
+        {
+            movementStacks = 0;
+        }
+
+        moveStackText.text = movementStacks.ToString();
     }
 
     public virtual void ApplyExternalForce(Vector3 moveDir)
