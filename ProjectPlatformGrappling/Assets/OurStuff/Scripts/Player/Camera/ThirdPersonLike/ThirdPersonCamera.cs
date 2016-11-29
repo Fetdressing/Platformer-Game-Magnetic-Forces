@@ -38,7 +38,7 @@ public class ThirdPersonCamera : BaseClass {
     void LateUpdate () {
         Vector3 focusOffset = target.position + new Vector3(0, 0.2f, 0); //använd denna med en offset för att få lite snyggare resultat
 
-        targetSpeed = Mathf.Abs(Vector3.Distance(target.position, targetLastFramePos)) * Time.deltaTime;
+        targetSpeed = Mathf.Abs(Vector3.Distance(target.position, targetLastFramePos)) * deltaTime;
         float currDistance = Vector3.Distance(target.position, transform.position);
         float currDistanceNoY = Vector3.Distance(new Vector3(target.position.x, 0, target.position.z), new Vector3(transform.position.x, 0, transform.position.z));
         float currYDistance = Mathf.Abs(target.position.y - transform.position.y);
@@ -58,12 +58,12 @@ public class ThirdPersonCamera : BaseClass {
         //{
         //    transform.position = Vector3.Lerp(transform.position, wantedPosition, Time.deltaTime * cameraSpeed);
         //}
-        transform.position = Vector3.Lerp(transform.position, wantedPosition, Time.deltaTime * cameraSpeed);
+        transform.position = Vector3.Lerp(transform.position, wantedPosition, deltaTime * cameraSpeed);
 
 
         if (stagMovement.dashVel.magnitude > 1)
         {
-            transform.position += stagMovement.dashVel * Time.deltaTime;
+            transform.position += stagMovement.dashVel * deltaTime;
         }
 
         //look at

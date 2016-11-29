@@ -70,7 +70,7 @@ public class StagMovement : BaseClass
 
     public Text moveStackText;
     protected float movementStackResetTimer = 0.0f;
-    protected float movementStackResetTime = 2.0f;
+    protected float movementStackResetTime = 3.0f;
     [HideInInspector]public int movementStacks = 0; //får mer stacks när man dashar och hoppar mycket
 
 
@@ -412,9 +412,9 @@ public class StagMovement : BaseClass
         }
 
         //poängen i början ska dock vara värda mer!!
-        float flatMoveStacksSpeedBonues = Mathf.Max(1, Mathf.Log(movementStacks, 2));
-        flatMoveStacksSpeedBonues *= 0.1f;
-        Debug.Log(flatMoveStacksSpeedBonues.ToString());
+        float flatMoveStacksSpeedBonues = Mathf.Max(1, Mathf.Log(movementStacks, 1.01f));
+        flatMoveStacksSpeedBonues *= 0.003f;
+        //Debug.Log(flatMoveStacksSpeedBonues.ToString());
 
         float bonusStageSpeed = 1.0f; //ökar för vart X stacks
         bonusStageSpeed = movementStacks / 3;
@@ -426,7 +426,7 @@ public class StagMovement : BaseClass
 
         //Debug.Log(bonusStageSpeed.ToString());
 
-        currLimitSpeed = startLimitSpeed * bonusStageSpeed;
+        currLimitSpeed = startLimitSpeed * bonusStageSpeed * currExternalSpeedMult;
 
         if (movementStacks > 4)
         {
@@ -444,7 +444,7 @@ public class StagMovement : BaseClass
             {
                 if (finalMoveDir.magnitude <= 0.0f) //släppt kontrollerna, då kan man deaccelerera snabbare!
                 {
-                    Break(4, ref currMomXZ);
+                    Break(2, ref currMomXZ);
                 }
             }
 
@@ -522,13 +522,19 @@ public class StagMovement : BaseClass
     }
     IEnumerator MoveSlam(float maxDistance)
     {
-        while(!isGrounded)
+        Vector3 startP = transform.position;
+        isLocked = true; //kan vara farligt att göra detta här
+        yield return new WaitForSeconds(0.3f);
+        isLocked = false;
+        ySpeed = -170;
+        while(!isGrounded && ySpeed < -2.0f && Vector3.Distance(startP, transform.position) < (maxDistance + 2))
         {
             currMomentum = Vector3.zero;
             ySpeed = -170;
             yield return new WaitForEndOfFrame();
         }
-
+        Debug.Log(Time.time.ToString());
+        cameraShaker.ShakeCamera(0.3f + (movementStacks * 0.1f), 2 + (movementStacks * 0.2f), true);
         //Slam!
         AddMovementStack(-movementStacks);
     }
@@ -640,11 +646,18 @@ public class StagMovement : BaseClass
     void AddMovementStack(int i)
     {
         movementStacks += i;
-        movementStackResetTimer = Time.time + movementStackResetTime - (movementStacks * 0.09f); //gör det svårare o svårare!
-
-        if(movementStacks < 0)
+        float timeReduceValue = Mathf.Max(0, Mathf.Pow(movementStacks, 1.7f));
+        timeReduceValue *= 0.03f;
+        if(float.IsNaN(timeReduceValue))
         {
-            movementStacks = 0;
+            timeReduceValue = 0;
+        }
+        Debug.Log(timeReduceValue.ToString());
+        movementStackResetTimer = Time.time + movementStackResetTime - (timeReduceValue); //gör det svårare o svårare!
+
+        if(movementStacks < 1)
+        {
+            movementStacks = 1;
         }
 
         moveStackText.text = movementStacks.ToString();
