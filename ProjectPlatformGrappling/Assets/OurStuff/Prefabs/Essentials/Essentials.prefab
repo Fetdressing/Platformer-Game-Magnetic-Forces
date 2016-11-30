@@ -3972,8 +3972,6 @@ MonoBehaviour:
   cameraHolder: {fileID: 4000010914960778}
   stagRootJoint: {fileID: 4000010653670334}
   stagObject: {fileID: 4000011412557584}
-  startSpeed: 300
-  jumpSpeed: 85
   currExternalSpeedMult: 1
   ySpeed: 0
   jumpEffectObject: {fileID: 1000013884809932}
@@ -5340,7 +5338,7 @@ Projector:
   m_FarClipPlane: 50
   m_FieldOfView: 20
   m_AspectRatio: 1
-  m_Orthographic: 1
+  m_Orthographic: 0
   m_OrthographicSize: 1.5
   m_Material: {fileID: 2100000, guid: e30ff3588e719f34bbf0c66f22d97487, type: 2}
   m_IgnoreLayers:
