@@ -70,7 +70,7 @@ public class StagMovement : BaseClass
 
     public Text moveStackText;
     protected float movementStackResetTimer = 0.0f;
-    protected float movementStackResetTime = 3.0f;
+    protected float movementStackResetTime = 4.0f;
     [HideInInspector]public int movementStacks = 0; //får mer stacks när man dashar och hoppar mycket
 
 
@@ -421,7 +421,7 @@ public class StagMovement : BaseClass
         bonusStageSpeed = Mathf.Floor(bonusStageSpeed);
         bonusStageSpeed = Mathf.Max(1, bonusStageSpeed);
 
-        bonusStageSpeed *= 0.2f;
+        bonusStageSpeed *= 0.22f;
         bonusStageSpeed += 1;
 
         //Debug.Log(bonusStageSpeed.ToString());
@@ -442,9 +442,10 @@ public class StagMovement : BaseClass
             }
             else
             {
-                if (finalMoveDir.magnitude <= 0.0f) //släppt kontrollerna, då kan man deaccelerera snabbare!
+                if (isGroundedRaycast) //släppt kontrollerna, då kan man deaccelerera snabbare! : finalMoveDir.magnitude <= 0.0f
                 {
-                    Break(2, ref currMomXZ);
+                    Break((6 - movementStacks * 0.3f), ref currMomXZ);
+                    //Break(2, ref currMomXZ);
                 }
             }
 
@@ -452,7 +453,7 @@ public class StagMovement : BaseClass
         }
         else //vanlig slö speed
         {
-            currMomentum = finalMoveDir * 0.22f * (1 + (float)movementStacks * 0.019f);
+            currMomentum = finalMoveDir * 0.21f * (1 + (float)movementStacks * 0.019f);
         }
 
         //if(finalMoveDir.magnitude > 0.0f)
@@ -467,6 +468,10 @@ public class StagMovement : BaseClass
 
     void Break(float breakamount, ref Vector3 vec) //brmosa
     {
+        if(breakamount < 0)
+        {
+            return;
+        }
         vec = Vector3.Lerp(vec, Vector3.zero, Time.deltaTime * breakamount); //detta är inte braa!
     }
 
@@ -646,8 +651,8 @@ public class StagMovement : BaseClass
     void AddMovementStack(int i)
     {
         movementStacks += i;
-        float timeReduceValue = Mathf.Max(0, Mathf.Pow(movementStacks, 1.7f));
-        timeReduceValue *= 0.03f;
+        float timeReduceValue = Mathf.Max(0, Mathf.Pow(movementStacks, 1.75f));
+        timeReduceValue *= 0.035f;
         if(float.IsNaN(timeReduceValue))
         {
             timeReduceValue = 0;
