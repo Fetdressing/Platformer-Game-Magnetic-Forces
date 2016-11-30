@@ -13,7 +13,7 @@ public class StagMovement : BaseClass
     protected CharacterController characterController;
     protected PowerManager powerManager;
 
-    protected float distanceToGround = 100000000;
+    protected float distanceToGround = Mathf.Infinity;
     public Transform stagRootJoint; //den ska röra på sig i y-led
     protected float stagRootJointStartY; //krävs att animationen börjar i bottnen isåfall
     public Transform stagObject; //denna roteras så det står korrekt
@@ -69,6 +69,9 @@ public class StagMovement : BaseClass
     protected float currLimitSpeed;
 
     public Text moveStackText;
+    protected float movementStackGroundedTime = 5.0f;
+    protected float movementStackGroundedTimer = 0.0f;
+
     protected float movementStackResetTimer = 0.0f;
     protected float movementStackResetTime = 4.0f;
     [HideInInspector]public int movementStacks = 0; //får mer stacks när man dashar och hoppar mycket
@@ -178,19 +181,24 @@ public class StagMovement : BaseClass
         if (Time.timeScale == 0) return;
         if (isLocked) return;
 
-        if(movementStackResetTimer < Time.time)
+        isGrounded = characterController.isGrounded;
+        isGroundedRaycast = GetGrounded(groundCheckObject);
+
+        if (movementStackResetTimer < Time.time)
         {
             //movementStacks = 1;
-            AddMovementStack(-3);
+            AddMovementStack(-2);
+        }
+
+        if(isGroundedRaycast && (groundedTimePoint + movementStackGroundedTimer) < Time.time)
+        {
+            AddMovementStack(-2);
         }
 
         hor = Input.GetAxis("Horizontal");
         ver = Input.GetAxis("Vertical");
         horVector = hor * cameraHolder.right;
         verVector = ver * cameraHolder.forward;
-        
-        isGrounded = characterController.isGrounded;
-        isGroundedRaycast = GetGrounded(groundCheckObject);
 
         distanceToGround = GetDistanceToGround(groundCheckObject);
 
@@ -444,7 +452,7 @@ public class StagMovement : BaseClass
             {
                 if (isGroundedRaycast) //släppt kontrollerna, då kan man deaccelerera snabbare! : finalMoveDir.magnitude <= 0.0f
                 {
-                    Break((6 - movementStacks * 0.3f), ref currMomXZ);
+                    Break((6 - movementStacks * 0.2f), ref currMomXZ);
                     //Break(2, ref currMomXZ);
                 }
             }
@@ -470,7 +478,7 @@ public class StagMovement : BaseClass
     {
         if(breakamount < 0)
         {
-            return;
+            breakamount = 0.1f;
         }
         vec = Vector3.Lerp(vec, Vector3.zero, Time.deltaTime * breakamount); //detta är inte braa!
     }
@@ -651,16 +659,28 @@ public class StagMovement : BaseClass
     void AddMovementStack(int i)
     {
         movementStacks += i;
-        float timeReduceValue = Mathf.Max(0, Mathf.Pow(movementStacks, 1.75f));
+        float timeReduceValue = Mathf.Max(0, Mathf.Pow(movementStacks, 1.6f));
+        float groundedReduceValue = Mathf.Max(0, Mathf.Pow(movementStacks, 1.7f));
         timeReduceValue *= 0.035f;
-        if(float.IsNaN(timeReduceValue))
+        groundedReduceValue *= 0.04f;
+        if (float.IsNaN(timeReduceValue))
         {
             timeReduceValue = 0;
         }
-        Debug.Log(timeReduceValue.ToString());
+        if (float.IsNaN(groundedReduceValue))
+        {
+            groundedReduceValue = 0;
+        }
+        //Debug.Log(timeReduceValue.ToString());
         movementStackResetTimer = Time.time + movementStackResetTime - (timeReduceValue); //gör det svårare o svårare!
+        movementStackGroundedTimer = movementStackGroundedTime - (groundedReduceValue); //inte plus tid för den ligger redan inräknad
 
-        if(movementStacks < 1)
+        movementStackGroundedTimer = Mathf.Max(0.2f, movementStackGroundedTimer); //ska som minst vara x sekunder
+
+        //Debug.Log((movementStackResetTimer - Time.time).ToString());
+        Debug.Log((movementStackGroundedTimer).ToString());
+
+        if (movementStacks < 1)
         {
             movementStacks = 1;
         }
@@ -828,7 +848,7 @@ public class StagMovement : BaseClass
 
             if (groundedSlope > maxSlopeGrounded) {  return false; }
 
-            if (isGrounded == false) //om man inte var grounded innan
+            if (isGroundedRaycast == false) //om man inte var grounded innan
             {
                 groundedTimePoint = Time.time;
             }
@@ -854,7 +874,7 @@ public class StagMovement : BaseClass
 
             if (groundedSlope > maxSlopeGrounded) { return false; }
 
-            if (isGrounded == false) //om man inte var grounded innan
+            if (isGroundedRaycast == false) //om man inte var grounded innan
             {
                 groundedTimePoint = Time.time;
             }
