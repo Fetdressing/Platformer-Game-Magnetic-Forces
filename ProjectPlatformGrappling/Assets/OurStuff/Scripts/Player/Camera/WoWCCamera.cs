@@ -4,6 +4,8 @@ using System.Collections;
 public class WoWCCamera : MonoBehaviour
 {
 
+    public LayerMask collisionLayerMask; //mot vilka lager ska kameran kolla kollision?
+
     public Transform target;
     private float currSpeed = 0.0f;
     private Vector3 currFrameTargetPos = new Vector3();
@@ -143,6 +145,10 @@ public class WoWCCamera : MonoBehaviour
         transform.rotation = rotation;
         transform.position = position;
 
+        //Vector3 fow = transform.forward;
+        //CompensateForWalls(transform.position, ref fow);
+        //transform.forward = fow;
+
         lastFrameTargetPos = target.position;
     }
 
@@ -153,6 +159,17 @@ public class WoWCCamera : MonoBehaviour
         if (angle > 360)
             angle -= 360;
         return Mathf.Clamp(angle, min, max);
+    }
+
+    private void CompensateForWalls(Vector3 fromObject, ref Vector3 toTar)
+    {
+        // Compensate for walls between camera
+        RaycastHit wallHit = new RaycastHit();
+        if (Physics.Linecast(fromObject, toTar, out wallHit, collisionLayerMask))
+        {
+            toTar = wallHit.point;
+        }
+
     }
 
 

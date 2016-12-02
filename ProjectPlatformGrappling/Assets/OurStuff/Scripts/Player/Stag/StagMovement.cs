@@ -13,6 +13,11 @@ public class StagMovement : BaseClass
     protected CharacterController characterController;
     protected PowerManager powerManager;
 
+    protected StagSpeedBreaker speedBreaker;
+    protected float speedBreakerActiveSpeed = 1.8f; //vid vilken fart den går igång
+    protected float speedBreakerTime = 0.5f;
+    protected float speedBreakerTimer = 0.5f;
+
     protected float distanceToGround = Mathf.Infinity;
     public Transform stagRootJoint; //den ska röra på sig i y-led
     protected float stagRootJointStartY; //krävs att animationen börjar i bottnen isåfall
@@ -35,12 +40,14 @@ public class StagMovement : BaseClass
     protected float jumpCooldown = 0.15f;
     public GameObject jumpEffectObject;
     [HideInInspector] public float currFrameMovespeed = 0; //hur snabbt man rört sig denna framen
+    protected Vector3 lastFramePos = Vector3.zero;
 
     [HideInInspector]public float dashTimePoint; //mud påverkar denna så att man inte kan dasha
     protected float dashCooldown = 0.3f;
     protected float dashSpeed = 380;
     protected float currDashTime;
-    protected float maxDashTime = 0.05f;
+    protected float startMaxDashTime = 0.05f; //den går att utöka
+    [HideInInspector] public float maxDashTime;
     protected float dashPowerCost = 0.1f; //hur mycket power det drar varje gång man dashar
     protected bool dashUsed = false; //så att man måste bli grounded innan man kan använda den igen
     public GameObject dashEffectObject;
@@ -126,6 +133,15 @@ public class StagMovement : BaseClass
         cameraShaker = cameraObj.GetComponent<CameraShaker>();
         groundChecker = GetComponentsInChildren<GroundChecker>()[0];
 
+        try
+        {
+            speedBreaker = GetComponentsInChildren<StagSpeedBreaker>()[0];
+        }
+        catch
+        {
+            Debug.Log("Hittade ingen Speedbreaker i mina children");
+        }
+
         animationH[runForward.name].speed = runAnimSpeedMult;
         animationH[runForwardRight.name].speed = runAnimSpeedMult;
         animationH[runForwardLeft.name].speed = runAnimSpeedMult;
@@ -150,6 +166,7 @@ public class StagMovement : BaseClass
         currExternalSpeedMult = 1.0f;
         currLimitSpeed = startLimitSpeed;
 
+        maxDashTime = startMaxDashTime;
         dashTimePoint = 0;
         jumpTimePoint = -5; //behöver vara under 0 så att man kan hoppa dirr när spelet börjar
         //ToggleInfiniteGravity(false);
@@ -166,8 +183,9 @@ public class StagMovement : BaseClass
         if (Time.timeScale == 0) return;
         if (isLocked) return;
 
-        if (finalMoveDir.magnitude < 0.01f) return;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(finalMoveDir.x, 0, finalMoveDir.z));
+        if (currMomentum.magnitude < 0.01f) return;
+        //Quaternion lookRotation = Quaternion.LookRotation(new Vector3(finalMoveDir.x, 0, finalMoveDir.z));
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(cameraHolder.forward.x, 0, cameraHolder.forward.z));
         stagObject.rotation = Quaternion.Slerp(stagObject.rotation, lookRotation, deltaTime * 20);
 
         if((moveSpeedMultTimePoint + moveSpeedMultDuration) < Time.time)
@@ -250,18 +268,18 @@ public class StagMovement : BaseClass
             ToggleDashReadyPS(false);
         }
 
-        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.M))
         {
-            Dash(transform.forward);
-            //if (ver < 0.0f) //bakåt
-            //{
-            //    Dash(-transform.forward);
-            //    //Dash(-cameraHolder.forward);
-            //}
-            //else
-            //{
-            //    Dash(transform.forward);
-            //}
+            //Dash(transform.forward);
+            if (ver < 0.0f) //bakåt
+            {
+                //Dash(-transform.forward);
+                Dash(-cameraHolder.forward);
+            }
+            else
+            {
+                Dash(cameraHolder.forward);
+            }
         }
 
         // apply gravity acceleration to vertical speed:
@@ -300,8 +318,28 @@ public class StagMovement : BaseClass
 
         HandleMovement(); //moddar finalMoveDir
         characterController.Move((currMomentum + dashVel + externalVel) * deltaTime);
-        currFrameMovespeed = (new Vector3(finalMoveDir.x, 0, finalMoveDir.z).magnitude + new Vector3(dashVel.x, 0, dashVel.z).magnitude + new Vector3(externalVel.x, 0, externalVel.z).magnitude) * Time.deltaTime;
 
+
+        currFrameMovespeed = (Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(lastFramePos.x, 0, lastFramePos.z)) * deltaTime) * 100;
+        //Debug.Log((currFrameMovespeed).ToString());
+
+        //if (currFrameMovespeed > speedBreakerActiveSpeed)
+        //{
+        //    Debug.Log((currFrameMovespeed).ToString());
+        //    speedBreakerTimer = Time.time + speedBreakerTime;
+
+        //}
+
+        if (speedBreakerTimer > Time.time)
+        {
+            speedBreaker.Activate();
+        }
+        else
+        {
+            speedBreaker.Disable();
+        }
+
+        lastFramePos = transform.position;
         //if (Input.GetKeyDown(KeyCode.C))
         //{
         //    ToggleInfiniteGravity(!pullField.enabled);
@@ -409,14 +447,15 @@ public class StagMovement : BaseClass
 
         finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currMovementSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
 
-        if (IsWalkable(1.0f, 1.8f, (horVector + verVector).normalized)) //dessa värden kan behöva justeras
+        if (IsWalkable(1.0f, 1.9f, (horVector + verVector).normalized)) //dessa värden kan behöva justeras
         {
 
         }
         else
         {
             finalMoveDir *= 0.1f;
-            currMomentum *= 0.1f;
+            Break(18, ref currMomentum);
+            //currMomentum *= 0.1f;
         }
 
         //poängen i början ska dock vara värda mer!!
@@ -481,6 +520,18 @@ public class StagMovement : BaseClass
             breakamount = 0.1f;
         }
         vec = Vector3.Lerp(vec, Vector3.zero, Time.deltaTime * breakamount); //detta är inte braa!
+    }
+
+    public void Stagger(float staggTime) //låser spelaren kvickt
+    {
+        StartCoroutine(DoStagg(staggTime));
+    }
+
+    IEnumerator DoStagg(float staggTime)
+    {
+        isLocked = true;
+        yield return new WaitForSeconds(staggTime);
+        isLocked = false;
     }
 
     public virtual void Jump()
@@ -552,66 +603,6 @@ public class StagMovement : BaseClass
         AddMovementStack(-movementStacks);
     }
 
-    public virtual void PlayAnimationStates()
-    {
-        if (animationH == null) return;
-        float fadeLengthA = 0.1f;
-
-        if (isGrounded || GetGrounded(groundCheckObject))
-        {
-            if (ver > 0.1f || ver < -0.1f) //för sig frammåt/bakåt
-            {
-                if (hor > 0.1f) //rär sig sidledes
-                {
-                    animationH.CrossFade(runForwardRight.name, fadeLengthA);
-                }
-                else if(hor < -0.1f)
-                {
-                    animationH.CrossFade(runForwardLeft.name, fadeLengthA);
-                }
-                else
-                {
-                    animationH.CrossFade(runForward.name, fadeLengthA);
-                }
-            }
-            else if (hor > 0.1f) //rär sig sidledes
-            {
-                animationH.CrossFade(runForwardRight.name, fadeLengthA);
-            }
-            else if(hor < -0.1f)
-            {
-                animationH.CrossFade(runForwardLeft.name, fadeLengthA);
-            }
-            else
-            {
-                animationH.CrossFade(idle.name, fadeLengthA);
-            }
-        }
-        else //air
-        {
-            if (ySpeed > 0.01f)
-            {
-                animationH.CrossFade(jump.name, fadeLengthA);
-            }
-            else
-            {
-                animationH.CrossFade(idleAir.name, fadeLengthA);
-            }
-        }
-    }
-
-    public virtual void ApplyYForce(float velY) //till characterscontrollern, inte rigidbody
-    {
-        jumpTimePoint = Time.time;
-        ySpeed += velY;
-    }
-    public virtual void ApplyYForce(float velY, float maxVel) //till characterscontrollern, inte rigidbody, med ett max värde
-    {
-        if (ySpeed >= maxVel) return;
-        jumpTimePoint = Time.time;
-        ySpeed += velY;
-    }
-
     public virtual bool Dash(Vector3 dir)
     {
         if (!IsDashReady()) return false;
@@ -631,6 +622,7 @@ public class StagMovement : BaseClass
 
     public virtual IEnumerator MoveDash(Vector3 dir)
     {
+        maxDashTime = startMaxDashTime; //den kan utökas sen
         AddMovementStack(1);
         ySpeed = -gravity * 0.01f; //nollställer ej helt
         dashUsed = true;
@@ -639,8 +631,9 @@ public class StagMovement : BaseClass
         dashTimePoint = Time.time;
         currDashTime = 0.0f;
         float startDashTime = Time.time;
-        while(currDashTime < maxDashTime)
+        while (currDashTime < maxDashTime)
         {
+            speedBreakerTimer = Time.time + speedBreakerTime; //speedbreakern aktiveras sedan i update
             dashVel = dir * dashSpeed;
             if(!IsWalkable(0, 1, dashVel)) //så den slutar dasha när den går emot en vägg
             {
@@ -678,7 +671,7 @@ public class StagMovement : BaseClass
         movementStackGroundedTimer = Mathf.Max(0.2f, movementStackGroundedTimer); //ska som minst vara x sekunder
 
         //Debug.Log((movementStackResetTimer - Time.time).ToString());
-        Debug.Log((movementStackGroundedTimer).ToString());
+        //Debug.Log((movementStackGroundedTimer).ToString());
 
         if (movementStacks < 1)
         {
@@ -686,6 +679,67 @@ public class StagMovement : BaseClass
         }
 
         moveStackText.text = movementStacks.ToString();
+    }
+
+
+    public virtual void PlayAnimationStates()
+    {
+        if (animationH == null) return;
+        float fadeLengthA = 0.1f;
+
+        if (isGrounded || GetGrounded(groundCheckObject))
+        {
+            if (ver > 0.1f || ver < -0.1f) //för sig frammåt/bakåt
+            {
+                if (hor > 0.1f) //rär sig sidledes
+                {
+                    animationH.CrossFade(runForwardRight.name, fadeLengthA);
+                }
+                else if (hor < -0.1f)
+                {
+                    animationH.CrossFade(runForwardLeft.name, fadeLengthA);
+                }
+                else
+                {
+                    animationH.CrossFade(runForward.name, fadeLengthA);
+                }
+            }
+            else if (hor > 0.1f) //rär sig sidledes
+            {
+                animationH.CrossFade(runForwardRight.name, fadeLengthA);
+            }
+            else if (hor < -0.1f)
+            {
+                animationH.CrossFade(runForwardLeft.name, fadeLengthA);
+            }
+            else
+            {
+                animationH.CrossFade(idle.name, fadeLengthA);
+            }
+        }
+        else //air
+        {
+            if (ySpeed > 0.01f)
+            {
+                animationH.CrossFade(jump.name, fadeLengthA);
+            }
+            else
+            {
+                animationH.CrossFade(idleAir.name, fadeLengthA);
+            }
+        }
+    }
+
+    public virtual void ApplyYForce(float velY) //till characterscontrollern, inte rigidbody
+    {
+        jumpTimePoint = Time.time;
+        ySpeed += velY;
+    }
+    public virtual void ApplyYForce(float velY, float maxVel) //till characterscontrollern, inte rigidbody, med ett max värde
+    {
+        if (ySpeed >= maxVel) return;
+        jumpTimePoint = Time.time;
+        ySpeed += velY;
     }
 
     public virtual void ApplyExternalForce(Vector3 moveDir)
