@@ -86,7 +86,7 @@ public class GameManager : BaseClass {
     {
         if (isLocked) return;
 
-        if (uiM.gameObject == gameUIPanel.gameObject) { gameUIPanel.SetActive(true); Cursor.visible = false; } else { gameUIPanel.SetActive(false); Cursor.visible = true; }
+        if (uiM.gameObject == gameUIPanel.gameObject) { gameUIPanel.SetActive(true); Cursor.visible = false; Cursor.lockState = UnityEngine.CursorLockMode.Locked; } else { gameUIPanel.SetActive(false); Cursor.visible = true; Cursor.lockState = UnityEngine.CursorLockMode.None; }
         if (uiM.gameObject == settingsUIPanel.gameObject) settingsUIPanel.SetActive(true); else settingsUIPanel.SetActive(false);
         if (uiM.gameObject == menuUIPanel.gameObject) menuUIPanel.SetActive(true); else menuUIPanel.SetActive(false);
     }

@@ -184,8 +184,8 @@ public class StagMovement : BaseClass
         if (isLocked) return;
 
         if (currMomentum.magnitude < 0.01f) return;
-        //Quaternion lookRotation = Quaternion.LookRotation(new Vector3(finalMoveDir.x, 0, finalMoveDir.z));
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(cameraHolder.forward.x, 0, cameraHolder.forward.z));
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(currMomentum.x, 0, currMomentum.z));
+        //Quaternion lookRotation = Quaternion.LookRotation(new Vector3(cameraHolder.forward.x, 0, cameraHolder.forward.z));
         stagObject.rotation = Quaternion.Slerp(stagObject.rotation, lookRotation, deltaTime * 20);
 
         if((moveSpeedMultTimePoint + moveSpeedMultDuration) < Time.time)
@@ -454,7 +454,8 @@ public class StagMovement : BaseClass
         else
         {
             finalMoveDir *= 0.1f;
-            Break(18, ref currMomentum);
+            Debug.Log(Time.time.ToString());
+            Break(1000, ref currMomentum);
             //currMomentum *= 0.1f;
         }
 
@@ -524,6 +525,7 @@ public class StagMovement : BaseClass
 
     public void Stagger(float staggTime) //låser spelaren kvickt
     {
+        cameraShaker.ShakeCamera(staggTime, 1f, true, true);
         StartCoroutine(DoStagg(staggTime));
     }
 
@@ -635,10 +637,18 @@ public class StagMovement : BaseClass
         {
             speedBreakerTimer = Time.time + speedBreakerTime; //speedbreakern aktiveras sedan i update
             dashVel = dir * dashSpeed;
-            if(!IsWalkable(0, 1, dashVel)) //så den slutar dasha när den går emot en vägg
+
+            Vector3 hitNormal = Vector3.zero;
+            if(!IsWalkable(1.0f, 2, dashVel, ref hitNormal)) //så den slutar dasha när den går emot en vägg
             {
                 ToggleDashEffect(false);
                 dashVel = Vector3.zero;
+
+                Debug.Log("Fixa Dot mojset!!");
+                if (Vector3.Dot(dashVel, hitNormal) > -0.5f)
+                {
+                    Stagger(0.8f);
+                }
                 yield break;
             }
             currDashTime = Time.time - startDashTime;
@@ -878,6 +888,34 @@ public class StagMovement : BaseClass
         if(Physics.Raycast(transform.position + new Vector3(0, yOffset, 0), direction, out rHit, distance, groundCheckLM))
         {
 
+            float angleValue = Vector3.Angle(rHit.normal, Vector3.up);
+            //Debug.Log(angleValue.ToString());
+
+            if (angleValue > maxSlopeGrounded)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public virtual bool IsWalkable(float yOffset, float distance, Vector3 direction, ref Vector3 hitNormal) //man kan få tillbaks väggens normal
+    {
+        //if(isGroundedRaycast)
+        //{
+        //    if (groundedSlope > maxSlopeGrounded) //lutning
+        //    {
+        //        if (Physics.Raycast(transform.position + new Vector3(0, yOffset, 0), direction, distance, groundCheckLM))
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //    return true; //man står på marken utan lutning, då ska man kunna gå
+        //}
+        RaycastHit rHit;
+        if (Physics.Raycast(transform.position + new Vector3(0, yOffset, 0), direction, out rHit, distance, groundCheckLM))
+        {
+            hitNormal = rHit.normal;
             float angleValue = Vector3.Angle(rHit.normal, Vector3.up);
             //Debug.Log(angleValue.ToString());
 

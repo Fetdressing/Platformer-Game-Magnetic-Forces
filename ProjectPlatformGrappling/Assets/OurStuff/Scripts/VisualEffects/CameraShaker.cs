@@ -32,31 +32,45 @@ public class CameraShaker : BaseClass {
 
     public void ShakeCamera(float duration, float magnitude, bool smooth)
     {
-        smoothShake = smooth;
-        overrideShake = false;
-        transform.localPosition = originalPos;
-        StopAllCoroutines();
-        StartCoroutine(Shake(duration, magnitude));
+        if (isShaking == false)
+        {
+            smoothShake = smooth;
+            overrideShake = false; //default på att den inte ska göra det
+            transform.localPosition = originalPos;
+            StopAllCoroutines();
+            StartCoroutine(Shake(duration, magnitude));
+        }
     }
 
     public void ShakeCamera(float duration, float magnitude, bool smooth, bool overrideCurrShake)
     {
-        smoothShake = smooth;
-        transform.localPosition = originalPos;
-        overrideShake = overrideCurrShake;
-        StopAllCoroutines();
-        StartCoroutine(Shake(duration, magnitude));
+        if (overrideShake)
+        {
+            smoothShake = smooth;
+            transform.localPosition = originalPos;
+            overrideShake = overrideCurrShake;
+            StopAllCoroutines();
+            StartCoroutine(Shake(duration, magnitude));
+        }
+        else if(isShaking == false)
+        {
+            smoothShake = smooth;
+            transform.localPosition = originalPos;
+            overrideShake = overrideCurrShake;
+            StopAllCoroutines();
+            StartCoroutine(Shake(duration, magnitude));
+        }
     }
 
     IEnumerator Shake(float duration, float magnitude)
     {
-        if (isShaking)
-        {
-            if (!overrideShake)
-            {
-                yield break;
-            }
-        }
+        //if (isShaking)
+        //{
+        //    if (!overrideShake)
+        //    {
+        //        yield break;
+        //    }
+        //}
 
         float elapsed = 0.0f;
 
