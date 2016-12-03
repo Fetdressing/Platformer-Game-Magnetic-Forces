@@ -315,7 +315,7 @@ public class StagMovementForces : StagMovement {
     {
         if (!IsDashReady()) return false;
         powerManager.SufficentPower(-dashPowerCost, true); //camerashake, konstig syntax kanske du tycker, men palla göra det fancy!
-        StartCoroutine(MoveDash(dir));
+        StartCoroutine(MoveDash(dir, false));
         return true;
     }
 
@@ -328,7 +328,7 @@ public class StagMovementForces : StagMovement {
         return true;
     }
 
-    public override IEnumerator MoveDash(Vector3 dir)
+    public virtual IEnumerator MoveDash(Vector3 dir, bool setDir)
     {
         yield break;
         //ySpeed = -gravity * 0.01f; //nollställer ej helt

@@ -21,19 +21,16 @@ public class StagSpeedBreaker : BaseClass {
         Disable();
     }
 
-    // Update is called once per frame
-    void Update () {
-	
-	}
 
     void OnTriggerEnter(Collider col)
     {
         HealthSpirit h = col.GetComponent<HealthSpirit>();
         if(h != null)
         {
-            stagMovement.maxDashTime += 0.5f;
-            stagMovement.Stagger(0.2f);
-            h.Die();
+            stagMovement.IgnoreCollider(0.8f, col.transform); //så man inte collidar med den när man åker igenom
+            stagMovement.Dash();
+            stagMovement.Stagger(0.25f);
+            h.AddHealth(-2);
         }
     }
 

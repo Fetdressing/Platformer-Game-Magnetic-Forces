@@ -42,8 +42,10 @@ public class StagMovement : BaseClass
     [HideInInspector] public float currFrameMovespeed = 0; //hur snabbt man rört sig denna framen
     protected Vector3 lastFramePos = Vector3.zero;
 
+    private IEnumerator currDashIE; //så man kan avbryta den
     [HideInInspector]public float dashTimePoint; //mud påverkar denna så att man inte kan dasha
-    protected float dashCooldown = 0.3f;
+    protected float dashGlobalCooldown = 0.3f;
+    protected float dashCooldown = 1f; //går igång ifall man dashar från marken
     protected float dashSpeed = 380;
     protected float currDashTime;
     protected float startMaxDashTime = 0.05f; //den går att utöka
@@ -170,7 +172,7 @@ public class StagMovement : BaseClass
         dashTimePoint = 0;
         jumpTimePoint = -5; //behöver vara under 0 så att man kan hoppa dirr när spelet börjar
         //ToggleInfiniteGravity(false);
-        dashUsed = true;
+        dashUsed = false;
         jumpsAvaible = jumpAmount;
         movementStacks = 1;
 
@@ -223,7 +225,6 @@ public class StagMovement : BaseClass
         //FUNKAAAAAAR EJ?!?!?!? kallas bara när man rör på sig wtf, kan funka ändå
         if (isGrounded) //dessa if-satser skall vara separata
         {
-            //dashUsed = false; //när man blir grounded så kan man använda dash igen
             if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
             {
                 ySpeed = -gravity * 0.01f; //nollställer ej helt // grounded character has vSpeed = 0...
@@ -375,7 +376,7 @@ public class StagMovement : BaseClass
             {
                 if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
                 {
-                    dashUsed = true;
+                    dashUsed = false; //den resettas även när man landar på marken nu! MEN om man dashar från marken så får man cd
                     jumpsAvaible = jumpAmount;
                     ySpeed = -gravity * 0.01f; //nollställer ej helt // grounded character has vSpeed = 0...
                 }
@@ -609,35 +610,79 @@ public class StagMovement : BaseClass
     {
         if (!IsDashReady()) return false;
         powerManager.SufficentPower(-dashPowerCost, true); //camerashake, konstig syntax kanske du tycker, men palla göra det fancy!
-        StartCoroutine(MoveDash(dir));
+
+        if(currDashIE != null)
+        {
+            StopCoroutine(currDashIE);
+        }
+
+        currDashIE = MoveDash(dir, false);
+        StartCoroutine(currDashIE);
+        return true;
+    }
+
+    public virtual bool Dash() //dash utan nån cost eller liknande, alltid frammåt
+    {
+        if (currDashIE != null)
+        {
+            StopCoroutine(currDashIE);
+        }
+
+        currDashIE = MoveDash(cameraHolder.forward, false); //default frammåt
+        StartCoroutine(currDashIE);
         return true;
     }
 
     public virtual bool IsDashReady()
     {
         if (!powerManager.SufficentPower(-dashPowerCost)) return false;
-        if (dashTimePoint + dashCooldown > Time.time) return false;
+        if (dashTimePoint + dashGlobalCooldown > Time.time) return false;
         if (dashUsed) return false;
 
         return true;
     }
 
-    public virtual IEnumerator MoveDash(Vector3 dir)
+    protected virtual IEnumerator MoveDash(Vector3 dir, bool setDir)
     {
         maxDashTime = startMaxDashTime; //den kan utökas sen
         AddMovementStack(1);
-        cameraShaker.ChangeFOV(0.5f, 90);
+        cameraShaker.ChangeFOV(0.05f, 75);
         ySpeed = -gravity * 0.01f; //nollställer ej helt
         dashUsed = true;
         ToggleDashEffect(true);
         powerManager.AddPower(-dashPowerCost);
         dashTimePoint = Time.time;
+
+        Debug.Log("KOLLA HÄR SEN!");
+        if(isGroundedRaycast) //extra cooldown för att man dashar från marken! FY PÅ DEJ!! (varit airbourne i X sekunder)if(Mathf.Abs(jumpTimePoint - Time.time) > 0.08f)
+        {
+            dashTimePoint += dashCooldown;
+        }
+
         currDashTime = 0.0f;
+
         float startDashTime = Time.time;
+        float extendedTime = 0.0f;
         while (currDashTime < maxDashTime)
         {
+            currMomentum = Vector3.zero;
+            if (isLocked) //ifall den låses så skall fortfarande dashen vara igång efter
+            {
+                extendedTime += Time.deltaTime * 1.7f; //vet inte varför den behöver multipliceras, det borde bli samma tid ändå som den förlorade
+                yield return null;
+                continue;
+            }
+
             speedBreakerTimer = Time.time + speedBreakerTime; //speedbreakern aktiveras sedan i update
-            dashVel = dir * dashSpeed;
+
+            if (setDir)
+            {
+                dashVel = dir * dashSpeed;
+            }
+            else
+            {
+                dashVel = cameraHolder.forward * dashSpeed; //styra under dashen
+            }
 
             Vector3 hitNormal = Vector3.zero;
             if(!IsWalkable(1.0f, 3, dashVel, maxSlopeGrounded, ref hitNormal)) //så den slutar dasha när den går emot en vägg
@@ -651,12 +696,35 @@ public class StagMovement : BaseClass
                 Break(1000, ref currMomentum);
                 yield break;
             }
-            currDashTime = Time.time - startDashTime;
+            currDashTime = Time.time - startDashTime - extendedTime;
             yield return null;
         }
         ToggleDashEffect(false);
         dashVel = Vector3.zero;
 
+    }
+
+    public void IgnoreCollider(float duration, Transform t_Ignore)
+    {
+        StartCoroutine(DoIgnoreCollider(duration, t_Ignore));
+    }
+
+    IEnumerator DoIgnoreCollider(float duration, Transform t_Ignore)
+    {
+        float startTime = Time.time;
+        float extendedTime = 0.0f;
+        Physics.IgnoreCollision(transform.GetComponent<Collider>(), t_Ignore.GetComponent<Collider>(), true);
+        while((Time.time - startTime - extendedTime) < duration)
+        {
+            if (isLocked) //ifall den låses så skall fortfarande vara igång efter
+            {
+                extendedTime += Time.deltaTime;
+                yield return null;
+                continue;
+            }
+            yield return null;
+        }
+        Physics.IgnoreCollision(transform.GetComponent<Collider>(), t_Ignore.GetComponent<Collider>(), false);
     }
 
     void AddMovementStack(int i)

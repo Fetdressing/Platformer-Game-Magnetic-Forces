@@ -150,27 +150,25 @@ public class CameraShaker : BaseClass {
     IEnumerator ApplyChangeFOV(float duration, float newFOV)
     {
         float elapsed = 0.0f;
-
-        while (elapsed < duration)
+        
+        float vel = 0;
+        while (Mathf.Abs(t_Camera.fieldOfView - newFOV) > 0.1f)
         {
-
             elapsed += Time.deltaTime;
 
             float percentComplete = elapsed / duration;
-            float damper = 1.0f - Mathf.Clamp(4.0f * percentComplete - 3.0f, 0.0f, 1.0f);
-
-            float currFOV = t_Camera.fieldOfView;
-            Mathf.SmoothDamp(startFOV, newFOV, ref currFOV, duration);
-            t_Camera.fieldOfView = currFOV;
+            
+            float change = Mathf.SmoothDamp(t_Camera.fieldOfView, newFOV, ref vel, duration);
+            t_Camera.fieldOfView = change;
 
             yield return null;
         }
 
+        vel = 0;
         while(Mathf.Abs(t_Camera.fieldOfView - startFOV) > 0.1f) //tillbaks igen
         {
-            float currFOV = t_Camera.fieldOfView;
-            Mathf.SmoothDamp(newFOV, startFOV, ref currFOV, duration * 0.3f);
-            t_Camera.fieldOfView = currFOV;
+            float change = Mathf.SmoothDamp(t_Camera.fieldOfView, startFOV, ref vel, duration * 0.5f);
+            t_Camera.fieldOfView = change;
             yield return null;
         }
 
