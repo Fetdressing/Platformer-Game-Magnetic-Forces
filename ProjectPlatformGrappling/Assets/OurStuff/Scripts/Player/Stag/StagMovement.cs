@@ -447,14 +447,14 @@ public class StagMovement : BaseClass
 
         finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currMovementSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
 
-        if (IsWalkable(1.0f, 1.9f, (horVector + verVector).normalized)) //dessa värden kan behöva justeras
+        if (IsWalkable(1.0f, 1.8f, (horVector + verVector).normalized, maxSlopeGrounded)) //dessa värden kan behöva justeras
         {
 
         }
         else
         {
             finalMoveDir *= 0.1f;
-            Debug.Log(Time.time.ToString());
+            //Debug.Log(Time.time.ToString());
             Break(1000, ref currMomentum);
             //currMomentum *= 0.1f;
         }
@@ -600,7 +600,7 @@ public class StagMovement : BaseClass
             yield return new WaitForEndOfFrame();
         }
         Debug.Log(Time.time.ToString());
-        cameraShaker.ShakeCamera(0.3f + (movementStacks * 0.1f), 2 + (movementStacks * 0.2f), true);
+        cameraShaker.ShakeCamera(0.3f + (movementStacks * 0.1f), 2 + (movementStacks * 0.2f), true, true);
         //Slam!
         AddMovementStack(-movementStacks);
     }
@@ -626,6 +626,7 @@ public class StagMovement : BaseClass
     {
         maxDashTime = startMaxDashTime; //den kan utökas sen
         AddMovementStack(1);
+        cameraShaker.ChangeFOV(0.5f, 90);
         ySpeed = -gravity * 0.01f; //nollställer ej helt
         dashUsed = true;
         ToggleDashEffect(true);
@@ -639,16 +640,15 @@ public class StagMovement : BaseClass
             dashVel = dir * dashSpeed;
 
             Vector3 hitNormal = Vector3.zero;
-            if(!IsWalkable(1.0f, 2, dashVel, ref hitNormal)) //så den slutar dasha när den går emot en vägg
+            if(!IsWalkable(1.0f, 3, dashVel, maxSlopeGrounded, ref hitNormal)) //så den slutar dasha när den går emot en vägg
             {
                 ToggleDashEffect(false);
                 dashVel = Vector3.zero;
 
-                Debug.Log("Fixa Dot mojset!!");
-                if (Vector3.Dot(dashVel, hitNormal) > -0.5f)
-                {
-                    Stagger(0.8f);
-                }
+                //Debug.Log("Fixa Dot mojset!!");
+
+                Stagger(0.4f);
+                Break(1000, ref currMomentum);
                 yield break;
             }
             currDashTime = Time.time - startDashTime;
@@ -871,19 +871,8 @@ public class StagMovement : BaseClass
         }
     }
 
-    public virtual bool IsWalkable(float yOffset, float distance, Vector3 direction)
+    public virtual bool IsWalkable(float yOffset, float distance, Vector3 direction, float maxSlope)
     {
-        //if(isGroundedRaycast)
-        //{
-        //    if (groundedSlope > maxSlopeGrounded) //lutning
-        //    {
-        //        if (Physics.Raycast(transform.position + new Vector3(0, yOffset, 0), direction, distance, groundCheckLM))
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //    return true; //man står på marken utan lutning, då ska man kunna gå
-        //}
         RaycastHit rHit;
         if(Physics.Raycast(transform.position + new Vector3(0, yOffset, 0), direction, out rHit, distance, groundCheckLM))
         {
@@ -891,7 +880,7 @@ public class StagMovement : BaseClass
             float angleValue = Vector3.Angle(rHit.normal, Vector3.up);
             //Debug.Log(angleValue.ToString());
 
-            if (angleValue > maxSlopeGrounded)
+            if (angleValue > maxSlope)
             {
                 return false;
             }
@@ -899,7 +888,7 @@ public class StagMovement : BaseClass
         return true;
     }
 
-    public virtual bool IsWalkable(float yOffset, float distance, Vector3 direction, ref Vector3 hitNormal) //man kan få tillbaks väggens normal
+    public virtual bool IsWalkable(float yOffset, float distance, Vector3 direction, float maxSlope, ref Vector3 hitNormal) //man kan få tillbaks väggens normal
     {
         //if(isGroundedRaycast)
         //{
@@ -919,7 +908,7 @@ public class StagMovement : BaseClass
             float angleValue = Vector3.Angle(rHit.normal, Vector3.up);
             //Debug.Log(angleValue.ToString());
 
-            if (angleValue > maxSlopeGrounded)
+            if (angleValue > maxSlope) //skicka in negativt om den ska ha hit mot allt
             {
                 return false;
             }

@@ -202,7 +202,7 @@ public class StagMovementForces : StagMovement {
         verVector = new Vector3(verVector.x, 0, verVector.z); //denna behöver vara under dash så att man kan dasha upp/ned oxå
 
         finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currMovementSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
-        if (IsWalkable(1.2f, 4, (horVector + verVector).normalized)) //dessa värden kan behöva justeras
+        if (IsWalkable(1.2f, 4, (horVector + verVector).normalized, maxSlopeGrounded)) //dessa värden kan behöva justeras
         {
             m_rigidbody.AddForce(finalMoveDir, ForceMode.Force);
         }
@@ -458,7 +458,7 @@ public class StagMovementForces : StagMovement {
         }
     }
 
-    public override bool IsWalkable(float yOffset, float distance, Vector3 direction)
+    public override bool IsWalkable(float yOffset, float distance, Vector3 direction, float maxSlope)
     {
         //if(isGroundedRaycast)
         //{

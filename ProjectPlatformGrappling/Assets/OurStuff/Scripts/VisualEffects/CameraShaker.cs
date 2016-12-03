@@ -2,11 +2,17 @@
 using System.Collections;
 
 public class CameraShaker : BaseClass {
+    private Camera t_Camera;
     private Vector3 originalPos;
     private bool smoothShake = false;
     private bool isShaking = false;
 
+    private IEnumerator currCamerShakeIE;
+    private IEnumerator currFOVChangeIE;
+
     private bool overrideShake; //sätts som argument
+
+    private float startFOV;
     // Use this for initialization
     void Start()
     {
@@ -16,6 +22,8 @@ public class CameraShaker : BaseClass {
     public override void Init()
     {
         base.Init();
+        t_Camera = GetComponent<Camera>();
+        startFOV = t_Camera.fieldOfView;
         originalPos = transform.localPosition;
 
         Reset();
@@ -37,28 +45,43 @@ public class CameraShaker : BaseClass {
             smoothShake = smooth;
             overrideShake = false; //default på att den inte ska göra det
             transform.localPosition = originalPos;
-            StopAllCoroutines();
-            StartCoroutine(Shake(duration, magnitude));
+
+            if (currCamerShakeIE != null)
+            {
+                StopCoroutine(currCamerShakeIE);
+            }
+            currCamerShakeIE = Shake(duration, magnitude);
+            StartCoroutine(currCamerShakeIE);
         }
     }
 
     public void ShakeCamera(float duration, float magnitude, bool smooth, bool overrideCurrShake)
     {
-        if (overrideShake)
+        if (overrideCurrShake)
         {
             smoothShake = smooth;
             transform.localPosition = originalPos;
             overrideShake = overrideCurrShake;
-            StopAllCoroutines();
-            StartCoroutine(Shake(duration, magnitude));
+
+            if (currCamerShakeIE != null)
+            {
+                StopCoroutine(currCamerShakeIE);
+            }
+            currCamerShakeIE = Shake(duration, magnitude);
+            StartCoroutine(currCamerShakeIE);
         }
         else if(isShaking == false)
         {
             smoothShake = smooth;
             transform.localPosition = originalPos;
             overrideShake = overrideCurrShake;
-            StopAllCoroutines();
-            StartCoroutine(Shake(duration, magnitude));
+
+            if (currCamerShakeIE != null)
+            {
+                StopCoroutine(currCamerShakeIE);
+            }
+            currCamerShakeIE = Shake(duration, magnitude);
+            StartCoroutine(currCamerShakeIE);
         }
     }
 
@@ -71,6 +94,7 @@ public class CameraShaker : BaseClass {
         //        yield break;
         //    }
         //}
+        isShaking = true;
 
         float elapsed = 0.0f;
 
@@ -106,6 +130,51 @@ public class CameraShaker : BaseClass {
 
         transform.localPosition = originalPos;
         overrideShake = false;
+        isShaking = false;
+    }
+
+    public void ChangeFOV(float duration, float newFOV)
+    {
+        if (Mathf.Abs(t_Camera.fieldOfView - startFOV) > 0.1f) return; //då håller den redan på att ändra FOVen
+
+        t_Camera.fieldOfView = startFOV;
+
+        if (currFOVChangeIE != null)
+        {
+            StopCoroutine(currFOVChangeIE);
+        }
+        currFOVChangeIE = ApplyChangeFOV(duration, newFOV);
+        StartCoroutine(currFOVChangeIE);
+    }
+
+    IEnumerator ApplyChangeFOV(float duration, float newFOV)
+    {
+        float elapsed = 0.0f;
+
+        while (elapsed < duration)
+        {
+
+            elapsed += Time.deltaTime;
+
+            float percentComplete = elapsed / duration;
+            float damper = 1.0f - Mathf.Clamp(4.0f * percentComplete - 3.0f, 0.0f, 1.0f);
+
+            float currFOV = t_Camera.fieldOfView;
+            Mathf.SmoothDamp(startFOV, newFOV, ref currFOV, duration);
+            t_Camera.fieldOfView = currFOV;
+
+            yield return null;
+        }
+
+        while(Mathf.Abs(t_Camera.fieldOfView - startFOV) > 0.1f) //tillbaks igen
+        {
+            float currFOV = t_Camera.fieldOfView;
+            Mathf.SmoothDamp(newFOV, startFOV, ref currFOV, duration * 0.3f);
+            t_Camera.fieldOfView = currFOV;
+            yield return null;
+        }
+
+        t_Camera.fieldOfView = startFOV;
     }
 
 }
