@@ -610,8 +610,8 @@ public class StagMovement : BaseClass
     {
         if (!IsDashReady()) return false;
         powerManager.SufficentPower(-dashPowerCost, true); //camerashake, konstig syntax kanske du tycker, men palla göra det fancy!
-
-        if(currDashIE != null)
+        powerManager.AddPower(-dashPowerCost);
+        if (currDashIE != null)
         {
             StopCoroutine(currDashIE);
         }
@@ -650,7 +650,6 @@ public class StagMovement : BaseClass
         ySpeed = -gravity * 0.01f; //nollställer ej helt
         dashUsed = true;
         ToggleDashEffect(true);
-        powerManager.AddPower(-dashPowerCost);
         dashTimePoint = Time.time;
 
         if(GetGrounded(groundCheckObject, 3)) //extra cooldown för att man dashar från marken! FY PÅ DEJ!! (varit airbourne i X sekunder)if(Mathf.Abs(jumpTimePoint - Time.time) > 0.08f)
