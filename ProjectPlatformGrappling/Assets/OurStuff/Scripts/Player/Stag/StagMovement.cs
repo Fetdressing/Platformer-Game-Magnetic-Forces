@@ -653,8 +653,7 @@ public class StagMovement : BaseClass
         powerManager.AddPower(-dashPowerCost);
         dashTimePoint = Time.time;
 
-        Debug.Log("KOLLA HÄR SEN!");
-        if(isGroundedRaycast) //extra cooldown för att man dashar från marken! FY PÅ DEJ!! (varit airbourne i X sekunder)if(Mathf.Abs(jumpTimePoint - Time.time) > 0.08f)
+        if(GetGrounded(groundCheckObject, 3)) //extra cooldown för att man dashar från marken! FY PÅ DEJ!! (varit airbourne i X sekunder)if(Mathf.Abs(jumpTimePoint - Time.time) > 0.08f)
         {
             dashTimePoint += dashCooldown;
         }
@@ -1036,6 +1035,31 @@ public class StagMovement : BaseClass
         }
     }
 
+
+    public virtual bool GetGrounded(Transform tChecker, float distance) //från en annan utgångspunkt och med en specifik längd
+    {
+        RaycastHit rHit;
+        if (Physics.Raycast(tChecker.position + new Vector3(0, groundedCheckOffsetY, 0), Vector3.down, out rHit, distance, groundCheckLM))
+        {
+            if (rHit.transform == this.transform || rHit.normal.y < 0.5f) { return false; } //MEH DEN SKA EJ COLLIDA MED SIG SJÄLV
+
+            groundedSlope = GetSlope(rHit.normal);
+            groundedNormal = rHit.normal;
+
+            if (groundedSlope > maxSlopeGrounded) { return false; }
+
+            if (isGroundedRaycast == false) //om man inte var grounded innan
+            {
+                groundedTimePoint = Time.time;
+            }
+            groundedRaycastObject = rHit.transform;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     public virtual Transform GetGroundedTransform(Transform tChecker) //får den transformen man står på, från en annan utgångspunkt
     {

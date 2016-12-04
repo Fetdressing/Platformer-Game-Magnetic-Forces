@@ -260,8 +260,9 @@ MonoBehaviour:
   isLocked: 0
   pickUpObj: {fileID: 1000011418654882}
   hasBeenPicked: 0
+  globeRenderer: {fileID: 0}
   playerChaseSpeed: 180
-  playerChaseDistance: 35
+  playerChaseDistance: 200
   powerWorth: 0.1
   returnToStartPos: 1
   respawn: 0
@@ -280,6 +281,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0d47fce087f7bfb489c7410a2480e220, type: 3}
   - {fileID: 8300000, guid: f65151e4c20463941849123556209f5c, type: 3}
   globeValue: 1
+  takenMaterial: {fileID: 0}
 --- !u!135 &135000010370997574
 SphereCollider:
   m_ObjectHideFlags: 1

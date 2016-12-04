@@ -27358,6 +27358,117 @@ Transform:
   m_Children: []
   m_Father: {fileID: 935223806}
   m_RootOrder: 2
+--- !u!1 &738610053
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 738610058}
+  - 33: {fileID: 738610057}
+  - 135: {fileID: 738610056}
+  - 23: {fileID: 738610055}
+  - 114: {fileID: 738610054}
+  m_Layer: 22
+  m_Name: DashSpeeder (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &738610054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 738610053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0d8d3e0e7d4488468a3fafda699239d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLocked: 0
+  thisRenderer: []
+  damagedMaterial: {fileID: 2100000, guid: e9acccd3b85eee5459af2eebf6ae3473, type: 2}
+  middlePoint: {x: 0, y: 0, z: 0}
+  middlePointOffsetY: 0.5
+  startHealth: 3
+  maxHealth: 3
+  fadeOnDamage: 0
+  startHealthRegAmount: 1
+  healthRegAmount: 1
+  destroyOnDeath: 0
+  animationObj: {fileID: 0}
+  deathAnimation: {fileID: 0}
+  deathParticleSystemObj: {fileID: 0}
+  delayedDeathTime: 0
+  isAlive: 1
+  isIndestructable: 1
+  dropDeathObject: {fileID: 0}
+  nrDropObjects: 0
+  dropObjLifeTime: 0
+--- !u!23 &738610055
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 738610053}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: 8e3434ffd088f914ba189307792ff385, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedWireframeHidden: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!135 &738610056
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 738610053}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.66
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &738610057
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 738610053}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &738610058
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 738610053}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 270.5, y: -25.7, z: 654.7}
+  m_LocalScale: {x: 5.539584, y: 5.5395837, z: 5.5395837}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 20
 --- !u!1001 &738644477
 Prefab:
   m_ObjectHideFlags: 0
@@ -38596,6 +38707,117 @@ MeshCollider:
   serializedVersion: 2
   m_Convex: 0
   m_Mesh: {fileID: 4300000, guid: 5aeadc428fb736643b5c8b089b0a8faf, type: 2}
+--- !u!1 &1089649457
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1089649462}
+  - 33: {fileID: 1089649461}
+  - 135: {fileID: 1089649460}
+  - 23: {fileID: 1089649459}
+  - 114: {fileID: 1089649458}
+  m_Layer: 22
+  m_Name: DashSpeeder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1089649458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1089649457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0d8d3e0e7d4488468a3fafda699239d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLocked: 0
+  thisRenderer: []
+  damagedMaterial: {fileID: 2100000, guid: e9acccd3b85eee5459af2eebf6ae3473, type: 2}
+  middlePoint: {x: 0, y: 0, z: 0}
+  middlePointOffsetY: 0.5
+  startHealth: 3
+  maxHealth: 3
+  fadeOnDamage: 0
+  startHealthRegAmount: 1
+  healthRegAmount: 1
+  destroyOnDeath: 0
+  animationObj: {fileID: 0}
+  deathAnimation: {fileID: 0}
+  deathParticleSystemObj: {fileID: 0}
+  delayedDeathTime: 0
+  isAlive: 1
+  isIndestructable: 1
+  dropDeathObject: {fileID: 0}
+  nrDropObjects: 0
+  dropObjLifeTime: 0
+--- !u!23 &1089649459
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1089649457}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: 8e3434ffd088f914ba189307792ff385, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedWireframeHidden: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!135 &1089649460
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1089649457}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.66
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &1089649461
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1089649457}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1089649462
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1089649457}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 256.7, y: -6.7, z: 831.9}
+  m_LocalScale: {x: 5.539584, y: 5.5395837, z: 5.5395837}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 18
 --- !u!4 &1091346253 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 8e12e4ba46625f34dbcd03b88efda792, type: 3}
@@ -50603,6 +50825,117 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e12e4ba46625f34dbcd03b88efda792, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &1502887516
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1502887521}
+  - 33: {fileID: 1502887520}
+  - 135: {fileID: 1502887519}
+  - 23: {fileID: 1502887518}
+  - 114: {fileID: 1502887517}
+  m_Layer: 22
+  m_Name: DashSpeeder (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1502887517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1502887516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0d8d3e0e7d4488468a3fafda699239d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLocked: 0
+  thisRenderer: []
+  damagedMaterial: {fileID: 2100000, guid: e9acccd3b85eee5459af2eebf6ae3473, type: 2}
+  middlePoint: {x: 0, y: 0, z: 0}
+  middlePointOffsetY: 0.5
+  startHealth: 3
+  maxHealth: 3
+  fadeOnDamage: 0
+  startHealthRegAmount: 1
+  healthRegAmount: 1
+  destroyOnDeath: 0
+  animationObj: {fileID: 0}
+  deathAnimation: {fileID: 0}
+  deathParticleSystemObj: {fileID: 0}
+  delayedDeathTime: 0
+  isAlive: 1
+  isIndestructable: 1
+  dropDeathObject: {fileID: 0}
+  nrDropObjects: 0
+  dropObjLifeTime: 0
+--- !u!23 &1502887518
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1502887516}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: 8e3434ffd088f914ba189307792ff385, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedWireframeHidden: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!135 &1502887519
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1502887516}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.66
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &1502887520
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1502887516}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1502887521
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1502887516}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 270.5, y: -13.7, z: 764.3}
+  m_LocalScale: {x: 5.539584, y: 5.5395837, z: 5.5395837}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 19
 --- !u!1001 &1503475544
 Prefab:
   m_ObjectHideFlags: 0
