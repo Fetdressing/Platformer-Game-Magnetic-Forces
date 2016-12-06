@@ -179,7 +179,7 @@ public class StagMovement : BaseClass
         jumpsAvaible = jumpAmount;
         movementStacks = 1;
 
-        isGrounded = false;
+        //isGrounded = false;
         isGroundedRaycast = false;
     }
 
@@ -204,7 +204,7 @@ public class StagMovement : BaseClass
         if (Time.timeScale == 0) return;
         if (isLocked) return;
 
-        isGrounded = characterController.isGrounded;
+        //characterController.isGrounded = characterController.characterController.isGrounded;
         isGroundedRaycast = GetGrounded(groundCheckObject);
 
         if (movementStackResetTimer < Time.time)
@@ -225,15 +225,6 @@ public class StagMovement : BaseClass
 
         distanceToGround = GetDistanceToGround(groundCheckObject);
 
-        //FUNKAAAAAAR EJ?!?!?!? kallas bara när man rör på sig wtf, kan funka ändå
-        if (isGrounded) //dessa if-satser skall vara separata
-        {
-            if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
-            {
-                ySpeed = -gravity * 0.01f; //nollställer ej helt // grounded character has vSpeed = 0...
-            }
-        }
-
         if (isGroundedRaycast) //använd endast GetGrounded här, annars kommer man få samma problem när gravitationen slutar verka pga lång raycast
         {
             if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
@@ -251,11 +242,6 @@ public class StagMovement : BaseClass
         else
         {
             groundChecker.Reset(groundedTimePoint);
-        }
-
-        if (Input.GetButtonDown("Jump"))
-        {
-            Jump();
         }
 
         if(Input.GetKeyDown(KeyCode.B))
@@ -286,17 +272,39 @@ public class StagMovement : BaseClass
             }
         }
 
-        // apply gravity acceleration to vertical speed:
-        if (activePlatform == null)
-        {
-            ySpeed -= gravity * deltaTime;
-            Vector3 yVector = new Vector3(0, ySpeed, 0);
-            characterController.Move((yVector) * deltaTime);
-        }
+        //// YYYYY SKA JU LIGGA INNAN MOVING PLATFORM OM MAN VILL HA Y-MOVING PLATFORMS
+        ////Debug.Log(characterController.isGrounded);
+        //// apply gravity acceleration to vertical speed:
+        //if (activePlatform == null && !characterController.isGrounded)
+        //{
+        //    ySpeed -= gravity * deltaTime;            
+        //}
+        //else
+        //{
+        //    ySpeed = 0; //behöver inte lägga på gravity när man står på moving platform, varför funkar inte grounded? lol
+        //}
+
+        ////FUNKAAAAAAR EJ?!?!?!? kallas bara när man rör på sig wtf, kan funka ändå
+        //if (characterController.isGrounded) //dessa if-satser skall vara separata
+        //{
+        //    if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
+        //    {
+        //        ySpeed = -gravity * 0.01f; //nollställer ej helt // grounded character has vSpeed = 0...
+        //    }
+        //}
+
+        //if (Input.GetButtonDown("Jump"))
+        //{
+        //    Jump();
+        //}
+
+        //Vector3 yVector = new Vector3(0, ySpeed, 0);
+        //characterController.Move((yVector) * deltaTime);
+        
+        // YYYYY
 
         if (activePlatform != null)
         {
-            ySpeed = 0; //behöver inte lägga på gravity när man står på moving platform, varför funkar inte grounded? lol
             Vector3 newGlobalPlatformPoint = activePlatform.TransformPoint(activeLocalPlatformPoint);
             Vector3 moveDistance = (newGlobalPlatformPoint - activeGlobalPlatformPoint);
 
@@ -321,7 +329,34 @@ public class StagMovement : BaseClass
         externalVel = Vector3.Lerp(externalVel, Vector3.zero, deltaTime * 10); //ta sakta bort den externa forcen
 
         HandleMovement(); //moddar finalMoveDir
-        characterController.Move((currMomentum + dashVel + externalVel) * deltaTime);
+        // YYYYY
+        //Debug.Log(characterController.isGrounded);
+        // apply gravity acceleration to vertical speed:
+        if (activePlatform == null && !characterController.isGrounded)
+        {
+            ySpeed -= gravity * deltaTime;
+        }
+        else
+        {
+            ySpeed = 0; //behöver inte lägga på gravity när man står på moving platform, varför funkar inte grounded? lol
+        }
+        
+        if (characterController.isGrounded) //dessa if-satser skall vara separata
+        {
+            if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
+            {
+                ySpeed = -gravity * 0.01f; //nollställer ej helt // grounded character has vSpeed = 0...
+            }
+        }
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            Jump();
+        }
+        Vector3 yVector = new Vector3(0, ySpeed, 0);
+        // YYYYY
+
+        characterController.Move((currMomentum + dashVel + externalVel + yVector) * deltaTime);
 
 
         currFrameMovespeed = (Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(lastFramePos.x, 0, lastFramePos.z)) * deltaTime) * 100;
@@ -439,7 +474,7 @@ public class StagMovement : BaseClass
     public virtual void HandleMovement()
     {
         float stagSpeedMultiplier = 1.0f;
-        if (isGrounded)
+        if (characterController.isGrounded)
         {
             stagSpeedMultiplier = Mathf.Max(Mathf.Abs(stagRootJointStartY - stagRootJoint.localPosition.y), stagSpeedMultMin); //min värde
             stagSpeedMultiplier = Mathf.Min(stagSpeedMultiplier, stagSpeedMultMax); //max värde
@@ -447,6 +482,7 @@ public class StagMovement : BaseClass
 
         currMovementSpeed = startSpeed * currExternalSpeedMult;
 
+        horVector = new Vector3(horVector.x, 0, horVector.z);
         verVector = new Vector3(verVector.x, 0, verVector.z); //denna behöver vara under dash så att man kan dasha upp/ned oxå
 
         finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currMovementSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
@@ -578,7 +614,7 @@ public class StagMovement : BaseClass
 
     public void Slam()
     {
-        if (!isGrounded && !isGroundedRaycast && movementStacks < 5) return;
+        if (!characterController.isGrounded && !isGroundedRaycast && movementStacks < 5) return;
 
         RaycastHit rHit;
         float slamMaxDistance = 200;
@@ -597,7 +633,7 @@ public class StagMovement : BaseClass
         yield return new WaitForSeconds(0.3f);
         isLocked = false;
         ySpeed = -170;
-        while(!isGrounded && ySpeed < -2.0f && Vector3.Distance(startP, transform.position) < (maxDistance + 2))
+        while(!characterController.isGrounded && ySpeed < -2.0f && Vector3.Distance(startP, transform.position) < (maxDistance + 2))
         {
             currMomentum = Vector3.zero;
             ySpeed = -170;
@@ -776,7 +812,7 @@ public class StagMovement : BaseClass
         if (animationH == null) return;
         float fadeLengthA = 0.1f;
 
-        if (isGrounded || GetGrounded(groundCheckObject))
+        if (characterController.isGrounded || GetGrounded(groundCheckObject))
         {
             if (ver > 0.1f || ver < -0.1f) //för sig frammåt/bakåt
             {
