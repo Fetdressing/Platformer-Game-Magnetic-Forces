@@ -54,6 +54,9 @@ public class StagMovement : BaseClass
     protected bool dashUsed = false; //så att man måste bli grounded innan man kan använda den igen
     public GameObject dashEffectObject;
     public ParticleSystem dashReadyPS; //particlesystem som körs när dash är redo att användas
+    protected int currDashCombo = 0; //hur många dashes som gjorts i streck, används för att öka kostnaden tex
+    protected float dashComboResetTime = 0.8f;
+    protected float dashComboResetTimer = 0.0f;
 
     protected float knockForceMovingPlatform = 420; //om man hamnar på fel sidan av moving platform så knuffas man bort lite
 
@@ -609,8 +612,19 @@ public class StagMovement : BaseClass
     public virtual bool Dash(Vector3 dir)
     {
         if (!IsDashReady()) return false;
-        powerManager.SufficentPower(-dashPowerCost, true); //camerashake, konstig syntax kanske du tycker, men palla göra det fancy!
-        powerManager.AddPower(-dashPowerCost);
+
+        if(dashComboResetTimer < Time.time) //man tappar combon för man har varit för seg med och dasha
+        {
+            currDashCombo = 0;
+        }
+        dashComboResetTimer = dashComboResetTime + Time.time;
+        currDashCombo++;
+
+        float finalDashCost = dashPowerCost + (currDashCombo * 0.02f);
+
+        powerManager.SufficentPower(-finalDashCost, true); //camerashake, konstig syntax kanske du tycker, men palla göra det fancy!
+        powerManager.AddPower(-finalDashCost);
+        dashUsed = true;
         if (currDashIE != null)
         {
             StopCoroutine(currDashIE);
@@ -621,7 +635,7 @@ public class StagMovement : BaseClass
         return true;
     }
 
-    public virtual bool Dash() //dash utan nån cost eller liknande, alltid frammåt
+    public virtual bool Dash() //dash utan nån cost eller liknande, alltid frammåt. Den kör inte dashUsed = true
     {
         if (currDashIE != null)
         {
@@ -648,7 +662,6 @@ public class StagMovement : BaseClass
         AddMovementStack(1);
         cameraShaker.ChangeFOV(0.05f, 75);
         ySpeed = -gravity * 0.01f; //nollställer ej helt
-        dashUsed = true;
         ToggleDashEffect(true);
         dashTimePoint = Time.time;
 
