@@ -175,7 +175,7 @@ public class PowerManager : BaseClass {
             }
         }
 
-        activeCamera.GetComponent<CameraShaker>().ShakeCamera(0.7f, 4, true);
+        activeCamera.GetComponent<CameraShaker>().ShakeCamera(0.7f, 4, true, true);
 
         StartCoroutine(DieDelayed());
     }

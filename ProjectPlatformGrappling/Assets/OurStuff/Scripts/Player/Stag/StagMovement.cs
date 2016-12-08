@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 //[RequireComponent(typeof(CharacterController))]
@@ -236,7 +237,8 @@ public class StagMovement : BaseClass
 
             if(groundedSlope > maxSlopeGrounded) //denna checken görs här när man är grounded och i charactercontrollerhit när man INTE är grounded
             {
-                ApplyExternalForce(groundedNormal * 20); // så man glider för slopes
+                //ApplyExternalForce(groundedNormal * 20); // så man glider för slopes
+                //currMomentum = Vector3.zero;
             }
         }
         else
@@ -338,7 +340,7 @@ public class StagMovement : BaseClass
         }
         else
         {
-            ySpeed = 0; //behöver inte lägga på gravity när man står på moving platform, varför funkar inte grounded? lol
+            //ySpeed = 0; //behöver inte lägga på gravity när man står på moving platform, varför funkar inte grounded? lol
         }
         
         if (characterController.isGrounded) //dessa if-satser skall vara separata
@@ -348,12 +350,21 @@ public class StagMovement : BaseClass
                 ySpeed = -gravity * 0.01f; //nollställer ej helt // grounded character has vSpeed = 0...
             }
         }
-
         if (Input.GetButtonDown("Jump"))
         {
             Jump();
         }
+        
         Vector3 yVector = new Vector3(0, ySpeed, 0);
+
+        //adjusta neråt vektor så den går för sliders
+        //Vector3 mainComparePoint = transform.position + new Vector3(0, groundedCheckOffsetY, 0);
+        //Vector3[] comparePoints = {
+        //transform.position + transform.right + new Vector3(0, groundedCheckOffsetY, 0),
+        //transform.position + -transform.right + new Vector3(0, groundedCheckOffsetY, 0),
+        //transform.position + transform.forward + new Vector3(0, groundedCheckOffsetY, 0),
+        //transform.position + -transform.forward + new Vector3(0, groundedCheckOffsetY, 0)};
+        //AngleToAvoid(ref yVector, mainComparePoint, comparePoints, characterController.radius + 2, false);
         // YYYYY
 
         characterController.Move((currMomentum + dashVel + externalVel + yVector) * deltaTime);
@@ -398,16 +409,18 @@ public class StagMovement : BaseClass
         {
             if (slope > maxSlopeGrounded)
             {
-                if (isGroundedRaycast)
+                if (isGroundedRaycast || isGrounded)
                 {
                     if (groundedSlope > maxSlopeGrounded)
                     {
-                        ApplyExternalForce(hit.normal * 20);
+                        //ApplyExternalForce(hit.normal * 20);
+                        //currMomentum = Vector3.zero;
                     }
                 }
                 else //om man inte är grounded så använder man ju en gammal slope? denna kan vara farlig att ha här
                 {
-                    ApplyExternalForce(hit.normal * 20); // så man glider för slopes
+                    //ApplyExternalForce(hit.normal * 20); // så man glider för slopes
+                    //currMomentum = Vector3.zero;
                 }
             }
             else //ingen slope, dvs man står på marken, resetta stuff!
@@ -471,6 +484,128 @@ public class StagMovement : BaseClass
         }
     }
 
+    public void AngleToAvoid(ref Vector3 dir, Vector3 mainComparePoint, Vector3 firstComparePoint, Vector3 secondComparePoint, float length, bool checkMaxSlope = false)
+    {
+        Vector3 dirN = dir.normalized;
+        RaycastHit mainHit, FirstHit, secondHit;
+        float hitLengthMain = Mathf.Infinity, hitLengthFirst = Mathf.Infinity, hitLengthSecond = Mathf.Infinity;
+
+        //Debug.DrawRay(mainComparePoint, dirN * length, Color.red);
+        //Debug.DrawRay(firstComparePoint, dirN * length, Color.red);
+        //Debug.DrawRay(secondComparePoint, dirN * length, Color.red);
+
+        if(Physics.Raycast(mainComparePoint, dirN, out mainHit, length, groundCheckLM))
+        {
+            hitLengthMain = Vector3.Distance(mainHit.point, mainComparePoint);
+        }
+
+        if (Physics.Raycast(firstComparePoint, dirN, out FirstHit, length, groundCheckLM))
+        {
+            hitLengthFirst = Vector3.Distance(FirstHit.point, firstComparePoint);
+        }
+
+        if (Physics.Raycast(secondComparePoint, dirN, out secondHit, length, groundCheckLM))
+        {
+            hitLengthSecond = Vector3.Distance(secondHit.point, secondComparePoint);
+        }
+
+        if (hitLengthMain == Mathf.Infinity && hitLengthFirst == Mathf.Infinity && hitLengthSecond == Mathf.Infinity) { return; } //alla är lika långa == ingen sne vägg eller liknande
+        if (Vector3.Dot(dirN, mainHit.normal) < -0.98f) return; //lutad nästan rakt mot väggen
+        if (checkMaxSlope && GetSlope(mainHit.normal) < maxSlopeGrounded) return;
+
+        if(hitLengthFirst > hitLengthSecond) //rotera mot second
+        {
+            Vector3 towards = firstComparePoint - mainComparePoint;
+            dir = Vector3.RotateTowards(dir, towards, deltaTime * 50, 0.0F);
+        }
+        else if(hitLengthFirst < hitLengthSecond)
+        {
+            Vector3 towards = secondComparePoint - mainComparePoint;
+            dir = Vector3.RotateTowards(dir, towards, deltaTime * 50, 0.0F);
+        }
+
+        //Debug.DrawRay(mainComparePoint, dir * Mathf.Infinity, Color.blue);
+    }
+
+    public void AngleToAvoid(ref Vector3 dir, Vector3 mainComparePoint, Vector3[] secondComparePoints, float length, bool smallest = true, bool checkMaxSlope = false)
+    {
+        Vector3 dirN = dir.normalized;
+        RaycastHit mainHit;
+        //List<RaycastHit> secondHits = new List<RaycastHit>() ;
+        float hitLengthMain = Mathf.Infinity;
+        List<float> hitLengths = new List<float>();
+
+        bool noHits = true;
+        for(int i = 0; i < secondComparePoints.Length; i++)
+        {
+            float hLen;
+            if (smallest)
+            {
+                hLen = Mathf.Infinity;
+            }
+            else
+            {
+                hLen = -Mathf.Infinity;
+            }
+
+            RaycastHit rH;
+
+            if (Physics.Raycast(secondComparePoints[i], dirN, out rH, length, groundCheckLM))
+            {
+                hLen = Vector3.Distance(rH.point, secondComparePoints[i]);
+                noHits = false;
+            }
+
+            hitLengths.Add(hLen);
+        }
+
+        if (Physics.Raycast(mainComparePoint, dirN, out mainHit, length, groundCheckLM))
+        {
+            hitLengthMain = Vector3.Distance(mainHit.point, mainComparePoint);
+        }
+
+        if (noHits) return;
+        if (Vector3.Dot(dirN, mainHit.normal) < -0.98f) return; //lutad nästan rakt mot väggen/golvet
+        if (checkMaxSlope && GetSlope(mainHit.normal) < maxSlopeGrounded) return;
+
+        if (smallest)
+        {
+            Vector3 smallestRay = Vector3.zero;
+            float smallestRayLength = Mathf.Infinity;
+
+            for (int i = 0; i < secondComparePoints.Length; i++) //hitta den minsta rayen, dvs den som träffats närmst
+            {
+                if (hitLengths[i] < smallestRayLength)
+                {
+                    smallestRayLength = hitLengths[i];
+                    smallestRay = secondComparePoints[i];
+                }
+            }
+
+            Vector3 towards = smallestRay - mainComparePoint;
+            dir = Vector3.RotateTowards(dir, towards, deltaTime * 50, 0.0F);
+        }
+        else
+        {
+            Vector3 biggestRay = Vector3.zero;
+            float biggestRayLength = -Mathf.Infinity;
+
+            for (int i = 0; i < secondComparePoints.Length; i++) //hitta den minsta rayen, dvs den som träffats närmst
+            {
+                if (hitLengths[i] > biggestRayLength)
+                {
+                    biggestRayLength = hitLengths[i];
+                    biggestRay = secondComparePoints[i];
+                }
+            }
+
+            Vector3 towards = biggestRay - mainComparePoint;
+            dir = Vector3.RotateTowards(dir, towards, deltaTime * 50, 0.0F);
+        }
+
+        Debug.DrawRay(transform.position, dir * 100, Color.blue);
+    }
+
     public virtual void HandleMovement()
     {
         float stagSpeedMultiplier = 1.0f;
@@ -487,17 +622,22 @@ public class StagMovement : BaseClass
 
         finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currMovementSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
 
-        if (IsWalkable(1.0f, 1.8f, (horVector + verVector).normalized, maxSlopeGrounded)) //dessa värden kan behöva justeras
-        {
+        //Vector3 mainComparePoint = transform.position + new Vector3(0, 2, 0);
+        //Vector3 firstComparePoint = transform.position + new Vector3(0, 2, 0) + transform.right * characterController.radius;
+        //Vector3 secondComparePoint = transform.position + new Vector3(0, 2, 0) + -transform.right * characterController.radius;
+        //AngleToAvoid(ref finalMoveDir, mainComparePoint, firstComparePoint, secondComparePoint, characterController.radius + 0.75f, true);
+        //if (IsWalkable(1.0f, 1.8f, (horVector + verVector).normalized, maxSlopeGrounded)) //dessa värden kan behöva justeras
+        //{
 
-        }
-        else
-        {
-            finalMoveDir *= 0.1f;
-            //Debug.Log(Time.time.ToString());
-            Break(1000, ref currMomentum);
-            //currMomentum *= 0.1f;
-        }
+        //}
+        //else
+        //{
+        //    finalMoveDir *= 0.1f;
+        //    //Debug.Log(Time.time.ToString());
+        //    Break(1000, ref currMomentum);
+        //    //currMomentum = Vector3.zero;
+        //    //currMomentum *= 0.1f;
+        //}
 
         //poängen i början ska dock vara värda mer!!
         float flatMoveStacksSpeedBonues = Mathf.Max(1, Mathf.Log(movementStacks, 1.01f));
@@ -544,14 +684,11 @@ public class StagMovement : BaseClass
             currMomentum = finalMoveDir * 0.21f * (1 + (float)movementStacks * 0.019f);
         }
 
-        //if(finalMoveDir.magnitude > 0.0f)
-        //{
-        //    Break(0.99f);
-        //}
-        //else
-        //{
-        //    Break(0.9f);
-        //}
+        Vector3 mainComparePoint = transform.position + new Vector3(0, 2, 0);
+        Vector3 firstComparePoint = transform.position + new Vector3(0, 2, 0) + transform.right * characterController.radius;
+        Vector3 secondComparePoint = transform.position + new Vector3(0, 2, 0) + -transform.right * characterController.radius;
+        AngleToAvoid(ref currMomentum, mainComparePoint, firstComparePoint, secondComparePoint, characterController.radius + 0.75f, true); //korrekt riktningen så man inte "springer in i väggar"
+
     }
 
     void Break(float breakamount, ref Vector3 vec) //brmosa
@@ -732,7 +869,7 @@ public class StagMovement : BaseClass
             }
 
             Vector3 hitNormal = Vector3.zero;
-            if(!IsWalkable(1.0f, 3, dashVel, maxSlopeGrounded, ref hitNormal)) //så den slutar dasha när den går emot en vägg
+            if(!IsWalkable(1.0f, characterController.radius + 1.0f, dashVel, maxSlopeGrounded, ref hitNormal)) //så den slutar dasha när den går emot en vägg
             {
                 ToggleDashEffect(false);
                 dashVel = Vector3.zero;
@@ -991,6 +1128,8 @@ public class StagMovement : BaseClass
         RaycastHit rHit;
         if(Physics.Raycast(transform.position + new Vector3(0, yOffset, 0), direction, out rHit, distance, groundCheckLM))
         {
+            Vector3 dirNoY = new Vector3(direction.x, 0, direction.y);
+            Vector3 normNoY = new Vector3(rHit.normal.x, 0, rHit.normal.z);
 
             float angleValue = Vector3.Angle(rHit.normal, Vector3.up);
             //Debug.Log(angleValue.ToString());
@@ -999,6 +1138,7 @@ public class StagMovement : BaseClass
             {
                 return false;
             }
+
         }
         return true;
     }
@@ -1019,11 +1159,14 @@ public class StagMovement : BaseClass
         RaycastHit rHit;
         if (Physics.Raycast(transform.position + new Vector3(0, yOffset, 0), direction, out rHit, distance, groundCheckLM))
         {
+            Vector3 dirNoY = new Vector3(direction.x, 0, direction.y);
+            Vector3 normNoY = new Vector3(rHit.normal.x, 0, rHit.normal.z);
+
             hitNormal = rHit.normal;
             float angleValue = Vector3.Angle(rHit.normal, Vector3.up);
             //Debug.Log(angleValue.ToString());
 
-            if (angleValue > maxSlope) //skicka in negativt om den ska ha hit mot allt
+            if (angleValue > maxSlope)
             {
                 return false;
             }
