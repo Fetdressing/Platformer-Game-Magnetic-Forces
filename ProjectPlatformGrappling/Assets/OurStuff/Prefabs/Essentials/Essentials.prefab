@@ -1037,7 +1037,7 @@ GameObject:
   - 136: {fileID: 136000013726002026}
   - 23: {fileID: 23000013658123896}
   - 114: {fileID: 114000013328482930}
-  m_Layer: 0
+  m_Layer: 25
   m_Name: SpeedBreaker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1545,6 +1545,7 @@ GameObject:
   - 114: {fileID: 114000010171813366}
   - 114: {fileID: 114000013824012058}
   - 114: {fileID: 114000011247041578}
+  - 114: {fileID: 114000010929104248}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Manager
@@ -3958,6 +3959,23 @@ MonoBehaviour:
   collisionLayerMask:
     serializedVersion: 2
     m_Bits: 536870912
+--- !u!114 &114000010929104248
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013856882280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89e787eb3c4fd9243b049fcff63b955f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  didJump: 0
+  didDash: 0
+  horAxis: 0
+  verAxis: 0
+  horAxisView: 0
+  verAxisView: 0
 --- !u!114 &114000010980099502
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4049,6 +4067,9 @@ MonoBehaviour:
   maxDashTime: 0
   dashEffectObject: {fileID: 1000013548107072}
   dashReadyPS: {fileID: 198000010572112006}
+  unitCheckLM:
+    serializedVersion: 2
+    m_Bits: 4194304
   activePlatform: {fileID: 0}
   dashVel: {x: 0, y: 0, z: 0}
   moveStackText: {fileID: 114000012092135568}
@@ -5625,8 +5646,8 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1
-  m_Radius: 1.74
+  m_Height: 3.72
+  m_Radius: 1.27
   m_SlopeLimit: 65
   m_StepOffset: 1
   m_SkinWidth: 0.08

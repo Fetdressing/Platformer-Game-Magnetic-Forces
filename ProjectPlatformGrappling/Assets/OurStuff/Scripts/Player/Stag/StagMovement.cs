@@ -59,6 +59,7 @@ public class StagMovement : BaseClass
     protected int currDashCombo = 0; //hur många dashes som gjorts i streck, används för att öka kostnaden tex
     protected float dashComboResetTime = 0.8f;
     protected float dashComboResetTimer = 0.0f;
+    public LayerMask unitCheckLM; //fiender o liknande som dash ska styras mot
 
     protected float knockForceMovingPlatform = 420; //om man hamnar på fel sidan av moving platform så knuffas man bort lite
 
@@ -222,8 +223,8 @@ public class StagMovement : BaseClass
             AddMovementStack(-2);
         }
 
-        hor = Input.GetAxis("Horizontal");
-        ver = Input.GetAxis("Vertical");
+        //hor = Input.GetAxis("Horizontal");
+        //ver = Input.GetAxis("Vertical");
 
         hor = controlManager.horAxis;
         ver = controlManager.verAxis;
@@ -420,7 +421,8 @@ public class StagMovement : BaseClass
                 {
                     if (groundedSlope > maxSlopeGrounded)
                     {
-                        //ApplyExternalForce(hit.normal * 20);
+                        //ApplyExternalForce(hit.normal * currMomentum.magnitude);
+                        currMomentum = hit.normal * currMomentum.magnitude; //BOUNCE!!
                         //currMomentum = Vector3.zero;
                     }
                 }
@@ -430,7 +432,7 @@ public class StagMovement : BaseClass
                     //currMomentum = Vector3.zero;
                 }
             }
-            else //ingen slope, dvs man står på marken, resetta stuff!
+            else if(slope < maxSlopeGrounded) //ingen slope, dvs man står på marken, resetta stuff!
             {
                 if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
                 {
@@ -624,10 +626,10 @@ public class StagMovement : BaseClass
 
         currMovementSpeed = startSpeed * currExternalSpeedMult;
 
-        horVector = new Vector3(horVector.x, 0, horVector.z);
-        verVector = new Vector3(verVector.x, 0, verVector.z); //denna behöver vara under dash så att man kan dasha upp/ned oxå
+        Vector3 horVectorNoY = new Vector3(horVector.x, 0, horVector.z);
+        Vector3 verVectorNoY = new Vector3(verVector.x, 0, verVector.z); //denna behöver vara under dash så att man kan dasha upp/ned oxå
 
-        finalMoveDir = (horVector + verVector).normalized * stagSpeedMultiplier * currMovementSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
+        finalMoveDir = (horVectorNoY + verVectorNoY).normalized * stagSpeedMultiplier * currMovementSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
 
         //Vector3 mainComparePoint = transform.position + new Vector3(0, 2, 0);
         //Vector3 firstComparePoint = transform.position + new Vector3(0, 2, 0) + transform.right * characterController.radius;
@@ -872,7 +874,33 @@ public class StagMovement : BaseClass
             }
             else
             {
-                dashVel = cameraHolder.forward * dashSpeed; //styra under dashen
+                //SJÄLV STYRNING, FAN VA ENKELT ALLT ÄR!!
+                Vector3 dirMod = Vector3.RotateTowards(stagObject.forward, (horVector + verVector).normalized, 4000 * deltaTime, 0);
+                Vector3 biasedDir = Vector3.zero; //styr den mot fiender
+                RaycastHit rHit;
+
+                Vector3 spherecastDir = (horVector + verVector); //försök hämta den begärda riktningen dessa kanske blir skumma när man precis släppt kontrollen?
+                
+                if(spherecastDir == Vector3.zero) //man håller inte in några knappar för movement
+                {
+                    //spherecastDir = new Vector3(stagObject.forward.x, stagObject.forward.y, stagObject.forward.z); //denna kan behövas göra nått smartare med, annars är den värdelös unless man faktiskt håller in kontrollerna
+                    spherecastDir = cameraHolder.forward;
+                }
+                if(Physics.SphereCast(cameraHolder.position, 80, spherecastDir, out rHit, 240, unitCheckLM))
+                {
+                    if(rHit.transform.GetComponent<HealthSpirit>())
+                    {
+                        biasedDir = (rHit.transform.position - transform.position).normalized;
+                        dirMod = Vector3.RotateTowards(stagObject.forward, biasedDir, 4000 * deltaTime, 0);
+                    }
+                }
+                
+                if(biasedDir == Vector3.zero) //ingen fiende hit, så använda staggens egen rotation
+                {
+                    dirMod = stagObject.forward;
+                }
+
+                dashVel = dirMod * dashSpeed; //styra under dashen
             }
 
             Vector3 hitNormal = Vector3.zero;

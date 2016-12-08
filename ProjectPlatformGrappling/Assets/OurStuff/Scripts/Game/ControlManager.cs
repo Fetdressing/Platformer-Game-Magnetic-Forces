@@ -44,12 +44,16 @@ public class ControlManager : MonoBehaviour {
 
         //view
         characterActions.LeftView.AddDefaultBinding(InputControlType.RightStickLeft);
+        characterActions.LeftView.AddDefaultBinding(Mouse.NegativeX);
 
         characterActions.RightView.AddDefaultBinding(InputControlType.RightStickRight);
+        characterActions.RightView.AddDefaultBinding(Mouse.PositiveX);
 
         characterActions.ForwardView.AddDefaultBinding(InputControlType.RightStickUp);
+        characterActions.ForwardView.AddDefaultBinding(Mouse.PositiveY);
 
         characterActions.BackView.AddDefaultBinding(InputControlType.RightStickDown);
+        characterActions.BackView.AddDefaultBinding(Mouse.NegativeY);
         //view
 
         characterActions.Jump.AddDefaultBinding(Key.Space);
