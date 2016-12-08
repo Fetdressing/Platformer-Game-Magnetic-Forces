@@ -3,7 +3,7 @@ using System.Collections;
 
 public class WoWCCamera : MonoBehaviour
 {
-
+    protected ControlManager controlManager;
     public LayerMask collisionLayerMask; //mot vilka lager ska kameran kolla kollision?
 
     public Transform target;
@@ -55,6 +55,7 @@ public class WoWCCamera : MonoBehaviour
 
     void Start()
     {
+        controlManager = GameObject.FindGameObjectWithTag("Manager").GetComponent<ControlManager>();
         var angles = transform.eulerAngles;
         x = angles.y;
         y = angles.x;
@@ -84,8 +85,8 @@ public class WoWCCamera : MonoBehaviour
         }
 
 
-        x += Input.GetAxis("Mouse X") * xSpeed * 0.02f * speedMultiplier;
-        y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f * speedMultiplier;
+        x += controlManager.horAxisView * xSpeed * 0.02f * speedMultiplier;
+        y -= controlManager.verAxisView * ySpeed * 0.02f * speedMultiplier;
 
 
         distance -= (Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime) * zoomRate * Mathf.Abs(distance);

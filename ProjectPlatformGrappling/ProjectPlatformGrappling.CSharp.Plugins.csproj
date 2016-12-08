@@ -103,6 +103,7 @@
     <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\Vortex.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\InControl\Readme\README.txt" />
     <None Include="Assets\OurStuff\2D\Shaders\Hologram.shader" />
     <None Include="Assets\Quantum Theory\Polyworld\Shaders\PolyWorldSurfaceTexture_Gamma.shader" />
     <None Include="Assets\Quantum Theory\Polyworld\Shaders\PolyWorldSurfaceTexture_Linear.shader" />

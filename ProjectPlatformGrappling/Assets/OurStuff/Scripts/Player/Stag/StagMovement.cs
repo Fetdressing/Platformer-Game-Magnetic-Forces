@@ -13,6 +13,7 @@ public class StagMovement : BaseClass
     protected CameraShaker cameraShaker;
     protected CharacterController characterController;
     protected PowerManager powerManager;
+    protected ControlManager controlManager;
 
     protected StagSpeedBreaker speedBreaker;
     protected float speedBreakerActiveSpeed = 1.8f; //vid vilken fart den går igång
@@ -139,6 +140,8 @@ public class StagMovement : BaseClass
         cameraShaker = cameraObj.GetComponent<CameraShaker>();
         groundChecker = GetComponentsInChildren<GroundChecker>()[0];
 
+        controlManager = GameObject.FindGameObjectWithTag("Manager").GetComponent<ControlManager>();
+
         try
         {
             speedBreaker = GetComponentsInChildren<StagSpeedBreaker>()[0];
@@ -221,6 +224,10 @@ public class StagMovement : BaseClass
 
         hor = Input.GetAxis("Horizontal");
         ver = Input.GetAxis("Vertical");
+
+        hor = controlManager.horAxis;
+        ver = controlManager.verAxis;
+
         horVector = hor * cameraHolder.right;
         verVector = ver * cameraHolder.forward;
 
@@ -260,7 +267,7 @@ public class StagMovement : BaseClass
             ToggleDashReadyPS(false);
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.M))
+        if (controlManager.didDash)
         {
             //Dash(transform.forward);
             if (ver < 0.0f) //bakåt
@@ -350,7 +357,7 @@ public class StagMovement : BaseClass
                 ySpeed = -gravity * 0.01f; //nollställer ej helt // grounded character has vSpeed = 0...
             }
         }
-        if (Input.GetButtonDown("Jump"))
+        if (controlManager.didJump)
         {
             Jump();
         }

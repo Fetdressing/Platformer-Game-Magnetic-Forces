@@ -64911,6 +64911,39 @@ Transform:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 982a4a75f89700c498008d3f2040d595, type: 3}
   m_PrefabInternal: {fileID: 1229565549}
+--- !u!1 &1870686224 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1000011894698478, guid: 7a5e663eaa0de9143b2a1efdc913e3e5,
+    type: 2}
+  m_PrefabInternal: {fileID: 1013595275}
+--- !u!114 &1870686227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1870686224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7b5e8de77c5b4597ae7fbfb49a95e22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  logDebugInfo: 0
+  invertYAxis: 0
+  useFixedUpdate: 0
+  dontDestroyOnLoad: 0
+  suspendInBackground: 0
+  enableICade: 0
+  enableXInput: 0
+  xInputOverrideUpdateRate: 0
+  xInputUpdateRate: 0
+  xInputOverrideBufferSize: 0
+  xInputBufferSize: 0
+  enableNativeInput: 0
+  nativeInputEnableXInput: 1
+  nativeInputPreventSleep: 0
+  nativeInputOverrideUpdateRate: 0
+  nativeInputUpdateRate: 0
+  customProfiles: []
 --- !u!1001 &1875343115
 Prefab:
   m_ObjectHideFlags: 0
@@ -65695,6 +65728,28 @@ Transform:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 8e12e4ba46625f34dbcd03b88efda792, type: 3}
   m_PrefabInternal: {fileID: 1662332156}
+--- !u!1 &1900180079 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1000013856882280, guid: ecd38ba538801b04db904a661134a689,
+    type: 2}
+  m_PrefabInternal: {fileID: 1767770675}
+--- !u!114 &1900180086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1900180079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89e787eb3c4fd9243b049fcff63b955f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  didJump: 0
+  didDash: 0
+  horAxis: 0
+  verAxis: 0
+  horAxisView: 0
+  verAxisView: 0
 --- !u!1001 &1900618651
 Prefab:
   m_ObjectHideFlags: 0
