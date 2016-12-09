@@ -75,6 +75,7 @@ public class StagMovement : BaseClass
 
     protected Vector3 horVector = new Vector3(0, 0, 0); //har dem här så jag kan hämta värdena via update
     protected Vector3 verVector = new Vector3(0, 0, 0);
+    protected Vector3 lastHV_Vector = Vector3.zero; //senast som horVector och verVector hade ett värde (dvs inte vector3.zero)
     protected float hor, ver;
     [HideInInspector] public Vector3 dashVel = new Vector3(0, 0, 0); //vill kunna komma åt denna, så därför public
     protected Vector3 finalMoveDir = new Vector3(0,0,0);
@@ -172,6 +173,7 @@ public class StagMovement : BaseClass
 
         dashVel = new Vector3(0, 0, 0);
         externalVel = new Vector3(0, 0, 0);
+        lastHV_Vector = Vector3.zero;
         ySpeed = -gravity * 0.01f; //nollställer ej helt
         currExternalSpeedMult = 1.0f;
         currLimitSpeed = startLimitSpeed;
@@ -208,9 +210,9 @@ public class StagMovement : BaseClass
     {
         if (Time.timeScale == 0) return;
         if (isLocked) return;
-
-        //characterController.isGrounded = characterController.characterController.isGrounded;
+        
         isGroundedRaycast = GetGrounded(groundCheckObject);
+        Debug.Log(GetGroundedDuration().ToString());
 
         if (movementStackResetTimer < Time.time)
         {
@@ -218,7 +220,7 @@ public class StagMovement : BaseClass
             AddMovementStack(-2);
         }
 
-        if(isGroundedRaycast && (groundedTimePoint + movementStackGroundedTimer) < Time.time)
+        if(isGroundedRaycast && (GetGroundedDuration() > movementStackGroundedTimer)) //efter att ha tappat ett poäng så fortsätter still GetGroundedDuration att öka, därför det minskar poäng snabbare o snabbare, för att man STILL är grounded
         {
             AddMovementStack(-2);
         }
@@ -231,6 +233,11 @@ public class StagMovement : BaseClass
 
         horVector = hor * cameraHolder.right;
         verVector = ver * cameraHolder.forward;
+
+        if ((horVector + verVector) != Vector3.zero)
+        {
+            lastHV_Vector = (horVector + verVector);
+        }
 
         distanceToGround = GetDistanceToGround(groundCheckObject);
 
@@ -870,21 +877,30 @@ public class StagMovement : BaseClass
 
             Vector3 dirMod;
 
-            if (useCameraDir)
-            {
-                dirMod = Vector3.RotateTowards(stagObject.forward, cameraHolder.forward, 4000 * deltaTime, 0);
+            if (useCameraDir) //sker efter tex dashhit i fiende
+            {                
+                if (ver < 0) //frammåt eller bakåt?
+                {
+                    //Debug.Log(ver.ToString());
+                    dirMod = Vector3.RotateTowards(stagObject.forward, -cameraHolder.forward, 4000 * deltaTime, 0);
+                }
+                else
+                {
+                    dirMod = Vector3.RotateTowards(stagObject.forward, cameraHolder.forward, 4000 * deltaTime, 0); //kanske göra nån check ifall man är vänd frammåt, annars vill man kanske INTE åka i kameran riktning, men inte säker
+                }
             }
             else
             {
                 //SJÄLV STYRNING, FAN VA ENKELT ALLT ÄR!!
-                dirMod = Vector3.RotateTowards(stagObject.forward, (horVector + verVector).normalized, 4000 * deltaTime, 0);
+                dirMod = Vector3.RotateTowards(stagObject.forward, (horVector + verVector).normalized, 4000 * deltaTime, 0); //om ingen input så används stagObject.forward
             }
             Vector3 biasedDir = Vector3.zero; //styr den mot fiender
 
-            Collider[] potTargets = Physics.OverlapSphere(transform.position, 150, unitCheckLM);
-            float tarAngleThreshhold = 30;
+            Collider[] potTargets = Physics.OverlapSphere(transform.position, 150, unitCheckLM); //att hitta ett target borde kanske bara göras i början av dash?
+            float tarAngleThreshhold = 45;
             float smallestAngle = Mathf.Infinity;
             float minDistance = 5;
+            float closeDistance = 30;
 
             Vector3 horVectorNoY = new Vector3(horVector.x, 0, horVector.z);
             Vector3 verVectorNoY = new Vector3(verVector.x, 0, verVector.z);
@@ -901,15 +917,31 @@ public class StagMovement : BaseClass
 
 
                 Vector3 TToTarNoY = new Vector3(TToTar.x, 0, TToTar.z);
+                Vector3 activeHor, activeVer, activeTToTar;
 
-                if ((horVectorNoY + verVectorNoY) != Vector3.zero)
+                if(Vector3.Distance(transform.position, potTargets[i].transform.position) > closeDistance) //beroende på avståndet så använd vanliga hor/ver vektor istället för NoY, man vill inte att stuff låångt ner ska tas upp av checken
                 {
-                    currAngle = Vector3.Angle(TToTarNoY, (horVectorNoY + verVectorNoY));
+                    activeHor = horVector;
+                    activeVer = verVector;
+                    activeTToTar = TToTar;
                 }
-                else
+                else //ignorera Y när targets är nära
                 {
-                    currAngle = Vector3.Angle(TToTarNoY, stagObject.forward);
+                    activeHor = horVectorNoY;
+                    activeVer = verVectorNoY;
+                    activeTToTar = TToTarNoY;
                 }
+
+                //if ((activeHor + activeVer) != Vector3.zero)
+                //{
+                //    currAngle = Vector3.Angle(activeTToTar, (activeHor + activeVer)); 
+                //}
+                //else
+                //{
+                //    currAngle = Vector3.Angle(activeTToTar, stagObject.forward);
+                //}
+
+                currAngle = Vector3.Angle(activeTToTar, lastHV_Vector); //jämför med den senaste outputen
 
                 if (currAngle < tarAngleThreshhold)
                 {
@@ -923,7 +955,7 @@ public class StagMovement : BaseClass
                     
             }
 
-            if(biasedDir != Vector3.zero)
+            if(biasedDir != Vector3.zero) //har en fiende hittats som ska styras mot
             {
                 dirMod = Vector3.RotateTowards(stagObject.forward, biasedDir, 4000 * deltaTime, 0);
             }
@@ -977,8 +1009,14 @@ public class StagMovement : BaseClass
     void AddMovementStack(int i)
     {
         movementStacks += i;
+
+        if (movementStacks < 1)
+        {
+            movementStacks = 1;
+        }
+
         float timeReduceValue = Mathf.Max(0, Mathf.Pow(movementStacks, 1.6f));
-        float groundedReduceValue = Mathf.Max(0, Mathf.Pow(movementStacks, 1.7f));
+        float groundedReduceValue = Mathf.Max(0, Mathf.Pow(movementStacks, 1.7f)); //den ska börja litet o bli större o större
         timeReduceValue *= 0.035f;
         groundedReduceValue *= 0.04f;
         if (float.IsNaN(timeReduceValue))
@@ -989,19 +1027,14 @@ public class StagMovement : BaseClass
         {
             groundedReduceValue = 0;
         }
-        //Debug.Log(timeReduceValue.ToString());
+        //Debug.Log(groundedReduceValue.ToString());
         movementStackResetTimer = Time.time + movementStackResetTime - (timeReduceValue); //gör det svårare o svårare!
         movementStackGroundedTimer = movementStackGroundedTime - (groundedReduceValue); //inte plus tid för den ligger redan inräknad
 
         movementStackGroundedTimer = Mathf.Max(0.2f, movementStackGroundedTimer); //ska som minst vara x sekunder
 
-        //Debug.Log((movementStackResetTimer - Time.time).ToString());
-        //Debug.Log((movementStackGroundedTimer).ToString());
-
-        if (movementStacks < 1)
-        {
-            movementStacks = 1;
-        }
+        //Debug.Log(movementStacks.ToString() + "  " + (movementStackResetTimer - Time.time).ToString());
+        //Debug.Log(movementStacks.ToString() + "  " + (movementStackGroundedTimer).ToString());
 
         moveStackText.text = movementStacks.ToString();
     }
@@ -1371,6 +1404,8 @@ public class StagMovement : BaseClass
 
     public float GetGroundedDuration()
     {
+        if (!isGroundedRaycast)
+            return 0;
         //if (Time.time - groundedTimePoint > 2)
         //    Debug.Log((Time.time - groundedTimePoint).ToString());
         return Time.time - groundedTimePoint;

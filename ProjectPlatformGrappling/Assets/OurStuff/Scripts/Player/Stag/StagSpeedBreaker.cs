@@ -25,7 +25,7 @@ public class StagSpeedBreaker : BaseClass {
     void OnTriggerEnter(Collider col)
     {
         HealthSpirit h = col.GetComponent<HealthSpirit>();
-        if(h != null)
+        if(h != null && h.IsAlive())
         {
             stagMovement.IgnoreCollider(0.8f, col.transform); //så man inte collidar med den när man åker igenom
             stagMovement.Dash(true); //använd kamera riktningen
