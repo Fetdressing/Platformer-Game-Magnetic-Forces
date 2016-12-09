@@ -121,7 +121,7 @@ public class StagMovementForces : StagMovement {
 
         if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.M))
         {
-            Dash(transform.forward);
+            Dash();
             //if (ver < 0.0f) //bakåt
             //{
             //    Dash(-transform.forward);
@@ -311,11 +311,11 @@ public class StagMovementForces : StagMovement {
     //    ySpeed += velY;
     //}
 
-    public override bool Dash(Vector3 dir)
+    public override bool Dash(bool b)
     {
         if (!IsDashReady()) return false;
         powerManager.SufficentPower(-dashPowerCost, true); //camerashake, konstig syntax kanske du tycker, men palla göra det fancy!
-        StartCoroutine(MoveDash(dir, false));
+        StartCoroutine(MoveDash(false));
         return true;
     }
 

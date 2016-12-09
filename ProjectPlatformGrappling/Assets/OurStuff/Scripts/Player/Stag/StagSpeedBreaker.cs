@@ -28,7 +28,7 @@ public class StagSpeedBreaker : BaseClass {
         if(h != null)
         {
             stagMovement.IgnoreCollider(0.8f, col.transform); //så man inte collidar med den när man åker igenom
-            stagMovement.Dash();
+            stagMovement.Dash(true); //använd kamera riktningen
             stagMovement.Stagger(0.25f);
             h.AddHealth(-2);
         }

@@ -57,7 +57,7 @@ public class StagMovement : BaseClass
     public GameObject dashEffectObject;
     public ParticleSystem dashReadyPS; //particlesystem som körs när dash är redo att användas
     protected int currDashCombo = 0; //hur många dashes som gjorts i streck, används för att öka kostnaden tex
-    protected float dashComboResetTime = 0.8f;
+    protected float dashComboResetTime = 1.2f;
     protected float dashComboResetTimer = 0.0f;
     public LayerMask unitCheckLM; //fiender o liknande som dash ska styras mot
 
@@ -274,11 +274,11 @@ public class StagMovement : BaseClass
             if (ver < 0.0f) //bakåt
             {
                 //Dash(-transform.forward);
-                Dash(-cameraHolder.forward);
+                Dash(false);
             }
             else
             {
-                Dash(cameraHolder.forward);
+                Dash(false);
             }
         }
 
@@ -791,7 +791,7 @@ public class StagMovement : BaseClass
         AddMovementStack(-movementStacks);
     }
 
-    public virtual bool Dash(Vector3 dir)
+    public virtual bool Dash()
     {
         if (!IsDashReady()) return false;
 
@@ -812,19 +812,19 @@ public class StagMovement : BaseClass
             StopCoroutine(currDashIE);
         }
 
-        currDashIE = MoveDash(dir, false);
+        currDashIE = MoveDash(false);
         StartCoroutine(currDashIE);
         return true;
     }
 
-    public virtual bool Dash() //dash utan nån cost eller liknande, alltid frammåt. Den kör inte dashUsed = true
+    public virtual bool Dash(bool useCameraDir) //dash utan nån cost eller liknande, alltid frammåt. Den kör inte dashUsed = true
     {
         if (currDashIE != null)
         {
             StopCoroutine(currDashIE);
         }
 
-        currDashIE = MoveDash(cameraHolder.forward, false); //default frammåt
+        currDashIE = MoveDash(useCameraDir); //default frammåt
         StartCoroutine(currDashIE);
         return true;
     }
@@ -838,7 +838,7 @@ public class StagMovement : BaseClass
         return true;
     }
 
-    protected virtual IEnumerator MoveDash(Vector3 dir, bool setDir)
+    protected virtual IEnumerator MoveDash(bool useCameraDir)
     {
         maxDashTime = startMaxDashTime; //den kan utökas sen
         AddMovementStack(1);
@@ -868,40 +868,68 @@ public class StagMovement : BaseClass
 
             speedBreakerTimer = Time.time + speedBreakerTime; //speedbreakern aktiveras sedan i update
 
-            if (setDir)
+            Vector3 dirMod;
+
+            if (useCameraDir)
             {
-                dashVel = dir * dashSpeed;
+                dirMod = Vector3.RotateTowards(stagObject.forward, cameraHolder.forward, 4000 * deltaTime, 0);
             }
             else
             {
                 //SJÄLV STYRNING, FAN VA ENKELT ALLT ÄR!!
-                Vector3 dirMod = Vector3.RotateTowards(stagObject.forward, (horVector + verVector).normalized, 4000 * deltaTime, 0);
-                Vector3 biasedDir = Vector3.zero; //styr den mot fiender
-                RaycastHit rHit;
+                dirMod = Vector3.RotateTowards(stagObject.forward, (horVector + verVector).normalized, 4000 * deltaTime, 0);
+            }
+            Vector3 biasedDir = Vector3.zero; //styr den mot fiender
 
-                Vector3 spherecastDir = (horVector + verVector); //försök hämta den begärda riktningen dessa kanske blir skumma när man precis släppt kontrollen?
-                
-                if(spherecastDir == Vector3.zero) //man håller inte in några knappar för movement
+            Collider[] potTargets = Physics.OverlapSphere(transform.position, 150, unitCheckLM);
+            float tarAngleThreshhold = 30;
+            float smallestAngle = Mathf.Infinity;
+            float minDistance = 5;
+
+            Vector3 horVectorNoY = new Vector3(horVector.x, 0, horVector.z);
+            Vector3 verVectorNoY = new Vector3(verVector.x, 0, verVector.z);
+
+            for (int i = 0; i < potTargets.Length; i++)
+            {
+                if (Vector3.Distance(transform.position, potTargets[i].transform.position) < minDistance) continue; //om den är för nära så hoppa vidare
+                HealthSpirit hSpirit = potTargets[i].GetComponent<HealthSpirit>();
+                if (hSpirit == null || hSpirit.IsAlive() == false) continue;
+
+                Vector3 TToTar = (potTargets[i].transform.position - transform.position).normalized;
+                Vector3 CToTar = (potTargets[i].transform.position - cameraHolder.position).normalized;
+                float currAngle = Mathf.Infinity;
+
+
+                Vector3 TToTarNoY = new Vector3(TToTar.x, 0, TToTar.z);
+
+                if ((horVectorNoY + verVectorNoY) != Vector3.zero)
                 {
-                    //spherecastDir = new Vector3(stagObject.forward.x, stagObject.forward.y, stagObject.forward.z); //denna kan behövas göra nått smartare med, annars är den värdelös unless man faktiskt håller in kontrollerna
-                    spherecastDir = cameraHolder.forward;
+                    currAngle = Vector3.Angle(TToTarNoY, (horVectorNoY + verVectorNoY));
                 }
-                if(Physics.SphereCast(cameraHolder.position, 80, spherecastDir, out rHit, 240, unitCheckLM))
+                else
                 {
-                    if(rHit.transform.GetComponent<HealthSpirit>())
+                    currAngle = Vector3.Angle(TToTarNoY, stagObject.forward);
+                }
+
+                if (currAngle < tarAngleThreshhold)
+                {
+                    if (smallestAngle > currAngle)
                     {
-                        biasedDir = (rHit.transform.position - transform.position).normalized;
-                        dirMod = Vector3.RotateTowards(stagObject.forward, biasedDir, 4000 * deltaTime, 0);
+                        smallestAngle = currAngle;
+                        biasedDir = TToTar;
+                        break;
                     }
                 }
-                
-                if(biasedDir == Vector3.zero) //ingen fiende hit, så använda staggens egen rotation
-                {
-                    dirMod = stagObject.forward;
-                }
-
-                dashVel = dirMod * dashSpeed; //styra under dashen
+                    
             }
+
+            if(biasedDir != Vector3.zero)
+            {
+                dirMod = Vector3.RotateTowards(stagObject.forward, biasedDir, 4000 * deltaTime, 0);
+            }
+
+            dashVel = dirMod * dashSpeed; //styra under dashen
+            
 
             Vector3 hitNormal = Vector3.zero;
             if(!IsWalkable(1.0f, characterController.radius + 1.0f, dashVel, maxSlopeGrounded, ref hitNormal)) //så den slutar dasha när den går emot en vägg
