@@ -57,7 +57,7 @@ public class StagMovement : BaseClass
     public GameObject dashEffectObject;
     public ParticleSystem dashReadyPS; //particlesystem som körs när dash är redo att användas
     protected int currDashCombo = 0; //hur många dashes som gjorts i streck, används för att öka kostnaden tex
-    protected float dashComboResetTime = 1.2f;
+    protected float dashComboResetTime = 0.85f;
     protected float dashComboResetTimer = 0.0f;
     public LayerMask unitCheckLM; //fiender o liknande som dash ska styras mot
 
@@ -212,7 +212,7 @@ public class StagMovement : BaseClass
         if (isLocked) return;
         
         isGroundedRaycast = GetGrounded(groundCheckObject);
-        Debug.Log(GetGroundedDuration().ToString());
+        //Debug.Log(GetGroundedDuration().ToString());
 
         if (movementStackResetTimer < Time.time)
         {
@@ -281,11 +281,11 @@ public class StagMovement : BaseClass
             if (ver < 0.0f) //bakåt
             {
                 //Dash(-transform.forward);
-                Dash(false);
+                Dash();
             }
             else
             {
-                Dash(false);
+                Dash();
             }
         }
 
@@ -809,7 +809,7 @@ public class StagMovement : BaseClass
         dashComboResetTimer = dashComboResetTime + Time.time;
         currDashCombo++;
 
-        float finalDashCost = dashPowerCost + (currDashCombo * 0.02f);
+        float finalDashCost = dashPowerCost + ((float)currDashCombo * 0.02f);
 
         powerManager.SufficentPower(-finalDashCost, true); //camerashake, konstig syntax kanske du tycker, men palla göra det fancy!
         powerManager.AddPower(-finalDashCost);
@@ -854,7 +854,72 @@ public class StagMovement : BaseClass
         ToggleDashEffect(true);
         dashTimePoint = Time.time;
 
-        if(GetGrounded(groundCheckObject, 3)) //extra cooldown för att man dashar från marken! FY PÅ DEJ!! (varit airbourne i X sekunder)if(Mathf.Abs(jumpTimePoint - Time.time) > 0.08f)
+
+        //***DASHSTYRNIG***
+        Vector3 biasedDir = Vector3.zero; //styr den mot fiender
+
+        Collider[] potTargets = Physics.OverlapSphere(transform.position, 160, unitCheckLM); //att hitta ett target borde kanske bara göras i början av dash?
+        float tarAngleThreshhold = 45;
+        float smallestAngle = Mathf.Infinity;
+        float minDistance = 5;
+        float closeDistance = 30;
+
+        Vector3 horVectorNoY = new Vector3(horVector.x, 0, horVector.z);
+        Vector3 verVectorNoY = new Vector3(verVector.x, 0, verVector.z);
+
+        for (int i = 0; i < potTargets.Length; i++)
+        {
+            if (Vector3.Distance(transform.position, potTargets[i].transform.position) < minDistance) continue; //om den är för nära så hoppa vidare
+            HealthSpirit hSpirit = potTargets[i].GetComponent<HealthSpirit>();
+            if (hSpirit == null || hSpirit.IsAlive() == false) continue;
+
+            Vector3 TToTar = (potTargets[i].transform.position - transform.position).normalized;
+            Vector3 CToTar = (potTargets[i].transform.position - cameraHolder.position).normalized;
+            float currAngle = Mathf.Infinity;
+
+
+            Vector3 TToTarNoY = new Vector3(TToTar.x, 0, TToTar.z);
+            Vector3 activeHor, activeVer, activeTToTar;
+
+            if (Vector3.Distance(transform.position, potTargets[i].transform.position) > closeDistance) //beroende på avståndet så använd vanliga hor/ver vektor istället för NoY, man vill inte att stuff låångt ner ska tas upp av checken
+            {
+                activeHor = horVector;
+                activeVer = verVector;
+                activeTToTar = TToTar;
+            }
+            else //ignorera Y när targets är nära
+            {
+                activeHor = horVectorNoY;
+                activeVer = verVectorNoY;
+                activeTToTar = TToTarNoY;
+            }
+
+            //if ((activeHor + activeVer) != Vector3.zero)
+            //{
+            //    currAngle = Vector3.Angle(activeTToTar, (activeHor + activeVer)); 
+            //}
+            //else
+            //{
+            //    currAngle = Vector3.Angle(activeTToTar, stagObject.forward);
+            //}
+
+            currAngle = Vector3.Angle(activeTToTar, lastHV_Vector); //jämför med den senaste outputen
+
+            if (currAngle < tarAngleThreshhold)
+            {
+                if (smallestAngle > currAngle)
+                {
+                    smallestAngle = currAngle;
+                    biasedDir = TToTar;
+                    break;
+                }
+            }
+        }
+        //***DASHSTYRNIG***
+        Debug.Log("denna ska jag inte ha här obviously, fixa självstyrning!");
+        biasedDir = Vector3.zero;
+
+        if (GetGrounded(groundCheckObject, 3)) //extra cooldown för att man dashar från marken! FY PÅ DEJ!! (varit airbourne i X sekunder)if(Mathf.Abs(jumpTimePoint - Time.time) > 0.08f)
         {
             dashTimePoint += dashCooldown;
         }
@@ -891,71 +956,11 @@ public class StagMovement : BaseClass
             }
             else
             {
-                //SJÄLV STYRNING, FAN VA ENKELT ALLT ÄR!!
                 dirMod = Vector3.RotateTowards(stagObject.forward, (horVector + verVector).normalized, 4000 * deltaTime, 0); //om ingen input så används stagObject.forward
             }
-            Vector3 biasedDir = Vector3.zero; //styr den mot fiender
 
-            Collider[] potTargets = Physics.OverlapSphere(transform.position, 150, unitCheckLM); //att hitta ett target borde kanske bara göras i början av dash?
-            float tarAngleThreshhold = 45;
-            float smallestAngle = Mathf.Infinity;
-            float minDistance = 5;
-            float closeDistance = 30;
-
-            Vector3 horVectorNoY = new Vector3(horVector.x, 0, horVector.z);
-            Vector3 verVectorNoY = new Vector3(verVector.x, 0, verVector.z);
-
-            for (int i = 0; i < potTargets.Length; i++)
-            {
-                if (Vector3.Distance(transform.position, potTargets[i].transform.position) < minDistance) continue; //om den är för nära så hoppa vidare
-                HealthSpirit hSpirit = potTargets[i].GetComponent<HealthSpirit>();
-                if (hSpirit == null || hSpirit.IsAlive() == false) continue;
-
-                Vector3 TToTar = (potTargets[i].transform.position - transform.position).normalized;
-                Vector3 CToTar = (potTargets[i].transform.position - cameraHolder.position).normalized;
-                float currAngle = Mathf.Infinity;
-
-
-                Vector3 TToTarNoY = new Vector3(TToTar.x, 0, TToTar.z);
-                Vector3 activeHor, activeVer, activeTToTar;
-
-                if(Vector3.Distance(transform.position, potTargets[i].transform.position) > closeDistance) //beroende på avståndet så använd vanliga hor/ver vektor istället för NoY, man vill inte att stuff låångt ner ska tas upp av checken
-                {
-                    activeHor = horVector;
-                    activeVer = verVector;
-                    activeTToTar = TToTar;
-                }
-                else //ignorera Y när targets är nära
-                {
-                    activeHor = horVectorNoY;
-                    activeVer = verVectorNoY;
-                    activeTToTar = TToTarNoY;
-                }
-
-                //if ((activeHor + activeVer) != Vector3.zero)
-                //{
-                //    currAngle = Vector3.Angle(activeTToTar, (activeHor + activeVer)); 
-                //}
-                //else
-                //{
-                //    currAngle = Vector3.Angle(activeTToTar, stagObject.forward);
-                //}
-
-                currAngle = Vector3.Angle(activeTToTar, lastHV_Vector); //jämför med den senaste outputen
-
-                if (currAngle < tarAngleThreshhold)
-                {
-                    if (smallestAngle > currAngle)
-                    {
-                        smallestAngle = currAngle;
-                        biasedDir = TToTar;
-                        break;
-                    }
-                }
-                    
-            }
-
-            if(biasedDir != Vector3.zero) //har en fiende hittats som ska styras mot
+            //SJÄLVSTYRNING, FAN VA ENKELT ALLT ÄR!!
+            if (biasedDir != Vector3.zero) //har en fiende hittats som ska styras mot
             {
                 dirMod = Vector3.RotateTowards(stagObject.forward, biasedDir, 4000 * deltaTime, 0);
             }
@@ -1029,7 +1034,7 @@ public class StagMovement : BaseClass
         }
         //Debug.Log(groundedReduceValue.ToString());
         movementStackResetTimer = Time.time + movementStackResetTime - (timeReduceValue); //gör det svårare o svårare!
-        movementStackGroundedTimer = movementStackGroundedTime - (groundedReduceValue); //inte plus tid för den ligger redan inräknad
+        movementStackGroundedTimer = GetGroundedDuration() + movementStackGroundedTime - (groundedReduceValue); //inte plus tid för den ligger redan inräknad
 
         movementStackGroundedTimer = Mathf.Max(0.2f, movementStackGroundedTimer); //ska som minst vara x sekunder
 

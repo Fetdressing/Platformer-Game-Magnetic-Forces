@@ -26,6 +26,11 @@ public class WoWCCamera : MonoBehaviour
     public float yMinLimit = -20;
     public float yMaxLimit = 80;
 
+    protected IEnumerator goToPrefAngleCo;
+    protected float yMinSoftLimit = -5;
+    protected float yMaxSoftLimit = 20;
+    protected float yPreferredAngle = 20; //den anglen som den flyttas till efter man gått över gränsen
+
     public float zoomRate = 20;
 
     public float rotationDampening = 3.0f;
@@ -94,6 +99,29 @@ public class WoWCCamera : MonoBehaviour
 
         y = ClampAngle(y, yMinLimit, yMaxLimit);
 
+        ////lerpa tillbaks den om ingen input är på den vertikala axeln
+        //if (controlManager.verAxisView < 0.01f && controlManager.verAxisView > -0.01f)
+        //{
+        //    if (y > yMaxSoftLimit)
+        //    {
+        //        if(goToPrefAngleCo != null)
+        //        {
+        //            StopCoroutine(goToPrefAngleCo);
+        //        }
+        //        goToPrefAngleCo = GoToPreferredAngle(yMaxSoftLimit);
+        //        StartCoroutine(goToPrefAngleCo);
+        //    }
+        //    else if(y < yMinSoftLimit)
+        //    {
+        //        if (goToPrefAngleCo != null)
+        //        {
+        //            StopCoroutine(goToPrefAngleCo);
+        //        }
+        //        goToPrefAngleCo = GoToPreferredAngle(yMinSoftLimit);
+        //        StartCoroutine(goToPrefAngleCo);
+        //    }
+        //}
+
         Quaternion rotation = Quaternion.Euler(y, x, 0);
         Vector3 position = target.position - (rotation * Vector3.forward * (distance + extraDistance) + new Vector3(0, -targetHeight, 0));
 
@@ -151,6 +179,20 @@ public class WoWCCamera : MonoBehaviour
         //transform.forward = fow;
 
         lastFrameTargetPos = target.position;
+    }
+
+    IEnumerator GoToPreferredAngle(float prefAngle)
+    {
+        while(Mathf.Abs(y - prefAngle) > 1.0f)
+        {
+            if(controlManager.verAxisView > 0.0f && controlManager.verAxisView < 0.0f) //avbryt om spelaren gör input
+            {
+                yield break;
+            }
+
+            y = Mathf.Lerp(y, prefAngle, Time.deltaTime * 1);
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     static float ClampAngle(float angle, float min, float max)
