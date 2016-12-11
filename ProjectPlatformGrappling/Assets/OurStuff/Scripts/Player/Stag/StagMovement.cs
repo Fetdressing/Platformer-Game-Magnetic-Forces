@@ -76,9 +76,11 @@ public class StagMovement : BaseClass
     protected Vector3 horVector = new Vector3(0, 0, 0); //har dem här så jag kan hämta värdena via update
     protected Vector3 verVector = new Vector3(0, 0, 0);
     protected Vector3 lastHV_Vector = Vector3.zero; //senast som horVector och verVector hade ett värde (dvs inte vector3.zero)
+    protected Vector3 lastH_Vector = Vector3.zero; //senast som horVector hade ett värde (dvs inte vector3.zero)
+    protected Vector3 lastV_Vector = Vector3.zero; //senast som verVector hade ett värde (dvs inte vector3.zero)
     protected float hor, ver;
     [HideInInspector] public Vector3 dashVel = new Vector3(0, 0, 0); //vill kunna komma åt denna, så därför public
-    protected Vector3 finalMoveDir = new Vector3(0,0,0);
+    protected Vector3 finalMoveDir = new Vector3(0, 0, 0);
     protected Vector3 externalVel = new Vector3(0, 0, 0);
     protected Vector3 currMomentum = Vector3.zero; //så man behåller fart även efter man släppt på styrning
     protected float startLimitSpeed = 60;
@@ -174,6 +176,8 @@ public class StagMovement : BaseClass
         dashVel = new Vector3(0, 0, 0);
         externalVel = new Vector3(0, 0, 0);
         lastHV_Vector = Vector3.zero;
+        lastH_Vector = Vector3.zero; //senast som horVector hade ett värde (dvs inte vector3.zero)
+        lastV_Vector = Vector3.zero;
         ySpeed = -gravity * 0.01f; //nollställer ej helt
         currExternalSpeedMult = 1.0f;
         currLimitSpeed = startLimitSpeed;
@@ -200,7 +204,7 @@ public class StagMovement : BaseClass
         //Quaternion lookRotation = Quaternion.LookRotation(new Vector3(cameraHolder.forward.x, 0, cameraHolder.forward.z));
         stagObject.rotation = Quaternion.Slerp(stagObject.rotation, lookRotation, deltaTime * 20);
 
-        if((moveSpeedMultTimePoint + moveSpeedMultDuration) < Time.time)
+        if ((moveSpeedMultTimePoint + moveSpeedMultDuration) < Time.time)
         {
             currExternalSpeedMult = 1.0f;
         }
@@ -210,7 +214,7 @@ public class StagMovement : BaseClass
     {
         if (Time.timeScale == 0) return;
         if (isLocked) return;
-        
+
         isGroundedRaycast = GetGrounded(groundCheckObject);
         //Debug.Log(GetGroundedDuration().ToString());
 
@@ -220,7 +224,7 @@ public class StagMovement : BaseClass
             AddMovementStack(-2);
         }
 
-        if(isGroundedRaycast && (GetGroundedDuration() > movementStackGroundedTimer)) //efter att ha tappat ett poäng så fortsätter still GetGroundedDuration att öka, därför det minskar poäng snabbare o snabbare, för att man STILL är grounded
+        if (isGroundedRaycast && (GetGroundedDuration() > movementStackGroundedTimer)) //efter att ha tappat ett poäng så fortsätter still GetGroundedDuration att öka, därför det minskar poäng snabbare o snabbare, för att man STILL är grounded
         {
             AddMovementStack(-2);
         }
@@ -237,6 +241,8 @@ public class StagMovement : BaseClass
         if ((horVector + verVector) != Vector3.zero)
         {
             lastHV_Vector = (horVector + verVector);
+            lastV_Vector = verVector;
+            lastH_Vector = horVector;
         }
 
         distanceToGround = GetDistanceToGround(groundCheckObject);
@@ -250,7 +256,7 @@ public class StagMovement : BaseClass
                 jumpsAvaible = jumpAmount;
             }
 
-            if(groundedSlope > maxSlopeGrounded) //denna checken görs här när man är grounded och i charactercontrollerhit när man INTE är grounded
+            if (groundedSlope > maxSlopeGrounded) //denna checken görs här när man är grounded och i charactercontrollerhit när man INTE är grounded
             {
                 //ApplyExternalForce(groundedNormal * 20); // så man glider för slopes
                 //currMomentum = Vector3.zero;
@@ -261,12 +267,12 @@ public class StagMovement : BaseClass
             groundChecker.Reset(groundedTimePoint);
         }
 
-        if(Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.B))
         {
             Slam();
         }
 
-        if(IsDashReady())
+        if (IsDashReady())
         {
             ToggleDashReadyPS(true); //visa att man kan dasha
         }
@@ -317,7 +323,7 @@ public class StagMovement : BaseClass
 
         //Vector3 yVector = new Vector3(0, ySpeed, 0);
         //characterController.Move((yVector) * deltaTime);
-        
+
         // YYYYY
 
         if (activePlatform != null)
@@ -357,7 +363,7 @@ public class StagMovement : BaseClass
         {
             //ySpeed = 0; //behöver inte lägga på gravity när man står på moving platform, varför funkar inte grounded? lol
         }
-        
+
         if (characterController.isGrounded) //dessa if-satser skall vara separata
         {
             if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
@@ -369,7 +375,7 @@ public class StagMovement : BaseClass
         {
             Jump();
         }
-        
+
         Vector3 yVector = new Vector3(0, ySpeed, 0);
 
         //adjusta neråt vektor så den går för sliders
@@ -439,7 +445,7 @@ public class StagMovement : BaseClass
                     //currMomentum = Vector3.zero;
                 }
             }
-            else if(slope < maxSlopeGrounded) //ingen slope, dvs man står på marken, resetta stuff!
+            else if (slope < maxSlopeGrounded) //ingen slope, dvs man står på marken, resetta stuff!
             {
                 if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
                 {
@@ -448,7 +454,7 @@ public class StagMovement : BaseClass
                     ySpeed = -gravity * 0.01f; //nollställer ej helt // grounded character has vSpeed = 0...
                 }
             }
-        
+
 
             //if (hit.normal.y < 0.5f) //slå i taket
             //{
@@ -486,7 +492,7 @@ public class StagMovement : BaseClass
 
     void OnTriggerEnter(Collider col)
     {
-        if(col.tag == "BreakerObject")
+        if (col.tag == "BreakerObject")
         {
             col.GetComponent<BreakerObject>().Break(); //tar sönder objekten
         }
@@ -510,7 +516,7 @@ public class StagMovement : BaseClass
         //Debug.DrawRay(firstComparePoint, dirN * length, Color.red);
         //Debug.DrawRay(secondComparePoint, dirN * length, Color.red);
 
-        if(Physics.Raycast(mainComparePoint, dirN, out mainHit, length, groundCheckLM))
+        if (Physics.Raycast(mainComparePoint, dirN, out mainHit, length, groundCheckLM))
         {
             hitLengthMain = Vector3.Distance(mainHit.point, mainComparePoint);
         }
@@ -529,12 +535,12 @@ public class StagMovement : BaseClass
         if (Vector3.Dot(dirN, mainHit.normal) < -0.98f) return; //lutad nästan rakt mot väggen
         if (checkMaxSlope && GetSlope(mainHit.normal) < maxSlopeGrounded) return;
 
-        if(hitLengthFirst > hitLengthSecond) //rotera mot second
+        if (hitLengthFirst > hitLengthSecond) //rotera mot second
         {
             Vector3 towards = firstComparePoint - mainComparePoint;
             dir = Vector3.RotateTowards(dir, towards, deltaTime * 50, 0.0F);
         }
-        else if(hitLengthFirst < hitLengthSecond)
+        else if (hitLengthFirst < hitLengthSecond)
         {
             Vector3 towards = secondComparePoint - mainComparePoint;
             dir = Vector3.RotateTowards(dir, towards, deltaTime * 50, 0.0F);
@@ -552,7 +558,7 @@ public class StagMovement : BaseClass
         List<float> hitLengths = new List<float>();
 
         bool noHits = true;
-        for(int i = 0; i < secondComparePoints.Length; i++)
+        for (int i = 0; i < secondComparePoints.Length; i++)
         {
             float hLen;
             if (smallest)
@@ -709,7 +715,7 @@ public class StagMovement : BaseClass
 
     void Break(float breakamount, ref Vector3 vec) //brmosa
     {
-        if(breakamount < 0)
+        if (breakamount < 0)
         {
             breakamount = 0.1f;
         }
@@ -771,7 +777,7 @@ public class StagMovement : BaseClass
 
         RaycastHit rHit;
         float slamMaxDistance = 200;
-        if(Physics.Raycast(transform.position, Vector3.down, out rHit, slamMaxDistance, groundCheckLM))
+        if (Physics.Raycast(transform.position, Vector3.down, out rHit, slamMaxDistance, groundCheckLM))
         {
             float dist = Mathf.Abs(transform.position.y - rHit.point.y);
             StartCoroutine(MoveSlam(dist));
@@ -786,7 +792,7 @@ public class StagMovement : BaseClass
         yield return new WaitForSeconds(0.3f);
         isLocked = false;
         ySpeed = -170;
-        while(!characterController.isGrounded && ySpeed < -2.0f && Vector3.Distance(startP, transform.position) < (maxDistance + 2))
+        while (!characterController.isGrounded && ySpeed < -2.0f && Vector3.Distance(startP, transform.position) < (maxDistance + 2))
         {
             currMomentum = Vector3.zero;
             ySpeed = -170;
@@ -802,7 +808,7 @@ public class StagMovement : BaseClass
     {
         if (!IsDashReady()) return false;
 
-        if(dashComboResetTimer < Time.time) //man tappar combon för man har varit för seg med och dasha
+        if (dashComboResetTimer < Time.time) //man tappar combon för man har varit för seg med och dasha
         {
             currDashCombo = 0;
         }
@@ -858,7 +864,7 @@ public class StagMovement : BaseClass
         //***DASHSTYRNIG***
         Vector3 biasedDir = Vector3.zero; //styr den mot fiender
 
-        Collider[] potTargets = Physics.OverlapSphere(transform.position, 160, unitCheckLM); //att hitta ett target borde kanske bara göras i början av dash?
+        Collider[] potTargets = Physics.OverlapSphere(transform.position, 380, unitCheckLM); //att hitta ett target borde kanske bara göras i början av dash?
         float tarAngleThreshhold = 45;
         float smallestAngle = Mathf.Infinity;
         float minDistance = 5;
@@ -866,6 +872,12 @@ public class StagMovement : BaseClass
 
         Vector3 horVectorNoY = new Vector3(horVector.x, 0, horVector.z);
         Vector3 verVectorNoY = new Vector3(verVector.x, 0, verVector.z);
+
+        Rect checkRect = new Rect(0, 0, Screen.width * 2, Screen.height * 2);
+        CenterRectangle(ref checkRect);
+
+        //kolla med längden istället för vinkeln!!
+        Debug.Log("denna ska jag inte ha här obviously, fixa självstyrning! kolla med längden istället för vinkeln!!");
 
         for (int i = 0; i < potTargets.Length; i++)
         {
@@ -894,6 +906,8 @@ public class StagMovement : BaseClass
                 activeTToTar = TToTarNoY;
             }
 
+            Vector3 lastHV_Right = Vector3.Cross(Vector3.up, lastHV_Vector);
+
             //if ((activeHor + activeVer) != Vector3.zero)
             //{
             //    currAngle = Vector3.Angle(activeTToTar, (activeHor + activeVer)); 
@@ -916,8 +930,6 @@ public class StagMovement : BaseClass
             }
         }
         //***DASHSTYRNIG***
-        Debug.Log("denna ska jag inte ha här obviously, fixa självstyrning!");
-        biasedDir = Vector3.zero;
 
         if (GetGrounded(groundCheckObject, 3)) //extra cooldown för att man dashar från marken! FY PÅ DEJ!! (varit airbourne i X sekunder)if(Mathf.Abs(jumpTimePoint - Time.time) > 0.08f)
         {
@@ -943,7 +955,7 @@ public class StagMovement : BaseClass
             Vector3 dirMod;
 
             if (useCameraDir) //sker efter tex dashhit i fiende
-            {                
+            {
                 if (ver < 0) //frammåt eller bakåt?
                 {
                     //Debug.Log(ver.ToString());
@@ -966,10 +978,10 @@ public class StagMovement : BaseClass
             }
 
             dashVel = dirMod * dashSpeed; //styra under dashen
-            
+
 
             Vector3 hitNormal = Vector3.zero;
-            if(!IsWalkable(1.0f, characterController.radius + 1.0f, dashVel, maxSlopeGrounded, ref hitNormal)) //så den slutar dasha när den går emot en vägg
+            if (!IsWalkable(1.0f, characterController.radius + 1.0f, dashVel, maxSlopeGrounded, ref hitNormal)) //så den slutar dasha när den går emot en vägg
             {
                 ToggleDashEffect(false);
                 dashVel = Vector3.zero;
@@ -986,6 +998,12 @@ public class StagMovement : BaseClass
         ToggleDashEffect(false);
         dashVel = Vector3.zero;
 
+    }
+
+    void CenterRectangle(ref Rect someRect)
+    {
+        someRect.x = ( Screen.width  - someRect.width ) / 2;
+        someRect.y = ( Screen.height - someRect.height ) / 2;
     }
 
     public void IgnoreCollider(float duration, Transform t_Ignore)
