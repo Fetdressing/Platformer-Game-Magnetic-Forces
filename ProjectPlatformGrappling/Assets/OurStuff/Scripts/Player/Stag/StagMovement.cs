@@ -11,6 +11,8 @@ public class StagMovement : BaseClass
     public Transform cameraHolder; //den som förflyttas när man rör sig med musen
     protected Transform cameraObj; //kameran själv
     protected CameraShaker cameraShaker;
+    protected Camera mainCamera;
+    public Camera unitDetectionCamera;
     protected CharacterController characterController;
     protected PowerManager powerManager;
     protected ControlManager controlManager;
@@ -141,6 +143,7 @@ public class StagMovement : BaseClass
         powerManager = transform.GetComponent<PowerManager>();
         cameraHolder = GameObject.FindGameObjectWithTag("MainCamera").transform;
         cameraObj = cameraHolder.GetComponentsInChildren<Transform>()[1].transform;
+        mainCamera = cameraObj.GetComponent<Camera>();
         cameraShaker = cameraObj.GetComponent<CameraShaker>();
         groundChecker = GetComponentsInChildren<GroundChecker>()[0];
 
@@ -731,7 +734,9 @@ public class StagMovement : BaseClass
     IEnumerator DoStagg(float staggTime)
     {
         isLocked = true;
+        Time.timeScale = 0.5f;
         yield return new WaitForSeconds(staggTime);
+        Time.timeScale = 1.0f;
         isLocked = false;
     }
 
@@ -860,81 +865,97 @@ public class StagMovement : BaseClass
         ToggleDashEffect(true);
         dashTimePoint = Time.time;
 
+        if (GetGrounded(groundCheckObject, 3)) //extra cooldown för att man dashar från marken! FY PÅ DEJ!! (varit airbourne i X sekunder)if(Mathf.Abs(jumpTimePoint - Time.time) > 0.08f)
+        {
+            dashTimePoint += dashCooldown;
+        }
+
+        //HÄMTA RIKTNINGEN
+        Vector3 dirMod;
+
+        if (useCameraDir) //sker efter tex dashhit i fiende
+        {
+            if (ver < 0) //frammåt eller bakåt?
+            {
+                //Debug.Log(ver.ToString());
+                dirMod = Vector3.RotateTowards(stagObject.forward, -cameraHolder.forward, 4000 * deltaTime, 0);
+            }
+            else
+            {
+                dirMod = Vector3.RotateTowards(stagObject.forward, cameraHolder.forward, 4000 * deltaTime, 0); //kanske göra nån check ifall man är vänd frammåt, annars vill man kanske INTE åka i kameran riktning, men inte säker
+            }
+        }
+        else
+        {
+            if ((horVector + verVector).magnitude < 0.2f)
+            {
+                dirMod = stagObject.forward; //om ingen input så används stagObject.forward
+            }
+            else
+            {
+                dirMod = (horVector + verVector).normalized;
+            }
+        }
+
+        Quaternion lookRotation = Quaternion.LookRotation(dirMod);
+        unitDetectionCamera.transform.rotation = lookRotation; //så att man gör dashstyrningnstestet åt det hållet
+
+        //HÄMTA RIKTNINGEN
 
         //***DASHSTYRNIG***
         Vector3 biasedDir = Vector3.zero; //styr den mot fiender
 
-        Collider[] potTargets = Physics.OverlapSphere(transform.position, 380, unitCheckLM); //att hitta ett target borde kanske bara göras i början av dash?
-        float tarAngleThreshhold = 45;
-        float smallestAngle = Mathf.Infinity;
-        float minDistance = 5;
-        float closeDistance = 30;
+        float distanceCheck = 100;
+        Collider[] potTargets = Physics.OverlapSphere(transform.position, distanceCheck, unitCheckLM); //att hitta ett target borde kanske bara göras i början av dash?
+        float closestDistance = Mathf.Infinity;
+        float closestToMidValue = Mathf.Infinity;
+        float currDistance;
+        float currToMidValue;
+        float closeDistanceThreshhold = 3; //ifall den är för nära så skit i det
 
         Vector3 horVectorNoY = new Vector3(horVector.x, 0, horVector.z);
         Vector3 verVectorNoY = new Vector3(verVector.x, 0, verVector.z);
-
-        Rect checkRect = new Rect(0, 0, Screen.width * 2, Screen.height * 2);
-        CenterRectangle(ref checkRect);
-
-        //kolla med längden istället för vinkeln!!
-        Debug.Log("denna ska jag inte ha här obviously, fixa självstyrning! kolla med längden istället för vinkeln!!");
+        
 
         for (int i = 0; i < potTargets.Length; i++)
         {
-            if (Vector3.Distance(transform.position, potTargets[i].transform.position) < minDistance) continue; //om den är för nära så hoppa vidare
+            //if (Vector3.Distance(transform.position, potTargets[i].transform.position) < minDistance) continue; //om den är för nära så hoppa vidare
             HealthSpirit hSpirit = potTargets[i].GetComponent<HealthSpirit>();
             if (hSpirit == null || hSpirit.IsAlive() == false) continue;
 
             Vector3 TToTar = (potTargets[i].transform.position - transform.position).normalized;
             Vector3 CToTar = (potTargets[i].transform.position - cameraHolder.position).normalized;
-            float currAngle = Mathf.Infinity;
 
+            Vector3 currViewPos = unitDetectionCamera.WorldToViewportPoint(potTargets[i].transform.position); //använder en kamera för att se ifall den ser några fiender!
 
-            Vector3 TToTarNoY = new Vector3(TToTar.x, 0, TToTar.z);
-            Vector3 activeHor, activeVer, activeTToTar;
+            currDistance = Vector3.Distance(transform.position, potTargets[i].transform.position); //jämför med den senaste outputen
+            currToMidValue = (Mathf.Abs(0.5f - currViewPos.x) + Mathf.Abs(0.5f - currViewPos.y)); //hur nära mitten är den? ju lägra destu närmre
+            Debug.Log(potTargets[i].transform.name + " " + currToMidValue.ToString());
+            if (currToMidValue > closestToMidValue) continue; //fortsätt bara om denna är närmre mitten
 
-            if (Vector3.Distance(transform.position, potTargets[i].transform.position) > closeDistance) //beroende på avståndet så använd vanliga hor/ver vektor istället för NoY, man vill inte att stuff låångt ner ska tas upp av checken
+            if (currDistance < closeDistanceThreshhold) continue;
+           
+            if (currViewPos.x < 1.0f && currViewPos.x > 0.0f && currViewPos.y < 1.0f && currViewPos.y > 0.0f && currViewPos.z > 0.0f) //kolla så att den är innanför viewen
             {
-                activeHor = horVector;
-                activeVer = verVector;
-                activeTToTar = TToTar;
-            }
-            else //ignorera Y när targets är nära
-            {
-                activeHor = horVectorNoY;
-                activeVer = verVectorNoY;
-                activeTToTar = TToTarNoY;
-            }
+                RaycastHit rHit;
 
-            Vector3 lastHV_Right = Vector3.Cross(Vector3.up, lastHV_Vector);
-
-            //if ((activeHor + activeVer) != Vector3.zero)
-            //{
-            //    currAngle = Vector3.Angle(activeTToTar, (activeHor + activeVer)); 
-            //}
-            //else
-            //{
-            //    currAngle = Vector3.Angle(activeTToTar, stagObject.forward);
-            //}
-
-            currAngle = Vector3.Angle(activeTToTar, lastHV_Vector); //jämför med den senaste outputen
-
-            if (currAngle < tarAngleThreshhold)
-            {
-                if (smallestAngle > currAngle)
+                //kolla så att ingen miljö är i vägen
+                if (!Physics.Raycast(transform.position, TToTar, out rHit, distanceCheck, groundCheckLM)) //kolla så att den inte träffar någon miljö bara
                 {
-                    smallestAngle = currAngle;
+                    closestToMidValue = currToMidValue;
+                    closestDistance = currDistance;
                     biasedDir = TToTar;
-                    break;
                 }
             }
         }
         //***DASHSTYRNIG***
 
-        if (GetGrounded(groundCheckObject, 3)) //extra cooldown för att man dashar från marken! FY PÅ DEJ!! (varit airbourne i X sekunder)if(Mathf.Abs(jumpTimePoint - Time.time) > 0.08f)
+        //SJÄLVSTYRNING, FAN VA ENKELT ALLT ÄR!!
+        if (biasedDir != Vector3.zero) //har en fiende hittats som ska styras mot
         {
-            dashTimePoint += dashCooldown;
+            dirMod = Vector3.RotateTowards(stagObject.forward, biasedDir, 4000 * deltaTime, 0);
         }
+
 
         currDashTime = 0.0f;
 
@@ -952,31 +973,6 @@ public class StagMovement : BaseClass
 
             speedBreakerTimer = Time.time + speedBreakerTime; //speedbreakern aktiveras sedan i update
 
-            Vector3 dirMod;
-
-            if (useCameraDir) //sker efter tex dashhit i fiende
-            {
-                if (ver < 0) //frammåt eller bakåt?
-                {
-                    //Debug.Log(ver.ToString());
-                    dirMod = Vector3.RotateTowards(stagObject.forward, -cameraHolder.forward, 4000 * deltaTime, 0);
-                }
-                else
-                {
-                    dirMod = Vector3.RotateTowards(stagObject.forward, cameraHolder.forward, 4000 * deltaTime, 0); //kanske göra nån check ifall man är vänd frammåt, annars vill man kanske INTE åka i kameran riktning, men inte säker
-                }
-            }
-            else
-            {
-                dirMod = Vector3.RotateTowards(stagObject.forward, (horVector + verVector).normalized, 4000 * deltaTime, 0); //om ingen input så används stagObject.forward
-            }
-
-            //SJÄLVSTYRNING, FAN VA ENKELT ALLT ÄR!!
-            if (biasedDir != Vector3.zero) //har en fiende hittats som ska styras mot
-            {
-                dirMod = Vector3.RotateTowards(stagObject.forward, biasedDir, 4000 * deltaTime, 0);
-            }
-
             dashVel = dirMod * dashSpeed; //styra under dashen
 
 
@@ -990,12 +986,14 @@ public class StagMovement : BaseClass
 
                 Stagger(0.4f);
                 Break(1000, ref currMomentum);
+                unitDetectionCamera.transform.localRotation = Quaternion.identity; //nollställ
                 yield break;
             }
             currDashTime = Time.time - startDashTime - extendedTime;
             yield return null;
         }
         ToggleDashEffect(false);
+        unitDetectionCamera.transform.localRotation = Quaternion.identity; //nollställ
         dashVel = Vector3.zero;
 
     }
