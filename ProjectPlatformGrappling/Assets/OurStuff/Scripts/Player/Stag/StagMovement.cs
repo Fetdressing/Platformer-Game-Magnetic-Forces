@@ -290,11 +290,11 @@ public class StagMovement : BaseClass
             if (ver < 0.0f) //bakåt
             {
                 //Dash(-transform.forward);
-                Dash();
+                Dash(false, false);
             }
             else
             {
-                Dash();
+                Dash(false, false);
             }
         }
 
@@ -809,7 +809,7 @@ public class StagMovement : BaseClass
         AddMovementStack(-movementStacks);
     }
 
-    public virtual bool Dash()
+    public virtual bool Dash(bool useCameraDir)
     {
         if (!IsDashReady()) return false;
 
@@ -822,7 +822,7 @@ public class StagMovement : BaseClass
 
         float finalDashCost = dashPowerCost + ((float)currDashCombo * 0.02f);
 
-        powerManager.SufficentPower(-finalDashCost, true); //camerashake, konstig syntax kanske du tycker, men palla göra det fancy!
+        if (!powerManager.SufficentPower(-finalDashCost, true)) return false; //camerashake, konstig syntax kanske du tycker, men palla göra det fancy!
         powerManager.AddPower(-finalDashCost);
         dashUsed = true;
         if (currDashIE != null)
@@ -830,13 +830,31 @@ public class StagMovement : BaseClass
             StopCoroutine(currDashIE);
         }
 
-        currDashIE = MoveDash(false);
+        currDashIE = MoveDash(useCameraDir);
         StartCoroutine(currDashIE);
         return true;
     }
 
-    public virtual bool Dash(bool useCameraDir) //dash utan nån cost eller liknande, alltid frammåt. Den kör inte dashUsed = true
+    public virtual bool Dash(bool useCameraDir, bool free) //dash utan nån cost eller liknande, alltid frammåt. Den kör inte dashUsed = true
     {
+        if(!free)
+        {
+            if (!IsDashReady()) return false;
+
+            if (dashComboResetTimer < Time.time) //man tappar combon för man har varit för seg med och dasha
+            {
+                currDashCombo = 0;
+            }
+            dashComboResetTimer = dashComboResetTime + Time.time;
+            currDashCombo++;
+
+            float finalDashCost = dashPowerCost + ((float)currDashCombo * 0.02f);
+
+            if (!powerManager.SufficentPower(-finalDashCost, true)) return false; //camerashake, konstig syntax kanske du tycker, men palla göra det fancy!
+            powerManager.AddPower(-finalDashCost);
+            dashUsed = true;
+        }
+
         if (currDashIE != null)
         {
             StopCoroutine(currDashIE);
@@ -905,7 +923,7 @@ public class StagMovement : BaseClass
         //***DASHSTYRNIG***
         Vector3 biasedDir = Vector3.zero; //styr den mot fiender
 
-        float distanceCheck = 100;
+        float distanceCheck = 300; //denna kan vara lite överdriven, mest för att culla
         Collider[] potTargets = Physics.OverlapSphere(transform.position, distanceCheck, unitCheckLM); //att hitta ett target borde kanske bara göras i början av dash?
         float closestDistance = Mathf.Infinity;
         float closestToMidValue = Mathf.Infinity;
@@ -930,7 +948,7 @@ public class StagMovement : BaseClass
 
             currDistance = Vector3.Distance(transform.position, potTargets[i].transform.position); //jämför med den senaste outputen
             currToMidValue = (Mathf.Abs(0.5f - currViewPos.x) + Mathf.Abs(0.5f - currViewPos.y)); //hur nära mitten är den? ju lägra destu närmre
-            Debug.Log(potTargets[i].transform.name + " " + currToMidValue.ToString());
+            
             if (currToMidValue > closestToMidValue) continue; //fortsätt bara om denna är närmre mitten
 
             if (currDistance < closeDistanceThreshhold) continue;
@@ -940,7 +958,7 @@ public class StagMovement : BaseClass
                 RaycastHit rHit;
 
                 //kolla så att ingen miljö är i vägen
-                if (!Physics.Raycast(transform.position, TToTar, out rHit, distanceCheck, groundCheckLM)) //kolla så att den inte träffar någon miljö bara
+                if (!Physics.Raycast(transform.position, TToTar, out rHit, currDistance, groundCheckLM)) //kolla så att den inte träffar någon miljö bara
                 {
                     closestToMidValue = currToMidValue;
                     closestDistance = currDistance;

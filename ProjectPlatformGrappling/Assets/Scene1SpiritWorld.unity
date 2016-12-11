@@ -74008,7 +74008,7 @@ Prefab:
     - target: {fileID: 20000013890690064, guid: ecd38ba538801b04db904a661134a689,
         type: 2}
       propertyPath: orthographic size
-      value: 55
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 20000013890690064, guid: ecd38ba538801b04db904a661134a689,
         type: 2}

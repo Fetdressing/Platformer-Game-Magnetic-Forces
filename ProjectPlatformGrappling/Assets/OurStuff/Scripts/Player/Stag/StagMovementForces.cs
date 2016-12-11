@@ -121,7 +121,7 @@ public class StagMovementForces : StagMovement {
 
         if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.M))
         {
-            Dash();
+            //Dash();
             //if (ver < 0.0f) //bakåt
             //{
             //    Dash(-transform.forward);
