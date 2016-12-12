@@ -740,6 +740,26 @@ public class StagMovement : BaseClass
         isLocked = false;
     }
 
+    public IEnumerator StagDash(bool useCameraDir, float staggTime, float extraDashTime) //används när man träffar ett target mest
+    {
+        Debug.Log("Kolla så att denna funkar!");
+        cameraShaker.ShakeCamera(staggTime, 1f, true, true);
+
+        isLocked = true;
+        Time.timeScale = 0.5f;
+        yield return new WaitForSeconds(staggTime);
+        Time.timeScale = 1.0f;
+        isLocked = false;
+
+        if (currDashIE != null)
+        {
+            StopCoroutine(currDashIE);
+        }
+
+        currDashIE = MoveDash(useCameraDir, extraDashTime); //default frammåt
+        StartCoroutine(currDashIE);
+    }
+
     public virtual void Jump()
     {
         if (jumpsAvaible > 0)
@@ -809,7 +829,7 @@ public class StagMovement : BaseClass
         AddMovementStack(-movementStacks);
     }
 
-    public virtual bool Dash(bool useCameraDir)
+    public virtual bool Dash(bool useCameraDir, float extraDashTime = 0)
     {
         if (!IsDashReady()) return false;
 
@@ -830,12 +850,12 @@ public class StagMovement : BaseClass
             StopCoroutine(currDashIE);
         }
 
-        currDashIE = MoveDash(useCameraDir);
+        currDashIE = MoveDash(useCameraDir, extraDashTime);
         StartCoroutine(currDashIE);
         return true;
     }
 
-    public virtual bool Dash(bool useCameraDir, bool free) //dash utan nån cost eller liknande, alltid frammåt. Den kör inte dashUsed = true
+    public virtual bool Dash(bool useCameraDir, bool free, float extraDashTime = 0) //dash utan nån cost eller liknande, alltid frammåt. Den kör inte dashUsed = true
     {
         if(!free)
         {
@@ -860,7 +880,7 @@ public class StagMovement : BaseClass
             StopCoroutine(currDashIE);
         }
 
-        currDashIE = MoveDash(useCameraDir); //default frammåt
+        currDashIE = MoveDash(useCameraDir, extraDashTime); //default frammåt
         StartCoroutine(currDashIE);
         return true;
     }
@@ -874,9 +894,9 @@ public class StagMovement : BaseClass
         return true;
     }
 
-    protected virtual IEnumerator MoveDash(bool useCameraDir)
+    protected virtual IEnumerator MoveDash(bool useCameraDir, float extraDashTime = 0)
     {
-        maxDashTime = startMaxDashTime; //den kan utökas sen
+        maxDashTime = startMaxDashTime + extraDashTime; //den kan utökas sen
         AddMovementStack(1);
         cameraShaker.ChangeFOV(0.05f, 75);
         ySpeed = -gravity * 0.01f; //nollställer ej helt
@@ -896,11 +916,12 @@ public class StagMovement : BaseClass
             if (ver < 0) //frammåt eller bakåt?
             {
                 //Debug.Log(ver.ToString());
-                dirMod = Vector3.RotateTowards(stagObject.forward, -cameraHolder.forward, 4000 * deltaTime, 0);
+                dirMod = -cameraHolder.forward;
             }
             else
             {
-                dirMod = Vector3.RotateTowards(stagObject.forward, cameraHolder.forward, 4000 * deltaTime, 0); //kanske göra nån check ifall man är vänd frammåt, annars vill man kanske INTE åka i kameran riktning, men inte säker
+                //dirMod = Vector3.RotateTowards(stagObject.forward, cameraHolder.forward, 4000 * deltaTime, 0); //kanske göra nån check ifall man är vänd frammåt, annars vill man kanske INTE åka i kameran riktning, men inte säker
+                dirMod = cameraHolder.forward;
             }
         }
         else
@@ -912,6 +933,11 @@ public class StagMovement : BaseClass
             else
             {
                 dirMod = (horVector + verVector).normalized;
+            }
+
+            if(ver < 0) //man dashar mot kameran, då vill man använda satt riktning i Y, annars kommer den få reversed som kameran
+            {
+                dirMod.y = 0;
             }
         }
 

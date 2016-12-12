@@ -311,13 +311,13 @@ public class StagMovementForces : StagMovement {
     //    ySpeed += velY;
     //}
 
-    public override bool Dash(bool b)
-    {
-        if (!IsDashReady()) return false;
-        powerManager.SufficentPower(-dashPowerCost, true); //camerashake, konstig syntax kanske du tycker, men palla göra det fancy!
-        StartCoroutine(MoveDash(false));
-        return true;
-    }
+    //public override bool Dash(bool b)
+    //{
+    //    if (!IsDashReady()) return false;
+    //    powerManager.SufficentPower(-dashPowerCost, true); //camerashake, konstig syntax kanske du tycker, men palla göra det fancy!
+    //    StartCoroutine(MoveDash(false));
+    //    return true;
+    //}
 
     public override bool IsDashReady()
     {

@@ -28,9 +28,10 @@ public class StagSpeedBreaker : BaseClass {
         if(h != null && h.IsAlive())
         {
             stagMovement.IgnoreCollider(0.8f, col.transform); //så man inte collidar med den när man åker igenom
-            stagMovement.Dash(true, true); //använd kamera riktningen
-            Debug.Log("Felet med riktningen är att man kallar dash före stagger, gör så att de körs i rad");
-            stagMovement.Stagger(0.25f);
+            stagMovement.StartCoroutine(stagMovement.StagDash(true, 0.25f, 0.1f));
+            //stagMovement.Dash(true, true); //använd kamera riktningen
+            //Debug.Log("Felet med riktningen är att man kallar dash före stagger, gör så att de körs i rad");
+            //stagMovement.Stagger(0.25f);
             h.AddHealth(-2);
         }
     }
