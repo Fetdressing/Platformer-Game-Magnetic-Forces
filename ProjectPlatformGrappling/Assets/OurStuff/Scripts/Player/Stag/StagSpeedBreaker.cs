@@ -27,7 +27,7 @@ public class StagSpeedBreaker : BaseClass {
         HealthSpirit h = col.GetComponent<HealthSpirit>();
         if(h != null && h.IsAlive())
         {
-            stagMovement.IgnoreCollider(1.0f, col.transform); //så man inte collidar med den när man åker igenom
+            stagMovement.IgnoreCollider(0.9f, col.transform); //så man inte collidar med den när man åker igenom
             stagMovement.StartCoroutine(stagMovement.StagDash(true, 0.4f, 0.11f));
             //stagMovement.Dash(true, true); //använd kamera riktningen
             //Debug.Log("Felet med riktningen är att man kallar dash före stagger, gör så att de körs i rad");

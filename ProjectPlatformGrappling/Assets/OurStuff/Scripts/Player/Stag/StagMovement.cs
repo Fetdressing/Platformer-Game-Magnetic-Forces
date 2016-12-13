@@ -62,7 +62,7 @@ public class StagMovement : BaseClass
     protected float dashComboResetTime = 0.85f;
     protected float dashComboResetTimer = 0.0f;
     public LayerMask unitCheckLM; //fiender o liknande som dash ska styras mot
-    protected Transform lastUnitHit; //så att man inte träffar samma igen
+    [HideInInspector] public Transform lastUnitHit; //så att man inte träffar samma igen
 
     protected float knockForceMovingPlatform = 420; //om man hamnar på fel sidan av moving platform så knuffas man bort lite
 
@@ -952,7 +952,7 @@ public class StagMovement : BaseClass
         }
 
         Quaternion lookRotation = Quaternion.LookRotation(dirMod);
-        unitDetectionCamera.transform.rotation = lookRotation; //så att man gör dashstyrningnstestet åt det hållet
+        unitDetectionCamera.transform.rotation = lookRotation; //så att man gör dashstyrningnstestet åt det hållet <<------ denna roterar fel ibland, vilket gör att den hittar skumma grejer / dirMod blir wack ?
 
         float distanceCheck = 220; //denna kan vara lite överdriven, mest för att culla. Kanske inte längre
 
@@ -996,9 +996,7 @@ public class StagMovement : BaseClass
             float currToMidValue = (Mathf.Abs(0.5f - currViewPos.x) + Mathf.Abs(0.5f - currViewPos.y)); //hur nära mitten är den? ju lägra destu närmre
 
             float currDistanceValue = currDistance / distanceCheck;
-            float currFinalValue = currDistanceValue + (1 - currToMidValue);
-
-            Debug.Log((currDistance / distanceCheck).ToString());
+            float currFinalValue = (1 - currDistanceValue) + (2 - currToMidValue * 2); //ska vara så högt som möjligt
 
             if (currFinalValue < bestFinalValue) continue; //fortsätt bara om denna är närmre mitten
 
@@ -1006,11 +1004,14 @@ public class StagMovement : BaseClass
            
             if (currViewPos.x < 1.0f && currViewPos.x > 0.0f && currViewPos.y < 1.0f && currViewPos.y > 0.0f && currViewPos.z > 0.0f) //kolla så att den är innanför viewen
             {
+                //Debug.Log(potTargets[i].name + " " + currFinalValue.ToString());
                 RaycastHit rHit;
 
                 //kolla så att ingen miljö är i vägen
                 if (!Physics.Raycast(transform.position + gOffset, TToTar, out rHit, currDistance, groundCheckLM)) //kolla så att den inte träffar någon miljö bara
                 {
+                    //if(lastUnitHit != null)
+                    //Debug.Log(lastUnitHit.name + " " + potTargets[i].name);
                     bestFinalValue = currFinalValue;
                     biasedDir = TToTar;
                     lastUnitHit = potTargets[i].transform; //denna måste dock resettas efter en kort tid så att man återigen kan dasha på denna, detta bör göras när man kör en vanlig dash, dvs en som går på cd o liknande
@@ -1085,7 +1086,8 @@ public class StagMovement : BaseClass
         float startTime = Time.time;
         float extendedTime = 0.0f;
         Physics.IgnoreCollision(transform.GetComponent<Collider>(), t_Ignore.GetComponent<Collider>(), true);
-        while((Time.time - startTime - extendedTime) < duration)
+        Physics.IgnoreCollision(speedBreaker.GetComponent<Collider>(), t_Ignore.GetComponent<Collider>(), true);
+        while ((Time.time - startTime - extendedTime) < duration)
         {
             if (isLocked) //ifall den låses så skall fortfarande vara igång efter
             {
@@ -1096,6 +1098,7 @@ public class StagMovement : BaseClass
             yield return null;
         }
         Physics.IgnoreCollision(transform.GetComponent<Collider>(), t_Ignore.GetComponent<Collider>(), false);
+        Physics.IgnoreCollision(speedBreaker.GetComponent<Collider>(), t_Ignore.GetComponent<Collider>(), false);
     }
 
     void AddMovementStack(int i)
