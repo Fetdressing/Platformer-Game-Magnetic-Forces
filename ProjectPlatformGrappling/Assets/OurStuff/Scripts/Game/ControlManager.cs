@@ -58,6 +58,8 @@ public class ControlManager : MonoBehaviour {
 
         characterActions.Jump.AddDefaultBinding(Key.Space);
         characterActions.Jump.AddDefaultBinding(InputControlType.Action1);
+        characterActions.Jump.AddDefaultBinding(InputControlType.LeftTrigger);
+        characterActions.Jump.AddDefaultBinding(InputControlType.LeftBumper);
 
         characterActions.Dash.AddDefaultBinding(Mouse.LeftButton);
         characterActions.Dash.AddDefaultBinding(InputControlType.RightTrigger);

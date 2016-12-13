@@ -7965,7 +7965,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.66
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &172409878
 MeshFilter:
@@ -32429,7 +32429,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.66
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &738610057
 MeshFilter:
@@ -47204,7 +47204,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.66
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &1089649461
 MeshFilter:
@@ -49324,7 +49324,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.66
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &1161404298
 MeshFilter:
@@ -63349,7 +63349,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.66
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &1502887520
 MeshFilter:
@@ -74008,12 +74008,12 @@ Prefab:
     - target: {fileID: 20000013890690064, guid: ecd38ba538801b04db904a661134a689,
         type: 2}
       propertyPath: orthographic size
-      value: 25
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 20000013890690064, guid: ecd38ba538801b04db904a661134a689,
         type: 2}
       propertyPath: far clip plane
-      value: 125
+      value: 175
       objectReference: {fileID: 0}
     - target: {fileID: 198000010656075162, guid: ecd38ba538801b04db904a661134a689,
         type: 2}

@@ -744,22 +744,23 @@ public class StagMovement : BaseClass
 
     public IEnumerator StagDash(bool useCameraDir, float staggTime, float extraDashTime) //används när man träffar ett target mest
     {
-        Debug.Log("Kolla så att denna funkar!");
         cameraShaker.ShakeCamera(staggTime, 1f, true, true);
+
+        float timer = staggTime + Time.time;
 
         isLocked = true;
         Time.timeScale = 0.5f;
-        yield return new WaitForSeconds(staggTime);
+
+        while(timer > Time.time && controlManager.didDash == false) //slowmotion tills man dashar
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        //yield return new WaitForSeconds(staggTime);
         Time.timeScale = 1.0f;
         isLocked = false;
 
-        if (currDashIE != null)
-        {
-            StopCoroutine(currDashIE);
-        }
-
-        currDashIE = MoveDash(useCameraDir, extraDashTime); //default frammåt
-        StartCoroutine(currDashIE);
+        Dash(useCameraDir, true, extraDashTime);
     }
 
     public virtual void Jump()
@@ -953,25 +954,25 @@ public class StagMovement : BaseClass
         Quaternion lookRotation = Quaternion.LookRotation(dirMod);
         unitDetectionCamera.transform.rotation = lookRotation; //så att man gör dashstyrningnstestet åt det hållet
 
-        float distanceCheck = 150; //denna kan vara lite överdriven, mest för att culla. Kanske inte längre
+        float distanceCheck = 220; //denna kan vara lite överdriven, mest för att culla. Kanske inte längre
 
-        if (Vector3.SqrMagnitude(dirMod - cameraHolder.forward) < 0.0001) //kolla ifall de är samma vektor, isåfall vill jag flytta utgångspunkten
-        {
-            Debug.Log("Detta är förmodligen ingen fungerande ide förtillfället, se över!");
-            unitDetectionCamera.transform.position = cameraHolder.position;
-            distanceCheck *= 1.5f; //då är man längre bak med kameran
-        }
+        //if (Vector3.SqrMagnitude(dirMod - cameraHolder.forward) < 0.0001) //kolla ifall de är samma vektor, isåfall vill jag flytta utgångspunkten
+        //{
+        //    Debug.Log("Detta är förmodligen ingen fungerande ide förtillfället, se över!");
+        //    unitDetectionCamera.transform.position = cameraHolder.position;
+        //    distanceCheck *= 1.5f; //då är man längre bak med kameran
+        //}
         //HÄMTA RIKTNINGEN
 
         //***DASHSTYRNIG***
         Vector3 biasedDir = Vector3.zero; //styr den mot fiender
 
         Collider[] potTargets = Physics.OverlapSphere(transform.position, distanceCheck, unitCheckLM); //att hitta ett target borde kanske bara göras i början av dash?
-        float closestDistance = Mathf.Infinity;
-        float closestToMidValue = Mathf.Infinity;
-        float currDistance;
-        float currToMidValue;
-        float closeDistanceThreshhold = 5; //ifall den är för nära så skit i det
+        //float closestDistance = Mathf.Infinity;
+        float closeDistanceThreshhold = 3; //ifall den är för nära så skit i det
+        //float closestToMidValue = Mathf.Infinity;
+
+        float bestFinalValue = -Mathf.Infinity; //det target med högst värde är den som väljs
 
         Vector3 horVectorNoY = new Vector3(horVector.x, 0, horVector.z);
         Vector3 verVectorNoY = new Vector3(verVector.x, 0, verVector.z);
@@ -982,6 +983,7 @@ public class StagMovement : BaseClass
             //if (Vector3.Distance(transform.position, potTargets[i].transform.position) < minDistance) continue; //om den är för nära så hoppa vidare
             HealthSpirit hSpirit = potTargets[i].GetComponent<HealthSpirit>();
             if (hSpirit == null || hSpirit.IsAlive() == false) continue;
+            if (potTargets[i].transform == lastUnitHit) continue; //så man inte fastnar på infinite dash
 
             Vector3 gOffset = new Vector3(0, 0.2f, 0); //en liten offset från marken när man kör raycast
 
@@ -990,10 +992,15 @@ public class StagMovement : BaseClass
 
             Vector3 currViewPos = unitDetectionCamera.WorldToViewportPoint(potTargets[i].transform.position); //använder en kamera för att se ifall den ser några fiender!
 
-            currDistance = Vector3.Distance(transform.position, potTargets[i].transform.position); //jämför med den senaste outputen
-            currToMidValue = (Mathf.Abs(0.5f - currViewPos.x) + Mathf.Abs(0.5f - currViewPos.y)); //hur nära mitten är den? ju lägra destu närmre
-            
-            if (currToMidValue > closestToMidValue) continue; //fortsätt bara om denna är närmre mitten
+            float currDistance = Vector3.Distance(transform.position, potTargets[i].transform.position); //jämför med den senaste outputen
+            float currToMidValue = (Mathf.Abs(0.5f - currViewPos.x) + Mathf.Abs(0.5f - currViewPos.y)); //hur nära mitten är den? ju lägra destu närmre
+
+            float currDistanceValue = currDistance / distanceCheck;
+            float currFinalValue = currDistanceValue + (1 - currToMidValue);
+
+            Debug.Log((currDistance / distanceCheck).ToString());
+
+            if (currFinalValue < bestFinalValue) continue; //fortsätt bara om denna är närmre mitten
 
             if (currDistance < closeDistanceThreshhold) continue;
            
@@ -1004,13 +1011,9 @@ public class StagMovement : BaseClass
                 //kolla så att ingen miljö är i vägen
                 if (!Physics.Raycast(transform.position + gOffset, TToTar, out rHit, currDistance, groundCheckLM)) //kolla så att den inte träffar någon miljö bara
                 {
-                    if (potTargets[i].transform != lastUnitHit) //så man inte fastnar på infinite dash
-                    {
-                        closestToMidValue = currToMidValue;
-                        closestDistance = currDistance;
-                        biasedDir = TToTar;
-                        lastUnitHit = potTargets[i].transform; //denna måste dock resettas efter en kort tid så att man återigen kan dasha på denna, detta bör göras när man kör en vanlig dash, dvs en som går på cd o liknande
-                    }
+                    bestFinalValue = currFinalValue;
+                    biasedDir = TToTar;
+                    lastUnitHit = potTargets[i].transform; //denna måste dock resettas efter en kort tid så att man återigen kan dasha på denna, detta bör göras när man kör en vanlig dash, dvs en som går på cd o liknande
                 }
             }
         }
