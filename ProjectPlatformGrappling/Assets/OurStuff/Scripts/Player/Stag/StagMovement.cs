@@ -373,7 +373,7 @@ public class StagMovement : BaseClass
         {
             if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
             {
-                ySpeed = -gravity * 0.01f; //nollställer ej helt // grounded character has vSpeed = 0...
+                ySpeed = -gravity * 0.05f; //nollställer ej helt // grounded character has vSpeed = 0...
             }
         }
         if (controlManager.didJump)
@@ -382,7 +382,7 @@ public class StagMovement : BaseClass
         }
 
         Vector3 yVector = new Vector3(0, ySpeed, 0);
-
+        AngleY(ref yVector, transform.position, 5);
         //adjusta neråt vektor så den går för sliders
         //Vector3 mainComparePoint = transform.position + new Vector3(0, groundedCheckOffsetY, 0);
         //Vector3[] comparePoints = {
@@ -511,6 +511,41 @@ public class StagMovement : BaseClass
         }
     }
 
+    public void AngleY(ref Vector3 dir, Vector3 castPos, float raycastLength = 5)
+    {
+        RaycastHit rHit;
+
+        float magnitude = dir.magnitude;
+        if(dir.y > 0) //up
+        {
+            if (Physics.SphereCast(castPos, characterController.radius, Vector3.up, out rHit, raycastLength, groundCheckLM))
+            {
+                if (GetSlope(rHit.normal) < maxSlopeGrounded * 0.5f) return;
+                Vector3 c = Vector3.Cross(Vector3.down, rHit.normal);
+                Vector3 u = Vector3.Cross(c, rHit.normal);
+
+                if (u != Vector3.zero)
+                {
+                    dir = u * magnitude;
+                }
+            }
+        }
+        else //down
+        {
+            if (Physics.SphereCast(castPos, characterController.radius, Vector3.down, out rHit, raycastLength, groundCheckLM))
+            {
+                if (GetSlope(rHit.normal) < maxSlopeGrounded * 0.5f) return;
+                Vector3 c = Vector3.Cross(Vector3.up, rHit.normal);
+                Vector3 u = Vector3.Cross(c, rHit.normal);
+
+                if (u != Vector3.zero)
+                {
+                    dir = u * magnitude;
+                }
+            }
+        }
+    }
+
     public void AngleToAvoid(ref Vector3 dir, Vector3 mainComparePoint, Vector3 firstComparePoint, Vector3 secondComparePoint, float length, bool checkMaxSlope = false)
     {
         Vector3 dirN = dir.normalized;
@@ -537,7 +572,7 @@ public class StagMovement : BaseClass
         }
 
         if (hitLengthMain == Mathf.Infinity && hitLengthFirst == Mathf.Infinity && hitLengthSecond == Mathf.Infinity) { return; } //alla är lika långa == ingen sne vägg eller liknande
-        if (Vector3.Dot(dirN, mainHit.normal) < -0.98f) return; //lutad nästan rakt mot väggen
+        if (Vector3.Dot(dirN, mainHit.normal) < -0.98f) { dir = Vector3.zero; return; } //lutad nästan rakt mot väggen
         if (checkMaxSlope && GetSlope(mainHit.normal) < maxSlopeGrounded) return;
 
         if (hitLengthFirst > hitLengthSecond) //rotera mot second
