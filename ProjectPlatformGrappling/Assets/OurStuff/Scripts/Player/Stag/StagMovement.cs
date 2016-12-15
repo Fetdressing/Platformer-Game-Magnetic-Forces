@@ -908,6 +908,7 @@ public class StagMovement : BaseClass
         ySpeed = -gravity * 0.01f; //nollställer ej helt
         ToggleDashEffect(true);
         dashTimePoint = Time.time;
+        dashVel = Vector3.zero;
         unitDetectionCamera.transform.localRotation = Quaternion.identity; //nollställ
         unitDetectionCamera.transform.localPosition = Vector3.zero;
 
@@ -976,14 +977,13 @@ public class StagMovement : BaseClass
 
         Vector3 horVectorNoY = new Vector3(horVector.x, 0, horVector.z);
         Vector3 verVectorNoY = new Vector3(verVector.x, 0, verVector.z);
-        
 
         for (int i = 0; i < potTargets.Length; i++)
         {
             //if (Vector3.Distance(transform.position, potTargets[i].transform.position) < minDistance) continue; //om den är för nära så hoppa vidare
             HealthSpirit hSpirit = potTargets[i].GetComponent<HealthSpirit>();
             if (hSpirit == null || hSpirit.IsAlive() == false) continue;
-            if (potTargets[i].transform == lastUnitHit) continue; //så man inte fastnar på infinite dash
+            if (potTargets[i].transform == lastUnitHit) { continue; }//så man inte fastnar på infinite dash
 
             Vector3 gOffset = new Vector3(0, 0.2f, 0); //en liten offset från marken när man kör raycast
 
@@ -996,7 +996,7 @@ public class StagMovement : BaseClass
             float currToMidValue = (Mathf.Abs(0.5f - currViewPos.x) + Mathf.Abs(0.5f - currViewPos.y)); //hur nära mitten är den? ju lägra destu närmre
 
             float currDistanceValue = currDistance / distanceCheck;
-            float currFinalValue = (1 - currDistanceValue) + (2 - currToMidValue * 2); //ska vara så högt som möjligt
+            float currFinalValue = (1 - currDistanceValue) + (1 - currToMidValue * 1.5f); //ska vara så högt som möjligt
 
             if (currFinalValue < bestFinalValue) continue; //fortsätt bara om denna är närmre mitten
 
@@ -1010,14 +1010,22 @@ public class StagMovement : BaseClass
                 //kolla så att ingen miljö är i vägen
                 if (!Physics.Raycast(transform.position + gOffset, TToTar, out rHit, currDistance, groundCheckLM)) //kolla så att den inte träffar någon miljö bara
                 {
-                    //if(lastUnitHit != null)
-                    //Debug.Log(lastUnitHit.name + " " + potTargets[i].name);
+                    //if(lastUnitHit != null) sätts i StagSpeedBreaker
                     bestFinalValue = currFinalValue;
                     biasedDir = TToTar;
-                    lastUnitHit = potTargets[i].transform; //denna måste dock resettas efter en kort tid så att man återigen kan dasha på denna, detta bör göras när man kör en vanlig dash, dvs en som går på cd o liknande
+                    //bestDashTransform = potTargets[i].transform; //denna måste dock resettas efter en kort tid så att man återigen kan dasha på denna, detta bör göras när man kör en vanlig dash, dvs en som går på cd o liknande
                 }
             }
         }
+        
+        //if (bestDashTransform != null)
+        //{
+        //    lastUnitHit = bestDashTransform; //behöver göras här utanför, vill inte ha massa mellanvärden
+        //}
+        //else
+        //{
+        //    lastUnitHit = null;
+        //}
         //***DASHSTYRNIG***
 
         //SJÄLVSTYRNING, FAN VA ENKELT ALLT ÄR!!
@@ -1067,7 +1075,7 @@ public class StagMovement : BaseClass
         unitDetectionCamera.transform.localRotation = Quaternion.identity; //nollställ
         unitDetectionCamera.transform.localPosition = Vector3.zero;
         dashVel = Vector3.zero;
-
+        //Debug.Log(cameraObj.forward.ToString() + " " + dirMod.ToString() + "  " + biasedDir.ToString() + " " + lastUnitHit.ToString());
     }
 
     void CenterRectangle(ref Rect someRect)
@@ -1079,6 +1087,13 @@ public class StagMovement : BaseClass
     public void IgnoreCollider(float duration, Transform t_Ignore)
     {
         StartCoroutine(DoIgnoreCollider(duration, t_Ignore));
+    }
+
+    public void IgnoreCollider(bool ignore, Transform t_Ignore)
+    {
+        if (t_Ignore == null) return;
+        Physics.IgnoreCollision(transform.GetComponent<Collider>(), t_Ignore.GetComponent<Collider>(), ignore);
+        Physics.IgnoreCollision(speedBreaker.GetComponent<Collider>(), t_Ignore.GetComponent<Collider>(), ignore);
     }
 
     IEnumerator DoIgnoreCollider(float duration, Transform t_Ignore)
@@ -1126,7 +1141,9 @@ public class StagMovement : BaseClass
         movementStackResetTimer = Time.time + movementStackResetTime - (timeReduceValue); //gör det svårare o svårare!
         movementStackGroundedTimer = GetGroundedDuration() + movementStackGroundedTime - (groundedReduceValue); //inte plus tid för den ligger redan inräknad
 
-        movementStackGroundedTimer = Mathf.Max(0.2f, movementStackGroundedTimer); //ska som minst vara x sekunder
+        //lite minimum värden, så man kan stacka högt
+        movementStackResetTimer = Mathf.Max(0.7f + Time.time, movementStackResetTimer); //ska som minst vara x sekunder
+        movementStackGroundedTimer = Mathf.Max(0.3f, movementStackGroundedTimer); //ska som minst vara x sekunder
 
         //Debug.Log(movementStacks.ToString() + "  " + (movementStackResetTimer - Time.time).ToString());
         //Debug.Log(movementStacks.ToString() + "  " + (movementStackGroundedTimer).ToString());
