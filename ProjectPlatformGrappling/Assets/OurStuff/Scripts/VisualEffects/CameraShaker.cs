@@ -143,7 +143,7 @@ public class CameraShaker : BaseClass {
         {
             StopCoroutine(currFOVChangeIE);
         }
-        currFOVChangeIE = ApplyChangeFOV(duration, newFOV);
+        currFOVChangeIE = ApplyChangeFOV(duration, startFOV + newFOV);
         StartCoroutine(currFOVChangeIE);
     }
 

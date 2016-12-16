@@ -149,6 +149,7 @@ public class PowerManager : BaseClass {
         currPower = 0; //så att det inte blir overkill och man dör massa gånger
 
         stagMovement.isLocked = true; //så man inte kan styra
+        stagMovement.speedBreaker.Disable();
         stagShooter.isLocked = true;
 
         deathLocation = transform.position;

@@ -17,7 +17,7 @@ public class StagMovement : BaseClass
     protected PowerManager powerManager;
     protected ControlManager controlManager;
 
-    protected StagSpeedBreaker speedBreaker;
+    [HideInInspector] public StagSpeedBreaker speedBreaker;
     protected float speedBreakerActiveSpeed = 1.8f; //vid vilken fart den går igång
     protected float speedBreakerTime = 0.2f; //endel tid i själva StagSpeedBreaker scriptet
     protected float speedBreakerTimer = 0.0f;
@@ -945,7 +945,7 @@ public class StagMovement : BaseClass
     {
         maxDashTime = startMaxDashTime + extraDashTime; //den kan utökas sen
         AddMovementStack(1);
-        cameraShaker.ChangeFOV(0.05f, 75);
+        cameraShaker.ChangeFOV(0.05f, 5);
         ySpeed = -gravity * 0.01f; //nollställer ej helt
         ToggleDashEffect(true);
         dashTimePoint = Time.time;
@@ -1024,7 +1024,7 @@ public class StagMovement : BaseClass
             //if (Vector3.Distance(transform.position, potTargets[i].transform.position) < minDistance) continue; //om den är för nära så hoppa vidare
             HealthSpirit hSpirit = potTargets[i].GetComponent<HealthSpirit>();
             if (hSpirit == null || hSpirit.IsAlive() == false) continue;
-            if (potTargets[i].transform == lastUnitHit) { continue; }//så man inte fastnar på infinite dash
+            if (potTargets[i].transform == lastUnitHit) { Debug.Log("Detta som är fel med dash direction??"); continue; }//så man inte fastnar på infinite dash
 
             Vector3 gOffset = new Vector3(0, 0.2f, 0); //en liten offset från marken när man kör raycast
 
@@ -1070,7 +1070,7 @@ public class StagMovement : BaseClass
         //***DASHSTYRNIG***
 
         //SJÄLVSTYRNING, FAN VA ENKELT ALLT ÄR!!
-        float minimumFinalValue = 1.0f; //måste vara högre än denna för det ska gå
+        float minimumFinalValue = 1.1f; //måste vara högre än denna för det ska gå
         if (biasedDir != Vector3.zero && bestFinalValue > minimumFinalValue) //har en fiende hittats som ska styras mot
         {
             dirMod = biasedDir;
