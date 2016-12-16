@@ -718,7 +718,7 @@ public class StagMovement : BaseClass
 
         currLimitSpeed = startLimitSpeed * bonusStageSpeed * currExternalSpeedMult;
 
-        if (movementStacks > 4)
+        if (movementStacks > 2) //hur många stacks som behövs för att den ska bli sliding
         {
             currMomentum += finalMoveDir * deltaTime * bonusStageSpeed * (1 + flatMoveStacksSpeedBonues); //om inte man är uppe i hög speed så kan man alltid köra currMomentum = finalMoveDir som vanligt
             float momY = currMomentum.y;
