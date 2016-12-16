@@ -23,6 +23,7 @@ public class StagSpeedBreaker : BaseClass {
         renderers = GetComponentsInChildren<Renderer>();
 
         Disable();
+        initTimes++;
     }
 
     void OnTriggerEnter(Collider col)
@@ -57,6 +58,7 @@ public class StagSpeedBreaker : BaseClass {
 
     public void Disable()
     {
+        if (initTimes == 0) return;
         if (fadeOut != null || renderers[0].enabled == false) return;
 
         fadeOut = FadeOut(0.5f);

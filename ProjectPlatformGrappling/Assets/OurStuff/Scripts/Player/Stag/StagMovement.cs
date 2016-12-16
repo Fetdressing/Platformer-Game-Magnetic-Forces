@@ -175,6 +175,7 @@ public class StagMovement : BaseClass
     {
         base.Reset();
         ToggleDashEffect(false);
+        speedBreaker.Disable();
         currMovementSpeed = startSpeed;
 
         dashVel = new Vector3(0, 0, 0);
@@ -683,6 +684,11 @@ public class StagMovement : BaseClass
         Vector3 verVectorNoY = new Vector3(verVector.x, 0, verVector.z); //denna behöver vara under dash så att man kan dasha upp/ned oxå
 
         finalMoveDir = (horVectorNoY + verVectorNoY).normalized * stagSpeedMultiplier * currMovementSpeed * (Mathf.Max(0.8f, powerManager.currPower) * 1.2f);
+
+        if(!isGrounded)
+        {
+            finalMoveDir *= 0.7f;
+        }
 
         //Vector3 mainComparePoint = transform.position + new Vector3(0, 2, 0);
         //Vector3 firstComparePoint = transform.position + new Vector3(0, 2, 0) + transform.right * characterController.radius;
