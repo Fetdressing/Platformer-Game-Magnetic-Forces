@@ -687,7 +687,7 @@ public class StagMovement : BaseClass
 
         if(!isGrounded)
         {
-            finalMoveDir *= 0.7f;
+            finalMoveDir *= 0.7f; //mindre aircontrol
         }
 
         //Vector3 mainComparePoint = transform.position + new Vector3(0, 2, 0);
