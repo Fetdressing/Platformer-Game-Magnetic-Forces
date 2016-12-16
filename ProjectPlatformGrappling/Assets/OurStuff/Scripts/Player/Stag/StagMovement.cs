@@ -1094,12 +1094,13 @@ public class StagMovement : BaseClass
             if (!IsWalkable(1.0f, characterController.radius + 1.0f, dashVel, maxSlopeGrounded, ref hitNormal)) //så den slutar dasha när den går emot en vägg
             {
                 ToggleDashEffect(false);
+                currMomentum = new Vector3(dashVel.x, 0, dashVel.z);
                 dashVel = Vector3.zero;
 
                 //Debug.Log("Fixa Dot mojset!!");
 
                 Stagger(0.4f);
-                Break(1000, ref currMomentum);
+                //Break(1000, ref currMomentum);
                 unitDetectionCamera.transform.localRotation = Quaternion.identity; //nollställ
                 unitDetectionCamera.transform.localPosition = Vector3.zero;
                 yield break;
@@ -1110,6 +1111,8 @@ public class StagMovement : BaseClass
         ToggleDashEffect(false);
         unitDetectionCamera.transform.localRotation = Quaternion.identity; //nollställ
         unitDetectionCamera.transform.localPosition = Vector3.zero;
+
+        currMomentum = new Vector3(dashVel.x, 0, dashVel.z);
         dashVel = Vector3.zero;
         //Debug.Log(cameraObj.forward.ToString() + " " + dirMod.ToString() + "  " + biasedDir.ToString() + " " + lastUnitHit.ToString());
     }
