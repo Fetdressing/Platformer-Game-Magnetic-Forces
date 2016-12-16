@@ -19,8 +19,8 @@ public class StagMovement : BaseClass
 
     protected StagSpeedBreaker speedBreaker;
     protected float speedBreakerActiveSpeed = 1.8f; //vid vilken fart den går igång
-    protected float speedBreakerTime = 0.5f;
-    protected float speedBreakerTimer = 0.5f;
+    protected float speedBreakerTime = 0.2f; //endel tid i själva StagSpeedBreaker scriptet
+    protected float speedBreakerTimer = 0.0f;
 
     protected float distanceToGround = Mathf.Infinity;
     public Transform stagRootJoint; //den ska röra på sig i y-led
@@ -382,7 +382,7 @@ public class StagMovement : BaseClass
         }
 
         Vector3 yVector = new Vector3(0, ySpeed, 0);
-        AngleY(ref yVector, transform.position, 5);
+        AngleY(ref yVector, transform.position + new Vector3(0, characterController.height * 0.5f, 0), 6);
         //adjusta neråt vektor så den går för sliders
         //Vector3 mainComparePoint = transform.position + new Vector3(0, groundedCheckOffsetY, 0);
         //Vector3[] comparePoints = {
@@ -518,7 +518,7 @@ public class StagMovement : BaseClass
         float magnitude = dir.magnitude;
         if(dir.y > 0) //up
         {
-            if (Physics.SphereCast(castPos, characterController.radius, Vector3.up, out rHit, raycastLength, groundCheckLM))
+            if (Physics.SphereCast(castPos, characterController.radius + 0.1f, Vector3.up, out rHit, raycastLength, groundCheckLM))
             {
                 if (GetSlope(rHit.normal) < maxSlopeGrounded * 0.5f) return;
                 Vector3 c = Vector3.Cross(Vector3.down, rHit.normal);
@@ -532,9 +532,9 @@ public class StagMovement : BaseClass
         }
         else //down
         {
-            if (Physics.SphereCast(castPos, characterController.radius, Vector3.down, out rHit, raycastLength, groundCheckLM))
+            if (Physics.SphereCast(castPos, characterController.radius + 0.1f, Vector3.down, out rHit, raycastLength, groundCheckLM))
             {
-                if (GetSlope(rHit.normal) < maxSlopeGrounded * 0.5f) return;
+                if (GetSlope(rHit.normal) < maxSlopeGrounded * 0.5f) { return; }
                 Vector3 c = Vector3.Cross(Vector3.up, rHit.normal);
                 Vector3 u = Vector3.Cross(c, rHit.normal);
 
@@ -1052,7 +1052,7 @@ public class StagMovement : BaseClass
                 }
             }
         }
-        
+
         //if (bestDashTransform != null)
         //{
         //    lastUnitHit = bestDashTransform; //behöver göras här utanför, vill inte ha massa mellanvärden
@@ -1064,7 +1064,8 @@ public class StagMovement : BaseClass
         //***DASHSTYRNIG***
 
         //SJÄLVSTYRNING, FAN VA ENKELT ALLT ÄR!!
-        if (biasedDir != Vector3.zero) //har en fiende hittats som ska styras mot
+        float minimumFinalValue = 1.0f; //måste vara högre än denna för det ska gå
+        if (biasedDir != Vector3.zero && bestFinalValue > minimumFinalValue) //har en fiende hittats som ska styras mot
         {
             dirMod = biasedDir;
         }

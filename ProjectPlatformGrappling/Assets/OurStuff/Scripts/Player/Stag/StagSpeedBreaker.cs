@@ -6,6 +6,7 @@ public class StagSpeedBreaker : BaseClass {
 
     Renderer[] renderers;
     Collider[] colliders;
+    IEnumerator fadeOut;
 
     Transform internalLastUnitHit; //används för o mecka collision
 	// Use this for initialization
@@ -33,8 +34,8 @@ public class StagSpeedBreaker : BaseClass {
 
             internalLastUnitHit = col.transform;
             stagMovement.lastUnitHit = col.transform;
-            //stagMovement.IgnoreCollider(0.42f, col.transform); //så man inte collidar med den när man åker igenom
-            stagMovement.IgnoreCollider(true, col.transform);
+            stagMovement.IgnoreCollider(0.6f, col.transform); //så man inte collidar med den när man åker igenom
+            //stagMovement.IgnoreCollider(true, col.transform);
             stagMovement.StartCoroutine(stagMovement.StagDash(true, 0.4f, 0.15f));
             //stagMovement.Dash(true, true); //använd kamera riktningen
             //Debug.Log("Felet med riktningen är att man kallar dash före stagger, gör så att de körs i rad");
@@ -56,8 +57,10 @@ public class StagSpeedBreaker : BaseClass {
 
     public void Disable()
     {
-        ToggleColliders(false);
-        ToggleRenderers(false);
+        if (fadeOut != null || renderers[0].enabled == false) return;
+
+        fadeOut = FadeOut(0.5f);
+        StartCoroutine(fadeOut);
     }
 
     void ToggleColliders(bool b)
@@ -68,11 +71,33 @@ public class StagSpeedBreaker : BaseClass {
         }
     }
 
+    IEnumerator FadeOut(float time)
+    {
+        float currAlpha = 1;
+        while (currAlpha > 0)
+        {
+            currAlpha -= 1 / ((1 / Time.deltaTime) * time);
+            if (currAlpha < 0) currAlpha = 0;
+
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                Color c = renderers[i].material.color;
+                renderers[i].material.color = new Color(c.r, c.g, c.b, currAlpha);
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        ToggleColliders(false);
+        ToggleRenderers(false);
+        fadeOut = null;
+    }
+
     void ToggleRenderers(bool b)
     {
         for (int i = 0; i < renderers.Length; i++)
         {
             renderers[i].enabled = b;
+            Color c = renderers[i].material.color;
+            renderers[i].material.color = new Color(c.r, c.g, c.b, 1);
         }
     }
 }
