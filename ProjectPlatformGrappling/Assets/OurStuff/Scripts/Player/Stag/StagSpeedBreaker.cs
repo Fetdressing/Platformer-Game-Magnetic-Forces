@@ -7,6 +7,7 @@ public class StagSpeedBreaker : BaseClass {
     Renderer[] renderers;
     Collider[] colliders;
     IEnumerator fadeOut;
+    float startAlpha = 0.6f;
 
     Transform internalLastUnitHit; //används för o mecka collision
 	// Use this for initialization
@@ -23,7 +24,6 @@ public class StagSpeedBreaker : BaseClass {
 
         Disable();
     }
-
 
     void OnTriggerEnter(Collider col)
     {
@@ -73,10 +73,11 @@ public class StagSpeedBreaker : BaseClass {
 
     IEnumerator FadeOut(float time)
     {
-        float currAlpha = 1;
+        
+        float currAlpha = startAlpha;
         while (currAlpha > 0)
         {
-            currAlpha -= 1 / ((1 / Time.deltaTime) * time);
+            currAlpha -= startAlpha / ((startAlpha / Time.deltaTime) * time);
             if (currAlpha < 0) currAlpha = 0;
 
             for (int i = 0; i < renderers.Length; i++)
@@ -97,7 +98,7 @@ public class StagSpeedBreaker : BaseClass {
         {
             renderers[i].enabled = b;
             Color c = renderers[i].material.color;
-            renderers[i].material.color = new Color(c.r, c.g, c.b, 1);
+            renderers[i].material.color = new Color(c.r, c.g, c.b, startAlpha);
         }
     }
 }

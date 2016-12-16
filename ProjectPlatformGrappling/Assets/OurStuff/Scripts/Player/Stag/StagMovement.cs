@@ -1088,7 +1088,7 @@ public class StagMovement : BaseClass
             speedBreakerTimer = Time.time + speedBreakerTime; //speedbreakern aktiveras sedan i update
 
             dashVel = dirMod * dashSpeed; //styra under dashen
-
+            stagObject.transform.forward = dashVel;
 
             Vector3 hitNormal = Vector3.zero;
             if (!IsWalkable(1.0f, characterController.radius + 1.0f, dashVel, maxSlopeGrounded, ref hitNormal)) //så den slutar dasha när den går emot en vägg
