@@ -2,12 +2,16 @@
 using System.Collections;
 
 public class StagSpeedBreaker : BaseClass {
+    bool active = false;
     StagMovement stagMovement; //kunna skicka att man gjort hit osv
 
     Renderer[] renderers;
     Collider[] colliders;
     IEnumerator fadeOut;
     float startAlpha = 0.6f;
+
+    int min_DistanceThreshhold = 4; //hur nära man får vara activationPoint för att kollidea
+    Vector3 activationPoint = Vector3.zero;
 
     Transform internalLastUnitHit; //används för o mecka collision
 	// Use this for initialization
@@ -37,7 +41,12 @@ public class StagSpeedBreaker : BaseClass {
             stagMovement.lastUnitHit = col.transform;
             stagMovement.IgnoreCollider(0.6f, col.transform); //så man inte collidar med den när man åker igenom
             //stagMovement.IgnoreCollider(true, col.transform);
-            stagMovement.StartCoroutine(stagMovement.StagDash(true, 0.4f, 0.15f));
+            if(stagMovement.stagDashIE != null)
+            {
+                stagMovement.StopCoroutine(stagMovement.stagDashIE);
+            }
+            stagMovement.stagDashIE = stagMovement.StagDash(true, 0.06f, 0.15f);
+            stagMovement.StartCoroutine(stagMovement.stagDashIE);
             //stagMovement.Dash(true, true); //använd kamera riktningen
             //Debug.Log("Felet med riktningen är att man kallar dash före stagger, gör så att de körs i rad");
             //stagMovement.Stagger(0.25f);
@@ -52,6 +61,10 @@ public class StagSpeedBreaker : BaseClass {
 
     public void Activate()
     {
+        if (active) return;
+        activationPoint = transform.position;
+
+        active = true;
         ToggleColliders(true);
         ToggleRenderers(true);
     }
@@ -63,6 +76,20 @@ public class StagSpeedBreaker : BaseClass {
 
         fadeOut = FadeOut(0.5f);
         StartCoroutine(fadeOut);
+    }
+
+    public void InstantDisable()
+    {
+        if (initTimes == 0) return;
+        ToggleColliders(false);
+        ToggleRenderers(false);
+
+        if(fadeOut != null)
+        {
+            StopCoroutine(fadeOut);
+        }
+        fadeOut = null;
+        active = false;
     }
 
     void ToggleColliders(bool b)
@@ -92,6 +119,7 @@ public class StagSpeedBreaker : BaseClass {
         ToggleColliders(false);
         ToggleRenderers(false);
         fadeOut = null;
+        active = false;
     }
 
     void ToggleRenderers(bool b)

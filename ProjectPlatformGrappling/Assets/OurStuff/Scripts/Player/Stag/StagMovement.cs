@@ -47,6 +47,7 @@ public class StagMovement : BaseClass
     protected Vector3 lastFramePos = Vector3.zero;
 
     private IEnumerator currDashIE; //så man kan avbryta den
+    [HideInInspector]public IEnumerator stagDashIE; //sätts även ifrån andra script som StagSpeedBreaker
     [HideInInspector]public float dashTimePoint; //mud påverkar denna så att man inte kan dasha
     protected float dashGlobalCooldown = 0.3f;
     protected float dashCooldown = 1f; //går igång ifall man dashar från marken
@@ -174,8 +175,10 @@ public class StagMovement : BaseClass
     public override void Reset()
     {
         base.Reset();
+        Time.timeScale = 1.0f;
         ToggleDashEffect(false);
         speedBreaker.Disable();
+        BreakDash();
         currMovementSpeed = startSpeed;
 
         dashVel = new Vector3(0, 0, 0);
@@ -783,33 +786,13 @@ public class StagMovement : BaseClass
         isLocked = false;
     }
 
-    public IEnumerator StagDash(bool useCameraDir, float staggTime, float extraDashTime) //används när man träffar ett target mest
-    {
-        cameraShaker.ShakeCamera(staggTime, 1f, true, true);
-
-        float timer = staggTime + Time.time;
-
-        isLocked = true;
-        Time.timeScale = 0.5f;
-
-        while(timer > Time.time && controlManager.didDash == false) //slowmotion tills man dashar
-        {
-            yield return new WaitForEndOfFrame();
-        }
-
-        //yield return new WaitForSeconds(staggTime);
-        Time.timeScale = 1.0f;
-        isLocked = false;
-
-        Dash(useCameraDir, true, extraDashTime);
-    }
-
     public virtual void Jump()
     {
         if (jumpsAvaible > 0)
         {
             if (Time.time > jumpTimePoint + jumpCooldown)
             {
+                BreakDash();
                 AddMovementStack(1);
                 PlayJumpEffect();
 
@@ -941,6 +924,56 @@ public class StagMovement : BaseClass
         return true;
     }
 
+    public IEnumerator StagDash(bool useCameraDir, float staggTime, float extraDashTime) //används när man träffar ett target mest
+    {
+        //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Unit"), gameObject.layer, true);
+        //if (isLocked) yield break;
+        cameraShaker.ShakeCamera(staggTime, 1f, true, true);
+
+        float timer = staggTime + Time.time;
+
+        //isLocked = true;
+        Time.timeScale = 0.1f;
+
+        while (timer > Time.time && controlManager.didDash == false) //slowmotion tills man dashar
+        {
+            ySpeed = 0;
+            yield return new WaitForEndOfFrame();
+        }
+        //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Unit"), gameObject.layer, false);
+        //yield return new WaitForSeconds(staggTime);
+        Time.timeScale = 1.0f;
+        //isLocked = false;
+
+        Dash(useCameraDir, true, extraDashTime);
+    }
+
+    public void BreakDash()
+    {
+        ToggleDashEffect(false);
+        unitDetectionCamera.transform.localRotation = Quaternion.identity; //nollställ
+        unitDetectionCamera.transform.localPosition = Vector3.zero;
+        Time.timeScale = 1.0f;
+        if (dashVel.magnitude > 2.0f)
+        {
+            currMomentum = new Vector3(dashVel.x, 0, dashVel.z);
+        }
+
+        dashVel = Vector3.zero;
+
+        if (stagDashIE != null)
+        {
+            StopCoroutine(stagDashIE);
+        }
+        speedBreakerTimer = 0.0f;
+        speedBreaker.InstantDisable();
+
+        if (currDashIE != null)
+        {
+            StopCoroutine(currDashIE);
+        }
+    }
+
     protected virtual IEnumerator MoveDash(bool useCameraDir, float extraDashTime = 0)
     {
         maxDashTime = startMaxDashTime + extraDashTime; //den kan utökas sen
@@ -960,10 +993,13 @@ public class StagMovement : BaseClass
 
         //HÄMTA RIKTNINGEN
         Vector3 dirMod;
-
+        Camera checkCamera = unitDetectionCamera;
+        useCameraDir = true;
         if (useCameraDir) //sker efter tex dashhit i fiende
         {
-            dirMod = cameraHolder.forward;
+            dirMod = cameraHolder.forward; //fast denna kastas från staggen, hmm
+            checkCamera = mainCamera;
+            //Debug.Log("fast denna kastas från staggen, Använd den vanliga kameran då? :)");
             //if (ver < 0) //frammåt eller bakåt? kanske inte ska kunna åka bakåt?
             //{
             //    //Debug.Log(ver.ToString());
@@ -978,25 +1014,30 @@ public class StagMovement : BaseClass
         }
         else
         {
-            if ((horVector + verVector).magnitude < 0.2f)
+            checkCamera = unitDetectionCamera;
+            if ((horVector + verVector).magnitude < 0.02f)
             {
                 dirMod = stagObject.forward; //om ingen input så används stagObject.forward
             }
-            else
+            else //jag har input
             {
                 dirMod = (horVector + verVector).normalized;
+                if (Vector3.Dot(dirMod, cameraHolder.forward) > 0.0f) //vända mot varandra
+                {
+                    dirMod.y = 0; //om ingen input så används stagObject.forward
+                }
             }
 
-            if(ver < 0 && Mathf.Abs(hor) < 0.2f) //man dashar mot kameran, då vill man använda satt riktning i Y, annars kommer den få reversed som kameran
-            {
-                dirMod.y = 0;
-            }
+            //if(ver < 0 && Mathf.Abs(hor) < 0.2f) //man dashar mot kameran, då vill man använda satt riktning i Y, annars kommer den få reversed som kameran
+            //{
+            //    dirMod.y = 0;
+            //}
+
+            Quaternion lookRotation = Quaternion.LookRotation(dirMod);
+            unitDetectionCamera.transform.rotation = lookRotation; //så att man gör dashstyrningnstestet åt det hållet <<------ denna roterar fel ibland, vilket gör att den hittar skumma grejer / dirMod blir wack ?
         }
 
-        Quaternion lookRotation = Quaternion.LookRotation(dirMod);
-        unitDetectionCamera.transform.rotation = lookRotation; //så att man gör dashstyrningnstestet åt det hållet <<------ denna roterar fel ibland, vilket gör att den hittar skumma grejer / dirMod blir wack ?
-
-        float distanceCheck = 220; //denna kan vara lite överdriven, mest för att culla. Kanske inte längre
+        float distanceCheck = 140; //denna kan vara lite överdriven, mest för att culla. Kanske inte längre
 
         //if (Vector3.SqrMagnitude(dirMod - cameraHolder.forward) < 0.0001) //kolla ifall de är samma vektor, isåfall vill jag flytta utgångspunkten
         //{
@@ -1008,6 +1049,7 @@ public class StagMovement : BaseClass
 
         //***DASHSTYRNIG***
         Vector3 biasedDir = Vector3.zero; //styr den mot fiender
+        Transform target = null;
 
         Collider[] potTargets = Physics.OverlapSphere(transform.position, distanceCheck, unitCheckLM); //att hitta ett target borde kanske bara göras i början av dash?
         //float closestDistance = Mathf.Infinity;
@@ -1019,25 +1061,29 @@ public class StagMovement : BaseClass
         Vector3 horVectorNoY = new Vector3(horVector.x, 0, horVector.z);
         Vector3 verVectorNoY = new Vector3(verVector.x, 0, verVector.z);
 
+        Vector3 gOffset = new Vector3(0, 0.4f, 0); //en liten offset från marken när man kör raycast
+
+        Vector3 currViewPlayerPos = checkCamera.WorldToViewportPoint(transform.position); //spelarens position i kamera spacet
+
         for (int i = 0; i < potTargets.Length; i++)
         {
             //if (Vector3.Distance(transform.position, potTargets[i].transform.position) < minDistance) continue; //om den är för nära så hoppa vidare
             HealthSpirit hSpirit = potTargets[i].GetComponent<HealthSpirit>();
             if (hSpirit == null || hSpirit.IsAlive() == false) continue;
-            if (potTargets[i].transform == lastUnitHit) { Debug.Log("Detta som är fel med dash direction??"); continue; }//så man inte fastnar på infinite dash
-
-            Vector3 gOffset = new Vector3(0, 0.2f, 0); //en liten offset från marken när man kör raycast
+            if (potTargets[i].transform == lastUnitHit) { continue; }//så man inte fastnar på infinite dash
 
             Vector3 TToTar = ((potTargets[i].transform.position + gOffset) - (transform.position + gOffset)).normalized;
             Vector3 CToTar = (potTargets[i].transform.position - cameraHolder.position).normalized;
 
-            Vector3 currViewPos = unitDetectionCamera.WorldToViewportPoint(potTargets[i].transform.position); //använder en kamera för att se ifall den ser några fiender!
+            Vector3 currViewPos = checkCamera.WorldToViewportPoint(potTargets[i].transform.position); //använder en kamera för att se ifall den ser några fiender!
+
+            if (currViewPlayerPos.z > currViewPos.z) continue; //ligger mellan kameran o spelaren och då ska man inte dasha
 
             float currDistance = Vector3.Distance(transform.position, potTargets[i].transform.position); //jämför med den senaste outputen
             float currToMidValue = (Mathf.Abs(0.5f - currViewPos.x) + Mathf.Abs(0.5f - currViewPos.y)); //hur nära mitten är den? ju lägra destu närmre
 
-            float currDistanceValue = currDistance / distanceCheck;
-            float currFinalValue = (1 - currDistanceValue) + (1 - currToMidValue * 1.5f); //ska vara så högt som möjligt
+            float currDistanceValue = currDistance / distanceCheck; //denna kommer bli pissliten
+            float currFinalValue = (1 - currDistanceValue) + (1 - currToMidValue * 1.8f); //ska vara så högt som möjligt
 
             if (currFinalValue < bestFinalValue) continue; //fortsätt bara om denna är närmre mitten
 
@@ -1049,11 +1095,12 @@ public class StagMovement : BaseClass
                 RaycastHit rHit;
 
                 //kolla så att ingen miljö är i vägen
-                if (!Physics.Raycast(transform.position + gOffset, TToTar, out rHit, currDistance, groundCheckLM)) //kolla så att den inte träffar någon miljö bara
+                if (!Physics.Raycast(transform.position + gOffset, TToTar, out rHit, currDistance-2, groundCheckLM)) //kolla så att den inte träffar någon miljö bara
                 {
                     //if(lastUnitHit != null) sätts i StagSpeedBreaker
                     bestFinalValue = currFinalValue;
                     biasedDir = TToTar;
+                    target = potTargets[i].transform;
                     //bestDashTransform = potTargets[i].transform; //denna måste dock resettas efter en kort tid så att man återigen kan dasha på denna, detta bör göras när man kör en vanlig dash, dvs en som går på cd o liknande
                 }
             }
@@ -1070,7 +1117,7 @@ public class StagMovement : BaseClass
         //***DASHSTYRNIG***
 
         //SJÄLVSTYRNING, FAN VA ENKELT ALLT ÄR!!
-        float minimumFinalValue = 1.1f; //måste vara högre än denna för det ska gå
+        float minimumFinalValue = 1.6f; //måste vara högre än denna för det ska gå
         if (biasedDir != Vector3.zero && bestFinalValue > minimumFinalValue) //har en fiende hittats som ska styras mot
         {
             dirMod = biasedDir;
@@ -1093,6 +1140,10 @@ public class StagMovement : BaseClass
 
             speedBreakerTimer = Time.time + speedBreakerTime; //speedbreakern aktiveras sedan i update
 
+            if(target != null)
+            {
+                dirMod = ((target.position + gOffset) - (transform.position + gOffset)).normalized;
+            }
             dashVel = dirMod * dashSpeed; //styra under dashen
             stagObject.transform.forward = dashVel;
 
