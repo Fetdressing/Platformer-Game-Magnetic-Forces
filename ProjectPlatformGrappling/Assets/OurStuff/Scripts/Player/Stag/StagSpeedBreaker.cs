@@ -41,12 +41,12 @@ public class StagSpeedBreaker : BaseClass {
             stagMovement.lastUnitHit = col.transform;
             stagMovement.IgnoreCollider(0.6f, col.transform); //så man inte collidar med den när man åker igenom
             //stagMovement.IgnoreCollider(true, col.transform);
-            if(stagMovement.stagDashIE != null)
+            if(stagMovement.staggDashIE != null)
             {
-                stagMovement.StopCoroutine(stagMovement.stagDashIE);
+                stagMovement.StopCoroutine(stagMovement.staggDashIE);
             }
-            stagMovement.stagDashIE = stagMovement.StagDash(true, 0.024f, 0.15f);
-            stagMovement.StartCoroutine(stagMovement.stagDashIE);
+            stagMovement.staggDashIE = stagMovement.StaggDash(true, 0.024f, 0.15f);
+            stagMovement.StartCoroutine(stagMovement.staggDashIE);
             //stagMovement.Dash(true, true); //använd kamera riktningen
             //Debug.Log("Felet med riktningen är att man kallar dash före stagger, gör så att de körs i rad");
             //stagMovement.Stagger(0.25f);

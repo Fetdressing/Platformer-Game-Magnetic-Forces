@@ -47,7 +47,8 @@ public class StagMovement : BaseClass
     protected Vector3 lastFramePos = Vector3.zero;
 
     private IEnumerator currDashIE; //så man kan avbryta den
-    [HideInInspector]public IEnumerator stagDashIE; //sätts även ifrån andra script som StagSpeedBreaker
+    [HideInInspector]public IEnumerator staggDashIE; //sätts även ifrån andra script som StagSpeedBreaker
+    [HideInInspector]public IEnumerator staggIE; //normala stag grejen
     [HideInInspector]public float dashTimePoint; //mud påverkar denna så att man inte kan dasha
     protected float dashGlobalCooldown = 0.3f;
     protected float dashCooldown = 1f; //går igång ifall man dashar från marken
@@ -774,16 +775,36 @@ public class StagMovement : BaseClass
     public void Stagger(float staggTime) //låser spelaren kvickt
     {
         cameraShaker.ShakeCamera(staggTime, 1f, true, true);
-        StartCoroutine(DoStagg(staggTime));
+
+        if(staggIE != null)
+        {
+            StopCoroutine(staggIE);
+        }
+
+        staggIE = DoStagg(staggTime);
+
+        StartCoroutine(staggIE);
     }
 
     IEnumerator DoStagg(float staggTime)
     {
         isLocked = true;
-        Time.timeScale = 0.5f;
+        Time.timeScale = 0.2f;
         yield return new WaitForSeconds(staggTime);
         Time.timeScale = 1.0f;
         isLocked = false;
+        staggIE = null;
+    }
+
+    void BreakNormalStagg() //breakar den normala staggen
+    {
+        if (staggIE != null)
+        {
+            StopCoroutine(staggIE);
+        }
+        Time.timeScale = 1.0f;
+        isLocked = false;
+        staggIE = null;
     }
 
     public virtual void Jump()
@@ -924,8 +945,10 @@ public class StagMovement : BaseClass
         return true;
     }
 
-    public IEnumerator StagDash(bool useCameraDir, float staggTime, float extraDashTime) //används när man träffar ett target mest
+    public IEnumerator StaggDash(bool useCameraDir, float staggTime, float extraDashTime) //används när man träffar ett target mest, DASHAR OLIKA SNABBT MED VÄNTE-TIDEN? Stackar den?
     {
+        Debug.Log(" DASHAR OLIKA SNABBT MED VÄNTE-TIDEN? Stackar den?");
+        BreakNormalStagg();
         if (currDashIE != null)
         {
             StopCoroutine(currDashIE); //avbryter nuvarande dash
@@ -952,7 +975,7 @@ public class StagMovement : BaseClass
         //isLocked = false;
 
         Dash(useCameraDir, true, extraDashTime);
-        stagDashIE = null;
+        staggDashIE = null;
     }
 
     public void BreakDash()
@@ -968,9 +991,9 @@ public class StagMovement : BaseClass
 
         dashVel = Vector3.zero;
 
-        if (stagDashIE != null)
+        if (staggDashIE != null)
         {
-            StopCoroutine(stagDashIE);
+            StopCoroutine(staggDashIE);
         }
         speedBreakerTimer = 0.0f;
         speedBreaker.InstantDisable();
@@ -1164,7 +1187,7 @@ public class StagMovement : BaseClass
 
                 //Debug.Log("Fixa Dot mojset!!");
 
-                Stagger(0.4f);
+                Stagger(0.12f);
                 //Break(1000, ref currMomentum);
                 unitDetectionCamera.transform.localRotation = Quaternion.identity; //nollställ
                 unitDetectionCamera.transform.localPosition = Vector3.zero;
