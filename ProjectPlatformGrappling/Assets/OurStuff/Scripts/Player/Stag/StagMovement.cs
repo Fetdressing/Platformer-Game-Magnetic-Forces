@@ -206,7 +206,6 @@ public class StagMovement : BaseClass
     {
         if (Time.timeScale == 0) return;
         if (isLocked) return;
-        if (stagDashIE != null) return;
 
         if (currMomentum.magnitude < 0.01f) return;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(currMomentum.x, 0, currMomentum.z));
