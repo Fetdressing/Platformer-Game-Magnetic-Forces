@@ -45,7 +45,7 @@ public class StagSpeedBreaker : BaseClass {
             {
                 stagMovement.StopCoroutine(stagMovement.stagDashIE);
             }
-            stagMovement.stagDashIE = stagMovement.StagDash(true, 0.06f, 0.15f);
+            stagMovement.stagDashIE = stagMovement.StagDash(true, 0.024f, 0.15f);
             stagMovement.StartCoroutine(stagMovement.stagDashIE);
             //stagMovement.Dash(true, true); //använd kamera riktningen
             //Debug.Log("Felet med riktningen är att man kallar dash före stagger, gör så att de körs i rad");

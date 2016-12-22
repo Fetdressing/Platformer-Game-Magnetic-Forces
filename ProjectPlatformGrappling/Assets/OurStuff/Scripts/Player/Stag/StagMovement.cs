@@ -206,6 +206,7 @@ public class StagMovement : BaseClass
     {
         if (Time.timeScale == 0) return;
         if (isLocked) return;
+        if (stagDashIE != null) return;
 
         if (currMomentum.magnitude < 0.01f) return;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(currMomentum.x, 0, currMomentum.z));
@@ -926,6 +927,10 @@ public class StagMovement : BaseClass
 
     public IEnumerator StagDash(bool useCameraDir, float staggTime, float extraDashTime) //används när man träffar ett target mest
     {
+        if (currDashIE != null)
+        {
+            StopCoroutine(currDashIE); //avbryter nuvarande dash
+        }
         //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Unit"), gameObject.layer, true);
         //if (isLocked) yield break;
         cameraShaker.ShakeCamera(staggTime, 1f, true, true);
@@ -933,12 +938,14 @@ public class StagMovement : BaseClass
         float timer = staggTime + Time.time;
 
         //isLocked = true;
-        Time.timeScale = 0.1f;
+        Time.timeScale = 0.02f;
 
         while (timer > Time.time && controlManager.didDash == false) //slowmotion tills man dashar
         {
-            ySpeed = 0;
             yield return new WaitForEndOfFrame();
+            externalVel = Vector3.zero;
+            ySpeed = 0;
+            stagObject.transform.forward = cameraObj.forward;
         }
         //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Unit"), gameObject.layer, false);
         //yield return new WaitForSeconds(staggTime);
@@ -946,6 +953,7 @@ public class StagMovement : BaseClass
         //isLocked = false;
 
         Dash(useCameraDir, true, extraDashTime);
+        stagDashIE = null;
     }
 
     public void BreakDash()
@@ -1088,8 +1096,9 @@ public class StagMovement : BaseClass
             if (currFinalValue < bestFinalValue) continue; //fortsätt bara om denna är närmre mitten
 
             if (currDistance < closeDistanceThreshhold) continue;
-           
-            if (currViewPos.x < 1.0f && currViewPos.x > 0.0f && currViewPos.y < 1.0f && currViewPos.y > 0.0f && currViewPos.z > 0.0f) //kolla så att den är innanför viewen
+
+            float minDistanceFromEdges = 0.3f; //hur nära kanten den max får vara
+            if (currViewPos.x < (1.0f - minDistanceFromEdges) && currViewPos.x > (0.0f + minDistanceFromEdges) && currViewPos.y < (1.0f - minDistanceFromEdges) && currViewPos.y > (0.0f + minDistanceFromEdges) && currViewPos.z > 0.0f) //kolla så att den är innanför viewen
             {
                 //Debug.Log(potTargets[i].name + " " + currFinalValue.ToString());
                 RaycastHit rHit;
