@@ -89,6 +89,7 @@ public class WoWCCamera : MonoBehaviour
             extraDistance = Mathf.Lerp(extraDistance, 0, Time.deltaTime * 10f);
         }
 
+        extraDistance = 0;
 
         x += controlManager.horAxisView * xSpeed * 0.02f * speedMultiplier;
         y -= controlManager.verAxisView * ySpeed * 0.02f * speedMultiplier;
@@ -125,6 +126,18 @@ public class WoWCCamera : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(y, x, 0);
         Vector3 position = target.position - (rotation * Vector3.forward * (distance + extraDistance) + new Vector3(0, -targetHeight, 0));
 
+        float newDistance = 0.000f;
+        
+        Vector3 toTar = (position - target.position);
+        Debug.DrawRay(target.position, toTar, Color.red);
+
+        Vector3 yOffset = new Vector3(0, 1.5f, 0);
+        CompensateForWalls(target.position + yOffset, position, ref newDistance);
+
+        if(newDistance > 0.01f)
+        {
+            position = target.position - (rotation * Vector3.forward * (newDistance) + new Vector3(0, -targetHeight, 0));
+        }
         //// Check to see if we have a collision
         //collisionVector = AdjustLineOfSight(transform.position, position);
 
@@ -174,11 +187,9 @@ public class WoWCCamera : MonoBehaviour
         transform.rotation = rotation;
         transform.position = position;
 
-        //Vector3 fow = transform.forward;
-        //CompensateForWalls(transform.position, ref fow);
-        //transform.forward = fow;
-
         lastFrameTargetPos = target.position;
+
+
     }
 
     IEnumerator GoToPreferredAngle(float prefAngle)
@@ -204,13 +215,13 @@ public class WoWCCamera : MonoBehaviour
         return Mathf.Clamp(angle, min, max);
     }
 
-    private void CompensateForWalls(Vector3 fromObject, ref Vector3 toTar)
+    private void CompensateForWalls(Vector3 fromObject, Vector3 toTar, ref float distance)
     {
         // Compensate for walls between camera
         RaycastHit wallHit = new RaycastHit();
         if (Physics.Linecast(fromObject, toTar, out wallHit, collisionLayerMask))
         {
-            toTar = wallHit.point;
+            distance = (wallHit.point - fromObject).magnitude;
         }
 
     }

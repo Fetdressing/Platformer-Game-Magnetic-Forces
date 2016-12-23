@@ -1,22 +1,15 @@
 fileFormatVersion: 2
-guid: d44e3fbf8f27db643b8d17ede94846d2
-timeCreated: 1482442632
+guid: 7dfc79927a153b14396efbcd95e1cff1
+timeCreated: 1482506902
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Redwood_lowCrown
-    100002: //RootNode
-    100004: Redwood_trunkCollider
-    400000: Redwood_lowCrown
-    400002: //RootNode
-    400004: Redwood_trunkCollider
-    2300000: Redwood_lowCrown
-    2300002: Redwood_trunkCollider
-    3300000: Redwood_lowCrown
-    3300002: Redwood_trunkCollider
-    4300000: Redwood_trunkCollider
-    4300002: Redwood_lowCrown
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Redwood_highCrown
     9500000: //RootNode
   materials:
     importMaterials: 1

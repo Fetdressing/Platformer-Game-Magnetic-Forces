@@ -1,32 +1,15 @@
 fileFormatVersion: 2
-guid: e321d38684f0a0746a6e3815019addd6
-timeCreated: 1471473211
+guid: 5d0f1071aec0c304da69aad759662f1c
+timeCreated: 1482506902
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: hangBridge_geo
-    100002: hangBridge_ropes_geo
-    100004: island
-    100006: //RootNode
-    100008: stones_geo
-    400000: hangBridge_geo
-    400002: hangBridge_ropes_geo
-    400004: island
-    400006: //RootNode
-    400008: stones_geo
-    2300000: hangBridge_geo
-    2300002: hangBridge_ropes_geo
-    2300004: island
-    2300006: stones_geo
-    3300000: hangBridge_geo
-    3300002: hangBridge_ropes_geo
-    3300004: island
-    3300006: stones_geo
-    4300000: island
-    4300002: hangBridge_geo
-    4300004: hangBridge_ropes_geo
-    4300006: stones_geo
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Redwood_lowCrown
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -35,7 +18,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleRotations: 1
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
@@ -52,7 +35,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 4000
+    globalScale: 700
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1

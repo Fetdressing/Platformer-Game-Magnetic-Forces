@@ -807,6 +807,13 @@ public class StagMovement : BaseClass
         staggIE = null;
     }
 
+    public void AddJumpsAvaible(int amount, int maxCount = 1000000000)
+    {
+        if ((jumpsAvaible + amount) < 0) return;
+        if ((jumpsAvaible + amount) >= maxCount) return;
+        jumpsAvaible += amount;
+    }
+
     public virtual void Jump()
     {
         if (jumpsAvaible > 0)
@@ -817,7 +824,8 @@ public class StagMovement : BaseClass
                 AddMovementStack(1);
                 PlayJumpEffect();
 
-                jumpsAvaible = Mathf.Max(0, (jumpsAvaible - 1));
+                //jumpsAvaible = Mathf.Max(0, (jumpsAvaible - 1));
+                AddJumpsAvaible(-1);
                 dashUsed = false; //när man blir grounded så kan man använda dash igen, men oxå när man hoppar, SKILLZ!!!
                 activePlatform = null; //när man hoppar så är man ej längre attached till movingplatform
                 jumpTimePoint = Time.time;
@@ -947,7 +955,8 @@ public class StagMovement : BaseClass
 
     public IEnumerator StaggDash(bool useCameraDir, float staggTime, float extraDashTime) //används när man träffar ett target mest, DASHAR OLIKA SNABBT MED VÄNTE-TIDEN? Stackar den?
     {
-        Debug.Log(" DASHAR OLIKA SNABBT MED VÄNTE-TIDEN? Stackar den?");
+        //Debug.Log(" DASHAR OLIKA SNABBT MED VÄNTE-TIDEN? Stackar den?");
+        AddJumpsAvaible(1, jumpAmount);
         BreakNormalStagg();
         if (currDashIE != null)
         {
