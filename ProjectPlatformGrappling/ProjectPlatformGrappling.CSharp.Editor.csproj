@@ -148,6 +148,7 @@
     <Compile Include="Assets\ExternalAssets\Quantum Theory\Polyworld\Editor\QT_SurfaceNoiseEditor.cs" />
     <Compile Include="Assets\ExternalAssets\QuickSetObjectPlacer\Scripts\Editor\QuickObjectEditor.cs" />
     <Compile Include="Assets\ExternalAssets\QuickSetObjectPlacer\Scripts\Editor\QuickSetMenuItem.cs" />
+    <Compile Include="Assets\ExternalAssets\SimpleLUT\Editor\SimpleLUT_Editor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\ExternalAssets\InControl\Readme\README.txt" />
@@ -175,6 +176,9 @@
     <None Include="Assets\ExternalAssets\Quantum Theory\Polyworld\Shaders\VertexColors\IBL\VertexLitIBL.cginc" />
     <None Include="Assets\ExternalAssets\Quantum Theory\Polyworld\Shaders\VertexColors\VertexLitVertexColors.shader" />
     <None Include="Assets\ExternalAssets\QuickSetObjectPlacer\ReadMe.txt" />
+    <None Include="Assets\ExternalAssets\SimpleLUT\Readme.txt" />
+    <None Include="Assets\ExternalAssets\SimpleLUT\Shader\SimpleLUT.shader" />
+    <None Include="Assets\ExternalAssets\SimpleLUT\_HereVR Color Grading Demo\Readme - HVR Color Grading Demo.txt" />
     <None Include="Assets\OurStuff\2D\Shaders\Hologram.shader" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />

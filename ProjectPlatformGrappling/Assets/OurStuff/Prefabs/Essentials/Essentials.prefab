@@ -39,6 +39,7 @@ GameObject:
   - 81: {fileID: 81000012963460050}
   - 114: {fileID: 114000014270324376}
   - 114: {fileID: 114000010506858466}
+  - 114: {fileID: 114000010575144142}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -3967,6 +3968,26 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Restart
+--- !u!114 &114000010575144142
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010021008252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab2fd0b11cfb2fb4ca4ed47adfcc3b26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Shader: {fileID: 4800000, guid: 9d7e8f87435780644abb4acdfd72a2f0, type: 3}
+  LookupTexture: {fileID: 2800000, guid: 112e6dc5cbc2d2c459406d535d62a78b, type: 3}
+  Amount: 0.158
+  TintColor: {r: 1, g: 1, b: 1, a: 1}
+  Hue: 0
+  Saturation: 0
+  Brightness: 0
+  Contrast: 0
+  Sharpness: 0
 --- !u!114 &114000010576655854
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5107,6 +5128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c673890f95dec0e469a9de4a372d98e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLocked: 0
   collisionLayerMask:
     serializedVersion: 2
     m_Bits: 536870913
@@ -5124,6 +5146,7 @@ MonoBehaviour:
   zoomRate: 30
   rotationDampening: 3
   theta2: 0.5
+  movingToPos: 0
 --- !u!114 &114000013163305838
 MonoBehaviour:
   m_ObjectHideFlags: 1

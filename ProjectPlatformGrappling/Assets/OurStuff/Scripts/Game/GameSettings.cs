@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using DigitalRuby.SimpleLUT;
 
 public class GameSettings : BaseClass {
     public GameObject settingsPanel;
@@ -11,12 +12,14 @@ public class GameSettings : BaseClass {
     private string mouseSpeedSaveName = "MouseSpeed";
     private string gammaSaveName = "Gamma";
 
-    private Color startGamma;
+    private float startGamma;
 
     private float currGamma;
     private float currMouseSpeed;
 
     private WoWCCamera wowcCamera;
+    private Camera mCamera;
+    private SimpleLUT simpleLUT;
 
 	// Use this for initialization
 	void Start () {
@@ -27,13 +30,19 @@ public class GameSettings : BaseClass {
     {
         base.Init();
 
-        wowcCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<WoWCCamera>();
+        mCamera = GameObject.FindGameObjectWithTag("Manager").GetComponent<CameraManager>().cameraPlayerFollow;
+        wowcCamera = GameObject.FindGameObjectWithTag("MainCamera").transform.GetComponent<WoWCCamera>();
+        simpleLUT = mCamera.GetComponent<SimpleLUT>();
         
-        startGamma = RenderSettings.ambientLight;
+        startGamma = 0;
 
         //om det är första gången man startar så set värdena till nått värde
         float gCheck = PlayerPrefs.GetFloat(gammaSaveName);
         if(gCheck == 0) { gCheck = 0.3f; }
+        else
+        {
+            startGamma = simpleLUT.Brightness;
+        }
 
         float msCheck = PlayerPrefs.GetFloat(mouseSpeedSaveName);
         if (msCheck == 0) { msCheck = 0.3f; }
@@ -83,7 +92,8 @@ public class GameSettings : BaseClass {
     {
         currGamma = f;
         gammaSlider.value = currGamma;
-        RenderSettings.ambientLight = new Color(startGamma.r + currGamma, startGamma.g + currGamma, startGamma.b + currGamma, startGamma.a); //förmodligen använda *
+        //RenderSettings.ambientLight = new Color(startGamma.r + currGamma, startGamma.g + currGamma, startGamma.b + currGamma, startGamma.a); //förmodligen använda *
+        simpleLUT.Brightness = startGamma + currGamma; //förmodligen använda *
         PlayerPrefs.SetFloat(gammaSaveName, currGamma);
     }
 

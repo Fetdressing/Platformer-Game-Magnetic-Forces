@@ -412,6 +412,7 @@
     <Compile Include="Assets\ExternalAssets\Quantum Theory\Polyworld\Scripts\Utility Scripts\MeshCombineUtility.cs" />
     <Compile Include="Assets\ExternalAssets\Quantum Theory\Polyworld\Scripts\Utility Scripts\QT_MeshCombineUtility.cs" />
     <Compile Include="Assets\ExternalAssets\QuickSetObjectPlacer\Scripts\QuickSetObjectPlacer.cs" />
+    <Compile Include="Assets\ExternalAssets\SimpleLUT\Script\SimpleLUT.cs" />
     <Compile Include="Assets\OurStuff\Scripts\AI\AIBase.cs" />
     <Compile Include="Assets\OurStuff\Scripts\AI\Boss\BossBase.cs" />
     <Compile Include="Assets\OurStuff\Scripts\AI\NormalAI\NAIBase.cs" />
@@ -519,6 +520,9 @@
     <None Include="Assets\ExternalAssets\Quantum Theory\Polyworld\Shaders\VertexColors\IBL\VertexLitIBL.cginc" />
     <None Include="Assets\ExternalAssets\Quantum Theory\Polyworld\Shaders\VertexColors\VertexLitVertexColors.shader" />
     <None Include="Assets\ExternalAssets\QuickSetObjectPlacer\ReadMe.txt" />
+    <None Include="Assets\ExternalAssets\SimpleLUT\Readme.txt" />
+    <None Include="Assets\ExternalAssets\SimpleLUT\Shader\SimpleLUT.shader" />
+    <None Include="Assets\ExternalAssets\SimpleLUT\_HereVR Color Grading Demo\Readme - HVR Color Grading Demo.txt" />
     <None Include="Assets\OurStuff\2D\Shaders\Hologram.shader" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
