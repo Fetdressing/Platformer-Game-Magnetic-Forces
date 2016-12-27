@@ -10,6 +10,7 @@ public class SpawnManager : BaseClass {
 
     public Transform player;
     private StagMovement stagMovement;
+    public WoWCCamera mainCameraS;
 
     private List<Transform> spawnPoints = new List<Transform>();
     private Transform closestSpawn;
@@ -131,7 +132,7 @@ public class SpawnManager : BaseClass {
         player.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         StartCoroutine(SpawnPlayerAtLocation(latestSpawn.position));
         
-        for(int i = 0; i < powerPickups.Length; i++)
+        for (int i = 0; i < powerPickups.Length; i++)
         {
             powerPickups[i].Reset();
         }
@@ -145,7 +146,8 @@ public class SpawnManager : BaseClass {
             player.position = Vector3.Lerp(player.position, pos, Time.deltaTime * 4);
             yield return new WaitForSeconds(0.01f);
         }
-
+        Vector3 forwNoY = new Vector3(mainCameraS.transform.forward.x, 0, mainCameraS.transform.forward.z);
+        mainCameraS.SetRot(Vector3.Angle(forwNoY, latestSpawn.forward));
         player.GetComponent<PowerManager>().Reset();
         player.GetComponent<StagMovement>().Reset();
         player.GetComponent<StagShooter>().Reset();

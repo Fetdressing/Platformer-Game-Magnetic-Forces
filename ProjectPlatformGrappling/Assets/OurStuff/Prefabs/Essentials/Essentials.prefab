@@ -5398,6 +5398,7 @@ MonoBehaviour:
   maxLives: 3
   currLives: 0
   player: {fileID: 4000011412557584}
+  mainCameraS: {fileID: 114000013162039704}
   startSpawn: {fileID: 0}
   spawnEffectObject: {fileID: 0}
   levelStarted: 0

@@ -56,6 +56,8 @@ public class WoWCCamera : MonoBehaviour
     private Vector3 h1 = new Vector3();
     private Vector3 i1 = new Vector3();
 
+    IEnumerator settingRotation;
+    protected bool movingToPos = false;
     //@script AddComponentMenu("Camera-Control/WoW Camera")
 
     void Start()
@@ -69,10 +71,47 @@ public class WoWCCamera : MonoBehaviour
         if (GetComponent<Rigidbody>())
             GetComponent<Rigidbody>().freezeRotation = true;
 
+        movingToPos = false;
+        settingRotation = null;
+    }
+
+    public void SetRot(float xn)
+    {
+        if(settingRotation != null)
+        {
+            StopCoroutine(settingRotation);
+        }
+        movingToPos = true;
+
+        settingRotation = SettingRot(xn);
+        StartCoroutine(settingRotation);
+    }
+
+    IEnumerator SettingRot(float xn)
+    {
+        xn = x + xn;
+        float yn = 35;
+        while(settingRotation != null && Mathf.Abs(Mathf.Abs(xn + yn) - Mathf.Abs(x + y)) > 2f)
+        {
+            x = Mathf.Lerp(x, xn, Time.deltaTime * 4);
+            y = Mathf.Lerp(y, yn, Time.deltaTime * 4);
+            
+            Quaternion rotation = Quaternion.Euler(y, x, 0);
+            Vector3 position = target.position - (rotation * Vector3.forward * (distance) + new Vector3(0, -targetHeight, 0));
+
+            transform.position = position;
+            transform.rotation = rotation;
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        movingToPos = false;
+        settingRotation = null;
     }
 
     void LateUpdate()
     {
+        if (movingToPos == true) return;
         if (Time.timeScale == 0) return;
 
         if (!target)
@@ -81,15 +120,13 @@ public class WoWCCamera : MonoBehaviour
         currFrameTargetPos = target.position;
         if (lastFrameTargetPos != Vector3.zero)
         {
-            var valueSpeed = Mathf.Abs(Mathf.Abs(lastFrameTargetPos.magnitude) - Mathf.Abs(currFrameTargetPos.magnitude));
-            extraDistance = Mathf.Lerp(extraDistance, valueSpeed, Time.deltaTime * 10f); ;
+            var valueSpeed = Mathf.Abs(Mathf.Abs(lastFrameTargetPos.magnitude) - Mathf.Abs(currFrameTargetPos.magnitude)) * 2;
+            extraDistance = Mathf.Lerp(extraDistance, valueSpeed, Time.deltaTime * 10f); 
         }
         else
         {
             extraDistance = Mathf.Lerp(extraDistance, 0, Time.deltaTime * 10f);
         }
-
-        extraDistance = 0;
 
         x += controlManager.horAxisView * xSpeed * 0.02f * speedMultiplier;
         y -= controlManager.verAxisView * ySpeed * 0.02f * speedMultiplier;
@@ -129,7 +166,7 @@ public class WoWCCamera : MonoBehaviour
         float newDistance = 0.000f;
         
         Vector3 toTar = (position - target.position);
-        Debug.DrawRay(target.position, toTar, Color.red);
+        //Debug.DrawRay(target.position, toTar, Color.red);
 
         Vector3 yOffset = new Vector3(0, 1.5f, 0);
         CompensateForWalls(target.position + yOffset, position, ref newDistance);
