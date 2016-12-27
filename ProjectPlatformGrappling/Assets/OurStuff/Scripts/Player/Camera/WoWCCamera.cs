@@ -57,7 +57,8 @@ public class WoWCCamera : BaseClass
     private Vector3 i1 = new Vector3();
 
     [HideInInspector]public IEnumerator settingRotation;
-    protected bool movingToPos = false;
+    [HideInInspector]
+    public bool movingToPos = false;
     //@script AddComponentMenu("Camera-Control/WoW Camera")
 
     void Start()
@@ -102,7 +103,15 @@ public class WoWCCamera : BaseClass
 
     IEnumerator SettingRot(float xn, bool unlock)
     {
-        xn = x + xn;
+        Debug.Log("Den väljer alltid den minsta lutningen, det blir fel för denna som alltid går genom samma håll, FIXA!");
+        if (xn > 180)
+        {
+            xn = x + xn;
+        }
+        else
+        {
+            xn = x - xn;
+        }
         float yn = 30;
         while(settingRotation != null && Mathf.Abs(Mathf.Abs(xn + yn) - Mathf.Abs(x + y)) > 2f)
         {

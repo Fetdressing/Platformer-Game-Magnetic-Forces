@@ -105,7 +105,7 @@ public class StagMovement : BaseClass
     [Header("Ground Check")]
     public Transform groundCheckObject;
     protected float groundedCheckOffsetY = 0.6f;
-    protected float groundedCheckDistance = 8.5f;
+    protected float groundedCheckDistance = 10f;
     [HideInInspector]
     public bool isGrounded;
     [HideInInspector]
@@ -263,7 +263,7 @@ public class StagMovement : BaseClass
             {
                 //dessa resetsen görs här eftersom denna groundchecken är mycket mer pålitlig
                 //dashUsed = true; //resettar bara med riktigt grounded så det ska vara mer "snällt"
-                jumpsAvaible = jumpAmount;
+                AddJumpsAvaible(jumpAmount, jumpAmount);
             }
 
             if (groundedSlope > maxSlopeGrounded) //denna checken görs här när man är grounded och i charactercontrollerhit när man INTE är grounded
@@ -460,7 +460,8 @@ public class StagMovement : BaseClass
                 if (jumpTimePoint < Time.time - 0.4f) //så den inte ska fucka och resetta dirr efter man hoppat
                 {
                     dashUsed = false; //den resettas även när man landar på marken nu! MEN om man dashar från marken så får man cd
-                    jumpsAvaible = jumpAmount;
+                    AddJumpsAvaible(jumpAmount, jumpAmount);
+                    //jumpsAvaible = jumpAmount;
                     ySpeed = -gravity * 0.01f; //nollställer ej helt // grounded character has vSpeed = 0...
                 }
             }
@@ -810,7 +811,7 @@ public class StagMovement : BaseClass
     public void AddJumpsAvaible(int amount, int maxCount = 1000000000)
     {
         if ((jumpsAvaible + amount) < 0) return;
-        if ((jumpsAvaible + amount) >= maxCount) return;
+        if ((jumpsAvaible + amount) > maxCount) return;
         jumpsAvaible += amount;
     }
 
