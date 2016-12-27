@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WoWCCamera : MonoBehaviour
+public class WoWCCamera : BaseClass
 {
     protected ControlManager controlManager;
     public LayerMask collisionLayerMask; //mot vilka lager ska kameran kolla kollision?
@@ -56,7 +56,7 @@ public class WoWCCamera : MonoBehaviour
     private Vector3 h1 = new Vector3();
     private Vector3 i1 = new Vector3();
 
-    IEnumerator settingRotation;
+    [HideInInspector]public IEnumerator settingRotation;
     protected bool movingToPos = false;
     //@script AddComponentMenu("Camera-Control/WoW Camera")
 
@@ -75,7 +75,20 @@ public class WoWCCamera : MonoBehaviour
         settingRotation = null;
     }
 
-    public void SetRot(float xn)
+    public override void Reset()
+    {
+        base.Reset();
+        movingToPos = false;
+        if (settingRotation != null)
+        {
+            StopCoroutine(settingRotation);
+        }
+        settingRotation = null;
+
+        StopAllCoroutines();
+    }
+
+    public IEnumerator SetRot(float xn, bool unlock = true)
     {
         if(settingRotation != null)
         {
@@ -83,18 +96,18 @@ public class WoWCCamera : MonoBehaviour
         }
         movingToPos = true;
 
-        settingRotation = SettingRot(xn);
-        StartCoroutine(settingRotation);
+        settingRotation = SettingRot(xn, unlock);
+        yield return StartCoroutine(settingRotation);
     }
 
-    IEnumerator SettingRot(float xn)
+    IEnumerator SettingRot(float xn, bool unlock)
     {
         xn = x + xn;
-        float yn = 35;
+        float yn = 30;
         while(settingRotation != null && Mathf.Abs(Mathf.Abs(xn + yn) - Mathf.Abs(x + y)) > 2f)
         {
-            x = Mathf.Lerp(x, xn, Time.deltaTime * 4);
-            y = Mathf.Lerp(y, yn, Time.deltaTime * 4);
+            x = Mathf.Lerp(x, xn, Time.deltaTime * 8);
+            y = Mathf.Lerp(y, yn, Time.deltaTime * 8);
             
             Quaternion rotation = Quaternion.Euler(y, x, 0);
             Vector3 position = target.position - (rotation * Vector3.forward * (distance) + new Vector3(0, -targetHeight, 0));
@@ -105,7 +118,10 @@ public class WoWCCamera : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        movingToPos = false;
+        if (unlock)
+        {
+            movingToPos = false;
+        }
         settingRotation = null;
     }
 

@@ -141,13 +141,13 @@ public class SpawnManager : BaseClass {
 
     IEnumerator SpawnPlayerAtLocation( Vector3 pos)
     {
-        while(Vector3.Distance(player.position, pos) > 2.0f)
+        while(Vector3.Distance(player.position, pos) > 4.0f)
         {
             player.position = Vector3.Lerp(player.position, pos, Time.deltaTime * 4);
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForEndOfFrame();
         }
         Vector3 forwNoY = new Vector3(mainCameraS.transform.forward.x, 0, mainCameraS.transform.forward.z);
-        mainCameraS.SetRot(Vector3.Angle(forwNoY, latestSpawn.forward));
+        yield return mainCameraS.SetRot(Vector3.Angle(forwNoY, latestSpawn.forward), false);
         player.GetComponent<PowerManager>().Reset();
         player.GetComponent<StagMovement>().Reset();
         player.GetComponent<StagShooter>().Reset();
@@ -161,6 +161,8 @@ public class SpawnManager : BaseClass {
 
         stagMovement.isLocked = false;
         isRespawning = false;
+
+        mainCameraS.Reset(); //viktig så den låser upp kontrollen igen
     }
 
     public void PowerGlobeCollected(int value)
