@@ -14,6 +14,10 @@ public class UVDisplacer : MonoBehaviour {
         float offsetU = Time.time * scrollSpeedU;
         float offsetV = Time.time * scrollSpeedV;
 
-        rend.material.SetTextureOffset("_MainTex", new Vector2(offsetU, offsetV));
+        for(int i = 0; i < rend.materials.Length; i++)
+        {
+            rend.materials[i].SetTextureOffset("_MainTex", new Vector2(offsetU, offsetV));
+        }
+        //rend.material.SetTextureOffset("_MainTex", new Vector2(offsetU, offsetV));
     }
 }

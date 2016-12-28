@@ -74,6 +74,15 @@ public class SpawnManager : BaseClass {
 
     void Update()
     {
+        if(!levelStarted)
+        {
+            if(stagMovement.movementStacks > 5)
+            {
+                stagMovement.movementStacks = 5; //innan spelet har börjat så kan man inte stacka en massa
+            }
+            
+        }
+
         if(Vector3.Distance(player.position, startSpawn.position) > 100 && levelStarted == false && isRespawning == false)
         {
             LevelBegin();
@@ -106,7 +115,7 @@ public class SpawnManager : BaseClass {
         stagMovement.isLocked = true;
 
         player.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-        StartCoroutine(SpawnPlayerAtLocation(startSpawn.position));
+        StartCoroutine(SpawnPlayerAtLocation(startSpawn.position, true));
     }
 
     public void Respawn(Vector3 playerDeathPos)
@@ -130,7 +139,7 @@ public class SpawnManager : BaseClass {
         //}
 
         player.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-        StartCoroutine(SpawnPlayerAtLocation(latestSpawn.position));
+        StartCoroutine(SpawnPlayerAtLocation(latestSpawn.position, false));
         
         for (int i = 0; i < powerPickups.Length; i++)
         {
@@ -139,12 +148,19 @@ public class SpawnManager : BaseClass {
         //player.position = closestSpawnPos;
     }
 
-    IEnumerator SpawnPlayerAtLocation( Vector3 pos)
+    IEnumerator SpawnPlayerAtLocation( Vector3 pos, bool instantMove)
     {
-        while(Vector3.Distance(player.position, pos) > 4.0f)
+        if (!instantMove)
         {
-            player.position = Vector3.Lerp(player.position, pos, Time.deltaTime * 4);
-            yield return new WaitForEndOfFrame();
+            while (Vector3.Distance(player.position, pos) > 4.0f)
+            {
+                player.position = Vector3.Lerp(player.position, pos, Time.deltaTime * 4);
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        else
+        {
+            player.position = pos;
         }
         Vector3 forwNoY = new Vector3(mainCameraS.transform.forward.x, 0, mainCameraS.transform.forward.z);
         yield return mainCameraS.SetRot(Vector3.Angle(forwNoY, latestSpawn.forward), false);
