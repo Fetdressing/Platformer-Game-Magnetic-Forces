@@ -198,6 +198,7 @@ public class StagMovement : BaseClass
         dashUsed = false;
         jumpsAvaible = jumpAmount;
         movementStacks = 1;
+        AddMovementStack(5); //start värde
 
         //isGrounded = false;
         isGroundedRaycast = false;
@@ -811,7 +812,7 @@ public class StagMovement : BaseClass
     public void AddJumpsAvaible(int amount, int maxCount = 1000000000)
     {
         if ((jumpsAvaible + amount) < 0) return;
-        if ((jumpsAvaible + amount) > maxCount) return;
+        if ((jumpsAvaible + amount) > maxCount) { amount = maxCount; return; }
         jumpsAvaible += amount;
     }
 

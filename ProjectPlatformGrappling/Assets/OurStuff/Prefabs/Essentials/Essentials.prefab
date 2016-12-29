@@ -1575,7 +1575,6 @@ GameObject:
   - 4: {fileID: 4000012381538392}
   - 114: {fileID: 114000012090536760}
   - 114: {fileID: 114000013941428046}
-  - 114: {fileID: 114000010171813366}
   - 114: {fileID: 114000013824012058}
   - 114: {fileID: 114000011247041578}
   - 114: {fileID: 114000010929104248}
@@ -3633,23 +3632,6 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!114 &114000010171813366
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013856882280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47ecf0ca39eff284fb3f1ac62d051d53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isLocked: 0
-  fogColors:
-  - {r: 0, g: 0.41176468, b: 0.3947261, a: 1}
-  - {r: 0.35532457, g: 0, b: 0.6691177, a: 1}
-  - {r: 0.43382353, g: 0, b: 0.13463484, a: 1}
-  fogColorChangingSpeed: 0.1
 --- !u!114 &114000010175744040
 MonoBehaviour:
   m_ObjectHideFlags: 1
