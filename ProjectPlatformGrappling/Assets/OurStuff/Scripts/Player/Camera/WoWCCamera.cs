@@ -89,13 +89,20 @@ public class WoWCCamera : BaseClass
         StopAllCoroutines();
     }
 
-    public IEnumerator SetRot(float xn, bool unlock = true)
+    public IEnumerator SetRot(Vector3 newDir, bool unlock = true)
     {
         if(settingRotation != null)
         {
             StopCoroutine(settingRotation);
         }
         movingToPos = true;
+
+        float xn = Vector3.Angle(transform.forward, newDir);
+
+        if(Vector3.Dot(transform.right, newDir) < 0.0f)
+        {
+            xn = -xn;
+        }
 
         settingRotation = SettingRot(xn, unlock);
         yield return StartCoroutine(settingRotation);
@@ -104,16 +111,10 @@ public class WoWCCamera : BaseClass
     IEnumerator SettingRot(float xn, bool unlock)
     {
         Debug.Log("Den väljer alltid den minsta lutningen, det blir fel för denna som alltid går genom samma håll, FIXA!");
-        if (xn > 180)
-        {
-            xn = x + xn;
-        }
-        else
-        {
-            xn = x - xn;
-        }
+
+        xn = xn + x;
         float yn = 30;
-        while(settingRotation != null && Mathf.Abs(Mathf.Abs(xn + yn) - Mathf.Abs(x + y)) > 2f)
+        while(settingRotation != null && Mathf.Abs(x - xn) + Mathf.Abs(y - yn) > 2f)
         {
             x = Mathf.Lerp(x, xn, Time.deltaTime * 8);
             y = Mathf.Lerp(y, yn, Time.deltaTime * 8);

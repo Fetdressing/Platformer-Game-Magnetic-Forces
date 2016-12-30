@@ -162,8 +162,8 @@ public class SpawnManager : BaseClass {
         {
             player.position = pos;
         }
-        Vector3 forwNoY = new Vector3(mainCameraS.transform.forward.x, 0, mainCameraS.transform.forward.z);
-        yield return mainCameraS.SetRot(Vector3.Angle(forwNoY, latestSpawn.forward), false);
+        //Vector3 forwNoY = new Vector3(mainCameraS.transform.forward.x, 0, mainCameraS.transform.forward.z);
+        yield return mainCameraS.SetRot(latestSpawn.forward, false);
         player.GetComponent<PowerManager>().Reset();
         player.GetComponent<StagMovement>().Reset();
         player.GetComponent<StagShooter>().Reset();
