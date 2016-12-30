@@ -514,7 +514,8 @@ public class QuickObjectEditor : Editor
 			GameObject go = PrefabUtility.InstantiatePrefab (newObj) as GameObject;
 			Undo.RegisterCreatedObjectUndo (go, "Instantiated object");
 			go.transform.position = targetPoint + offset.vector3Value;
-			go.transform.rotation = Quaternion.Euler(rotation.vector3Value);
+            Vector3 randomYRot = new Vector3(0, UnityEngine.Random.Range(0, 180), 0);
+			go.transform.rotation = Quaternion.Euler(rotation.vector3Value + randomYRot);
 			go.transform.localScale = scale.vector3Value;
 			if(parent.objectReferenceValue)
 			{
@@ -535,8 +536,9 @@ public class QuickObjectEditor : Editor
 			GameObject go = PrefabUtility.InstantiatePrefab (objRoot) as GameObject;
 			Undo.RegisterCreatedObjectUndo (go, "Instantiated object");
 			go.transform.position = targetPoint + offset.vector3Value;
-			go.transform.rotation = Quaternion.Euler(rotation.vector3Value);
-			go.transform.localScale = scale.vector3Value;
+            Vector3 randomYRot = new Vector3(0, UnityEngine.Random.Range(0, 180), 0);
+            go.transform.rotation = Quaternion.Euler(rotation.vector3Value + randomYRot);
+            go.transform.localScale = scale.vector3Value;
 			if(parent.objectReferenceValue)
 				go.transform.parent = parent.objectReferenceValue as Transform;
 		}
@@ -546,8 +548,9 @@ public class QuickObjectEditor : Editor
 			GameObject go = GameObject.Instantiate(newObj, targetPoint , Quaternion.identity) as GameObject;
 			Undo.RegisterCreatedObjectUndo (go, "Instantiated object");
 			go.transform.position = targetPoint + offset.vector3Value;
-			go.transform.rotation = Quaternion.Euler(rotation.vector3Value);
-			go.transform.localScale = scale.vector3Value;
+            Vector3 randomYRot = new Vector3(0, UnityEngine.Random.Range(0, 180), 0);
+            go.transform.rotation = Quaternion.Euler(rotation.vector3Value + randomYRot);
+            go.transform.localScale = scale.vector3Value;
 			if(parent.objectReferenceValue)
 				go.transform.parent = parent.objectReferenceValue as Transform;
 		}
