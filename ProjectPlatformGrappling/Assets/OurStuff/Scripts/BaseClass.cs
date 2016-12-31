@@ -15,6 +15,6 @@ public class BaseClass : MonoBehaviour {
     public virtual void UpdateLoop() { }
     public virtual void Deactivate() { }
     [HideInInspector]
-    public static float maxDeltaTime = 0.02f; //annars kan man få skumma värden om en frame varar för länge
+    public static float maxDeltaTime = 0.06f; //annars kan man få skumma värden om en frame varar för länge
     [HideInInspector] public static float deltaTime = 0.01f; //räknas ut sen i GameManager, den får ett startvärde så den inte ska vara null just
 }
