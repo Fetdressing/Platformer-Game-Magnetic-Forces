@@ -4,6 +4,7 @@ using System.Collections;
 public class StagSpeedBreaker : BaseClass {
     bool active = false;
     StagMovement stagMovement; //kunna skicka att man gjort hit osv
+    PowerManager pm;
 
     Renderer[] renderers;
     Collider[] colliders;
@@ -14,6 +15,8 @@ public class StagSpeedBreaker : BaseClass {
     Vector3 activationPoint = Vector3.zero;
 
     Transform internalLastUnitHit; //används för o mecka collision
+
+    private int powerGained = 10;
 	// Use this for initialization
 	void Start () {
         Init();
@@ -23,6 +26,7 @@ public class StagSpeedBreaker : BaseClass {
     {
         base.Init();
         stagMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<StagMovement>();
+        pm = GameObject.FindGameObjectWithTag("Player").GetComponent<PowerManager>();
         colliders = GetComponentsInChildren<Collider>();
         renderers = GetComponentsInChildren<Renderer>();
 
@@ -45,12 +49,13 @@ public class StagSpeedBreaker : BaseClass {
             {
                 stagMovement.StopCoroutine(stagMovement.staggDashIE);
             }
-            stagMovement.staggDashIE = stagMovement.StaggDash(true, 0.024f, 0.15f);
+            stagMovement.staggDashIE = stagMovement.StaggDash(true, 0.024f, 0.2f);
             stagMovement.StartCoroutine(stagMovement.staggDashIE);
             //stagMovement.Dash(true, true); //använd kamera riktningen
             //Debug.Log("Felet med riktningen är att man kallar dash före stagger, gör så att de körs i rad");
             //stagMovement.Stagger(0.25f);
             h.AddHealth(-2);
+            pm.AddPower(1, 80);
         }
     }
 

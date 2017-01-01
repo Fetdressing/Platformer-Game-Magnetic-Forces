@@ -290,7 +290,7 @@ MonoBehaviour:
   pickUpObj: {fileID: 1000014119565378}
   hasBeenPicked: 0
   globeRenderer: {fileID: 23000010434138584}
-  playerChaseSpeed: 180
+  playerChaseSpeed: 250
   playerChaseDistance: 35
   powerWorth: 0.1
   returnToStartPos: 1

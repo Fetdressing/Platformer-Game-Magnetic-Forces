@@ -29,7 +29,7 @@ public class StagMovement : BaseClass
 
     protected float startSpeed = 190;
     protected float jumpSpeed = 85;
-    protected float gravity = 140;
+    protected float gravity = 160;
     protected float stagSpeedMultMax = 1.5f;
     protected float stagSpeedMultMin = 0.85f;
 
@@ -54,7 +54,7 @@ public class StagMovement : BaseClass
     protected float dashCooldown = 1f; //går igång ifall man dashar från marken
     protected float dashSpeed = 380;
     protected float currDashTime;
-    protected float startMaxDashTime = 0.05f; //den går att utöka
+    protected float startMaxDashTime = 0.06f; //den går att utöka
     [HideInInspector] public float maxDashTime;
     protected float dashPowerCost = 0.1f; //hur mycket power det drar varje gång man dashar
     protected bool dashUsed = false; //så att man måste bli grounded innan man kan använda den igen
@@ -96,7 +96,7 @@ public class StagMovement : BaseClass
     protected float movementStackGroundedTimer = 0.0f;
 
     protected float movementStackResetTimer = 0.0f;
-    protected float movementStackResetTime = 4.0f;
+    protected float movementStackResetTime = 2.0f;
     [HideInInspector]public int movementStacks = 0; //får mer stacks när man dashar och hoppar mycket
 
 
@@ -928,7 +928,7 @@ public class StagMovement : BaseClass
             dashComboResetTimer = dashComboResetTime + Time.time;
             currDashCombo++;
 
-            float finalDashCost = dashPowerCost + ((float)currDashCombo * 0.02f);
+            float finalDashCost = dashPowerCost + ((float)currDashCombo * 0.016f);
 
             if (!powerManager.SufficentPower(-finalDashCost, true)) return false; //camerashake, konstig syntax kanske du tycker, men palla göra det fancy!
             powerManager.AddPower(-finalDashCost);
@@ -1263,9 +1263,9 @@ public class StagMovement : BaseClass
             movementStacks = 1;
         }
 
-        float timeReduceValue = Mathf.Max(0, Mathf.Pow(movementStacks, 1.6f));
+        float timeReduceValue = Mathf.Max(0, Mathf.Pow(movementStacks, 1.4f)); //ju mindre upphöjt värde ju högra kommer den öka
         float groundedReduceValue = Mathf.Max(0, Mathf.Pow(movementStacks, 1.7f)); //den ska börja litet o bli större o större
-        timeReduceValue *= 0.035f;
+        timeReduceValue *= 0.013f;
         groundedReduceValue *= 0.04f;
         if (float.IsNaN(timeReduceValue))
         {
@@ -1280,7 +1280,8 @@ public class StagMovement : BaseClass
         movementStackGroundedTimer = GetGroundedDuration() + movementStackGroundedTime - (groundedReduceValue); //inte plus tid för den ligger redan inräknad
 
         //lite minimum värden, så man kan stacka högt
-        movementStackResetTimer = Mathf.Max(0.7f + Time.time, movementStackResetTimer); //ska som minst vara x sekunder
+        //Debug.Log((timeReduceValue).ToString());
+        movementStackResetTimer = Mathf.Max(0.4f + Time.time, movementStackResetTimer); //ska som minst vara x sekunder
         movementStackGroundedTimer = Mathf.Max(0.3f, movementStackGroundedTimer); //ska som minst vara x sekunder
 
         //Debug.Log(movementStacks.ToString() + "  " + (movementStackResetTimer - Time.time).ToString());
