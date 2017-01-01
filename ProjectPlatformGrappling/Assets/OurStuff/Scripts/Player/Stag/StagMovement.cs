@@ -248,10 +248,10 @@ public class StagMovement : BaseClass
             AddMovementStack(-2);
         }
 
-        if (isGroundedRaycast && (GetGroundedDuration() > movementStackGroundedTimer)) //efter att ha tappat ett poäng så fortsätter still GetGroundedDuration att öka, därför det minskar poäng snabbare o snabbare, för att man STILL är grounded
-        {
-            AddMovementStack(-2);
-        }
+        //if (isGroundedRaycast && (GetGroundedDuration() > movementStackGroundedTimer)) //efter att ha tappat ett poäng så fortsätter still GetGroundedDuration att öka, därför det minskar poäng snabbare o snabbare, för att man STILL är grounded
+        //{
+        //    AddMovementStack(-2);
+        //}
 
         //hor = Input.GetAxis("Horizontal");
         //ver = Input.GetAxis("Vertical");

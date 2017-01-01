@@ -516,7 +516,7 @@ public class QuickObjectEditor : Editor
 			go.transform.position = targetPoint + offset.vector3Value;
             Vector3 randomYRot = new Vector3(0, UnityEngine.Random.Range(0, 180), 0);
 			go.transform.rotation = Quaternion.Euler(rotation.vector3Value + randomYRot);
-			go.transform.localScale = scale.vector3Value;
+			go.transform.localScale += scale.vector3Value; //lägg på istället för o sätta direkt tror jag är bättre
 			if(parent.objectReferenceValue)
 			{
 				Transform par = parent.objectReferenceValue as Transform;

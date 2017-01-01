@@ -37117,16 +37117,6 @@ Prefab:
       propertyPath: m_Name
       value: PowerGlobe (18)
       objectReference: {fileID: 0}
-    - target: {fileID: 82000010071685556, guid: 8630a592f8db99d47b7dfc4480ed3777,
-        type: 2}
-      propertyPath: m_Volume
-      value: 0.994
-      objectReference: {fileID: 0}
-    - target: {fileID: 82000010071685556, guid: 8630a592f8db99d47b7dfc4480ed3777,
-        type: 2}
-      propertyPath: m_Pitch
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8630a592f8db99d47b7dfc4480ed3777, type: 2}
   m_IsPrefabParent: 0
@@ -76987,6 +76977,21 @@ Prefab:
         type: 2}
       propertyPath: m_AnchorMax.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224000010436884462, guid: ecd38ba538801b04db904a661134a689,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 224000011114611504, guid: ecd38ba538801b04db904a661134a689,
+        type: 2}
+      propertyPath: m_AnchorMin.x
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 224000011114611504, guid: ecd38ba538801b04db904a661134a689,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0.33333334
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ecd38ba538801b04db904a661134a689, type: 2}
