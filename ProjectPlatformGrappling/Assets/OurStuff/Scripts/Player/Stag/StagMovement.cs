@@ -360,7 +360,7 @@ public class StagMovement : BaseClass
             activePlatform = null; //kolla om platformen fortfarande finns under mig eller ej
         }
 
-        externalVel = Vector3.Lerp(externalVel, Vector3.zero, deltaTime * 10); //ta sakta bort den externa forcen
+        externalVel = Vector3.Lerp(externalVel, Vector3.zero, deltaTime * 5); //ta sakta bort den externa forcen
 
         HandleMovement(); //moddar finalMoveDir
         // YYYYY
@@ -1351,8 +1351,14 @@ public class StagMovement : BaseClass
         ySpeed += velY;
     }
 
-    public virtual void ApplyExternalForce(Vector3 moveDir)
+    public virtual void ApplyExternalForce(Vector3 moveDir, bool resetForces = false)
     {
+        if(resetForces)
+        {
+            ySpeed = 0;
+            currMomentum = Vector3.zero;
+            BreakDash();
+        }
         externalVel = moveDir;
     }
 

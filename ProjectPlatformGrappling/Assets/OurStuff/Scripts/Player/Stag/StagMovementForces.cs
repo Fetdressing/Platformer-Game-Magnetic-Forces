@@ -355,7 +355,7 @@ public class StagMovementForces : StagMovement {
 
     }
 
-    public override void ApplyExternalForce(Vector3 moveDir)
+    public override void ApplyExternalForce(Vector3 moveDir, bool mu)
     {
         Debug.Log("Force!");
         m_rigidbody.AddForce(moveDir);
