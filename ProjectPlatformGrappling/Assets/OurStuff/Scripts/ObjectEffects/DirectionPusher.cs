@@ -9,12 +9,22 @@ public class DirectionPusher : MonoBehaviour {
     Vector3 startScaleObj; //så att man kan flytta tillbaks den till ursprungs skalan
     IEnumerator bounceEffect;
 
+    public AudioSource audioSource;
+    private CameraShaker cameraShaker;
+
     static protected StagMovement stagMov;
 
     public float pushForce = 400;
 	// Use this for initialization
-	void Start () {
-	    if(stagMov == null)
+	void Start ()
+    {
+        if(audioSource == null)
+        {
+            audioSource = GetComponent < AudioSource>();
+        }
+        cameraShaker = GameObject.FindGameObjectWithTag("Manager").GetComponent<CameraManager>().cameraPlayerFollow.GetComponent<CameraShaker>();
+
+        if (stagMov == null)
         {
             stagMov = GameObject.FindGameObjectWithTag("Player").GetComponent<StagMovement>();
         }
@@ -40,8 +50,17 @@ public class DirectionPusher : MonoBehaviour {
                 StartCoroutine(bounceEffect);
             }
 
+            cameraShaker.ShakeCamera(0.2f, 1, true);
+
+            if (audioSource != null)
+            {
+                audioSource.Play();
+            }
+
             Vector3 dir = (pushTarget.position - col.transform.position).normalized;
             stagMov.ApplyExternalForce(dir * pushForce, true);
+
+            stagMov.AddJumpsAvaible(1, 1);
         }
     }
 

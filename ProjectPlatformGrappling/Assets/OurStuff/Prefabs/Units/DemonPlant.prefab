@@ -342,9 +342,10 @@ MonoBehaviour:
   damagedMaterial: {fileID: 2100000, guid: 5a5a1a50a180c2246b70601cbc08ebef, type: 2}
   middlePoint: {x: 0, y: 0, z: 0}
   middlePointOffsetY: 0.5
-  startHealth: 3
+  startHealth: 1
   maxHealth: 3
-  startHealthRegAmount: 1
+  fadeOnDamage: 1
+  startHealthRegAmount: 0
   healthRegAmount: 1
   destroyOnDeath: 0
   animationObj: {fileID: 1000013039317298}
